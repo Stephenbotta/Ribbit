@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Conversify</string>
+
+    <string name="permission_btn_allow">Allow</string>
+    <string name="permission_btn_deny">Deny</string>
+    <string name="permission_btn_cancel">Cancel</string>
+    <string name="permission_label_settings">Settings</string>
+
+    <string name="error_check_internet_connection">Please check your internet connection</string>
+</resources>
