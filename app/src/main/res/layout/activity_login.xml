@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginStart="12dp"
+        android:drawablePadding="6dp"
+        android:drawableStart="@drawable/ic_back"
+        android:fontFamily="@font/brandon_text_bold"
+        android:gravity="center_vertical"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:text="@string/back"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvLabelLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:fontFamily="@font/brandon_text_bold"
+        android:includeFontPadding="false"
+        android:text="@string/login"
+        android:textColor="@color/text_gray"
+        android:textSize="36sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+
+    <TextView
+        android:id="@+id/tvLabelYourRegistered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="36dp"
+        android:text="@string/login_label_your_registered"
+        android:textColor="@color/text_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelLogin" />
+
+    <TextView
+        android:id="@+id/btnPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="36dp"
+        android:fontFamily="@font/brandon_text_bold"
+        android:text="@string/login_btn_phone_number"
+        android:textColor="@color/text_gray"
+        app:layout_constraintStart_toEndOf="@id/tvLabelYourRegistered"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelLogin"
+        tools:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/tvLabelSlash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:fontFamily="@font/brandon_text_bold"
+        android:text="@string/login_label_slash"
+        app:layout_constraintStart_toEndOf="@id/btnPhoneNumber"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelLogin" />
+
+    <TextView
+        android:id="@+id/btnEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:fontFamily="@font/brandon_text_bold"
+        android:text="@string/login_btn_email_id"
+        android:textColor="@color/text_gray"
+        app:layout_constraintStart_toEndOf="@id/tvLabelSlash"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelLogin" />
+
+    <com.hbb20.CountryCodePicker
+        android:id="@+id/countryCodePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:ccp_autoDetectCountry="true"
+        app:ccp_contentColor="@color/text_gray"
+        app:ccp_showArrow="false"
+        app:ccp_showNameCode="false"
+        app:ccp_textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelYourRegistered" />
+
+    <View
+        android:id="@+id/dividerPhoneNumber"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/text_gray"
+        app:layout_constraintBottom_toBottomOf="@id/etPhoneNumber"
+        app:layout_constraintStart_toEndOf="@id/countryCodePicker"
+        app:layout_constraintTop_toTopOf="@id/etPhoneNumber" />
+
+    <EditText
+        android:id="@+id/etPhoneNumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="8dp"
+        android:background="@null"
+        android:hint="@string/login_label_enter_phone_number"
+        android:inputType="phone"
+        android:singleLine="true"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/countryCodePicker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dividerPhoneNumber"
+        app:layout_constraintTop_toTopOf="@id/countryCodePicker" />
+
+    <TextView
+        android:id="@+id/tvLabelOrYouCould"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/login_label_or_you_could"
+        android:textColor="@color/text_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/countryCodePicker" />
+</android.support.constraint.ConstraintLayout>

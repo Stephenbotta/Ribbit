@@ -69,7 +69,7 @@ fun TextView.spanString(string: String, color: Int) {
     this.text = spannableText
 }
 
-fun TextView.clickSpannable(spannableText: String, @ColorRes textColorRes: Int, textTypeface: Typeface, clickListener: View.OnClickListener) {
+fun TextView.clickSpannable(spannableText: String, @ColorRes textColorRes: Int? = null, textTypeface: Typeface? = null, clickListener: View.OnClickListener) {
     val fullText = text.toString()
     val startIndex = fullText.indexOf(spannableText)
     val spannableString = SpannableString(fullText)
@@ -78,8 +78,12 @@ fun TextView.clickSpannable(spannableText: String, @ColorRes textColorRes: Int, 
         override fun updateDrawState(textPaint: TextPaint) {
             super.updateDrawState(textPaint)
             textPaint.isUnderlineText = false
-            textPaint.color = ContextCompat.getColor(context, textColorRes)
-            textPaint.typeface = textTypeface
+            if (textColorRes != null) {
+                textPaint.color = ContextCompat.getColor(context, textColorRes)
+            }
+            if (textTypeface != null) {
+                textPaint.typeface = textTypeface
+            }
         }
 
         override fun onClick(widget: View) {
