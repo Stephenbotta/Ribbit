@@ -10,6 +10,7 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
-    <color name="text_gray">#4A566C</color>
-    <color name="text_gray_hint">#DE4A566C</color>
+    <color name="textGray">#4A566C</color>
+    <color name="textGrayHint">#DE4A566C</color>
+    <color name="socialButtonStrokeColor">#1F4C4C4C</color>
 </resources>

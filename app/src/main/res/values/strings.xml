@@ -20,9 +20,12 @@
     <string name="login_sign_up_btn_get_started">Get started</string>
 
     <string name="login_label_enter_phone_number">Enter phone number</string>
+    <string name="login_label_enter_email_id">Enter email id</string>
     <string name="login_label_slash">/</string>
     <string name="login_label_your_registered">Your registered</string>
+    <string name="login_label_or_you_could">or you could</string>
     <string name="login_btn_email_id">Email ID</string>
     <string name="login_btn_phone_number">Phone Number</string>
-    <string name="login_label_or_you_could">or you could</string>
+    <string name="login_btn_continue_with_facebook">CONTINUE WITH FACEBOOK</string>
+    <string name="login_btn_continue_with_google">CONTINUE WITH GOOGLE</string>
 </resources>

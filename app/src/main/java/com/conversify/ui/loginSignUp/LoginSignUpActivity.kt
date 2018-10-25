@@ -1,5 +1,6 @@
 package com.conversify.ui.loginSignUp
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -24,7 +25,9 @@ class LoginSignUpActivity : BaseActivity() {
     }
 
     private fun setListeners() {
-        btnGetStarted.setOnClickListener { }
+        btnGetStarted.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
 
         val boldTypeface = ResourcesCompat.getFont(this, R.font.brandon_text_bold)
         val clickableTextColor = R.color.white
