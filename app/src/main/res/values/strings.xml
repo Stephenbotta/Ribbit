@@ -28,4 +28,10 @@
     <string name="login_btn_phone_number">Phone Number</string>
     <string name="login_btn_continue_with_facebook">CONTINUE WITH FACEBOOK</string>
     <string name="login_btn_continue_with_google">CONTINUE WITH GOOGLE</string>
+    <string name="login_label_welcome">Welcome</string>
+    <string name="login_label_password">Password</string>
+    <string name="login_label_forgot_password_reset_password">Forgot password? Reset Password</string>
+    <string name="login_label_reset_password">Reset Password</string>
+    <string name="verification_label_verification">Verification</string>
+    <string name="verification_label_we_sent_you_a_code">We sent you a code to verify your number</string>
 </resources>

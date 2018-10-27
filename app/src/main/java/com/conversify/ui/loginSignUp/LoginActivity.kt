@@ -39,5 +39,8 @@ class LoginActivity : BaseActivity() {
             etPhoneNumber.setText("")
             etPhoneNumber.gone()
         }
+
+        cvContinueWithFacebook.setOnClickListener { }
+        cvContinueWithGoogle.setOnClickListener { }
     }
 }

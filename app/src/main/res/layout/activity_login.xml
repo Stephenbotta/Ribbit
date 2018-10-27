@@ -162,55 +162,114 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrierPhoneEmail" />
 
-    <android.support.design.button.MaterialButton
-        android:id="@+id/btnContinueWithFacebook"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        android:layout_width="0dp"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cvContinueWithFacebook"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/brandon_text_bold"
-        android:paddingBottom="12dp"
-        android:paddingTop="12dp"
-        android:text="@string/login_btn_continue_with_facebook"
-        android:textColor="@color/textGray"
-        android:textSize="12sp"
-        app:backgroundTint="@color/white"
-        app:icon="@drawable/ic_facebook"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_social_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelOrYouCould"
-        app:strokeColor="@color/socialButtonStrokeColor"
-        app:strokeWidth="1dp" />
+        app:layout_constraintTop_toBottomOf="@id/tvLabelOrYouCould">
 
-    <android.support.design.button.MaterialButton
-        android:id="@+id/btnContinueWithGoogle"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        android:layout_width="0dp"
+        <ImageView
+            android:id="@+id/ivFacebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_facebook"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:id="@+id/dividerFacebook"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/socialButtonStrokeColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivFacebook"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvLabelContinueWithFacebook"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/brandon_text_bold"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:text="@string/login_btn_continue_with_facebook"
+            android:textColor="@color/textGray"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dividerFacebook" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cvContinueWithGoogle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/brandon_text_bold"
-        android:paddingBottom="12dp"
-        android:paddingTop="12dp"
-        android:text="@string/login_btn_continue_with_google"
-        android:textColor="@color/textGray"
-        android:textSize="12sp"
-        app:backgroundTint="@color/white"
-        app:icon="@drawable/ic_google"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_social_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnContinueWithFacebook"
-        app:strokeColor="@color/socialButtonStrokeColor"
-        app:strokeWidth="1dp" />
+        app:layout_constraintTop_toBottomOf="@id/cvContinueWithFacebook">
+
+        <ImageView
+            android:id="@+id/ivGoogle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_google"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:id="@+id/dividerGoogle"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/socialButtonStrokeColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivGoogle"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvLabelContinueWithGoogle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/brandon_text_bold"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:text="@string/login_btn_continue_with_google"
+            android:textColor="@color/textGray"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dividerGoogle" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabProceed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:src="@drawable/ic_forward_white"
         app:backgroundTint="?attr/colorPrimary"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
