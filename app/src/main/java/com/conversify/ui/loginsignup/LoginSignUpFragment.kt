@@ -10,6 +10,7 @@ import com.conversify.R
 import com.conversify.extensions.gone
 import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.loginsignup.loginpassword.LoginPasswordFragment
 import com.conversify.utils.AppConstants
 import com.conversify.utils.ValidationUtils
 import kotlinx.android.synthetic.main.fragment_login_sign_up.*
@@ -82,7 +83,15 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
         cvContinueWithFacebook.setOnClickListener { }
         cvContinueWithGoogle.setOnClickListener { }
 
-        fabProceed.setOnClickListener { }
+        fabProceed.setOnClickListener {
+            val fragment = LoginPasswordFragment.newInstance(registeredMode)
+            fragmentManager?.apply {
+                beginTransaction()
+                        .replace(R.id.flContainer, fragment, LoginPasswordFragment.TAG)
+                        .addToBackStack(null)
+                        .commit()
+            }
+        }
     }
 
     override fun afterTextChanged(s: Editable?) {
