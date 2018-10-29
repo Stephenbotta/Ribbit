@@ -1,6 +1,5 @@
-package com.conversify.ui.loginSignUp
+package com.conversify.ui.landing
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -14,19 +13,21 @@ import android.view.View
 import com.conversify.R
 import com.conversify.extensions.clickSpannable
 import com.conversify.ui.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_login_sign_up.*
+import com.conversify.ui.loginsignup.LoginSignUpActivity
+import com.conversify.utils.AppConstants
+import kotlinx.android.synthetic.main.activity_landing.*
 
-class LoginSignUpActivity : BaseActivity() {
+class LandingActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login_sign_up)
+        setContentView(R.layout.activity_landing)
 
         setListeners()
     }
 
     private fun setListeners() {
         btnGetStarted.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
+            LoginSignUpActivity.start(this, AppConstants.MODE_SIGN_UP)
         }
 
         val boldTypeface = ResourcesCompat.getFont(this, R.font.brandon_text_bold)
@@ -37,6 +38,7 @@ class LoginSignUpActivity : BaseActivity() {
                 textTypeface = boldTypeface,
                 textColorRes = clickableTextColor,
                 clickListener = View.OnClickListener {
+                    LoginSignUpActivity.start(this, AppConstants.MODE_LOGIN)
                 })
 
         val textTermsAndConditions = getString(R.string.login_sign_up_label_terms_and_conditions)
@@ -55,7 +57,7 @@ class LoginSignUpActivity : BaseActivity() {
             override fun updateDrawState(textPaint: TextPaint) {
                 super.updateDrawState(textPaint)
                 textPaint.isUnderlineText = false
-                textPaint.color = ContextCompat.getColor(this@LoginSignUpActivity, clickableTextColor)
+                textPaint.color = ContextCompat.getColor(this@LandingActivity, clickableTextColor)
                 textPaint.typeface = boldTypeface
             }
 
@@ -67,7 +69,7 @@ class LoginSignUpActivity : BaseActivity() {
             override fun updateDrawState(textPaint: TextPaint) {
                 super.updateDrawState(textPaint)
                 textPaint.isUnderlineText = false
-                textPaint.color = ContextCompat.getColor(this@LoginSignUpActivity, clickableTextColor)
+                textPaint.color = ContextCompat.getColor(this@LandingActivity, clickableTextColor)
                 textPaint.typeface = boldTypeface
             }
 

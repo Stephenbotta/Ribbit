@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <integer name="username_max_length">50</integer>
     <integer name="name_max_length">100</integer>
     <integer name="email_max_length">100</integer>
     <integer name="phone_number_max_length">15</integer>

@@ -23,15 +23,27 @@
     <string name="login_label_enter_email_id">Enter email id</string>
     <string name="login_label_slash">/</string>
     <string name="login_label_your_registered">Your registered</string>
+    <string name="login_label_welcome">Welcome</string>
+    <string name="login_label_password">Password</string>
+    <string name="login_label_forgot_password_reset_password">Forgot password? Reset Password</string>
+    <string name="login_label_reset_password">Reset Password</string>
     <string name="login_label_or_you_could">or you could</string>
     <string name="login_btn_email_id">Email ID</string>
     <string name="login_btn_phone_number">Phone Number</string>
     <string name="login_btn_continue_with_facebook">CONTINUE WITH FACEBOOK</string>
     <string name="login_btn_continue_with_google">CONTINUE WITH GOOGLE</string>
-    <string name="login_label_welcome">Welcome</string>
-    <string name="login_label_password">Password</string>
-    <string name="login_label_forgot_password_reset_password">Forgot password? Reset Password</string>
-    <string name="login_label_reset_password">Reset Password</string>
+
     <string name="verification_label_verification">Verification</string>
     <string name="verification_label_we_sent_you_a_code">We sent you a code to verify your number</string>
+    <string name="verification_label_enter_code">Enter code</string>
+    <string name="verification_label_did_not_receive_the_code">Didn’t receive the code yet? Resend code</string>
+    <string name="verification_label_resend_code">Resend code</string>
+
+    <string name="create_password_label_create_password">Create password</string>
+    <string name="create_password_label_secure_your_account">Secure your account with a password</string>
+
+    <string name="welcome_label_welcome">Welcome</string>
+    <string name="welcome_label_what_s_your_full_name">What’s your Full name?</string>
+    <string name="welcome_label_username">Username</string>
+    <string name="welcome_label_your_email_id">And your email ID?</string>
 </resources>
