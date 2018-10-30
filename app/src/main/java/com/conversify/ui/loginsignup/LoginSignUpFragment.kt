@@ -11,6 +11,7 @@ import com.conversify.extensions.gone
 import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.loginsignup.loginpassword.LoginPasswordFragment
+import com.conversify.ui.loginsignup.verification.VerificationFragment
 import com.conversify.utils.AppConstants
 import com.conversify.utils.ValidationUtils
 import kotlinx.android.synthetic.main.fragment_login_sign_up.*
@@ -84,10 +85,18 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
         cvContinueWithGoogle.setOnClickListener { }
 
         fabProceed.setOnClickListener {
-            val fragment = LoginPasswordFragment.newInstance(registeredMode)
+            val fragment: Fragment
+            val fragmentTag: String
+            if (mode == AppConstants.MODE_LOGIN) {
+                fragment = LoginPasswordFragment.newInstance(registeredMode)
+                fragmentTag = LoginPasswordFragment.TAG
+            } else {
+                fragment = VerificationFragment.newInstance(registeredMode)
+                fragmentTag = VerificationFragment.TAG
+            }
             fragmentManager?.apply {
                 beginTransaction()
-                        .replace(R.id.flContainer, fragment, LoginPasswordFragment.TAG)
+                        .add(R.id.flContainer, fragment, fragmentTag)
                         .addToBackStack(null)
                         .commit()
             }

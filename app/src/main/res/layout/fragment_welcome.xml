@@ -3,20 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/tvLabelCreatePassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/brandon_text_bold"
         android:includeFontPadding="false"
         android:text="@string/welcome_label_welcome"
         android:textColor="@color/textGray"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvLabelFullName"
@@ -39,6 +44,7 @@
         android:inputType="textPersonName|textNoSuggestions|textCapWords"
         android:paddingBottom="16dp"
         android:paddingTop="16dp"
+        android:singleLine="true"
         android:textColor="@color/textGray7F"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,6 +75,7 @@
         android:maxLength="@integer/username_max_length"
         android:paddingBottom="16dp"
         android:paddingTop="16dp"
+        android:singleLine="true"
         android:textColor="@color/textGray7F"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -99,6 +106,7 @@
         android:maxLength="@integer/email_max_length"
         android:paddingBottom="16dp"
         android:paddingTop="16dp"
+        android:singleLine="true"
         android:textColor="@color/textGray7F"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"

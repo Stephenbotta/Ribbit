@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
     private const val BASE_URL_LOCAL = ""
-    private const val BASE_URL_LIVE = ""
+    private const val BASE_URL_LIVE = "http://52.35.234.66:8001/"
 
     private const val BASE_URL = BASE_URL_LIVE
 
@@ -54,7 +54,7 @@ class AuthorizationInterceptor : Interceptor {
         return if (authorization != null) {
             Timber.i("Adding authorization in header")
             val authRequest = originalRequest.newBuilder()
-                    .header("Authorization", authorization)
+                    .header("authorization", authorization)
                     .build()
             chain.proceed(authRequest)
         } else {

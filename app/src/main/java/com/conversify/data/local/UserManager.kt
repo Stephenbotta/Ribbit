@@ -3,18 +3,6 @@ package com.conversify.data.local
 import java.util.*
 
 object UserManager {
-    fun saveRememberedEmail(email: String) {
-        PrefsManager.get().save(PrefsManager.PREF_REMEMBERED_EMAIL, email)
-    }
-
-    fun getRememberedEmail(): String {
-        return PrefsManager.get().getString(PrefsManager.PREF_REMEMBERED_EMAIL, "")
-    }
-
-    fun removeRememberedEmail() {
-        PrefsManager.get().remove(PrefsManager.PREF_REMEMBERED_EMAIL)
-    }
-
     fun isFirstAppLaunch(): Boolean {
         return PrefsManager.get().getBoolean(PrefsManager.PREF_FIRST_APP_LAUNCH, true)
     }
@@ -33,12 +21,8 @@ object UserManager {
         return if (accessToken.isBlank()) {
             null
         } else {
-            "Bearer $accessToken"
+            "bearer $accessToken"
         }
-    }
-
-    fun getDeveloperAuthorization(): String {
-        return "Bearer ${getAccessToken()}"
     }
 
     /*fun saveProfile(profile: UserProfileDto) {

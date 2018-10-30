@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/tvLabelVerification"
@@ -24,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="36dp"
-        android:text="@string/verification_label_we_sent_you_a_code"
+        android:text="@string/verification_label_we_sent_you_a_code_phone"
         android:textColor="@color/textGray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelVerification" />
@@ -49,6 +52,7 @@
         android:background="@null"
         android:hint="@string/verification_label_enter_code"
         android:inputType="number"
+        android:maxLength="4"
         android:textColorHint="@color/textGrayLight"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,12 +61,14 @@
 
     <TextView
         android:id="@+id/tvLabelDidNotReceiveCode"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="48dp"
         android:text="@string/verification_label_did_not_receive_the_code"
         android:textColor="@color/textGray"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etEnterCode" />
 

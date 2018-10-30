@@ -34,7 +34,8 @@
     <string name="login_btn_continue_with_google">CONTINUE WITH GOOGLE</string>
 
     <string name="verification_label_verification">Verification</string>
-    <string name="verification_label_we_sent_you_a_code">We sent you a code to verify your number</string>
+    <string name="verification_label_we_sent_you_a_code_phone">We sent you a code to verify your number</string>
+    <string name="verification_label_we_sent_you_a_code_email">We sent you a code to verify your email</string>
     <string name="verification_label_enter_code">Enter code</string>
     <string name="verification_label_did_not_receive_the_code">Didn’t receive the code yet? Resend code</string>
     <string name="verification_label_resend_code">Resend code</string>

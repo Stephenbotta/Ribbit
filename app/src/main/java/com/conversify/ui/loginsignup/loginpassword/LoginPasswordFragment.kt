@@ -2,8 +2,10 @@ package com.conversify.ui.loginsignup.loginpassword
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import com.conversify.R
+import com.conversify.extensions.clickSpannable
 import com.conversify.ui.base.BaseFragment
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
@@ -34,9 +36,9 @@ class LoginPasswordFragment : BaseFragment() {
         // todo update profile
         tvName.text = ""
         if (registeredMode == AppConstants.REGISTERED_MODE_PHONE) {
-            tvPhoneNumber.text = ""
+            tvPhoneOrEmail.text = ""
         } else {
-            tvPhoneNumber.text = ""
+            tvPhoneOrEmail.text = ""
         }
 
         GlideApp.with(this)
@@ -44,5 +46,18 @@ class LoginPasswordFragment : BaseFragment() {
                 .placeholder(R.color.greyImageBackground)
                 .error(R.color.greyImageBackground)
                 .into(ivProfile)
+
+        setListeners()
+    }
+
+    private fun setListeners() {
+        fabProceed.setOnClickListener {
+            etPassword.clearFocus()
+        }
+
+        val spannableText = getString(R.string.login_label_reset_password)
+        val typeface = ResourcesCompat.getFont(requireActivity(), R.font.brandon_text_bold)
+        tvLabelForgotPassword.clickSpannable(spannableText, R.color.colorPrimary, typeface,
+                View.OnClickListener {})
     }
 }
