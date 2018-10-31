@@ -6,6 +6,7 @@ import android.view.View
 import com.conversify.R
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.loginsignup.BackButtonEnabledListener
+import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
 import kotlinx.android.synthetic.main.fragment_welcome.*
 
 class WelcomeFragment : BaseFragment() {
@@ -29,6 +30,14 @@ class WelcomeFragment : BaseFragment() {
 
         backButtonEnabledListener?.onBackButtonEnabled(false)
 
-        fabProceed.setOnClickListener { }
+        fabProceed.setOnClickListener {
+            val fragment = ChooseInterestsFragment()
+            fragmentManager?.apply {
+                beginTransaction()
+                        .add(R.id.flContainer, fragment, ChooseInterestsFragment.TAG)
+                        .addToBackStack(null)
+                        .commit()
+            }
+        }
     }
 }

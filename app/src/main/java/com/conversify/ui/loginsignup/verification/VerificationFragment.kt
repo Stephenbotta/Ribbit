@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import com.conversify.R
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.clickSpannable
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.loginsignup.createpassword.CreatePasswordFragment
@@ -14,11 +15,13 @@ class VerificationFragment : BaseFragment() {
     companion object {
         const val TAG = "VerificationFragment"
         private const val ARGUMENT_REGISTERED_MODE = "ARGUMENT_REGISTERED_MODE"
+        private const val ARGUMENT_PROFILE = "ARGUMENT_PROFILE"
 
-        fun newInstance(registeredMode: Int): Fragment {
+        fun newInstance(registeredMode: Int, profile: ProfileDto): Fragment {
             val fragment = VerificationFragment()
             val arguments = Bundle()
             arguments.putInt(ARGUMENT_REGISTERED_MODE, registeredMode)
+            arguments.putParcelable(ARGUMENT_PROFILE, profile)
             fragment.arguments = arguments
             return fragment
         }

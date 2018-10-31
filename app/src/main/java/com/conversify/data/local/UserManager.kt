@@ -1,5 +1,6 @@
 package com.conversify.data.local
 
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import java.util.*
 
 object UserManager {
@@ -8,7 +9,6 @@ object UserManager {
     }
 
     fun setFirstAppLaunched() {
-        // Set first app launched to false so that we won't show walkthrough next time
         PrefsManager.get().save(PrefsManager.PREF_FIRST_APP_LAUNCH, false)
     }
 
@@ -25,20 +25,20 @@ object UserManager {
         }
     }
 
-    /*fun saveProfile(profile: UserProfileDto) {
-        PrefsManager.get().save(PrefsManager.PREF_ACCESS_TOKEN, profile.token ?: "")
+    fun saveProfile(profile: ProfileDto) {
+        PrefsManager.get().save(PrefsManager.PREF_ACCESS_TOKEN, profile.accessToken ?: "")
         PrefsManager.get().save(PrefsManager.PREF_USER_PROFILE, profile)
         PrefsManager.get().save(PrefsManager.PREF_USER_ID, profile.id ?: "")
-    }*/
+    }
 
     fun isLoggedIn(): Boolean {
         return PrefsManager.get().contains(PrefsManager.PREF_USER_PROFILE)
     }
 
-    /*fun getProfile(): UserProfileDto {
-        return PrefsManager.get().getObject(PrefsManager.PREF_USER_PROFILE, UserProfileDto::class.java)
-                ?: UserProfileDto()
-    }*/
+    fun getProfile(): ProfileDto {
+        return PrefsManager.get().getObject(PrefsManager.PREF_USER_PROFILE, ProfileDto::class.java)
+                ?: ProfileDto()
+    }
 
     fun removeProfile() {
         PrefsManager.get().remove(PrefsManager.PREF_ACCESS_TOKEN)
