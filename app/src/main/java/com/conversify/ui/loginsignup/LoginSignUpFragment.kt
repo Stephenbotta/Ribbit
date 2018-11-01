@@ -14,8 +14,10 @@ import com.conversify.data.remote.models.loginsignup.LoginRequest
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.loginsignup.createpassword.CreatePasswordFragment
 import com.conversify.ui.loginsignup.loginpassword.LoginPasswordFragment
 import com.conversify.ui.loginsignup.verification.VerificationFragment
+import com.conversify.ui.loginsignup.welcome.WelcomeFragment
 import com.conversify.utils.AppConstants
 import com.conversify.utils.ValidationUtils
 import kotlinx.android.synthetic.main.fragment_login_sign_up.*
@@ -95,6 +97,10 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
 
         fabProceed.setOnClickListener {
             if (formDataValid() && requireActivity().isNetworkActiveWithMessage()) {
+                etPhoneNumber.clearFocus()
+                etEmail.clearFocus()
+                it.hideKeyboard()
+
                 if (mode == AppConstants.MODE_LOGIN) {
                     if (registeredMode == AppConstants.REGISTERED_MODE_PHONE) {
                         val countryCode = countryCodePicker.selectedCountryCodeWithPlus
@@ -130,20 +136,37 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
                     loadingDialog.setLoading(false)
                     val profile = resource.data
                     if (profile != null) {
-                        val fragment: Fragment
-                        val fragmentTag: String
                         if (mode == AppConstants.MODE_LOGIN) {
-                            fragment = LoginPasswordFragment.newInstance(registeredMode, profile)
-                            fragmentTag = LoginPasswordFragment.TAG
+                            if (profile.isVerified == true) {
+                                if (profile.isPasswordExist == true) {
+                                    if (profile.isProfileComplete == true) {
+                                        // Password screen for login
+                                        val fragment = LoginPasswordFragment.newInstance(profile)
+                                        val tag = LoginPasswordFragment.TAG
+                                        navigateToFragment(fragment, tag)
+                                    } else {
+                                        // Welcome screen to fill user details. In case of social login.
+                                        val fragment = WelcomeFragment.newInstance(profile)
+                                        val tag = WelcomeFragment.TAG
+                                        navigateToFragment(fragment, tag)
+                                    }
+                                } else {
+                                    // Create Password
+                                    val fragment = CreatePasswordFragment.newInstance(profile)
+                                    val tag = CreatePasswordFragment.TAG
+                                    navigateToFragment(fragment, tag)
+                                }
+                            } else {
+                                // OTP Verification
+                                val fragment = VerificationFragment.newInstance(profile)
+                                val tag = VerificationFragment.TAG
+                                navigateToFragment(fragment, tag)
+                            }
                         } else {
-                            fragment = VerificationFragment.newInstance(registeredMode, profile)
-                            fragmentTag = VerificationFragment.TAG
-                        }
-                        fragmentManager?.apply {
-                            beginTransaction()
-                                    .add(R.id.flContainer, fragment, fragmentTag)
-                                    .addToBackStack(null)
-                                    .commit()
+                            // For sign up, proceed to verification
+                            val fragment = VerificationFragment.newInstance(profile)
+                            val tag = VerificationFragment.TAG
+                            navigateToFragment(fragment, tag)
                         }
                     }
                 }
@@ -185,6 +208,15 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
             } else {
                 true
             }
+        }
+    }
+
+    private fun navigateToFragment(fragment: Fragment, tag: String) {
+        fragmentManager?.apply {
+            beginTransaction()
+                    .add(R.id.flContainer, fragment, tag)
+                    .addToBackStack(null)
+                    .commit()
         }
     }
 

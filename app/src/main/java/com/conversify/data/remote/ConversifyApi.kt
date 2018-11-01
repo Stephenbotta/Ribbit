@@ -1,9 +1,7 @@
 package com.conversify.data.remote
 
 import com.conversify.data.remote.models.ApiResponse
-import com.conversify.data.remote.models.loginsignup.InterestDto
-import com.conversify.data.remote.models.loginsignup.LoginRequest
-import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.loginsignup.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -19,6 +17,15 @@ interface ConversifyApi {
 
     @POST("user/logIn")
     fun login(@Body request: LoginRequest): Call<ApiResponse<ProfileDto>>
+
+    @POST("user/verifyOTP")
+    fun verifyOtp(@Body request: VerifyOtpRequest): Call<ApiResponse<ProfileDto>>
+
+    @POST("user/resendOTP")
+    fun resendOtp(@Body request: ResendOtpRequest): Call<Any>
+
+    @POST("user/signUp")
+    fun signUp(@Body request: SignUpRequest): Call<ApiResponse<ProfileDto>>
 
     @POST("user/getData")
     @FormUrlEncoded

@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="24dp"
         android:text="@string/welcome_label_what_s_your_full_name"
         android:textColor="@color/textGray"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,6 +114,53 @@
         app:layout_constraintTop_toBottomOf="@id/tvLabelEmail"
         tools:ignore="LabelFor"
         tools:text="user@abc.com" />
+
+    <TextView
+        android:id="@+id/tvLabelPhoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/welcome_label_your_phone_number"
+        android:textColor="@color/textGray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etEmail" />
+
+    <com.hbb20.CountryCodePicker
+        android:id="@+id/countryCodePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:ccp_autoDetectCountry="true"
+        app:ccp_contentColor="@color/textGray7F"
+        app:ccp_showArrow="false"
+        app:ccp_showNameCode="false"
+        app:ccp_textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelPhoneNumber" />
+
+    <EditText
+        android:id="@+id/etPhoneNumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="4dp"
+        android:background="@null"
+        android:hint="@string/login_label_enter_phone_number"
+        android:imeOptions="actionDone"
+        android:inputType="number"
+        android:maxLength="@integer/phone_number_max_length"
+        android:singleLine="true"
+        android:textColor="@color/textGray7F"
+        android:textColorHint="@color/textGrayLight"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/countryCodePicker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/countryCodePicker"
+        app:layout_constraintTop_toTopOf="@id/countryCodePicker"
+        tools:ignore="TextFields"
+        tools:text="@tools:sample/us_phones" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabProceed"

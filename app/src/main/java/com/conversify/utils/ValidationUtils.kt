@@ -8,4 +8,6 @@ object ValidationUtils {
     fun isPasswordLengthValid(password: String) = password.length in 6..20
 
     fun isPhoneNumberLengthValid(phoneNumber: String) = phoneNumber.length in 5..15
+
+    fun isOtpValid(otp: String) = otp.length == 4
 }

@@ -52,9 +52,11 @@
     <string name="verification_label_verification">Verification</string>
     <string name="verification_label_we_sent_you_a_code_phone">We sent you a code to verify your number</string>
     <string name="verification_label_we_sent_you_a_code_email">We sent you a code to verify your email</string>
+    <string name="verification_label_code_sent_to">Code sent to %s</string>
     <string name="verification_label_enter_code">Enter code</string>
     <string name="verification_label_did_not_receive_the_code">Didn’t receive the code yet? Resend code</string>
     <string name="verification_label_resend_code">Resend code</string>
+    <string name="verification_message_otp_resent_successfully">OTP has been resent successfully</string>
 
     <string name="create_password_label_create_password">Create password</string>
     <string name="create_password_label_secure_your_account">Secure your account with a password</string>
@@ -63,6 +65,8 @@
     <string name="welcome_label_what_s_your_full_name">What’s your Full name?</string>
     <string name="welcome_label_username">Username</string>
     <string name="welcome_label_your_email_id">And your email ID?</string>
+    <string name="welcome_label_your_phone_number">And your Phone Number?</string>
+
     <string name="choose_interests_label_choose_interests">Tell us about your interests</string>
     <string name="choose_interests_label_choose_at_least">Choose at least 3 interests</string>
     <string name="choose_interests_btn_continue">Continue</string>
