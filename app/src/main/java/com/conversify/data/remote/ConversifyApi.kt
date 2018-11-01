@@ -2,8 +2,10 @@ package com.conversify.data.remote
 
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.loginsignup.InterestDto
+import com.conversify.data.remote.models.loginsignup.LoginRequest
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -16,11 +18,7 @@ interface ConversifyApi {
                                    @Field("phoneNumber") phoneNumber: String? = null): Call<ApiResponse<ProfileDto>>
 
     @POST("user/logIn")
-    @FormUrlEncoded
-    fun login(@Field("email") email: String? = null,
-              @Field("countryCode") countryCode: String? = null,
-              @Field("phoneNumber") phoneNumber: String? = null,
-              @Field("password") password: String? = null): Call<ApiResponse<ProfileDto>>
+    fun login(@Body request: LoginRequest): Call<ApiResponse<ProfileDto>>
 
     @POST("user/getData")
     @FormUrlEncoded

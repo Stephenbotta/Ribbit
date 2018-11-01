@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
+import com.conversify.data.remote.models.loginsignup.LoginRequest
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
@@ -95,7 +96,17 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
         fabProceed.setOnClickListener {
             if (formDataValid() && requireActivity().isNetworkActiveWithMessage()) {
                 if (mode == AppConstants.MODE_LOGIN) {
-
+                    if (registeredMode == AppConstants.REGISTERED_MODE_PHONE) {
+                        val countryCode = countryCodePicker.selectedCountryCodeWithPlus
+                        val phoneNumber = etPhoneNumber.text.toString()
+                        val request = LoginRequest(countryCode = countryCode,
+                                phoneNumber = phoneNumber)
+                        viewModel.login(request)
+                    } else {
+                        val email = etEmail.text.toString()
+                        val request = LoginRequest(email = email)
+                        viewModel.login(request)
+                    }
                 } else {
                     if (registeredMode == AppConstants.REGISTERED_MODE_PHONE) {
                         val countryCode = countryCodePicker.selectedCountryCodeWithPlus
@@ -111,7 +122,7 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
     }
 
     private fun observeChanges() {
-        viewModel.registerEmailOrPhone.observe(this, Observer { resource ->
+        viewModel.loginRegister.observe(this, Observer { resource ->
             resource ?: return@Observer
 
             when (resource.status) {
@@ -148,7 +159,7 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
     }
 
     private fun formDataValid(): Boolean {
-        return if (mode == AppConstants.MODE_LOGIN) {
+        return if (registeredMode == AppConstants.REGISTERED_MODE_PHONE) {
             // Validations for phone number
             val phoneNumber = etPhoneNumber.text.toString()
 
