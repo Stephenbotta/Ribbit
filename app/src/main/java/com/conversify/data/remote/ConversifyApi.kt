@@ -30,4 +30,8 @@ interface ConversifyApi {
     @POST("user/getData")
     @FormUrlEncoded
     fun getInterests(@Field("flag") flag: Int = ApiConstants.FLAG_INTERESTS): Call<ApiResponse<List<InterestDto>>>
+
+    @POST("user/updateUserCategories")
+    @FormUrlEncoded
+    fun updateInterests(@Field("categoryArray") interests: List<String>): Call<ApiResponse<ProfileDto>>
 }

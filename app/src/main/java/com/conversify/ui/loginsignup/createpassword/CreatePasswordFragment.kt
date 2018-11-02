@@ -48,8 +48,7 @@ class CreatePasswordFragment : BaseFragment() {
                         val fragment = WelcomeFragment.newInstance(profile, password)
                         fragmentManager?.apply {
                             beginTransaction()
-                                    .add(R.id.flContainer, fragment, WelcomeFragment.TAG)
-                                    .addToBackStack(null)
+                                    .replace(R.id.flContainer, fragment, WelcomeFragment.TAG)
                                     .commit()
                         }
                     }

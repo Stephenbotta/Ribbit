@@ -28,11 +28,13 @@ class LoginPasswordFragment : BaseFragment() {
     companion object {
         const val TAG = "LoginPasswordFragment"
         private const val ARGUMENT_PROFILE = "ARGUMENT_PROFILE"
+        private const val ARGUMENT_REGISTERED_MODE = "ARGUMENT_REGISTERED_MODE"
 
-        fun newInstance(profile: ProfileDto): Fragment {
+        fun newInstance(profile: ProfileDto, registeredMode: Int): Fragment {
             val fragment = LoginPasswordFragment()
             val arguments = Bundle()
             arguments.putParcelable(ARGUMENT_PROFILE, profile)
+            arguments.putInt(ARGUMENT_REGISTERED_MODE, registeredMode)
             fragment.arguments = arguments
             return fragment
         }
@@ -51,11 +53,7 @@ class LoginPasswordFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this)[LoginPasswordViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())
         profile = arguments?.getParcelable(ARGUMENT_PROFILE) as ProfileDto
-        registeredMode = if (profile.email.isNullOrBlank()) {
-            AppConstants.REGISTERED_MODE_PHONE
-        } else {
-            AppConstants.REGISTERED_MODE_EMAIL
-        }
+        registeredMode = arguments?.getInt(ARGUMENT_REGISTERED_MODE) ?: AppConstants.REGISTERED_MODE_PHONE
 
         displayProfile()
         setListeners()

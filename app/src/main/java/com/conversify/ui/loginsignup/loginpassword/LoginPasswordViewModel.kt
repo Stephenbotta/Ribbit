@@ -30,7 +30,7 @@ class LoginPasswordViewModel : ViewModel() {
                             if (profile != null) {
                                 UserManager.saveProfile(profile)
                             }
-                            login.value = Resource.success()
+                            login.value = Resource.success(profile)
                         } else {
                             login.value = Resource.error(response.getAppError())
                         }

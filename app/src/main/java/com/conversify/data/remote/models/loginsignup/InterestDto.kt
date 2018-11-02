@@ -1,7 +1,10 @@
 package com.conversify.data.remote.models.loginsignup
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class InterestDto(
         @field:SerializedName("imageUrl")
         val image: ImageUrlDto? = null,
@@ -12,4 +15,4 @@ data class InterestDto(
         @field:SerializedName("categoryName")
         val name: String? = null,
 
-        var selected: Boolean = false)
+        var selected: Boolean = false) : Parcelable

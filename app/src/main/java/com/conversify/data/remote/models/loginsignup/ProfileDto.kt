@@ -48,5 +48,8 @@ data class ProfileDto(
         @field:SerializedName("email")
         val email: String? = null,
 
+        @field:SerializedName("interestTags")
+        val interestIds: List<String>? = null,
+
         @field:SerializedName("isProfileComplete")
         val isProfileComplete: Boolean? = null) : Parcelable

@@ -4,6 +4,7 @@
     <string name="back">BACK</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
+    <string name="retry">Retry</string>
 
     <string name="permission_btn_allow">Allow</string>
     <string name="permission_btn_deny">Deny</string>
@@ -17,7 +18,11 @@
     <string name="error_empty_new_password">Please enter new password</string>
     <string name="error_empty_confirm_password">Please confirm the password</string>
     <string name="error_empty_email">Please enter email</string>
-    <string name="error_empty_name">Please enter name</string>
+    <string name="error_empty_full_name">Please enter full name</string>
+    <string name="error_empty_user_name">Please enter username</string>
+    <string name="error_user_name_contains_spaces">Username should not contain whitespace</string>
+    <string name="error_invalid_user_name_length">Username should contain at least 3 characters</string>
+    <string name="error_invalid_username_characters">Username can contain underscores, periods, dashes and at least one Alphanumeric character</string>
     <string name="error_empty_phone_number">Please enter phone number</string>
     <string name="error_empty_otp">Please enter OTP</string>
     <string name="error_password_does_not_match">Password does not match</string>
@@ -36,7 +41,7 @@
     <string name="login_sign_up_btn_get_started">Get started</string>
 
     <string name="login_label_enter_phone_number">Enter phone number</string>
-    <string name="login_label_enter_email_id">Enter email id</string>
+    <string name="login_label_enter_email_id">Enter Email ID</string>
     <string name="login_label_slash">/</string>
     <string name="login_label_your_registered">Your registered</string>
     <string name="login_label_welcome">Welcome</string>
@@ -66,8 +71,12 @@
     <string name="welcome_label_username">Username</string>
     <string name="welcome_label_your_email_id">And your email ID?</string>
     <string name="welcome_label_your_phone_number">And your Phone Number?</string>
+    <string name="welcome_label_full_name">Full name</string>
+    <string name="welcome_label_enter_username">Enter Username</string>
+    <string name="welcome_label_enter_full_name">Enter Full name</string>
 
     <string name="choose_interests_label_choose_interests">Tell us about your interests</string>
     <string name="choose_interests_label_choose_at_least">Choose at least 3 interests</string>
+    <string name="choose_interests_message_choose_at_least_3_interests">Please choose at least 3 interests</string>
     <string name="choose_interests_btn_continue">Continue</string>
 </resources>

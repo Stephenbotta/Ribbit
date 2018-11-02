@@ -7,14 +7,16 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.View
 import com.conversify.R
+import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
-import com.conversify.extensions.gone
-import com.conversify.extensions.handleError
+import com.conversify.data.remote.models.loginsignup.SignUpRequest
+import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.loginsignup.BackButtonEnabledListener
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
+import com.conversify.utils.ValidationUtils
 import kotlinx.android.synthetic.main.fragment_welcome.*
 
 class WelcomeFragment : BaseFragment() {
@@ -80,17 +82,85 @@ class WelcomeFragment : BaseFragment() {
 
     private fun setListeners() {
         fabProceed.setOnClickListener {
+            // Visible in all cases
             val fullName = etFullName.text.toString()
             val username = etUsername.text.toString()
+
+            // Visible if email is not available
             val email = etEmail.text.toString()
+
+            // Visible if phone number is not available
             val phoneNumber = etPhoneNumber.text.toString()
 
-            val fragment = ChooseInterestsFragment()
-            fragmentManager?.apply {
-                beginTransaction()
-                        .add(R.id.flContainer, fragment, ChooseInterestsFragment.TAG)
-                        .addToBackStack(null)
-                        .commit()
+            when {
+                fullName.isBlank() -> {
+                    requireActivity().shortToast(R.string.error_empty_full_name)
+                }
+
+                username.isBlank() -> {
+                    requireActivity().shortToast(R.string.error_empty_user_name)
+                }
+
+                !ValidationUtils.isUsernameLengthValid(username) -> {
+                    requireActivity().shortToast(R.string.error_invalid_user_name_length)
+                }
+
+                username.contains(" ") -> {
+                    requireActivity().shortToast(R.string.error_user_name_contains_spaces)
+                }
+
+                !ValidationUtils.isUsernameCharactersValid(username) -> {
+                    requireActivity().longToast(R.string.error_invalid_username_characters)
+                }
+
+                etEmail.isVisible() && email.isEmpty() -> {
+                    requireActivity().shortToast(R.string.error_empty_email)
+                }
+
+                etEmail.isVisible() && !ValidationUtils.isEmailValid(email) -> {
+                    requireActivity().shortToast(R.string.error_invalid_email)
+                }
+
+                etPhoneNumber.isVisible() && phoneNumber.isEmpty() -> {
+                    requireActivity().shortToast(R.string.error_empty_phone_number)
+                }
+
+                etPhoneNumber.isVisible() && !ValidationUtils.isPhoneNumberLengthValid(phoneNumber) -> {
+                    requireActivity().shortToast(R.string.error_invalid_phone_number)
+                }
+
+                isNetworkActiveWithMessage() -> {
+                    val flag = if (profile.email.isNullOrBlank()) {
+                        ApiConstants.FLAG_REGISTER_PHONE_NUMBER
+                    } else {
+                        ApiConstants.FLAG_REGISTER_EMAIL
+                    }
+                    val requestEmail = if (etEmail.isVisible()) {
+                        email
+                    } else {
+                        profile.email
+                    }
+                    val requestCountryCode = if (etPhoneNumber.isVisible()) {
+                        countryCodePicker.selectedCountryCodeWithPlus
+                    } else {
+                        profile.countryCode
+                    }
+                    val requestPhoneNumber = if (etPhoneNumber.isVisible()) {
+                        phoneNumber
+                    } else {
+                        profile.phoneNumber
+                    }
+
+                    val request = SignUpRequest(
+                            flag = flag,
+                            fullName = fullName,
+                            userName = username,
+                            email = requestEmail,
+                            countryCode = requestCountryCode,
+                            phoneNumber = requestPhoneNumber,
+                            password = arguments?.getString(ARGUMENT_PASSWORD))
+                    viewModel.signUp(request)
+                }
             }
         }
     }
@@ -102,7 +172,12 @@ class WelcomeFragment : BaseFragment() {
             when (resource.status) {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
-
+                    val fragment = ChooseInterestsFragment()
+                    fragmentManager?.apply {
+                        beginTransaction()
+                                .replace(R.id.flContainer, fragment, ChooseInterestsFragment.TAG)
+                                .commit()
+                    }
                 }
 
                 Status.ERROR -> {
