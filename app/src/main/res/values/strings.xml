@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Conversify</string>
 
+    <string name="facebook_app_id" translatable="false">1875226609239116</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1875226609239116</string>
+    <string name="app_google_api_key" translatable="false">AIzaSyBqwIX2rq8pjlqJec8LBfDrlE673Im5pBM</string>
+    <string name="server_client_id" translatable="false">327229537398-5eg6hd30pi66li2joafo0eoqab4020be.apps.googleusercontent.com</string>
+
     <string name="back">BACK</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>

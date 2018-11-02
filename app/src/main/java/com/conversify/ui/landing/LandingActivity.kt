@@ -1,5 +1,6 @@
 package com.conversify.ui.landing
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -11,18 +12,34 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.UserManager
 import com.conversify.extensions.clickSpannable
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.loginsignup.LoginSignUpActivity
+import com.conversify.ui.main.MainActivity
 import com.conversify.utils.AppConstants
 import kotlinx.android.synthetic.main.activity_landing.*
 
 class LandingActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_landing)
 
-        setListeners()
+        val isLoggedIn = UserManager.isLoggedIn()
+        if (isLoggedIn) {
+            val profile = UserManager.getProfile()
+            if (profile.isInterestSelected == true &&
+                    profile.isProfileComplete == true &&
+                    profile.isVerified == true &&
+                    profile.isPasswordExist == true) {
+                startActivity(Intent(this, MainActivity::class.java))
+                finishAffinity()
+            } else {
+                LoginSignUpActivity.startChooseInterests(this)
+            }
+        } else {
+            setContentView(R.layout.activity_landing)
+            setListeners()
+        }
     }
 
     private fun setListeners() {

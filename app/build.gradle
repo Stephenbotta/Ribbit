@@ -51,10 +51,14 @@ dependencies {
 
     // Android Support Library
     implementation "com.android.support:design:$supportVersion"
+    implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation "com.android.support:recyclerview-v7:$supportVersion"
     implementation "com.android.support:cardview-v7:$supportVersion"
     implementation "com.android.support:exifinterface:$supportVersion"
+    implementation "com.android.support:customtabs:$supportVersion"
+    implementation "com.android.support:support-media-compat:$supportVersion"
+    implementation "com.android.support:animated-vector-drawable:$supportVersion"
     implementation "com.android.support.constraint:constraint-layout:$constraintVersion"
     implementation "com.android.support:multidex:$multiDexVersion"
 
@@ -94,4 +98,14 @@ dependencies {
 
     // https://github.com/hbb20/CountryCodePickerProject
     implementation "com.hbb20:ccp:$countryCodePickerVersion"
+
+    // https://developers.google.com/identity/sign-in/android/start-integrating
+    implementation "com.google.android.gms:play-services-auth:$googleAuthVersion"
+
+    // https://developers.facebook.com/docs/facebook-login/android/?sdk=maven
+    implementation "com.facebook.android:facebook-login:$facebookLoginVersion"
+
+    implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
 }
+
+apply plugin: 'com.google.gms.google-services'

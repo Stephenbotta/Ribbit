@@ -2,6 +2,7 @@ package com.conversify.ui.loginsignup
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -9,22 +10,35 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import com.conversify.R
+import com.conversify.data.remote.ApiConstants
+import com.conversify.data.remote.FacebookLogin
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.LoginRequest
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.loginsignup.SignUpRequest
+import com.conversify.data.remote.models.social.FacebookProfile
+import com.conversify.data.remote.models.social.SocialProfile
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
 import com.conversify.ui.loginsignup.createpassword.CreatePasswordFragment
 import com.conversify.ui.loginsignup.loginpassword.LoginPasswordFragment
 import com.conversify.ui.loginsignup.verification.VerificationFragment
 import com.conversify.ui.loginsignup.welcome.WelcomeFragment
+import com.conversify.ui.main.MainActivity
 import com.conversify.utils.AppConstants
+import com.conversify.utils.SocialUtils
 import com.conversify.utils.ValidationUtils
+import com.facebook.FacebookException
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import kotlinx.android.synthetic.main.fragment_login_sign_up.*
 import timber.log.Timber
 
-class LoginSignUpFragment : BaseFragment(), TextWatcher {
+class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginListener {
     companion object {
         const val TAG = "LoginSignUpFragment"
         private const val ARGUMENT_MODE = "ARGUMENT_MODE"
@@ -40,6 +54,8 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
 
     private lateinit var viewModel: LoginSignUpViewModel
     private lateinit var loadingDialog: LoadingDialog
+    private lateinit var facebookLogin: FacebookLogin
+    private lateinit var googleSignInClient: GoogleSignInClient
     private var mode = AppConstants.MODE_LOGIN
     private var registeredMode = AppConstants.REGISTERED_MODE_PHONE
 
@@ -51,7 +67,24 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
         viewModel = ViewModelProviders.of(this)[LoginSignUpViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())
         mode = arguments?.getInt(ARGUMENT_MODE) ?: AppConstants.MODE_LOGIN
+        facebookLogin = FacebookLogin(this)
 
+        setupGoogleSignInClient()
+        setupViews()
+        setListeners()
+        observeChanges()
+    }
+
+    private fun setupGoogleSignInClient() {
+        val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestProfile()
+                .requestEmail()
+                .build()
+
+        googleSignInClient = GoogleSignIn.getClient(requireContext(), options)
+    }
+
+    private fun setupViews() {
         if (mode == AppConstants.MODE_LOGIN) {
             tvLabelTitle.setText(R.string.login)
         } else {
@@ -59,8 +92,6 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
         }
 
         fabProceed.isEnabled = false
-        setListeners()
-        observeChanges()
     }
 
     private fun setListeners() {
@@ -94,8 +125,13 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
         etPhoneNumber.addTextChangedListener(this)
         etEmail.addTextChangedListener(this)
 
-        cvContinueWithFacebook.setOnClickListener { }
-        cvContinueWithGoogle.setOnClickListener { }
+        cvContinueWithFacebook.setOnClickListener {
+            facebookLogin.performLogin(this)
+        }
+
+        cvContinueWithGoogle.setOnClickListener {
+            startActivityForResult(googleSignInClient.signInIntent, AppConstants.REQ_CODE_GOOGLE_SIGN_IN)
+        }
 
         fabProceed.setOnClickListener {
             if (formDataValid() && requireActivity().isNetworkActiveWithMessage()) {
@@ -185,34 +221,41 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
     }
 
     private fun handleNavigation(profile: ProfileDto) {
-        if (mode == AppConstants.MODE_LOGIN) {
-            if (profile.isVerified == true) {
-                if (profile.isPasswordExist == true) {
-                    if (profile.isProfileComplete == true) {
+        if (profile.isVerified == true) {
+            if (profile.isPasswordExist == true) {
+                if (profile.isProfileComplete == true) {
+                    val isSocialProfile = !profile.googleId.isNullOrBlank() ||
+                            !profile.facebookId.isNullOrBlank()
+                    if (isSocialProfile) {
+                        if (profile.isInterestSelected == true) {
+                            startActivity(Intent(requireActivity(), MainActivity::class.java))
+                            requireActivity().finishAffinity()
+                        } else {
+                            // When interests are not selected for social profile
+                            val fragment = ChooseInterestsFragment()
+                            val tag = ChooseInterestsFragment.TAG
+                            navigateToFragment(fragment, tag, true)
+                        }
+                    } else {
                         // Password screen for login
                         val fragment = LoginPasswordFragment.newInstance(profile, registeredMode)
                         val tag = LoginPasswordFragment.TAG
                         navigateToFragment(fragment, tag)
-                    } else {
-                        // Welcome screen to fill user details. In case of social login.
-                        val fragment = WelcomeFragment.newInstance(profile)
-                        val tag = WelcomeFragment.TAG
-                        navigateToFragment(fragment, tag, true)
                     }
                 } else {
-                    // Create Password
-                    val fragment = CreatePasswordFragment.newInstance(profile)
-                    val tag = CreatePasswordFragment.TAG
-                    navigateToFragment(fragment, tag)
+                    // Welcome screen to fill user details. In case of social login.
+                    val fragment = WelcomeFragment.newInstance(profile)
+                    val tag = WelcomeFragment.TAG
+                    navigateToFragment(fragment, tag, true)
                 }
             } else {
-                // OTP Verification
-                val fragment = VerificationFragment.newInstance(profile)
-                val tag = VerificationFragment.TAG
+                // Create Password
+                val fragment = CreatePasswordFragment.newInstance(profile)
+                val tag = CreatePasswordFragment.TAG
                 navigateToFragment(fragment, tag)
             }
         } else {
-            // For sign up, proceed to verification
+            // OTP Verification
             val fragment = VerificationFragment.newInstance(profile)
             val tag = VerificationFragment.TAG
             navigateToFragment(fragment, tag)
@@ -252,8 +295,80 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher {
         }
     }
 
+    override fun onFacebookLoginSuccess() {
+        Timber.d("Facebook login success")
+        loadingDialog.setLoading(true)
+        facebookLogin.getUserProfile()
+    }
+
+    override fun onFacebookLoginCancel() {
+        Timber.d("Facebook login cancel")
+        loadingDialog.setLoading(false)
+    }
+
+    override fun onFacebookLoginError(exception: FacebookException) {
+        Timber.d(exception)
+        loadingDialog.setLoading(false)
+    }
+
+    override fun onFacebookProfileSuccess(profile: FacebookProfile) {
+        loadingDialog.setLoading(false)
+        val socialProfile = SocialUtils.getFacebookSocialProfile(profile)
+        Timber.d("Facebook Profile : %s", socialProfile.toString())
+        handleSocialProfileSuccess(socialProfile)
+    }
+
+    private fun handleSocialProfileSuccess(socialProfile: SocialProfile) {
+        if (!isNetworkActiveWithMessage()) return
+
+        if (mode == AppConstants.MODE_LOGIN) {
+            val request = if (socialProfile.source == ApiConstants.FLAG_REGISTER_FACEBOOK) {
+                LoginRequest(facebookId = socialProfile.socialId)
+            } else {
+                LoginRequest(googleId = socialProfile.socialId)
+            }
+            viewModel.login(request)
+        } else {
+            val request = if (socialProfile.source == ApiConstants.FLAG_REGISTER_FACEBOOK) {
+                SignUpRequest(flag = ApiConstants.FLAG_REGISTER_FACEBOOK,
+                        facebookId = socialProfile.socialId,
+                        email = socialProfile.email,
+                        fullName = socialProfile.fullName)
+            } else {
+                SignUpRequest(flag = ApiConstants.FLAG_REGISTER_GOOGLE,
+                        googleId = socialProfile.socialId,
+                        email = socialProfile.email,
+                        fullName = socialProfile.fullName)
+            }
+            viewModel.signUp(request)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == AppConstants.REQ_CODE_GOOGLE_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val result = task.getResult(ApiException::class.java)
+                if (result != null) {
+                    val socialProfile = SocialUtils.getGoogleSocialProfile(result)
+                    Timber.d("Google Profile : %s", socialProfile.toString())
+                    handleSocialProfileSuccess(socialProfile)
+                } else {
+                    Timber.i("Google sign in result is null")
+                }
+            } catch (exception: Exception) {
+                Timber.w(exception)
+            }
+            googleSignInClient.signOut()
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+            facebookLogin.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        facebookLogin.unregisterCallback()
         loadingDialog.setLoading(false)
     }
 }

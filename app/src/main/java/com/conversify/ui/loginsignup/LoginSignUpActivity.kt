@@ -8,12 +8,15 @@ import com.conversify.extensions.gone
 import com.conversify.extensions.hideKeyboard
 import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseActivity
+import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
 import com.conversify.utils.AppConstants
 import kotlinx.android.synthetic.main.activity_login_sign_up.*
+import timber.log.Timber
 
 class LoginSignUpActivity : BaseActivity(), BackButtonEnabledListener {
     companion object {
         private const val EXTRA_MODE = "EXTRA_MODE"
+        private const val EXTRA_NAVIGATE_SCREEN_TAG = "EXTRA_NAVIGATE_SCREEN_TAG"
         private const val KEY_BACK_BUTTON_ENABLED = "KEY_BACK_BUTTON_ENABLED"
 
         /**
@@ -22,6 +25,11 @@ class LoginSignUpActivity : BaseActivity(), BackButtonEnabledListener {
         fun start(context: Context, mode: Int) {
             context.startActivity(Intent(context, LoginSignUpActivity::class.java)
                     .putExtra(EXTRA_MODE, mode))
+        }
+
+        fun startChooseInterests(context: Context) {
+            context.startActivity(Intent(context, LoginSignUpActivity::class.java)
+                    .putExtra(EXTRA_NAVIGATE_SCREEN_TAG, ChooseInterestsFragment.TAG))
         }
     }
 
@@ -37,11 +45,25 @@ class LoginSignUpActivity : BaseActivity(), BackButtonEnabledListener {
         }
 
         if (savedInstanceState == null) {
-            val mode = intent.getIntExtra(EXTRA_MODE, AppConstants.MODE_LOGIN)
-            val fragment = LoginSignUpFragment.newInstance(mode)
-            supportFragmentManager.beginTransaction()
-                    .add(R.id.flContainer, fragment, LoginSignUpFragment.TAG)
-                    .commit()
+            val navigateScreenTag = intent.getStringExtra(EXTRA_NAVIGATE_SCREEN_TAG)
+
+            Timber.i("Navigate screen tag : $navigateScreenTag")
+            when (navigateScreenTag) {
+                ChooseInterestsFragment.TAG -> {
+                    val fragment = ChooseInterestsFragment()
+                    supportFragmentManager.beginTransaction()
+                            .replace(R.id.flContainer, fragment, ChooseInterestsFragment.TAG)
+                            .commit()
+                }
+
+                else -> {
+                    val mode = intent.getIntExtra(EXTRA_MODE, AppConstants.MODE_LOGIN)
+                    val fragment = LoginSignUpFragment.newInstance(mode)
+                    supportFragmentManager.beginTransaction()
+                            .add(R.id.flContainer, fragment, LoginSignUpFragment.TAG)
+                            .commit()
+                }
+            }
         } else {
             // Restore state of back button
             val isEnabled = savedInstanceState.getBoolean(KEY_BACK_BUTTON_ENABLED, true)

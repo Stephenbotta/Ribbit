@@ -17,6 +17,9 @@ buildscript {
         glideVersion = '4.7.1'
         roundedImageViewVersion = '2.3.0'
         countryCodePickerVersion = '2.2.2'
+        firebaseCoreVersion = '16.0.4'
+        googleAuthVersion = '16.0.1'
+        facebookLoginVersion = '4.37.0'
     }
 
     repositories {
@@ -26,6 +29,7 @@ buildscript {
     }
 
     dependencies {
+        classpath 'com.google.gms:google-services:4.1.0'
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }

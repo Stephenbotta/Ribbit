@@ -48,6 +48,12 @@ data class ProfileDto(
         @field:SerializedName("email")
         val email: String? = null,
 
+        @field:SerializedName("googleId")
+        val googleId: String? = null,
+
+        @field:SerializedName("facebookId")
+        val facebookId: String? = null,
+
         @field:SerializedName("interestTags")
         val interestIds: List<String>? = null,
 

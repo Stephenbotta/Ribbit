@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "327229537398",
+    "firebase_url": "https://conversify-1539244176555.firebaseio.com",
+    "project_id": "conversify-1539244176555",
+    "storage_bucket": "conversify-1539244176555.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327229537398:android:29affbf70f015d88",
+        "android_client_info": {
+          "package_name": "com.conversify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327229537398-iidquq1deqr66eaot4luu44kg8j8qij2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.conversify",
+            "certificate_hash": "d04135f9f770cb41e989c114140bad3942cdfa8f"
+          }
+        },
+        {
+          "client_id": "327229537398-nk4tli62n6manvj4qbi35vet1e0gn1nj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIrLhEUILpj1XEAdfB6tg1SIzJiCIzweg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327229537398-nk4tli62n6manvj4qbi35vet1e0gn1nj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "327229537398-nu9pah2m819on9dfom8etebkgmrv1l76.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.Conversify"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -54,6 +54,12 @@ class ChooseInterestsFragment : BaseFragment() {
         interestsAdapter = ChooseInterestsAdapter(GlideApp.with(this))
         rvInterests.adapter = interestsAdapter
 
+        setListeners()
+        observeChanges()
+        getInterests()
+    }
+
+    private fun setListeners() {
         btnRetry.setOnClickListener {
             getInterests()
         }
@@ -66,9 +72,6 @@ class ChooseInterestsFragment : BaseFragment() {
                 viewModel.updateInterests(selectedInterests)
             }
         }
-
-        observeChanges()
-        getInterests()
     }
 
     private fun observeChanges() {

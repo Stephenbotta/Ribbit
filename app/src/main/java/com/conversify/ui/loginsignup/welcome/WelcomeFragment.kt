@@ -66,10 +66,14 @@ class WelcomeFragment : BaseFragment() {
     }
 
     private fun setupViews() {
+        etFullName.setText(profile.fullName)
+
         // Hide email fields if email exists in profile
         if (!profile.email.isNullOrBlank()) {
             tvLabelEmail.gone()
             etEmail.gone()
+        } else {
+            etEmail.setText(profile.email)
         }
 
         // Hide phone number fields if phone number exists in profile
@@ -130,11 +134,13 @@ class WelcomeFragment : BaseFragment() {
                 }
 
                 isNetworkActiveWithMessage() -> {
-                    val flag = if (profile.email.isNullOrBlank()) {
-                        ApiConstants.FLAG_REGISTER_PHONE_NUMBER
-                    } else {
-                        ApiConstants.FLAG_REGISTER_EMAIL
+                    val flag = when {
+                        !profile.googleId.isNullOrBlank() -> ApiConstants.FLAG_REGISTER_GOOGLE
+                        !profile.facebookId.isNullOrBlank() -> ApiConstants.FLAG_REGISTER_FACEBOOK
+                        !profile.email.isNullOrBlank() -> ApiConstants.FLAG_REGISTER_EMAIL
+                        else -> ApiConstants.FLAG_REGISTER_PHONE_NUMBER
                     }
+
                     val requestEmail = if (etEmail.isVisible()) {
                         email
                     } else {
