@@ -75,6 +75,7 @@
         app:ccp_contentColor="@color/textGray"
         app:ccp_showArrow="false"
         app:ccp_showNameCode="false"
+        app:ccp_autoFormatNumber="false"
         app:ccp_textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelYourRegistered" />

@@ -92,6 +92,8 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
         }
 
         fabProceed.isEnabled = false
+
+        countryCodePicker.registerCarrierNumberEditText(etPhoneNumber)
     }
 
     private fun setListeners() {
@@ -198,7 +200,7 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
             if (phoneNumber.isEmpty()) {
                 requireActivity().shortToast(R.string.error_empty_phone_number)
                 false
-            } else if (!ValidationUtils.isPhoneNumberLengthValid(phoneNumber)) {
+            } else if (!isPhoneNumberValid()) {
                 requireActivity().shortToast(R.string.error_invalid_phone_number)
                 false
             } else {
@@ -218,6 +220,14 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
                 true
             }
         }
+    }
+
+    private fun isPhoneNumberValid(): Boolean {
+        var isNumberValid = false
+        countryCodePicker.setPhoneNumberValidityChangeListener { isValid ->
+            isNumberValid = isValid
+        }
+        return isNumberValid
     }
 
     private fun handleNavigation(profile: ProfileDto) {
