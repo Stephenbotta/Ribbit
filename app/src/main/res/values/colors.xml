@@ -12,10 +12,14 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
+    <color name="black0F">#0F000000</color>
+
     <color name="textGray">#4A566C</color>
     <color name="textGrayDE">#DE4A566C</color>
-    <color name="textGray7F">#7F4A566C</color>
     <color name="textGray8C">#8C4A566C</color>
+    <color name="textGray7F">#7F4A566C</color>
+    <color name="textGray66">#664A566C</color>
+    <color name="textGray0A">#0A4A566C</color>
     <color name="textGrayMedium">#B0B5BF</color>
     <color name="textGrayLight">#E0E2E6</color>
     <color name="socialButtonStrokeColor">#1F4C4C4C</color>

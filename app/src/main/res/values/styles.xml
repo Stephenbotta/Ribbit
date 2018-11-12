@@ -29,4 +29,11 @@
         <item name="android:backgroundDimEnabled">true</item>   
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+    <style name="ExploreTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">18sp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:fontFamily">@font/brandon_text_bold</item>
+        <item name="textAllCaps">true</item>
+    </style>
 </resources>
