@@ -57,8 +57,8 @@ fun View.invisible() {
     visibility = View.INVISIBLE
 }
 
-fun ViewGroup.inflate(containerId: Int): View {
-    return LayoutInflater.from(context).inflate(containerId, this, false)
+fun ViewGroup.inflate(resId: Int): View {
+    return LayoutInflater.from(context).inflate(resId, this, false)
 }
 
 fun TextView.spanString(string: String, color: Int) {

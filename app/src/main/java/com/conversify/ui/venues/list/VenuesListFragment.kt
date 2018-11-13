@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.conversify.R
 import com.conversify.ui.base.BaseFragment
+import kotlinx.android.synthetic.main.fragment_choose_interests.*
 import kotlinx.android.synthetic.main.fragment_venues_list.*
 
 class VenuesListFragment : BaseFragment() {
@@ -13,6 +14,8 @@ class VenuesListFragment : BaseFragment() {
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_venues_list
 
+    private lateinit var venuesListAdapter: VenuesListAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -20,5 +23,8 @@ class VenuesListFragment : BaseFragment() {
 
         btnMapVenues.setOnClickListener {}
         btnVenuesFilter.setOnClickListener { }
+
+        venuesListAdapter = VenuesListAdapter()
+        rvInterests.adapter = venuesListAdapter
     }
 }
