@@ -36,4 +36,11 @@
         <item name="android:fontFamily">@font/brandon_text_bold</item>
         <item name="textAllCaps">true</item>
     </style>
+
+    <style name="SearchViewSearchVenues" parent="Widget.AppCompat.SearchView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/brandon_text_regular</item>
+        <item name="android:editTextColor">@color/textGray</item>
+        <item name="android:textColorHint">@color/textGray66</item>
+    </style>
 </resources>

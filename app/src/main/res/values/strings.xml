@@ -90,4 +90,6 @@
     <string name="explore_tab_people">PEOPLE</string>
 
     <string name="venues_label_search_for_venues_by_name">Search for venues by name</string>
+    <string name="venues_btn_map">Map</string>
+    <string name="venues_btn_filters">Filters</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.conversify.ui.venues
+package com.conversify.ui.venues.map
 
 import com.conversify.R
 import com.conversify.ui.base.BaseFragment

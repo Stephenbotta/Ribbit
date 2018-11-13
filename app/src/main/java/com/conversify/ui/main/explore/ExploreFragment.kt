@@ -7,7 +7,7 @@ import com.conversify.R
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.groups.GroupsFragment
 import com.conversify.ui.people.PeopleFragment
-import com.conversify.ui.venues.VenuesListFragment
+import com.conversify.ui.venues.list.VenuesListFragment
 import com.conversify.utils.FragmentSwitcher
 import kotlinx.android.synthetic.main.fragment_explore.*
 
