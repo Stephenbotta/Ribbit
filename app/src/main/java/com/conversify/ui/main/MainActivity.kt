@@ -3,7 +3,7 @@ package com.conversify.ui.main
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.conversify.R
-import com.conversify.ui.base.BaseActivity
+import com.conversify.ui.base.BaseLocationActivity
 import com.conversify.ui.main.chats.ChatsFragment
 import com.conversify.ui.main.explore.ExploreFragment
 import com.conversify.ui.main.home.HomeFragment
@@ -13,7 +13,7 @@ import com.conversify.utils.FragmentSwitcher
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseLocationActivity() {
     companion object {
         private const val TAB_INDEX_HOME = 0
         private const val TAB_INDEX_CHATS = 1

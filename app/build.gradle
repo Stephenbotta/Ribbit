@@ -99,13 +99,16 @@ dependencies {
     // https://github.com/hbb20/CountryCodePickerProject
     implementation "com.hbb20:ccp:$countryCodePickerVersion"
 
-    // https://developers.google.com/identity/sign-in/android/start-integrating
+    // Play services
     implementation "com.google.android.gms:play-services-auth:$googleAuthVersion"
+    implementation "com.google.android.gms:play-services-places:$googlePlacesVersion"
+    implementation "com.google.android.gms:play-services-location:$googleLocationVersion"
+
+    // Firebase
+    implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
 
     // https://developers.facebook.com/docs/facebook-login/android/?sdk=maven
     implementation "com.facebook.android:facebook-login:$facebookLoginVersion"
-
-    implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

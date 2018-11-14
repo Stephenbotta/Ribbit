@@ -9,4 +9,6 @@ object AppConstants {
     const val REGISTERED_MODE_EMAIL = 1
 
     const val REQ_CODE_GOOGLE_SIGN_IN = 100
+    const val REQ_CODE_CHECK_LOCATION_SETTINGS = 101
+    const val REQ_CODE_APP_SETTINGS = 102
 }

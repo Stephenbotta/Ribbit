@@ -16,10 +16,12 @@ buildscript {
         loggingInterceptorVersion = '3.10.0'
         glideVersion = '4.7.1'
         roundedImageViewVersion = '2.3.0'
-        countryCodePickerVersion = '2.2.2'
-        firebaseCoreVersion = '16.0.4'
+        countryCodePickerVersion = '2.2.3'
+        firebaseCoreVersion = '16.0.5'
         googleAuthVersion = '16.0.1'
-        facebookLoginVersion = '4.37.0'
+        googlePlacesVersion = '16.0.0'
+        googleLocationVersion = '16.0.0'
+        facebookLoginVersion = '4.38.1'
     }
 
     repositories {

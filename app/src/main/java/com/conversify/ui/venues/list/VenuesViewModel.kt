@@ -2,6 +2,7 @@ package com.conversify.ui.venues.list
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.conversify.data.local.UserManager
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
@@ -25,8 +26,8 @@ class VenuesViewModel : ViewModel() {
         venues.value = Resource.loading()
 
         RetrofitClient.conversifyApi
-                .getVenues(latitude = 30.7333,
-                        longitude = 76.7794)
+                .getVenues(latitude = UserManager.getLastLatitude(),
+                        longitude = UserManager.getLastLongitude())
                 .enqueue(object : Callback<ApiResponse<GetVenuesResponse>> {
                     override fun onResponse(call: Call<ApiResponse<GetVenuesResponse>>,
                                             response: Response<ApiResponse<GetVenuesResponse>>) {

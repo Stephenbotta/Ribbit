@@ -1,5 +1,6 @@
 package com.conversify.data.local
 
+import android.location.Location
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import java.util.*
 
@@ -29,6 +30,29 @@ object UserManager {
         PrefsManager.get().save(PrefsManager.PREF_ACCESS_TOKEN, profile.accessToken ?: "")
         PrefsManager.get().save(PrefsManager.PREF_USER_PROFILE, profile)
         PrefsManager.get().save(PrefsManager.PREF_USER_ID, profile.id ?: "")
+    }
+
+    fun updateLocation(location: Location) {
+        PrefsManager.get().save(PrefsManager.PREF_LATITUDE, location.latitude.toFloat())
+        PrefsManager.get().save(PrefsManager.PREF_LONGITUDE, location.longitude.toFloat())
+    }
+
+    fun getLastLatitude(): Double? {
+        val latitude = PrefsManager.get().getFloat(PrefsManager.PREF_LATITUDE, 0.0f)
+        return if (latitude == 0.0f) {
+            null
+        } else {
+            latitude.toDouble()
+        }
+    }
+
+    fun getLastLongitude(): Double? {
+        val longitude = PrefsManager.get().getFloat(PrefsManager.PREF_LONGITUDE, 0.0f)
+        return if (longitude == 0.0f) {
+            null
+        } else {
+            longitude.toDouble()
+        }
     }
 
     fun isLoggedIn(): Boolean {
