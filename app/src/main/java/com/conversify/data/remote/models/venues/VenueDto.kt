@@ -14,13 +14,13 @@ data class VenueDto(
         val groupId: String? = null,
 
         @field:SerializedName("venueTitle")
-        val venueTitle: String? = null,
+        val venueName: String? = null,
 
         @field:SerializedName("imageUrl")
         val imageUrl: ImageUrlDto? = null,
 
         @field:SerializedName("memberCount")
-        val memberCount: Long? = null,
+        val memberCount: Int? = null,
 
         @field:SerializedName("_id")
         val id: String? = null,

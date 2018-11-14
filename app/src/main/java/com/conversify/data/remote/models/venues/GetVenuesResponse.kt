@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class GetVenuesResponse(
         @field:SerializedName("yourVenueData")
-        val yourVenues: List<VenueDto>? = null,
+        val myVenues: List<VenueDto>? = null,
 
         @field:SerializedName("venueNearYou")
-        val venuesNearYou: List<VenueDto>? = null)
+        val nearbyVenues: List<VenueDto>? = null)

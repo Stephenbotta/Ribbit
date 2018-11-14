@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.conversify.R
 import com.conversify.data.local.UserManager
 import com.conversify.data.local.models.AppError
+import com.conversify.ui.landing.LandingActivity
 import timber.log.Timber
 
 fun Context.shortToast(text: CharSequence) {
@@ -119,19 +120,18 @@ fun Context.handleError(error: AppError?) {
 
         is AppError.ApiUnauthorized -> {
             longToast(error.message)
-            startLoginSignUpWithClear()
+            startLandingWithClear()
         }
 
         is AppError.ApiFailure -> longToast(error.message)
     }
 }
 
-fun Context.startLoginSignUpWithClear() {
+fun Context.startLandingWithClear() {
     clearNotifications()
     UserManager.removeProfile()
 
-    // todo start login sign up activity
-    /*val intent = Intent(this, LoginSignUpActivity::class.java)
+    val intent = Intent(this, LandingActivity::class.java)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-    startActivity(intent)*/
+    startActivity(intent)
 }

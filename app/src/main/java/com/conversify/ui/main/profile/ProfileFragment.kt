@@ -1,12 +1,10 @@
 package com.conversify.ui.main.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.conversify.R
-import com.conversify.data.local.UserManager
+import com.conversify.extensions.startLandingWithClear
 import com.conversify.ui.base.BaseFragment
-import com.conversify.ui.landing.LandingActivity
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : BaseFragment() {
@@ -20,9 +18,7 @@ class ProfileFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btnLogout.setOnClickListener {
-            UserManager.removeProfile()
-            startActivity(Intent(requireActivity(), LandingActivity::class.java))
-            activity?.finishAffinity()
+            requireActivity().startLandingWithClear()
         }
     }
 }

@@ -89,8 +89,16 @@
     <string name="explore_tab_venues">VENUES</string>
     <string name="explore_tab_people">PEOPLE</string>
 
-    <string name="venues_label_search_for_venues_by_name">Search for venues by name</string>
     <string name="venues_btn_map">Map</string>
     <string name="venues_btn_filters">Filters</string>
+    <string name="venues_label_search_for_venues_by_name">Search for venues by name</string>
     <string name="venues_label_your_venues">YOUR VENUES</string>
+    <plurals name="venues_label_active_members_with_count">
+        <item quantity="one">%d Active member</item>
+        <item quantity="other">%d Active members</item>
+    </plurals>
+    <string name="venues_label_active_members_with_count">%d Active members</string>
+    <string name="venues_label_venues_near_you">VENUES NEAR YOU</string>
+    <string name="distance_mile_with_value">%.1f Mi</string>
+    <string name="venues_label_most_active">Most Active</string>
 </resources>
