@@ -24,7 +24,7 @@ class VenueViewHolder(itemView: View,
         } else {
             itemView.btnMore.gone()
 
-            // For nearby venues, if distance does not exist then hide the distance view.
+            // For nearby listVenues, if distance does not exist then hide the distance view.
             if (venue.distance == null) {
                 itemView.tvDistance.gone()
             } else {

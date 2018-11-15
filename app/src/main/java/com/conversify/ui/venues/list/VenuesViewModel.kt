@@ -17,13 +17,14 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class VenuesViewModel : ViewModel() {
-    val venues = MutableLiveData<Resource<List<Any>>>()
+    val listVenues = MutableLiveData<Resource<List<Any>>>()
+    val mapVenues = MutableLiveData<Resource<List<VenueDto>>>()
 
     private val myVenues = mutableListOf<VenueDto>()
     private val nearbyVenues = mutableListOf<VenueDto>()
 
-    fun getVenues() {
-        venues.value = Resource.loading()
+    fun getListVenues() {
+        listVenues.value = Resource.loading()
 
         RetrofitClient.conversifyApi
                 .getVenues(latitude = UserManager.getLastLatitude(),
@@ -35,7 +36,7 @@ class VenuesViewModel : ViewModel() {
                             val myVenues = response.body()?.data?.myVenues ?: emptyList()
                             val nearbyVenues = response.body()?.data?.nearbyVenues ?: emptyList()
 
-                            // Set my venue flag to true for all my venues
+                            // Set my venue flag to true for all my listVenues
                             myVenues.forEach { it.myVenue = true }
 
                             this@VenuesViewModel.myVenues.clear()
@@ -55,14 +56,52 @@ class VenuesViewModel : ViewModel() {
                                 venueItems.addAll(nearbyVenues)
                             }
 
-                            venues.value = Resource.success(venueItems)
+                            listVenues.value = Resource.success(venueItems)
                         } else {
-                            venues.value = Resource.error(response.getAppError())
+                            listVenues.value = Resource.error(response.getAppError())
                         }
                     }
 
                     override fun onFailure(call: Call<ApiResponse<GetVenuesResponse>>, t: Throwable) {
-                        venues.value = Resource.error(t.failureAppError())
+                        listVenues.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
+    fun getMapVenues() {
+        mapVenues.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .getVenues(latitude = UserManager.getLastLatitude(),
+                        longitude = UserManager.getLastLongitude())
+                .enqueue(object : Callback<ApiResponse<GetVenuesResponse>> {
+                    override fun onResponse(call: Call<ApiResponse<GetVenuesResponse>>,
+                                            response: Response<ApiResponse<GetVenuesResponse>>) {
+                        if (response.isSuccessful) {
+                            val myVenues = response.body()?.data?.myVenues ?: emptyList()
+                            val nearbyVenues = response.body()?.data?.nearbyVenues ?: emptyList()
+
+                            // Set my venue flag to true for all my listVenues
+                            myVenues.forEach { it.myVenue = true }
+
+                            this@VenuesViewModel.myVenues.clear()
+                            this@VenuesViewModel.myVenues.addAll(myVenues)
+
+                            this@VenuesViewModel.nearbyVenues.clear()
+                            this@VenuesViewModel.nearbyVenues.addAll(nearbyVenues)
+
+                            val venueItems = mutableListOf<VenueDto>()
+                            venueItems.addAll(myVenues)
+                            venueItems.addAll(nearbyVenues)
+
+                            mapVenues.value = Resource.success(venueItems)
+                        } else {
+                            mapVenues.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<GetVenuesResponse>>, t: Throwable) {
+                        mapVenues.value = Resource.error(t.failureAppError())
                     }
                 })
     }

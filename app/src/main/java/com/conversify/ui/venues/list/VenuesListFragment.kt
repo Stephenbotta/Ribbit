@@ -9,6 +9,7 @@ import com.conversify.data.remote.models.Status
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.main.explore.VenuesModeNavigator
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_venues_list.*
 
@@ -34,13 +35,15 @@ class VenuesListFragment : BaseFragment() {
 
     private fun setListeners() {
         fabAddVenue.setOnClickListener { }
-        btnMapVenues.setOnClickListener { }
+        btnMapVenues.setOnClickListener {
+            showMapVenuesFragment()
+        }
         btnVenuesFilter.setOnClickListener { }
         swipeRefreshLayout.setOnRefreshListener { getVenues() }
     }
 
     private fun observeChanges() {
-        viewModel.venues.observe(this, Observer { resource ->
+        viewModel.listVenues.observe(this, Observer { resource ->
             resource ?: return@Observer
 
             when (resource.status) {
@@ -67,9 +70,16 @@ class VenuesListFragment : BaseFragment() {
 
     private fun getVenues() {
         if (isNetworkActiveWithMessage()) {
-            viewModel.getVenues()
+            viewModel.getListVenues()
         } else {
             swipeRefreshLayout.isRefreshing = false
+        }
+    }
+
+    private fun showMapVenuesFragment() {
+        val parentFragment = parentFragment
+        if (parentFragment is VenuesModeNavigator) {
+            parentFragment.navigateToVenuesMap()
         }
     }
 }

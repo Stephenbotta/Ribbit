@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_venue_marker_normal"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tvMemberCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="6dp"
+        android:fontFamily="@font/brandon_text_bold"
+        android:includeFontPadding="false"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="14sp"
+        tools:text="9" />
+
+</FrameLayout>

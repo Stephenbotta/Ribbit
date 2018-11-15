@@ -39,14 +39,6 @@
 
     </android.support.design.widget.TabLayout>
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/greyImageBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
-
     <ImageView
         android:id="@+id/btnNotification"
         android:layout_width="0dp"
@@ -69,4 +61,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/greyImageBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 </android.support.constraint.ConstraintLayout>

@@ -103,6 +103,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-auth:$googleAuthVersion"
     implementation "com.google.android.gms:play-services-places:$googlePlacesVersion"
     implementation "com.google.android.gms:play-services-location:$googleLocationVersion"
+    implementation "com.google.maps.android:android-maps-utils:$googleMapsUtilsVersion"
 
     // Firebase
     implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"

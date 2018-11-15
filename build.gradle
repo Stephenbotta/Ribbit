@@ -21,6 +21,7 @@ buildscript {
         googleAuthVersion = '16.0.1'
         googlePlacesVersion = '16.0.0'
         googleLocationVersion = '16.0.0'
+        googleMapsUtilsVersion = '0.5'
         facebookLoginVersion = '4.38.1'
     }
 

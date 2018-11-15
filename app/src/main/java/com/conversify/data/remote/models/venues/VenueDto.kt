@@ -11,7 +11,7 @@ data class VenueDto(
         val distance: Double? = null,
 
         @field:SerializedName("groupId")
-        val groupId: String? = null,
+        val id: String? = null,
 
         @field:SerializedName("venueTitle")
         val venueName: String? = null,
@@ -21,9 +21,6 @@ data class VenueDto(
 
         @field:SerializedName("memberCount")
         val memberCount: Int? = null,
-
-        @field:SerializedName("_id")
-        val id: String? = null,
 
         @field:SerializedName("isPrivate")
         val isPrivate: Boolean? = null,
