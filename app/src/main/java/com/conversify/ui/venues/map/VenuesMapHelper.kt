@@ -51,6 +51,13 @@ class VenuesMapHelper(context: Context,
     }
 
     fun displayVenues(venues: List<VenueDto>) {
+        if (venues.isEmpty()) {
+            mapVenues.clear()
+            clusterManager.clearItems()
+            clusterManager.cluster()
+            return
+        }
+
         val boundsBuilder = LatLngBounds.Builder()
 
         // Clear any existing listVenues on the map
@@ -69,7 +76,7 @@ class VenuesMapHelper(context: Context,
         clusterManager.cluster()
 
         // Move camera to bounds when map is loaded
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 80))
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 80))
     }
 
     fun clear() {

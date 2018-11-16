@@ -3,6 +3,7 @@ package com.conversify.ui.venues.map
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v7.widget.SearchView
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
@@ -12,7 +13,7 @@ import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.pxFromDp
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.main.explore.VenuesModeNavigator
-import com.conversify.ui.venues.list.VenuesViewModel
+import com.conversify.ui.venues.VenuesViewModel
 import com.google.android.gms.maps.SupportMapFragment
 import kotlinx.android.synthetic.main.fragment_venues_map.*
 
@@ -43,7 +44,7 @@ class VenuesMapFragment : BaseFragment() {
                 override fun onMapLoaded() {
                     // Start, top, end and bottom
                     googleMap.setPadding(0,
-                            etSearchVenue.height + requireActivity().pxFromDp(20),
+                            searchView.height + requireActivity().pxFromDp(20),
                             0,
                             0)
                 }
@@ -58,6 +59,17 @@ class VenuesMapFragment : BaseFragment() {
         btnListVenues.setOnClickListener {
             showListVenuesFragment()
         }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(query: String?): Boolean {
+                viewModel.searchMapsVenues(query ?: "")
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+        })
     }
 
     private fun observeChanges() {

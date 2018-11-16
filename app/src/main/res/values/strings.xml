@@ -106,4 +106,5 @@
     <string name="venues_label_active_members_with_count">%d Active members</string>
     <string name="venues_label_venues_near_you">VENUES NEAR YOU</string>
     <string name="venues_label_most_active">Most Active</string>
+    <string name="venues_label_no_venues_found">No venues found</string>
 </resources>

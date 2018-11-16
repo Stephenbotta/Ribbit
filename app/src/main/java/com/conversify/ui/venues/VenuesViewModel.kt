@@ -1,4 +1,4 @@
-package com.conversify.ui.venues.list
+package com.conversify.ui.venues
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
@@ -17,11 +17,14 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class VenuesViewModel : ViewModel() {
-    val listVenues = MutableLiveData<Resource<List<Any>>>()
-    val mapVenues = MutableLiveData<Resource<List<VenueDto>>>()
+    val listVenues by lazy { MutableLiveData<Resource<List<Any>>>() }
+    val mapVenues by lazy { MutableLiveData<Resource<List<VenueDto>>>() }
 
-    private val myVenues = mutableListOf<VenueDto>()
-    private val nearbyVenues = mutableListOf<VenueDto>()
+    private val myVenues by lazy { mutableListOf<VenueDto>() }
+    private val nearbyVenues by lazy { mutableListOf<VenueDto>() }
+
+    private var searchListQuery = ""
+    private var searchMapQuery = ""
 
     fun getListVenues() {
         listVenues.value = Resource.loading()
@@ -45,15 +48,10 @@ class VenuesViewModel : ViewModel() {
                             this@VenuesViewModel.nearbyVenues.clear()
                             this@VenuesViewModel.nearbyVenues.addAll(nearbyVenues)
 
-                            val venueItems = mutableListOf<Any>()
-                            if (myVenues.isNotEmpty()) {
-                                venueItems.add(YourVenuesDto)
-                                venueItems.addAll(myVenues)
-                            }
-
-                            if (nearbyVenues.isNotEmpty()) {
-                                venueItems.add(VenuesNearYouDto())
-                                venueItems.addAll(nearbyVenues)
+                            val venueItems = if (searchListQuery.isBlank()) {
+                                getVenueListItems(myVenues, nearbyVenues)
+                            } else {
+                                getSearchVenueListResult(searchListQuery)
                             }
 
                             listVenues.value = Resource.success(venueItems)
@@ -90,9 +88,11 @@ class VenuesViewModel : ViewModel() {
                             this@VenuesViewModel.nearbyVenues.clear()
                             this@VenuesViewModel.nearbyVenues.addAll(nearbyVenues)
 
-                            val venueItems = mutableListOf<VenueDto>()
-                            venueItems.addAll(myVenues)
-                            venueItems.addAll(nearbyVenues)
+                            val venueItems = if (searchMapQuery.isBlank()) {
+                                getVenueMapItems(myVenues, nearbyVenues)
+                            } else {
+                                getSearchVenueMapResult(searchMapQuery)
+                            }
 
                             mapVenues.value = Resource.success(venueItems)
                         } else {
@@ -104,5 +104,84 @@ class VenuesViewModel : ViewModel() {
                         mapVenues.value = Resource.error(t.failureAppError())
                     }
                 })
+    }
+
+    fun searchListVenues(query: String) {
+        searchListQuery = query
+        val searchResult = getSearchVenueListResult(query)
+        listVenues.value = Resource.success(searchResult)
+    }
+
+    fun searchMapsVenues(query: String) {
+        searchMapQuery = query
+        val searchResult = getSearchVenueMapResult(query)
+        mapVenues.value = Resource.success(searchResult)
+    }
+
+    /**
+     * Returns venues list items in correct order after applying the search filter
+     * */
+    private fun getSearchVenueListResult(query: String): List<Any> {
+        // If query is blank then return the result with all venues
+        if (query.isBlank()) {
+            return getVenueListItems(myVenues, nearbyVenues)
+        }
+
+        val myVenuesResult = myVenues.filter {
+            (it.venueName ?: "").toLowerCase().contains(query.toLowerCase())
+        }
+        val nearbyVenuesResult = nearbyVenues.filter {
+            (it.venueName ?: "").toLowerCase().contains(query.toLowerCase())
+        }
+
+        return getVenueListItems(myVenuesResult, nearbyVenuesResult)
+    }
+
+    /**
+     * Returns venues list items in correct order
+     * */
+    private fun getVenueListItems(myVenues: List<VenueDto>, nearbyVenues: List<VenueDto>): List<Any> {
+        val venueItems = mutableListOf<Any>()
+
+        if (myVenues.isNotEmpty()) {
+            venueItems.add(YourVenuesDto)
+            venueItems.addAll(myVenues)
+        }
+
+        if (nearbyVenues.isNotEmpty()) {
+            venueItems.add(VenuesNearYouDto())
+            venueItems.addAll(nearbyVenues)
+        }
+
+        return venueItems
+    }
+
+    /**
+     * Returns venues map items in correct order after applying the search filter
+     * */
+    private fun getSearchVenueMapResult(query: String): List<VenueDto> {
+        // If query is blank then return the result with all venues
+        if (query.isBlank()) {
+            return getVenueMapItems(myVenues, nearbyVenues)
+        }
+        
+        val myVenuesResult = myVenues.filter {
+            (it.venueName ?: "").toLowerCase().contains(query.toLowerCase())
+        }
+        val nearbyVenuesResult = nearbyVenues.filter {
+            (it.venueName ?: "").toLowerCase().contains(query.toLowerCase())
+        }
+
+        return getVenueMapItems(myVenuesResult, nearbyVenuesResult)
+    }
+
+    /**
+     * Returns venues map items in correct order
+     * */
+    private fun getVenueMapItems(myVenues: List<VenueDto>, nearbyVenues: List<VenueDto>): List<VenueDto> {
+        val venueItems = mutableListOf<VenueDto>()
+        venueItems.addAll(myVenues)
+        venueItems.addAll(nearbyVenues)
+        return venueItems
     }
 }
