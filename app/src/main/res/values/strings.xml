@@ -107,4 +107,8 @@
     <string name="venues_label_venues_near_you">VENUES NEAR YOU</string>
     <string name="venues_label_most_active">Most Active</string>
     <string name="venues_label_no_venues_found">No venues found</string>
+    <string name="create_venue_label_venues">Venues</string>
+    <string name="create_venue_label_choose_a_category">Choose a category</string>
+    <string name="create_venue_label_venues_are_a_fun_and_engaging_way_to_meet_and_explore_people_create_chat_rooms_based_upon_your_location">Venues are a fun and engaging way to meet and explore people. Create chat rooms based upon your location.</string>
+    <string name="create_venue_label_create_a_venue">Create a Venue</string>
 </resources>
