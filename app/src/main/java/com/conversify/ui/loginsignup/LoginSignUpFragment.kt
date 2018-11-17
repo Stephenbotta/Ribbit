@@ -275,6 +275,8 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
     private fun navigateToFragment(fragment: Fragment, tag: String, replace: Boolean = false) {
         fragmentManager?.apply {
             val transaction = beginTransaction()
+            transaction.setCustomAnimations(R.anim.parallax_right_in, R.anim.parallax_left_out,
+                    R.anim.parallax_left_in, R.anim.parallax_right_out)
             if (replace) {
                 transaction.replace(R.id.flContainer, fragment, tag)
             } else {

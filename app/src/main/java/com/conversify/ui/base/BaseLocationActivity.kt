@@ -141,7 +141,7 @@ abstract class BaseLocationActivity : BaseActivity() {
     @SuppressLint("NoCorrespondingNeedsPermission")
     @OnShowRationale(Manifest.permission.ACCESS_FINE_LOCATION)
     fun showRationalForLocation(request: PermissionRequest) {
-        PermissionUtils.showRationalDialog(this, R.string.permission_rational_location, request)
+        PermissionUtils.showRationalDialog(this, R.string.permission_rationale_location, request)
     }
 
     @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)

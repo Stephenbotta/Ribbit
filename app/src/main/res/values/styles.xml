@@ -14,7 +14,11 @@
         <item name="android:fontFamily">@font/brandon_text_regular</item>
     </style>
 
-    <style name="AppTheme.LoginSignUp">
+    <style name="AppTheme.Splash">
+        <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
+
+    <style name="AppTheme.Landing">
         <item name="android:windowBackground">@color/colorPrimary</item>
     </style>
 

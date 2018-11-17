@@ -181,6 +181,8 @@ class WelcomeFragment : BaseFragment() {
                     val fragment = ChooseInterestsFragment()
                     fragmentManager?.apply {
                         beginTransaction()
+                                .setCustomAnimations(R.anim.parallax_right_in, R.anim.parallax_left_out,
+                                        R.anim.parallax_left_in, R.anim.parallax_right_out)
                                 .replace(R.id.flContainer, fragment, ChooseInterestsFragment.TAG)
                                 .commit()
                     }

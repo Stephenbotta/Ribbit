@@ -100,6 +100,8 @@ class VerificationFragment : BaseFragment() {
                         val fragment = CreatePasswordFragment.newInstance(profile)
                         fragmentManager?.apply {
                             beginTransaction()
+                                    .setCustomAnimations(R.anim.parallax_right_in, R.anim.parallax_left_out,
+                                            R.anim.parallax_left_in, R.anim.parallax_right_out)
                                     .add(R.id.flContainer, fragment, CreatePasswordFragment.TAG)
                                     .addToBackStack(null)
                                     .commit()

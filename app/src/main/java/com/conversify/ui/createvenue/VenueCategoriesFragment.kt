@@ -30,6 +30,8 @@ class VenueCategoriesFragment : BaseFragment() {
             val fragment = CreateVenueFragment.newInstance(it)
             fragmentManager?.apply {
                 beginTransaction()
+                        .setCustomAnimations(R.anim.parallax_right_in, R.anim.parallax_left_out,
+                                R.anim.parallax_left_in, R.anim.parallax_right_out)
                         .replace(R.id.flContainer, fragment, CreateVenueFragment.TAG)
                         .addToBackStack(null)
                         .commit()

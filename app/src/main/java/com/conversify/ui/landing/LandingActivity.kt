@@ -37,6 +37,7 @@ class LandingActivity : BaseActivity() {
                 LoginSignUpActivity.startChooseInterests(this)
             }
         } else {
+            setTheme(R.style.AppTheme_Landing)
             setContentView(R.layout.activity_landing)
             setListeners()
         }
