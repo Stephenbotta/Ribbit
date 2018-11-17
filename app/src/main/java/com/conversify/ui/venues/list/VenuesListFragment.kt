@@ -2,6 +2,7 @@ package com.conversify.ui.venues.list
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.SearchView
 import android.view.View
@@ -10,6 +11,7 @@ import com.conversify.data.remote.models.Status
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.createvenue.CreateVenueActivity
 import com.conversify.ui.main.explore.VenuesModeNavigator
 import com.conversify.ui.venues.VenuesViewModel
 import com.conversify.utils.GlideApp
@@ -39,7 +41,10 @@ class VenuesListFragment : BaseFragment() {
     }
 
     private fun setListeners() {
-        fabAddVenue.setOnClickListener { }
+        fabAddVenue.setOnClickListener {
+            startActivity(Intent(requireActivity(), CreateVenueActivity::class.java))
+        }
+
         btnMapVenues.setOnClickListener {
             showMapVenuesFragment()
         }

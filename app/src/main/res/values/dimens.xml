@@ -3,6 +3,7 @@
     <integer name="username_max_length">50</integer>
     <integer name="name_max_length">100</integer>
     <integer name="email_max_length">100</integer>
+    <integer name="venue_title_max_length">200</integer>
     <integer name="phone_number_max_length">15</integer>
     <integer name="password_max_length">20</integer>
     <integer name="password_min_length">6</integer>

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:id="@+id/tvCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/brandon_text_bold"
+            android:maxLines="1"
+            android:textColor="@color/textGray"
+            android:textSize="32sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Movie &amp; TV" />
+
+        <View
+            android:id="@+id/dividerCategory"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/greyImageBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvCategory" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/ivVenue"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="32dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_add_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dividerCategory"
+            app:riv_corner_radius="8dp"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <TextView
+            android:id="@+id/tvLabelTapToAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/create_venue_label_tap_to_add_a_picture"
+            android:textColor="@color/textGray7F"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivVenue" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilVenueTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelTapToAdd">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etVenueTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/create_venue_label_venue_s_title"
+                android:inputType="textCapSentences|textNoSuggestions"
+                android:maxLength="@integer/venue_title_max_length"
+                android:singleLine="true"
+                android:textColor="@color/textGray"
+                android:textSize="16sp"
+                android:theme="@style/AppTheme.EditTextTheme"
+                tools:text="Starbucks Fans" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilVenueLocation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilVenueTitle">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etVenueLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:hint="@string/create_venue_label_venue_location"
+                android:inputType="textNoSuggestions"
+                android:longClickable="false"
+                android:selectAllOnFocus="false"
+                android:singleLine="true"
+                android:textColor="@color/textGray"
+                android:textIsSelectable="false"
+                android:textSize="16sp"
+                android:theme="@style/AppTheme.EditTextTheme"
+                tools:text="@tools:sample/cities" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilVenueTags"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilVenueLocation">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etVenueTags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/create_venue_label_tags"
+                android:inputType="textNoSuggestions"
+                android:singleLine="true"
+                android:textColor="@color/textGray"
+                android:textSize="16sp"
+                android:theme="@style/AppTheme.EditTextTheme"
+                tools:text="@tools:sample/cities" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilDateTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilVenueTags">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/etDateTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:hint="@string/create_venue_label_date_and_time"
+                android:inputType="textNoSuggestions"
+                android:longClickable="false"
+                android:selectAllOnFocus="false"
+                android:singleLine="true"
+                android:textColor="@color/textGray"
+                android:textIsSelectable="false"
+                android:textSize="16sp"
+                android:theme="@style/AppTheme.EditTextTheme"
+                tools:text="12 Nov 2018, 06:25 PM" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <View
+            android:id="@+id/dividerAdditionalDetailsTop"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/greyImageBackground"
+            app:layout_constraintTop_toBottomOf="@id/tilDateTime" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/switchPrivateVenue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/create_venue_label_private"
+            android:textColor="@color/textGray"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dividerAdditionalDetailsTop"
+            app:switchPadding="8dp" />
+
+        <TextView
+            android:id="@+id/tvLabelAdditionalDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/brandon_text_bold"
+            android:text="@string/create_venue_label_additional_details"
+            android:textColor="@color/textGrayMedium"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/switchPrivateVenue" />
+
+        <TextView
+            android:id="@+id/tvLabelIfYouAreOwner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/create_venue_label_if_you_are_an_owner"
+            android:textColor="@color/textGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelAdditionalDetails" />
+
+        <EditText
+            android:id="@+id/etVenueOwnerName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/shape_create_venue_upload_document_2dp"
+            android:hint="@string/create_venue_label_your_name"
+            android:importantForAutofill="no"
+            android:inputType="textNoSuggestions"
+            android:maxLength="@integer/name_max_length"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp"
+            android:singleLine="true"
+            android:textColor="@color/textGray"
+            android:textColorHint="@color/textGrayMedium"
+            android:textSize="16sp"
+            android:theme="@style/AppTheme.EditTextTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelIfYouAreOwner"
+            tools:ignore="UnusedAttribute"
+            tools:text="@tools:sample/full_names" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/clUploadDocument"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/background_create_venue_upload_document"
+            android:paddingStart="16dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etVenueOwnerName">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/cbVerificationSelected"
+                android:drawableStart="@drawable/ic_attachment"
+                android:drawablePadding="16dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/brandon_text_bold"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="@string/create_venue_btn_upload_document"
+                android:textColor="?attr/colorPrimary"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/cbVerificationSelected"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/cbVerificationSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:buttonTint="?attr/colorPrimary"
+                android:checked="true"
+                android:enabled="false"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

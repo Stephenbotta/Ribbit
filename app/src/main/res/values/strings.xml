@@ -107,8 +107,20 @@
     <string name="venues_label_venues_near_you">VENUES NEAR YOU</string>
     <string name="venues_label_most_active">Most Active</string>
     <string name="venues_label_no_venues_found">No venues found</string>
+
+    <string name="create_venue_btn_create">CREATE</string>
+    <string name="create_venue_btn_upload_document">Upload Document</string>
     <string name="create_venue_label_venues">Venues</string>
     <string name="create_venue_label_choose_a_category">Choose a category</string>
     <string name="create_venue_label_venues_are_a_fun_and_engaging_way_to_meet_and_explore_people_create_chat_rooms_based_upon_your_location">Venues are a fun and engaging way to meet and explore people. Create chat rooms based upon your location.</string>
     <string name="create_venue_label_create_a_venue">Create a Venue</string>
+    <string name="create_venue_label_tap_to_add_a_picture">Tap to add a picture</string>
+    <string name="create_venue_label_venue_s_title">Venue\'s title</string>
+    <string name="create_venue_label_venue_location">Venue location</string>
+    <string name="create_venue_label_tags">Tags</string>
+    <string name="create_venue_label_additional_details">Additional Details</string>
+    <string name="create_venue_label_if_you_are_an_owner">If you are an Owner or Manager of a company you mentioned, then share your company’s verification proof and your name!</string>
+    <string name="create_venue_label_your_name">Your Name</string>
+    <string name="create_venue_label_private">Private</string>
+    <string name="create_venue_label_date_and_time">Date &amp; time</string>
 </resources>

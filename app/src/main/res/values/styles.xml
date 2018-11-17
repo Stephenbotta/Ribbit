@@ -43,4 +43,17 @@
         <item name="android:editTextColor">@color/textGray</item>
         <item name="android:textColorHint">@color/textGray66</item>
     </style>
+
+    <style name="ToolbarBoldMenuText" parent="Theme.MaterialComponents.Light">
+        <item name="actionMenuTextColor">@color/toolbar_menu_text</item>
+        <item name="android:fontFamily">@font/brandon_text_bold</item>
+    </style>
+
+    <style name="AppTheme.EditTextTheme">
+        <item name="colorControlNormal">@color/greyImageBackground</item>
+        <item name="android:fontFamily">@font/brandon_text_regular</item>
+        <item name="android:textColor">@color/textGray</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

@@ -2,6 +2,7 @@ package com.conversify.ui.loginsignup.chooseinterests
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.conversify.data.MemoryCache
 import com.conversify.data.local.UserManager
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
@@ -20,6 +21,12 @@ class ChooseInterestsViewModel : ViewModel() {
     val updateInterests by lazy { SingleLiveEvent<Resource<Any>>() }
 
     fun getInterests() {
+        val cachedInterests = MemoryCache.getInterests()
+        if (cachedInterests.isNotEmpty()) {
+            interests.value = Resource.success(cachedInterests)
+            return
+        }
+
         interests.value = Resource.loading()
 
         RetrofitClient.conversifyApi
@@ -30,6 +37,7 @@ class ChooseInterestsViewModel : ViewModel() {
                         if (response.isSuccessful) {
                             val allInterests = response.body()?.data ?: emptyList()
                             interests.value = Resource.success(allInterests)
+                            MemoryCache.updateInterests(allInterests)
                         } else {
                             interests.value = Resource.error(response.getAppError())
                         }

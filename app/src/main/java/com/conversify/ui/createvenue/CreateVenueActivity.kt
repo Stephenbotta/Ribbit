@@ -3,6 +3,7 @@ package com.conversify.ui.createvenue
 import android.os.Bundle
 import com.conversify.R
 import com.conversify.ui.base.BaseActivity
+import kotlinx.android.synthetic.main.activity_create_venue.*
 
 class CreateVenueActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,5 +15,12 @@ class CreateVenueActivity : BaseActivity() {
                     .add(R.id.flContainer, VenueCategoriesFragment(), VenueCategoriesFragment.TAG)
                     .commit()
         }
+
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setDisplayShowTitleEnabled(false)
+        }
+
+        btnBack.setOnClickListener { onBackPressed() }
     }
 }
