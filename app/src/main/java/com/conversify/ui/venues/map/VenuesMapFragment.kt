@@ -1,7 +1,9 @@
 package com.conversify.ui.venues.map
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.SearchView
 import android.view.View
@@ -12,8 +14,10 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.pxFromDp
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.createvenue.CreateVenueActivity
 import com.conversify.ui.main.explore.VenuesModeNavigator
 import com.conversify.ui.venues.VenuesViewModel
+import com.conversify.utils.AppConstants
 import com.google.android.gms.maps.SupportMapFragment
 import kotlinx.android.synthetic.main.fragment_venues_map.*
 
@@ -70,6 +74,11 @@ class VenuesMapFragment : BaseFragment() {
                 return false
             }
         })
+
+        fabCreateVenue.setOnClickListener {
+            val intent = Intent(requireActivity(), CreateVenueActivity::class.java)
+            startActivityForResult(intent, AppConstants.REQ_CODE_CREATE_VENUE)
+        }
     }
 
     private fun observeChanges() {
@@ -102,6 +111,13 @@ class VenuesMapFragment : BaseFragment() {
         val parentFragment = parentFragment
         if (parentFragment is VenuesModeNavigator) {
             parentFragment.navigateToVenuesList()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstants.REQ_CODE_CREATE_VENUE && resultCode == Activity.RESULT_OK) {
+            getVenues()
         }
     }
 

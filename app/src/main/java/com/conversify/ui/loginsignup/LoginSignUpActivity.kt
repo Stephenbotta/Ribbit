@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.conversify.R
+import com.conversify.data.local.UserManager
 import com.conversify.extensions.gone
 import com.conversify.extensions.hideKeyboard
 import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
+import com.conversify.ui.loginsignup.welcome.WelcomeFragment
 import com.conversify.utils.AppConstants
 import kotlinx.android.synthetic.main.activity_login_sign_up.*
 import timber.log.Timber
@@ -25,6 +27,11 @@ class LoginSignUpActivity : BaseActivity(), BackButtonEnabledListener {
         fun start(context: Context, mode: Int) {
             context.startActivity(Intent(context, LoginSignUpActivity::class.java)
                     .putExtra(EXTRA_MODE, mode))
+        }
+
+        fun startWelcome(context: Context) {
+            context.startActivity(Intent(context, LoginSignUpActivity::class.java)
+                    .putExtra(EXTRA_NAVIGATE_SCREEN_TAG, WelcomeFragment.TAG))
         }
 
         fun startChooseInterests(context: Context) {
@@ -49,6 +56,13 @@ class LoginSignUpActivity : BaseActivity(), BackButtonEnabledListener {
 
             Timber.i("Navigate screen tag : $navigateScreenTag")
             when (navigateScreenTag) {
+                WelcomeFragment.TAG -> {
+                    val fragment = WelcomeFragment.newInstance(UserManager.getProfile())
+                    supportFragmentManager.beginTransaction()
+                            .replace(R.id.flContainer, fragment, WelcomeFragment.TAG)
+                            .commit()
+                }
+
                 ChooseInterestsFragment.TAG -> {
                     val fragment = ChooseInterestsFragment()
                     supportFragmentManager.beginTransaction()

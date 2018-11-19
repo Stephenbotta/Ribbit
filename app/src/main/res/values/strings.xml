@@ -132,4 +132,6 @@
     <string name="create_venue_label_your_name">Your Name</string>
     <string name="create_venue_label_private">Private</string>
     <string name="create_venue_label_date_and_time">Date &amp; time</string>
+    <string name="create_venue_message_please_add_at_least_one_tag">Please add at least one hash tag</string>
+    <string name="create_venue_message_verification_file_size_should_be">Verification file size should be less than 5 MB</string>
 </resources>

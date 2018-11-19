@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/create_venue_label_venue_s_title"
-                android:inputType="textCapSentences|textNoSuggestions"
+                android:inputType="textCapSentences"
                 android:maxLength="@integer/venue_title_max_length"
                 android:singleLine="true"
                 android:textColor="@color/textGray"
@@ -134,12 +134,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/create_venue_label_tags"
-                android:inputType="textNoSuggestions"
+                android:inputType="text"
                 android:singleLine="true"
                 android:textColor="@color/textGray"
                 android:textSize="16sp"
                 android:theme="@style/AppTheme.EditTextTheme"
-                tools:text="@tools:sample/cities" />
+                tools:text="#movies #action" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -235,7 +235,7 @@
             android:background="@drawable/shape_create_venue_upload_document_2dp"
             android:hint="@string/create_venue_label_your_name"
             android:importantForAutofill="no"
-            android:inputType="textNoSuggestions"
+            android:inputType="textPersonName|textCapWords"
             android:maxLength="@integer/name_max_length"
             android:paddingStart="12dp"
             android:paddingTop="8dp"

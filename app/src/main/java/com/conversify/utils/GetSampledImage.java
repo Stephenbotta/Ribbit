@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.UUID;
 
 public class GetSampledImage extends AsyncTask<String, Void, File> {
     private OnImageSampledListener listener;
@@ -131,7 +132,7 @@ public class GetSampledImage extends AsyncTask<String, Void, File> {
                 }
             }
             File imageFile = new File(mediaStorageDir.getPath() + File.separator
-                    + "IMG_" + System.currentTimeMillis() + ".jpg");
+                    + "IMG_" + UUID.randomUUID().toString() + ".jpg");
 
             OutputStream outputStream = new FileOutputStream(imageFile);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 95, outputStream);

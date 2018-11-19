@@ -245,7 +245,7 @@ public class ImagePicker {
                     return null;
                 }
             }
-            String imageFileName = "IMG_ANDROID_" + UUID.randomUUID().toString();
+            String imageFileName = "IMG_" + UUID.randomUUID().toString();
 
             imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
         }

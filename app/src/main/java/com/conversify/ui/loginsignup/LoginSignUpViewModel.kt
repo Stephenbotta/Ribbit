@@ -49,7 +49,8 @@ class LoginSignUpViewModel : ViewModel() {
                                             response: Response<ApiResponse<ProfileDto>>) {
                         if (response.isSuccessful) {
                             val profile = response.body()?.data
-                            if (profile != null && !profile.accessToken.isNullOrBlank()) {
+                            if (profile != null && profile.isProfileComplete == true &&
+                                    !profile.accessToken.isNullOrBlank()) {
                                 UserManager.saveProfile(profile)
                             }
                             loginRegister.value = Resource.success(response.body()?.data)
@@ -74,7 +75,7 @@ class LoginSignUpViewModel : ViewModel() {
                                             response: Response<ApiResponse<ProfileDto>>) {
                         if (response.isSuccessful) {
                             val profile = response.body()?.data
-                            if (profile != null) {
+                            if (profile != null && profile.isProfileComplete == true) {
                                 UserManager.saveProfile(profile)
                             }
                             loginRegister.value = Resource.success(profile)

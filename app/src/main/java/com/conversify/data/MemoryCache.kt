@@ -7,7 +7,7 @@ object MemoryCache {
 
     fun hasInterests(): Boolean = INTERESTS.isNotEmpty()
 
-    fun getInterests(): List<InterestDto> = INTERESTS.map { it.copy() }
+    fun getInterests(): List<InterestDto> = INTERESTS.map { it.copy(selected = false) }
 
     fun updateInterests(interests: List<InterestDto>) {
         INTERESTS.clear()

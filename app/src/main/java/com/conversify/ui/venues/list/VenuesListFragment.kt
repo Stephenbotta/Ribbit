@@ -1,5 +1,6 @@
 package com.conversify.ui.venues.list
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -14,6 +15,7 @@ import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.createvenue.CreateVenueActivity
 import com.conversify.ui.main.explore.VenuesModeNavigator
 import com.conversify.ui.venues.VenuesViewModel
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_venues_list.*
 
@@ -41,8 +43,9 @@ class VenuesListFragment : BaseFragment() {
     }
 
     private fun setListeners() {
-        fabAddVenue.setOnClickListener {
-            startActivity(Intent(requireActivity(), CreateVenueActivity::class.java))
+        fabCreateVenue.setOnClickListener {
+            val intent = Intent(requireActivity(), CreateVenueActivity::class.java)
+            startActivityForResult(intent, AppConstants.REQ_CODE_CREATE_VENUE)
         }
 
         btnMapVenues.setOnClickListener {
@@ -95,9 +98,9 @@ class VenuesListFragment : BaseFragment() {
         rvVenues.adapter = venuesListAdapter
     }
 
-    private fun getVenues() {
+    private fun getVenues(showLoading: Boolean = true) {
         if (isNetworkActiveWithMessage()) {
-            viewModel.getListVenues()
+            viewModel.getListVenues(showLoading)
         } else {
             swipeRefreshLayout.isRefreshing = false
         }
@@ -107,6 +110,13 @@ class VenuesListFragment : BaseFragment() {
         val parentFragment = parentFragment
         if (parentFragment is VenuesModeNavigator) {
             parentFragment.navigateToVenuesMap()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstants.REQ_CODE_CREATE_VENUE && resultCode == Activity.RESULT_OK) {
+            getVenues(false)
         }
     }
 }

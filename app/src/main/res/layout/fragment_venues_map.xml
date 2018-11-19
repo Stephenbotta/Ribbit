@@ -65,9 +65,9 @@
         android:background="@drawable/background_venues_map_filters"
         android:elevation="2dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@id/fabAddVenue"
+        app:layout_constraintBottom_toBottomOf="@id/fabCreateVenue"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/fabAddVenue">
+        app:layout_constraintTop_toTopOf="@id/fabCreateVenue">
 
         <TextView
             android:id="@+id/btnListVenues"
@@ -110,7 +110,7 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabAddVenue"
+        android:id="@+id/fabCreateVenue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

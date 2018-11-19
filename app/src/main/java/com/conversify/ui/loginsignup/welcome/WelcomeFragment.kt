@@ -164,7 +164,18 @@ class WelcomeFragment : BaseFragment() {
                             email = requestEmail,
                             countryCode = requestCountryCode,
                             phoneNumber = requestPhoneNumber,
-                            password = arguments?.getString(ARGUMENT_PASSWORD))
+                            password = arguments?.getString(ARGUMENT_PASSWORD),
+                            googleId = if (flag == ApiConstants.FLAG_REGISTER_GOOGLE) {
+                                profile.googleId
+                            } else {
+                                null
+                            },
+                            facebookId = if (flag == ApiConstants.FLAG_REGISTER_FACEBOOK) {
+                                profile.facebookId
+                            } else {
+                                null
+                            })
+
                     viewModel.signUp(request)
                 }
             }

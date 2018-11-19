@@ -26,8 +26,10 @@ class VenuesViewModel : ViewModel() {
     private var searchListQuery = ""
     private var searchMapQuery = ""
 
-    fun getListVenues() {
-        listVenues.value = Resource.loading()
+    fun getListVenues(showLoading: Boolean = true) {
+        if (showLoading) {
+            listVenues.value = Resource.loading()
+        }
 
         RetrofitClient.conversifyApi
                 .getVenues(latitude = UserManager.getLastLatitude(),
@@ -128,10 +130,10 @@ class VenuesViewModel : ViewModel() {
         }
 
         val myVenuesResult = myVenues.filter {
-            (it.venueName ?: "").toLowerCase().contains(query.toLowerCase())
+            (it.name ?: "").toLowerCase().contains(query.toLowerCase())
         }
         val nearbyVenuesResult = nearbyVenues.filter {
-            (it.venueName ?: "").toLowerCase().contains(query.toLowerCase())
+            (it.name ?: "").toLowerCase().contains(query.toLowerCase())
         }
 
         return getVenueListItems(myVenuesResult, nearbyVenuesResult)
@@ -164,12 +166,12 @@ class VenuesViewModel : ViewModel() {
         if (query.isBlank()) {
             return getVenueMapItems(myVenues, nearbyVenues)
         }
-        
+
         val myVenuesResult = myVenues.filter {
-            (it.venueName ?: "").toLowerCase().contains(query.toLowerCase())
+            (it.name ?: "").toLowerCase().contains(query.toLowerCase())
         }
         val nearbyVenuesResult = nearbyVenues.filter {
-            (it.venueName ?: "").toLowerCase().contains(query.toLowerCase())
+            (it.name ?: "").toLowerCase().contains(query.toLowerCase())
         }
 
         return getVenueMapItems(myVenuesResult, nearbyVenuesResult)

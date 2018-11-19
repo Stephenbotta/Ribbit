@@ -27,14 +27,25 @@ class LandingActivity : BaseActivity() {
         val isLoggedIn = UserManager.isLoggedIn()
         if (isLoggedIn) {
             val profile = UserManager.getProfile()
-            if (profile.isInterestSelected == true &&
-                    profile.isProfileComplete == true &&
-                    profile.isVerified == true &&
-                    profile.isPasswordExist == true) {
-                startActivity(Intent(this, MainActivity::class.java))
-                finishAffinity()
-            } else {
-                LoginSignUpActivity.startChooseInterests(this)
+            when {
+                profile.isProfileComplete == false -> {
+                    LoginSignUpActivity.startWelcome(this)
+                }
+
+                profile.isInterestSelected == false -> {
+                    LoginSignUpActivity.startChooseInterests(this)
+                }
+
+                profile.isVerified == true && profile.isPasswordExist == true -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finishAffinity()
+                }
+
+                else -> {
+                    setTheme(R.style.AppTheme_Landing)
+                    setContentView(R.layout.activity_landing)
+                    setListeners()
+                }
             }
         } else {
             setTheme(R.style.AppTheme_Landing)

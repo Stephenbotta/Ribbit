@@ -38,8 +38,8 @@ class VenueViewHolder(itemView: View,
                 .error(R.color.greyImageBackground)
                 .into(itemView.ivVenue)
 
-        itemView.tvVenueName.text = venue.venueName
-        itemView.tvVenueLocation.text = venue.venueLocationName
+        itemView.tvVenueName.text = venue.name
+        itemView.tvVenueLocation.text = venue.address
 
         val memberCount = venue.memberCount ?: 0
         itemView.tvActiveMembers.text = itemView.context.resources.getQuantityString(R.plurals.venues_label_active_members_with_count, memberCount, memberCount)

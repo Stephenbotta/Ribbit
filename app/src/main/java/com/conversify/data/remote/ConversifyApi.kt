@@ -2,7 +2,9 @@ package com.conversify.data.remote
 
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.loginsignup.*
+import com.conversify.data.remote.models.venues.CreateEditVenueRequest
 import com.conversify.data.remote.models.venues.GetVenuesResponse
+import com.conversify.data.remote.models.venues.VenueDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -31,6 +33,9 @@ interface ConversifyApi {
     @POST("user/getData")
     @FormUrlEncoded
     fun getInterests(@Field("flag") flag: Int = ApiConstants.FLAG_INTERESTS): Call<ApiResponse<List<InterestDto>>>
+
+    @POST("user/addEditVenueGroup")
+    fun createVenue(@Body request: CreateEditVenueRequest): Call<ApiResponse<VenueDto>>
 
     @POST("user/getData")
     @FormUrlEncoded

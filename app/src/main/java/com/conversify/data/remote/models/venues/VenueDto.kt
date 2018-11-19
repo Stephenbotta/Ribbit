@@ -1,11 +1,14 @@
 package com.conversify.data.remote.models.venues
 
+import android.os.Parcelable
 import com.conversify.data.remote.models.loginsignup.ImageUrlDto
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class VenueDto(
         @field:SerializedName("venueLocationName")
-        val venueLocationName: String? = null,
+        val address: String? = null,
 
         @field:SerializedName("distance")
         val distance: Double? = null,
@@ -17,7 +20,7 @@ data class VenueDto(
         val id: String? = null,
 
         @field:SerializedName("venueTitle")
-        val venueName: String? = null,
+        val name: String? = null,
 
         @field:SerializedName("imageUrl")
         val imageUrl: ImageUrlDto? = null,
@@ -35,6 +38,6 @@ data class VenueDto(
         val venueLocation: List<Double>? = null,
 
         @field:SerializedName("venueTime")
-        val dateTime: Long? = null,
+        val dateTimeMillis: Long? = null,
 
-        var myVenue: Boolean = false)
+        var myVenue: Boolean = false) : Parcelable
