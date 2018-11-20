@@ -263,8 +263,9 @@ class CreateVenueFragment : BaseFragment() {
                     val place = PlacePicker.getPlace(context, data)
                     request.latitude = place.latLng.latitude
                     request.longitude = place.latLng.longitude
-                    request.address = place.address?.toString()
-                    etVenueLocation.setText(place.address)
+                    request.locationName = place.name?.toString()
+                    request.locationAddress = place.address?.toString()
+                    etVenueLocation.setText(AppUtils.getFormattedAddress(request.locationName, request.locationAddress))
                     updateCreateVenueMenuState()
                 }
             }

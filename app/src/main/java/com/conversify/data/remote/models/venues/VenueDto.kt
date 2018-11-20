@@ -8,7 +8,10 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class VenueDto(
         @field:SerializedName("venueLocationName")
-        val address: String? = null,
+        val locationName: String? = null,
+
+        @field:SerializedName("venueLocationAddress")
+        val locationAddress: String? = null,
 
         @field:SerializedName("distance")
         val distance: Double? = null,

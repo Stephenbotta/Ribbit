@@ -8,11 +8,10 @@ import android.os.Bundle
 import android.support.v7.widget.SearchView
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.models.MapVenue
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.venues.VenueDto
-import com.conversify.extensions.handleError
-import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.pxFromDp
+import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.createvenue.CreateVenueActivity
 import com.conversify.ui.main.explore.VenuesModeNavigator
@@ -54,6 +53,18 @@ class VenuesMapFragment : BaseFragment() {
                 }
 
                 override fun onMapVenueClicked(venue: VenueDto) {
+                }
+
+                override fun onMapClicked() {
+                    clSelectedVenue.gone()
+                }
+
+                override fun onMapVenueSelected(venue: MapVenue) {
+                    clSelectedVenue.visible()
+                }
+
+                override fun onMapVenueDeselected(venue: MapVenue) {
+                    clSelectedVenue.gone()
                 }
             })
         }

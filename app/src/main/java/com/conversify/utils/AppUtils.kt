@@ -15,4 +15,18 @@ object AppUtils {
 
         return tags.distinct()
     }
+
+    fun getFormattedAddress(locationName: String?, locationAddress: String?): String {
+        return when {
+            !locationName.isNullOrBlank() && !locationAddress.isNullOrBlank() -> {
+                String.format("%s, %s", locationName, locationAddress)
+            }
+
+            !locationName.isNullOrBlank() -> locationName
+
+            !locationAddress.isNullOrBlank() -> locationAddress
+
+            else -> ""
+        }
+    }
 }

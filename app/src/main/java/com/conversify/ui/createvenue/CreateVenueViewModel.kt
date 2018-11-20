@@ -59,6 +59,11 @@ class CreateVenueViewModel : ViewModel() {
     fun createVenue(request: CreateEditVenueRequest, selectedVenueImageFile: File?, selectedVerificationFile: File?) {
         createVenue.value = Resource.loading()
 
+        if (selectedVenueImageFile == null && selectedVerificationFile == null) {
+            createVenueApi(request)
+            return
+        }
+
         var venueImageUploaded = selectedVenueImageFile == null
         var verificationUploaded = selectedVerificationFile == null
 

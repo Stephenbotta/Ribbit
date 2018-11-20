@@ -12,9 +12,8 @@ class VenuesMapHelper(context: Context,
                       private val googleMap: GoogleMap,
                       private val callback: Callback) {
     private val clusterManager = ClusterManager<MapVenue>(context, googleMap)
-    private val clusterRenderer = VenuesMapMarkerRenderer(context, googleMap, clusterManager)
+    private val clusterRenderer = VenuesMapMarkerRenderer(context, googleMap, clusterManager, callback)
     private val mapVenues = mutableListOf<MapVenue>()
-    private var selectedMapVenue: MapVenue? = null
 
     init {
         // Disable all unused settings
@@ -37,16 +36,17 @@ class VenuesMapHelper(context: Context,
             googleMap.setOnCameraIdleListener(clusterManager)
             googleMap.setOnMarkerClickListener(clusterManager)
             googleMap.setOnInfoWindowClickListener(clusterManager)
+            googleMap.setOnMapClickListener {
+                clusterRenderer.clearAllSelection()
+                callback.onMapClicked()
+            }
         }
     }
 
     private val propertyClickListener = ClusterManager.OnClusterItemClickListener<MapVenue> { mapVenue ->
         callback.onMapVenueClicked(mapVenue.venue)
+        clusterRenderer.onMarkerClicked(mapVenue)
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mapVenue.position, 20f))
-        //clusterRenderer.updateMarkers(selectedMapVenue, mapProperty)
-        //selectedMapVenue?.isSelected = false
-        //mapProperty.isSelected = true
-        selectedMapVenue = mapVenue
         return@OnClusterItemClickListener true
     }
 
@@ -85,8 +85,9 @@ class VenuesMapHelper(context: Context,
         googleMap.setOnMarkerClickListener(null)
     }
 
-    interface Callback {
+    interface Callback : VenuesMapMarkerRenderer.Callback {
         fun onMapLoaded()
         fun onMapVenueClicked(venue: VenueDto)
+        fun onMapClicked()
     }
 }

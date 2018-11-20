@@ -16,7 +16,10 @@ data class CreateEditVenueRequest(
         var longitude: Double? = null,
 
         @field:SerializedName("venueLocationName")
-        var address: String? = null,
+        var locationName: String? = null,
+
+        @field:SerializedName("venueLocationAddress")
+        var locationAddress: String? = null,
 
         @field:SerializedName("venueTags")
         var tags: List<String>? = null,

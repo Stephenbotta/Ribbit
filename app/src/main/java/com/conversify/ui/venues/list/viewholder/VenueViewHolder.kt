@@ -6,6 +6,7 @@ import com.conversify.R
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.gone
 import com.conversify.extensions.visible
+import com.conversify.utils.AppUtils
 import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_venue.view.*
 
@@ -39,7 +40,7 @@ class VenueViewHolder(itemView: View,
                 .into(itemView.ivVenue)
 
         itemView.tvVenueName.text = venue.name
-        itemView.tvVenueLocation.text = venue.address
+        itemView.tvVenueLocation.text = AppUtils.getFormattedAddress(venue.locationName, venue.locationAddress)
 
         val memberCount = venue.memberCount ?: 0
         itemView.tvActiveMembers.text = itemView.context.resources.getQuantityString(R.plurals.venues_label_active_members_with_count, memberCount, memberCount)
