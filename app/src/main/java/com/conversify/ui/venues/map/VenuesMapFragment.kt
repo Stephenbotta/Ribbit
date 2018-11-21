@@ -29,6 +29,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
 
     private lateinit var viewModel: VenuesViewModel
     private var mapHelper: VenuesMapHelper? = null
+    private var selectedVenue: VenueDto? = null
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_venues_map
 
@@ -66,7 +67,17 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
         })
 
         clSelectedVenue.setOnClickListener {
+            selectedVenue?.let { venue ->
+                // Open own venues
+                if (venue.myVenue) {
+                    return@setOnClickListener
+                }
 
+                // Join other venues
+                if (isNetworkActiveWithMessage()) {
+                    viewModel.joinVenue(venue)
+                }
+            }
         }
 
         fabCreateVenue.setOnClickListener {
@@ -103,6 +114,12 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
     }
 
     private fun displaySelectedVenueDetails(venue: VenueDto) {
+        if (venue.isPrivate == true) {
+            ivPrivate.visible()
+        } else {
+            ivPrivate.gone()
+        }
+
         GlideApp.with(this)
                 .load(venue.imageUrl?.thumbnail)
                 .into(ivVenue)

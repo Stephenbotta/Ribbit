@@ -12,6 +12,7 @@ import com.conversify.data.remote.models.venues.GetVenuesResponse
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.data.remote.models.venues.VenuesNearYouDto
 import com.conversify.data.remote.models.venues.YourVenuesDto
+import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,6 +20,7 @@ import retrofit2.Response
 class VenuesViewModel : ViewModel() {
     val listVenues by lazy { MutableLiveData<Resource<List<Any>>>() }
     val mapVenues by lazy { MutableLiveData<Resource<List<VenueDto>>>() }
+    val joinVenue by lazy { SingleLiveEvent<Resource<VenueDto>>() }
 
     private val myVenues by lazy { mutableListOf<VenueDto>() }
     private val nearbyVenues by lazy { mutableListOf<VenueDto>() }
@@ -104,6 +106,28 @@ class VenuesViewModel : ViewModel() {
 
                     override fun onFailure(call: Call<ApiResponse<GetVenuesResponse>>, t: Throwable) {
                         mapVenues.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
+    fun joinVenue(venue: VenueDto) {
+        joinVenue.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .joinVenue(venueId = venue.id ?: "",
+                        adminId = venue.adminId ?: "",
+                        isPrivate = venue.isPrivate ?: false)
+                .enqueue(object : Callback<Any> {
+                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                        if (response.isSuccessful) {
+                            joinVenue.value = Resource.success(venue)
+                        } else {
+                            joinVenue.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Any>, t: Throwable) {
+                        joinVenue.value = Resource.error(t.failureAppError())
                     }
                 })
     }

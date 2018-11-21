@@ -11,14 +11,19 @@ import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_venue.view.*
 
 class VenueViewHolder(itemView: View,
-                      private val glide: GlideRequests) : RecyclerView.ViewHolder(itemView) {
+                      private val glide: GlideRequests,
+                      private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
     init {
-        itemView.setOnClickListener { }
+        itemView.setOnClickListener { callback.onVenueClicked(venue) }
 
         itemView.btnMore.setOnClickListener { }
     }
 
+    private lateinit var venue: VenueDto
+
     fun bind(venue: VenueDto) {
+        this.venue = venue
+
         if (venue.myVenue) {
             itemView.btnMore.visible()
             itemView.tvDistance.gone()
@@ -33,6 +38,12 @@ class VenueViewHolder(itemView: View,
             }
         }
 
+        if (venue.isPrivate == true) {
+            itemView.ivPrivate.visible()
+        } else {
+            itemView.ivPrivate.gone()
+        }
+
         glide.load(venue.imageUrl?.original)
                 .thumbnail(glide.load(venue.imageUrl?.thumbnail))
                 .placeholder(R.color.greyImageBackground)
@@ -45,5 +56,9 @@ class VenueViewHolder(itemView: View,
         val memberCount = venue.memberCount ?: 0
         itemView.tvActiveMembers.text = itemView.context.resources.getQuantityString(R.plurals.venues_label_active_members_with_count, memberCount, memberCount)
         itemView.tvDistance.text = itemView.context.getString(R.string.distance_mile_with_value, venue.distance)
+    }
+
+    interface Callback {
+        fun onVenueClicked(venue: VenueDto)
     }
 }

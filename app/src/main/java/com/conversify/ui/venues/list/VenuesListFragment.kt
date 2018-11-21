@@ -9,17 +9,19 @@ import android.support.v7.widget.SearchView
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
+import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.createvenue.CreateVenueActivity
+import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.main.explore.VenuesModeNavigator
 import com.conversify.ui.venues.VenuesViewModel
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_venues_list.*
 
-class VenuesListFragment : BaseFragment() {
+class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
     companion object {
         const val TAG = "VenuesListFragment"
 
@@ -30,12 +32,14 @@ class VenuesListFragment : BaseFragment() {
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_venues_list
 
     private lateinit var viewModel: VenuesViewModel
+    private lateinit var loadingDialog: LoadingDialog
     private lateinit var venuesListAdapter: VenuesListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this)[VenuesViewModel::class.java]
+        loadingDialog = LoadingDialog(requireActivity())
         setListeners()
         observeChanges()
         setupVenuesRecycler()
@@ -91,10 +95,28 @@ class VenuesListFragment : BaseFragment() {
                 Status.LOADING -> swipeRefreshLayout.isRefreshing = true
             }
         })
+
+        viewModel.joinVenue.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    loadingDialog.setLoading(false)
+                    getVenues(false)
+                }
+
+                Status.ERROR -> {
+                    loadingDialog.setLoading(false)
+                    handleError(resource.error)
+                }
+
+                Status.LOADING -> loadingDialog.setLoading(true)
+            }
+        })
     }
 
     private fun setupVenuesRecycler() {
-        venuesListAdapter = VenuesListAdapter(GlideApp.with(this))
+        venuesListAdapter = VenuesListAdapter(GlideApp.with(this), this)
         rvVenues.adapter = venuesListAdapter
     }
 
@@ -103,6 +125,18 @@ class VenuesListFragment : BaseFragment() {
             viewModel.getListVenues(showLoading)
         } else {
             swipeRefreshLayout.isRefreshing = false
+        }
+    }
+
+    override fun onVenueClicked(venue: VenueDto) {
+        // Open own venues
+        if (venue.myVenue) {
+            return
+        }
+
+        // Join other venues
+        if (isNetworkActiveWithMessage()) {
+            viewModel.joinVenue(venue)
         }
     }
 
@@ -118,5 +152,10 @@ class VenuesListFragment : BaseFragment() {
         if (requestCode == AppConstants.REQ_CODE_CREATE_VENUE && resultCode == Activity.RESULT_OK) {
             getVenues(false)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        loadingDialog.setLoading(false)
     }
 }

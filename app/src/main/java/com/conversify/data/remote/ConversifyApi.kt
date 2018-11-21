@@ -46,4 +46,11 @@ interface ConversifyApi {
     @POST("user/updateUserCategories")
     @FormUrlEncoded
     fun updateInterests(@Field("categoryArray") interests: List<String>): Call<ApiResponse<ProfileDto>>
+
+    @POST("user/joinGroup")
+    @FormUrlEncoded
+    fun joinVenue(@Field("groupId") venueId: String,
+                  @Field("adminId") adminId: String,
+                  @Field("isPrivate") isPrivate: Boolean,
+                  @Field("groupType") type: String = ApiConstants.TYPE_VENUE): Call<Any>
 }
