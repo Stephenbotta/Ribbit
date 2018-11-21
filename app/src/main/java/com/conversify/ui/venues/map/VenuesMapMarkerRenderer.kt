@@ -5,8 +5,10 @@ import android.support.v4.content.ContextCompat
 import android.view.View
 import com.conversify.R
 import com.conversify.data.local.models.MapVenue
+import com.conversify.data.remote.models.venues.VenueDto
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
@@ -16,7 +18,7 @@ import timber.log.Timber
 
 class VenuesMapMarkerRenderer(context: Context,
                               googleMap: GoogleMap,
-                              private val clusterManager: ClusterManager<MapVenue>,
+                              clusterManager: ClusterManager<MapVenue>,
                               private val callback: VenuesMapHelper.Callback) :
         DefaultClusterRenderer<MapVenue>(context.applicationContext, googleMap, clusterManager) {
     private val mapMarkerView = View.inflate(context, R.layout.layout_map_venue, null)
@@ -24,20 +26,27 @@ class VenuesMapMarkerRenderer(context: Context,
     private val textColorNormal = ContextCompat.getColor(context, R.color.colorPrimary)
     private val textColorSelected = ContextCompat.getColor(context, R.color.white)
 
-    private var selectedMapVenue: MapVenue? = null
+    private val venueMarkersMap = mutableMapOf<String, Marker>()
+
+    private var lastSelectedMapVenue: MapVenue? = null
 
     init {
         iconGenerator.setContentView(mapMarkerView)
+        iconGenerator.setBackground(null)
     }
 
     override fun onBeforeClusterItemRendered(venue: MapVenue, markerOptions: MarkerOptions) {
         super.onBeforeClusterItemRendered(venue, markerOptions)
 
         updateMarkerView(venue)
-        iconGenerator.setBackground(null)
 
         markerOptions.flat(true)
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon()))
+    }
+
+    override fun onClusterItemRendered(clusterItem: MapVenue, marker: Marker) {
+        venueMarkersMap[clusterItem.venue.id ?: ""] = marker
+        super.onClusterItemRendered(clusterItem, marker)
     }
 
     private fun updateMarkerView(venue: MapVenue) {
@@ -52,64 +61,69 @@ class VenuesMapMarkerRenderer(context: Context,
         }
     }
 
-    private fun notifyClickCallback(venue: MapVenue) {
-        if (venue.isSelected) {
-            callback.onMapVenueSelected(venue)
+    private fun notifyClickCallback(mapVenue: MapVenue) {
+        if (mapVenue.isSelected) {
+            callback.onMapVenueSelected(mapVenue.venue)
         } else {
-            callback.onMapVenueDeselected(venue)
+            callback.onMapVenueDeselected()
+        }
+    }
+
+    private fun getVenueMarker(venueId: String?): Marker? {
+        venueId ?: return null
+        return venueMarkersMap[venueId]
+    }
+
+    private fun updateMarkerSelection(mapVenue: MapVenue, isSelected: Boolean) {
+        try {
+            val selectedMarker = getVenueMarker(mapVenue.venue.id)
+            mapVenue.isSelected = isSelected
+            updateMarkerView(mapVenue)
+            selectedMarker?.setIcon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon()))
+        } catch (exception: Exception) {
+            Timber.w(exception)
         }
     }
 
     fun onMarkerClicked(clickedMapVenue: MapVenue) {
-        val selectedVenue = selectedMapVenue
+        val lastSelectedVenue = lastSelectedMapVenue
 
-        try {
-            // De-select current selected marker if it is different from clicked one
-            if (selectedVenue != null && selectedVenue != clickedMapVenue) {
-                val selectedMarker = getMarker(selectedVenue)
-                selectedVenue.isSelected = false
-                updateMarkerView(clickedMapVenue)
-                selectedMarker?.setIcon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon()))
-            }
+        val clickedVenueId = clickedMapVenue.venue.id
+        val lastSelectedVenueId = lastSelectedMapVenue?.venue?.id
 
-            if (selectedVenue == clickedMapVenue) {
-                // If selected and current clicked are same then toggle the state
-                val clickedMarker = getMarker(clickedMapVenue)
-                clickedMapVenue.isSelected = !clickedMapVenue.isSelected
-                updateMarkerView(clickedMapVenue)
-                notifyClickCallback(clickedMapVenue)
-                clickedMarker?.setIcon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon()))
-            } else {
-                // If selected venue is different from clicked then set clicked marker as selected
-                val clickedMarker = getMarker(clickedMapVenue)
-                clickedMapVenue.isSelected = true
-                updateMarkerView(clickedMapVenue)
-                notifyClickCallback(clickedMapVenue)
-                clickedMarker?.setIcon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon()))
-            }
-        } catch (exception: Exception) {
-            Timber.w(exception)
+        // De-select current selected marker if it is different from clicked one
+        if (lastSelectedVenue != null && lastSelectedVenueId != clickedVenueId) {
+            updateMarkerSelection(lastSelectedVenue, false)
         }
 
-        selectedMapVenue = if (clickedMapVenue.isSelected) {
-            clickedMapVenue
+        if (lastSelectedVenueId == null || lastSelectedVenueId != clickedVenueId) {
+            // If selected venue is different from clicked then set clicked marker as selected
+            updateMarkerSelection(clickedMapVenue, true)
+            notifyClickCallback(clickedMapVenue)
         } else {
-            null
+            // If selected and current clicked are same then toggle the state
+            updateMarkerSelection(clickedMapVenue, !clickedMapVenue.isSelected)
+            notifyClickCallback(clickedMapVenue)
         }
+
+        lastSelectedMapVenue = clickedMapVenue
     }
 
-    fun clearAllSelection() {
-        val selectedVenue = selectedMapVenue
-        if (selectedVenue != null) {
-            clusterManager.algorithm.removeItem(selectedVenue)
-            selectedVenue.isSelected = false
-            clusterManager.algorithm.addItem(selectedVenue)
+    fun clearLastSelection() {
+        val lastSelectedVenue = lastSelectedMapVenue
+        if (lastSelectedVenue != null) {
+            updateMarkerSelection(lastSelectedVenue, false)
         }
-        selectedMapVenue = null
+        lastSelectedMapVenue = null
+    }
+
+    fun clearAllItems() {
+        clearLastSelection()
+        venueMarkersMap.clear()
     }
 
     interface Callback {
-        fun onMapVenueSelected(venue: MapVenue)
-        fun onMapVenueDeselected(venue: MapVenue)
+        fun onMapVenueSelected(venue: VenueDto)
+        fun onMapVenueDeselected()
     }
 }

@@ -27,7 +27,7 @@ class VenuesMapHelper(context: Context,
         }
 
         googleMap.setOnMapLoadedCallback {
-            callback.onMapLoaded()
+            callback.onMapLoaded(googleMap)
 
             clusterManager.renderer = clusterRenderer
             clusterManager.setOnClusterItemClickListener(propertyClickListener)
@@ -37,20 +37,21 @@ class VenuesMapHelper(context: Context,
             googleMap.setOnMarkerClickListener(clusterManager)
             googleMap.setOnInfoWindowClickListener(clusterManager)
             googleMap.setOnMapClickListener {
-                clusterRenderer.clearAllSelection()
+                clusterRenderer.clearLastSelection()
                 callback.onMapClicked()
             }
         }
     }
 
     private val propertyClickListener = ClusterManager.OnClusterItemClickListener<MapVenue> { mapVenue ->
-        callback.onMapVenueClicked(mapVenue.venue)
         clusterRenderer.onMarkerClicked(mapVenue)
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mapVenue.position, 20f))
         return@OnClusterItemClickListener true
     }
 
     fun displayVenues(venues: List<VenueDto>) {
+        clusterRenderer.clearAllItems()
+
         if (venues.isEmpty()) {
             mapVenues.clear()
             clusterManager.clearItems()
@@ -86,8 +87,7 @@ class VenuesMapHelper(context: Context,
     }
 
     interface Callback : VenuesMapMarkerRenderer.Callback {
-        fun onMapLoaded()
-        fun onMapVenueClicked(venue: VenueDto)
+        fun onMapLoaded(googleMap: GoogleMap)
         fun onMapClicked()
     }
 }
