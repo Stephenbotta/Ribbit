@@ -116,6 +116,7 @@
     <string name="venues_label_venues_near_you">VENUES NEAR YOU</string>
     <string name="venues_label_most_active">Most Active</string>
     <string name="venues_label_no_venues_found">No venues found</string>
+    <string name="venues_message_notification_sent_to_admin">Notification sent to admin. Please wait for approval</string>
 
     <string name="create_venue_btn_create">CREATE</string>
     <string name="create_venue_btn_upload_document">Upload Document</string>

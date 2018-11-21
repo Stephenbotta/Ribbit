@@ -12,7 +12,9 @@ import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
+import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.createvenue.CreateVenueActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.main.explore.VenuesModeNavigator
@@ -102,7 +104,16 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
             when (resource.status) {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
-                    getVenues(false)
+
+                    resource.data?.let { venue ->
+                        if (venue.isPrivate == true) {
+                            requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
+                        } else {
+                            // Open the joined venue chat if venue is public
+                            ChatActivity.start(requireActivity(), venue)
+                            getVenues(false)
+                        }
+                    }
                 }
 
                 Status.ERROR -> {
@@ -131,6 +142,7 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
     override fun onVenueClicked(venue: VenueDto) {
         // Open own venues
         if (venue.myVenue) {
+            ChatActivity.start(requireActivity(), venue)
             return
         }
 

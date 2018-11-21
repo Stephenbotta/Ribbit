@@ -12,7 +12,9 @@ import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.createvenue.CreateVenueActivity
+import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.main.explore.VenuesModeNavigator
 import com.conversify.ui.venues.VenuesViewModel
 import com.conversify.utils.AppConstants
@@ -28,6 +30,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
     }
 
     private lateinit var viewModel: VenuesViewModel
+    private lateinit var loadingDialog: LoadingDialog
     private var mapHelper: VenuesMapHelper? = null
     private var selectedVenue: VenueDto? = null
 
@@ -37,6 +40,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this)[VenuesViewModel::class.java]
+        loadingDialog = LoadingDialog(requireActivity())
         setupMapFragment()
         setListeners()
         observeChanges()
@@ -70,6 +74,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
             selectedVenue?.let { venue ->
                 // Open own venues
                 if (venue.myVenue) {
+                    ChatActivity.start(requireActivity(), venue)
                     return@setOnClickListener
                 }
 
@@ -103,6 +108,33 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
 
                 Status.LOADING -> {
                 }
+            }
+        })
+
+        viewModel.joinVenue.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    loadingDialog.setLoading(false)
+
+                    resource.data?.let { venue ->
+                        if (venue.isPrivate == true) {
+                            requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
+                        } else {
+                            // Open the joined venue chat if venue is public
+                            ChatActivity.start(requireActivity(), venue)
+                            getVenues()
+                        }
+                    }
+                }
+
+                Status.ERROR -> {
+                    loadingDialog.setLoading(false)
+                    handleError(resource.error)
+                }
+
+                Status.LOADING -> loadingDialog.setLoading(true)
             }
         })
     }
@@ -153,6 +185,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
     }
 
     override fun onMapVenueSelected(venue: VenueDto) {
+        selectedVenue = venue   // Update selected venue
         displaySelectedVenueDetails(venue)
         clSelectedVenue.visible()
         fabCreateVenue.hide()
@@ -160,6 +193,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
     }
 
     override fun onMapVenueDeselected() {
+        selectedVenue = null    // Remove selected venue reference
         clSelectedVenue.gone()
         fabCreateVenue.show()
         llListFilters.visible()
@@ -174,6 +208,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        loadingDialog.setLoading(false)
         mapHelper?.clear()
     }
 }
