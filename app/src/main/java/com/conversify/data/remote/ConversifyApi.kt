@@ -1,6 +1,7 @@
 package com.conversify.data.remote
 
 import com.conversify.data.remote.models.ApiResponse
+import com.conversify.data.remote.models.chat.VenueDetailsResponse
 import com.conversify.data.remote.models.loginsignup.*
 import com.conversify.data.remote.models.venues.CreateEditVenueRequest
 import com.conversify.data.remote.models.venues.GetVenuesResponse
@@ -53,4 +54,9 @@ interface ConversifyApi {
                   @Field("adminId") adminId: String,
                   @Field("isPrivate") isPrivate: Boolean,
                   @Field("groupType") type: String = ApiConstants.TYPE_VENUE): Call<Any>
+
+    @POST("user/venueConversationDetails")
+    @FormUrlEncoded
+    fun getVenueDetails(@Field("groupId") venueId: String,
+                        @Field("chatId") lastMessageId: String?): Call<ApiResponse<VenueDetailsResponse>>
 }

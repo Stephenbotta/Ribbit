@@ -51,7 +51,11 @@ object DateTimeUtils {
         }
     }
 
-    fun getFormattedChatTime(dateTimeMillis: Long?, context: Context): String {
+    fun getFormattedChatMessageTime(dateTimeMillis: Long?): String {
+        return formatServerDateToZonedDateTime(dateTimeMillis, CHAT_MESSAGE_SAME_DAY_FORMATTER)
+    }
+
+    fun getFormattedChatListingTime(dateTimeMillis: Long?, context: Context): String {
         if (dateTimeMillis == null) return ""
 
         val zonedDateTime = parseServerToZonedDateTime(dateTimeMillis)

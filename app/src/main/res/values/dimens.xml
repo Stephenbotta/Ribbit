@@ -7,4 +7,8 @@
     <integer name="phone_number_max_length">15</integer>
     <integer name="password_max_length">20</integer>
     <integer name="password_min_length">6</integer>
+
+    <dimen name="chat_item_margin">104dp</dimen>
+    <dimen name="chat_image_height">160dp</dimen>
+    <dimen name="chat_image_width">240dp</dimen>
 </resources>

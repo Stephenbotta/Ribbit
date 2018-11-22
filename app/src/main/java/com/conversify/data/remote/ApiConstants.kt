@@ -12,4 +12,6 @@ object ApiConstants {
     const val FLAG_REGISTER_GOOGLE = 2
     const val FLAG_REGISTER_PHONE_NUMBER = 3
     const val FLAG_REGISTER_EMAIL = 4
+
+    const val MESSAGE_TYPE_TEXT = "TEXT"
 }
