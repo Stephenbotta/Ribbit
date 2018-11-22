@@ -187,6 +187,8 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
     override fun onMapVenueSelected(venue: VenueDto) {
         selectedVenue = venue   // Update selected venue
         displaySelectedVenueDetails(venue)
+        searchView.clearFocus()
+        searchView.hideKeyboard()
         clSelectedVenue.visible()
         fabCreateVenue.hide()
         llListFilters.gone()

@@ -10,6 +10,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import com.google.maps.android.ui.IconGenerator
@@ -120,6 +121,23 @@ class VenuesMapMarkerRenderer(context: Context,
     fun clearAllItems() {
         clearLastSelection()
         venueMarkersMap.clear()
+    }
+
+    override fun onBeforeClusterRendered(cluster: Cluster<MapVenue>?, markerOptions: MarkerOptions?) {
+        val lastSelectedVenue = lastSelectedMapVenue
+
+        // todo check selected venue with cluster forming when clicked on map
+        if (lastSelectedVenue != null) {
+            val clusterItems = cluster?.items ?: emptyList()
+            val selectedItemInCluster = clusterItems.firstOrNull {
+                it.venue.id == lastSelectedVenue.venue.id
+            } != null
+
+            if (selectedItemInCluster) {
+                updateMarkerSelection(lastSelectedVenue, false)
+            }
+        }
+        super.onBeforeClusterRendered(cluster, markerOptions)
     }
 
     interface Callback {
