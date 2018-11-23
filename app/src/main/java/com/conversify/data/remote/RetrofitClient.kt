@@ -2,10 +2,7 @@ package com.conversify.data.remote
 
 import com.conversify.BuildConfig
 import com.conversify.data.local.UserManager
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
+import com.google.gson.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -51,7 +48,7 @@ object RetrofitClient {
                 .build()
     }
 
-    val GSON by lazy {
+    val GSON: Gson by lazy {
         GsonBuilder()
                 .registerTypeAdapter(ZonedDateTime::class.java, DateDeserializer())
                 .create()
