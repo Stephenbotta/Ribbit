@@ -55,8 +55,12 @@ class ChatAdapter(context: Context,
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val aboveMessage = messages.getOrNull(position - 1)
+        val currentMessage = messages[position]
+        ChatHelper.updateCurrentMessage(position, currentMessage, aboveMessage)
+
         when (holder) {
-            is ViewHolderChatText -> holder.bind(messages[position])
+            is ViewHolderChatText -> holder.bind(currentMessage)
         }
     }
 
@@ -74,6 +78,7 @@ class ChatAdapter(context: Context,
     fun addOldMessages(messages: List<ChatMessageDto>) {
         this.messages.addAll(0, messages)
         notifyItemRangeInserted(0, messages.size)
+        notifyItemChanged(messages.size)
     }
 
     fun updateMessageStatus(localId: String, messageStatus: MessageStatus) {

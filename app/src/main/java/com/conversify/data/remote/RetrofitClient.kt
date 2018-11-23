@@ -2,13 +2,21 @@ package com.conversify.data.remote
 
 import com.conversify.BuildConfig
 import com.conversify.data.local.UserManager
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
+import org.threeten.bp.Instant
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZonedDateTime
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
+import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
@@ -38,29 +46,52 @@ object RetrofitClient {
     private val RETROFIT by lazy {
         Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(GSON))
                 .client(OK_HTTP_CLIENT)
                 .build()
     }
 
+    val GSON by lazy {
+        GsonBuilder()
+                .registerTypeAdapter(ZonedDateTime::class.java, DateDeserializer())
+                .create()
+    }
+
     val conversifyApi: ConversifyApi by lazy { RETROFIT.create(ConversifyApi::class.java) }
-}
 
-class AuthorizationInterceptor : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val originalRequest = chain.request()
+    /**
+     * Parse all received date to zoned date time in local time zone
+     *
+     * All the date received from the api will be in UTC milliseconds
+     * */
+    private class DateDeserializer : JsonDeserializer<ZonedDateTime?> {
+        override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?): ZonedDateTime? {
+            return try {
+                Instant.ofEpochMilli(json.asLong)
+                        .atZone(ZoneId.systemDefault())
+            } catch (exception: Exception) {
+                Timber.w(exception)
+                null
+            }
+        }
+    }
 
-        val authorization = UserManager.getAuthorization()
+    private class AuthorizationInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val originalRequest = chain.request()
 
-        return if (authorization != null) {
-            Timber.i("Adding authorization in header")
-            val authRequest = originalRequest.newBuilder()
-                    .header("authorization", authorization)
-                    .build()
-            chain.proceed(authRequest)
-        } else {
-            Timber.i("User authorization does not exist")
-            chain.proceed(originalRequest)
+            val authorization = UserManager.getAuthorization()
+
+            return if (authorization != null) {
+                Timber.i("Adding authorization in header")
+                val authRequest = originalRequest.newBuilder()
+                        .header("authorization", authorization)
+                        .build()
+                chain.proceed(authRequest)
+            } else {
+                Timber.i("User authorization does not exist")
+                chain.proceed(originalRequest)
+            }
         }
     }
 }

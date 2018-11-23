@@ -27,6 +27,7 @@ class VenuesMapMarkerRenderer(context: Context,
     private val textColorNormal = ContextCompat.getColor(context, R.color.colorPrimary)
     private val textColorSelected = ContextCompat.getColor(context, R.color.white)
 
+    // Key - "venueId"
     private val venueMarkersMap = mutableMapOf<String, Marker>()
 
     private var lastSelectedMapVenue: MapVenue? = null
@@ -126,7 +127,6 @@ class VenuesMapMarkerRenderer(context: Context,
     override fun onBeforeClusterRendered(cluster: Cluster<MapVenue>?, markerOptions: MarkerOptions?) {
         val lastSelectedVenue = lastSelectedMapVenue
 
-        // todo check selected venue with cluster forming when clicked on map
         if (lastSelectedVenue != null) {
             val clusterItems = cluster?.items ?: emptyList()
             val selectedItemInCluster = clusterItems.firstOrNull {
@@ -135,6 +135,7 @@ class VenuesMapMarkerRenderer(context: Context,
 
             if (selectedItemInCluster) {
                 updateMarkerSelection(lastSelectedVenue, false)
+                callback.onMapVenueDeselected()
             }
         }
         super.onBeforeClusterRendered(cluster, markerOptions)

@@ -19,6 +19,9 @@ data class VenueDto(
         @field:SerializedName("adminId")
         val adminId: String? = null,
 
+        @field:SerializedName("conversationId")
+        val conversationId: String? = null,
+
         @field:SerializedName("_id")
         val id: String? = null,
 

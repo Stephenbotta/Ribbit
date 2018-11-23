@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.conversify.R
 import com.conversify.data.local.UserManager
 import com.conversify.data.local.models.AppError
+import com.conversify.data.remote.socket.SocketManager
 import com.conversify.ui.landing.LandingActivity
 import timber.log.Timber
 
@@ -130,6 +131,7 @@ fun Context.handleError(error: AppError?) {
 fun Context.startLandingWithClear() {
     clearNotifications()
     UserManager.removeProfile()
+    SocketManager.destroy()
 
     val intent = Intent(this, LandingActivity::class.java)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

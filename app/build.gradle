@@ -121,6 +121,12 @@ dependencies {
     implementation("com.amazonaws:aws-android-sdk-s3:$awsSdkVersion") {
         transitive = true
     }
+
+    // https://github.com/socketio/socket.io-client-java
+    implementation ("io.socket:socket.io-client:$socketIoVersion") {
+        // excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'

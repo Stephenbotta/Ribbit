@@ -24,6 +24,7 @@ buildscript {
         googleMapsUtilsVersion = '0.5'
         facebookLoginVersion = '4.38.1'
         awsSdkVersion = '2.8.2'
+        socketIoVersion = '1.0.0'
     }
 
     repositories {

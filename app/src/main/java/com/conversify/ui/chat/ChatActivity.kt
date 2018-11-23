@@ -6,10 +6,15 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
 import com.conversify.R
+import com.conversify.data.remote.models.PagingResult
+import com.conversify.data.remote.models.Resource
+import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.venues.VenueDto
+import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseActivity
 import com.conversify.utils.GlideApp
@@ -36,15 +41,40 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         rvChat.scrollToPosition(adapter.itemCount - 1)
     }
 
+    private val oldMessagesObserver = Observer<Resource<PagingResult<List<ChatMessageDto>>>> {
+        it ?: return@Observer
+        when (it.status) {
+            Status.SUCCESS -> {
+                swipeRefreshLayout.isRefreshing = false
+                adapter.addOldMessages(it.data?.result ?: emptyList())
+                // Scroll to bottom for first page
+                if (it.data?.isFirstPage == true) {
+                    rvChat.scrollToPosition(adapter.itemCount - 1)
+                }
+            }
+
+            Status.ERROR -> {
+                swipeRefreshLayout.isRefreshing = false
+                handleError(it.error)
+            }
+
+            Status.LOADING -> {
+                swipeRefreshLayout.isRefreshing = true
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
         viewModel = ViewModelProviders.of(this)[ChatViewModel::class.java]
+        viewModel.start(venue)
         setListeners()
         observeChanges()
         setupChatRecycler()
         displayToolbarDetails()
+        getOldMessages()
     }
 
     private fun setListeners() {
@@ -60,6 +90,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
 
     private fun observeChanges() {
         viewModel.newMessage.observeForever(newMessageObserver)
+        viewModel.oldMessages.observeForever(oldMessagesObserver)
     }
 
     private fun setupChatRecycler() {
@@ -67,6 +98,15 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         adapter = ChatAdapter(this, this)
         rvChat.adapter = adapter
         (rvChat.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
+        rvChat.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!rvChat.canScrollVertically(-1) && viewModel.isValidForPaging()) {
+                    viewModel.getOldMessages()
+                }
+            }
+        })
     }
 
     private fun displayToolbarDetails() {
@@ -75,6 +115,12 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                 .into(ivVenue)
 
         tvVenueName.text = venue.name
+    }
+
+    private fun getOldMessages() {
+        if (isNetworkActiveWithMessage()) {
+            viewModel.getOldMessages()
+        }
     }
 
     private fun sendTextMessage() {
@@ -92,5 +138,6 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.newMessage.removeObserver(newMessageObserver)
+        viewModel.oldMessages.removeObserver(oldMessagesObserver)
     }
 }

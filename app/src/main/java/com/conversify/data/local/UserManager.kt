@@ -13,7 +13,7 @@ object UserManager {
         PrefsManager.get().save(PrefsManager.PREF_FIRST_APP_LAUNCH, false)
     }
 
-    private fun getAccessToken(): String {
+    fun getAccessToken(): String {
         return PrefsManager.get().getString(PrefsManager.PREF_ACCESS_TOKEN, "")
     }
 

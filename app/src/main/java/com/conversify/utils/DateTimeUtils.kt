@@ -17,6 +17,7 @@ object DateTimeUtils {
     private val CHAT_MESSAGE_SAME_DAY_FORMATTER by lazy { DateTimeFormatter.ofPattern("hh:mm a") }
     private val CHAT_MESSAGE_SAME_WEEK_FORMATTER by lazy { DateTimeFormatter.ofPattern("EEEE") }
     private val CHAT_MESSAGE_SAME_YEAR_FORMATTER by lazy { DateTimeFormatter.ofPattern("MMM dd") }
+    private val CHAT_MESSAGE_DATE_HEADER_FORMATTER by lazy { DateTimeFormatter.ofPattern("EEE · MMM dd") }
     private val CHAT_MESSAGE_OTHER_FORMATTER by lazy { DateTimeFormatter.ofPattern("dd/MM/yyyy") }
 
     fun formatMillisToDuration(input: Long): String {
@@ -36,7 +37,7 @@ object DateTimeUtils {
         }
     }
 
-    private fun formatServerDateToZonedDateTime(dateTimeMillis: Long?, displayFormatter: DateTimeFormatter): String {
+    private fun formatServerToLocalTimeZone(dateTimeMillis: Long?, displayFormatter: DateTimeFormatter): String {
         // Return empty string if provided date is null or blank
         if (dateTimeMillis == null) return ""
 
@@ -51,8 +52,8 @@ object DateTimeUtils {
         }
     }
 
-    fun getFormattedChatMessageTime(dateTimeMillis: Long?): String {
-        return formatServerDateToZonedDateTime(dateTimeMillis, CHAT_MESSAGE_SAME_DAY_FORMATTER)
+    fun getFormattedChatMessageTime(zonedDateTime: ZonedDateTime?): String {
+        return zonedDateTime?.format(CHAT_MESSAGE_SAME_DAY_FORMATTER) ?: ""
     }
 
     fun getFormattedChatListingTime(dateTimeMillis: Long?, context: Context): String {
@@ -83,6 +84,10 @@ object DateTimeUtils {
                 zonedDateTime.format(CHAT_MESSAGE_OTHER_FORMATTER)
             }
         }
+    }
+
+    fun getFormattedChatDateHeader(zonedDateTime: ZonedDateTime?): String {
+        return zonedDateTime?.format(CHAT_MESSAGE_DATE_HEADER_FORMATTER) ?: ""
     }
 
     fun getFormattedVenueDateTime(zonedDateTime: ZonedDateTime?): String {
