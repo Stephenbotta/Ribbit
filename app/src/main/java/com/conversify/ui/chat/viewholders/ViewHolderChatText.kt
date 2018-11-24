@@ -30,12 +30,12 @@ class ViewHolderChatText(itemView: View,
 
         if (chatMessage.showDate) {
             itemView.tvDate.visible()
-            itemView.tvDate.text = DateTimeUtils.getFormattedChatDateHeader(chatMessage.createdDateTime)
+            itemView.tvDate.text = DateTimeUtils.formatChatDateHeader(chatMessage.createdDateTime)
         } else {
             itemView.tvDate.gone()
         }
 
         itemView.tvMessage.text = chatMessage.details?.message
-        itemView.tvTime.text = DateTimeUtils.getFormattedChatMessageTime(chatMessage.createdDateTime)
+        itemView.tvTime.text = DateTimeUtils.formatChatMessageTime(chatMessage.createdDateTime)
     }
 }

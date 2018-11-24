@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.data.remote.models.venues.VenueDto
+import com.conversify.data.remote.models.venues.VenuesNearYouDto
 import com.conversify.data.remote.models.venues.YourVenuesDto
 import com.conversify.extensions.inflate
 import com.conversify.ui.venues.list.viewholder.VenueViewHolder
@@ -38,8 +39,19 @@ class VenuesListAdapter(private val glide: GlideRequests,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
-        if (holder is VenueViewHolder && item is VenueDto) {
-            holder.bind(item)
+
+        when (holder) {
+            is VenueViewHolder -> {
+                if (item is VenueDto) {
+                    holder.bind(item)
+                }
+            }
+
+            is VenuesNearLabelViewHolder -> {
+                if (item is VenuesNearYouDto) {
+                    holder.bind(item)
+                }
+            }
         }
     }
 

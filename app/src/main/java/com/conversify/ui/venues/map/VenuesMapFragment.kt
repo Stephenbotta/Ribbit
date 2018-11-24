@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v7.widget.SearchView
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.models.VenueFilters
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.*
@@ -17,6 +18,7 @@ import com.conversify.ui.createvenue.CreateVenueActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.main.explore.VenuesModeNavigator
 import com.conversify.ui.venues.VenuesViewModel
+import com.conversify.ui.venues.filters.VenueFiltersActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.AppUtils
 import com.conversify.utils.GlideApp
@@ -57,6 +59,11 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
     private fun setListeners() {
         btnListVenues.setOnClickListener {
             showListVenuesFragment()
+        }
+
+        btnVenuesFilter.setOnClickListener {
+            val intent = VenueFiltersActivity.getStartIntent(requireActivity(), viewModel.getFilters())
+            startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_FILTERS)
         }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -203,8 +210,19 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppConstants.REQ_CODE_CREATE_VENUE && resultCode == Activity.RESULT_OK) {
-            getVenues()
+        when (requestCode) {
+            AppConstants.REQ_CODE_CREATE_VENUE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    getVenues()
+                }
+            }
+
+            AppConstants.REQ_CODE_VENUE_FILTERS -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val filters = data?.getParcelableExtra<VenueFilters>(AppConstants.EXTRA_VENUE_FILTERS)
+                    viewModel.updateFilters(filters)
+                }
+            }
         }
     }
 

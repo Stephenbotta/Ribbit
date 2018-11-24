@@ -44,6 +44,14 @@ interface ConversifyApi {
                   @Field("currentLat") latitude: Double? = null,
                   @Field("currentLong") longitude: Double? = null): Call<ApiResponse<GetVenuesResponse>>
 
+    @POST("user/getVenueFilter")
+    @FormUrlEncoded
+    fun getVenuesWithFilter(@Field("categoryId") categoryId: String? = null,
+                            @Field("date") date: String? = null,
+                            @Field("private") isPrivate: Int? = null,
+                            @Field("currentLat") latitude: Double? = null,
+                            @Field("currentLong") longitude: Double? = null): Call<ApiResponse<List<VenueDto>>>
+
     @POST("user/updateUserCategories")
     @FormUrlEncoded
     fun updateInterests(@Field("categoryArray") interests: List<String>): Call<ApiResponse<ProfileDto>>

@@ -60,4 +60,16 @@
         <item name="android:paddingBottom">16dp</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="VenueFiltersParent" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:background">@drawable/selector_venue_filters_parent_background</item>
+        <item name="android:button">@null</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/textGray</item>
+        <item name="android:fontFamily">@font/brandon_text_medium</item>
+    </style>
 </resources>

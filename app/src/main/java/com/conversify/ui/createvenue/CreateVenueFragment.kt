@@ -106,7 +106,7 @@ class CreateVenueFragment : BaseFragment() {
         etDateTime.setOnClickListener {
             DateTimePicker(requireActivity(),
                     minDateMillis = System.currentTimeMillis()) { selectedDateTime ->
-                etDateTime.setText(DateTimeUtils.getFormattedVenueDateTime(selectedDateTime))
+                etDateTime.setText(DateTimeUtils.formatVenueDateTime(selectedDateTime))
                 request.dateTimeMillis = selectedDateTime.toInstant().toEpochMilli()
                 updateCreateVenueMenuState()
             }.show()
@@ -138,7 +138,8 @@ class CreateVenueFragment : BaseFragment() {
 
         clUploadDocument.setOnClickListener {
             FileUtils.showFilePicker(this, AppConstants.REQ_CODE_FILE_PICKER,
-                    arrayOf(FileUtils.MIME_TYPE_IMAGE,
+                    arrayOf(FileUtils.MIME_TYPE_JPG,
+                            FileUtils.MIME_TYPE_PNG,
                             FileUtils.MIME_TYPE_DOC,
                             FileUtils.MIME_TYPE_PDF,
                             FileUtils.MIME_TYPE_TEXT))

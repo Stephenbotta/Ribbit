@@ -1,8 +1,12 @@
 package com.conversify.ui.venues
 
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import android.support.annotation.StringRes
+import com.conversify.R
 import com.conversify.data.local.UserManager
+import com.conversify.data.local.models.VenueFilters
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
@@ -12,18 +16,22 @@ import com.conversify.data.remote.models.venues.GetVenuesResponse
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.data.remote.models.venues.VenuesNearYouDto
 import com.conversify.data.remote.models.venues.YourVenuesDto
+import com.conversify.utils.AppConstants
+import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class VenuesViewModel : ViewModel() {
+class VenuesViewModel(application: Application) : AndroidViewModel(application) {
     val listVenues by lazy { MutableLiveData<Resource<List<Any>>>() }
     val mapVenues by lazy { MutableLiveData<Resource<List<VenueDto>>>() }
     val joinVenue by lazy { SingleLiveEvent<Resource<VenueDto>>() }
 
     private val myVenues by lazy { mutableListOf<VenueDto>() }
     private val nearbyVenues by lazy { mutableListOf<VenueDto>() }
+
+    private var filters: VenueFilters? = null
 
     private var searchListQuery = ""
     private var searchMapQuery = ""
@@ -33,81 +41,179 @@ class VenuesViewModel : ViewModel() {
             listVenues.value = Resource.loading()
         }
 
-        RetrofitClient.conversifyApi
-                .getVenues(latitude = UserManager.getLastLatitude(),
-                        longitude = UserManager.getLastLongitude())
-                .enqueue(object : Callback<ApiResponse<GetVenuesResponse>> {
-                    override fun onResponse(call: Call<ApiResponse<GetVenuesResponse>>,
-                                            response: Response<ApiResponse<GetVenuesResponse>>) {
-                        if (response.isSuccessful) {
-                            val myVenues = response.body()?.data?.myVenues ?: emptyList()
-                            val nearbyVenues = response.body()?.data?.nearbyVenues ?: emptyList()
+        val filter = this.filters
+        if (filter == null) {
+            RetrofitClient.conversifyApi
+                    .getVenues(latitude = UserManager.getLastLatitude(),
+                            longitude = UserManager.getLastLongitude())
+                    .enqueue(object : Callback<ApiResponse<GetVenuesResponse>> {
+                        override fun onResponse(call: Call<ApiResponse<GetVenuesResponse>>,
+                                                response: Response<ApiResponse<GetVenuesResponse>>) {
+                            if (response.isSuccessful) {
+                                val myVenues = response.body()?.data?.myVenues ?: emptyList()
+                                val nearbyVenues = response.body()?.data?.nearbyVenues
+                                        ?: emptyList()
 
-                            // Set my venue flag to true for all my listVenues
-                            myVenues.forEach { it.myVenue = true }
+                                // Set my venue flag to true for all my listVenues
+                                myVenues.forEach { it.myVenue = true }
 
-                            this@VenuesViewModel.myVenues.clear()
-                            this@VenuesViewModel.myVenues.addAll(myVenues)
+                                this@VenuesViewModel.myVenues.clear()
+                                this@VenuesViewModel.myVenues.addAll(myVenues)
 
-                            this@VenuesViewModel.nearbyVenues.clear()
-                            this@VenuesViewModel.nearbyVenues.addAll(nearbyVenues)
+                                this@VenuesViewModel.nearbyVenues.clear()
+                                this@VenuesViewModel.nearbyVenues.addAll(nearbyVenues)
 
-                            val venueItems = if (searchListQuery.isBlank()) {
-                                getVenueListItems(myVenues, nearbyVenues)
+                                val venueItems = if (searchListQuery.isBlank()) {
+                                    getVenueListItems(myVenues, nearbyVenues)
+                                } else {
+                                    getSearchVenueListResult(searchListQuery)
+                                }
+
+                                listVenues.value = Resource.success(venueItems)
                             } else {
-                                getSearchVenueListResult(searchListQuery)
+                                listVenues.value = Resource.error(response.getAppError())
                             }
-
-                            listVenues.value = Resource.success(venueItems)
-                        } else {
-                            listVenues.value = Resource.error(response.getAppError())
                         }
-                    }
 
-                    override fun onFailure(call: Call<ApiResponse<GetVenuesResponse>>, t: Throwable) {
-                        listVenues.value = Resource.error(t.failureAppError())
-                    }
-                })
+                        override fun onFailure(call: Call<ApiResponse<GetVenuesResponse>>, t: Throwable) {
+                            listVenues.value = Resource.error(t.failureAppError())
+                        }
+                    })
+        } else {
+            val categoryId = filter.category?.id
+            val date = DateTimeUtils.formatVenueFiltersDateForServer(filter.date?.dateTimeMillisUtc)
+            val isPrivate = when {
+                filter.privacy?.isPrivate == null -> null
+
+                else -> if (filter.privacy.isPrivate == true) {
+                    AppConstants.PRIVATE_TRUE
+                } else {
+                    AppConstants.PRIVATE_FALSE
+                }
+            }
+            RetrofitClient.conversifyApi
+                    .getVenuesWithFilter(categoryId = categoryId,
+                            date = date,
+                            isPrivate = isPrivate,
+                            latitude = filter.location?.latitude,
+                            longitude = filter.location?.longitude)
+                    .enqueue(object : Callback<ApiResponse<List<VenueDto>>> {
+                        override fun onResponse(call: Call<ApiResponse<List<VenueDto>>>,
+                                                response: Response<ApiResponse<List<VenueDto>>>) {
+                            if (response.isSuccessful) {
+                                val nearbyVenues = response.body()?.data ?: emptyList()
+
+                                this@VenuesViewModel.myVenues.clear()
+
+                                this@VenuesViewModel.nearbyVenues.clear()
+                                this@VenuesViewModel.nearbyVenues.addAll(nearbyVenues)
+
+                                val venueItems = if (searchListQuery.isBlank()) {
+                                    getVenueListItems(myVenues, nearbyVenues)
+                                } else {
+                                    getSearchVenueListResult(searchListQuery)
+                                }
+
+                                listVenues.value = Resource.success(venueItems)
+                            } else {
+                                listVenues.value = Resource.error(response.getAppError())
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ApiResponse<List<VenueDto>>>, t: Throwable) {
+                            listVenues.value = Resource.error(t.failureAppError())
+                        }
+                    })
+        }
     }
 
     fun getMapVenues() {
         mapVenues.value = Resource.loading()
 
-        RetrofitClient.conversifyApi
-                .getVenues(latitude = UserManager.getLastLatitude(),
-                        longitude = UserManager.getLastLongitude())
-                .enqueue(object : Callback<ApiResponse<GetVenuesResponse>> {
-                    override fun onResponse(call: Call<ApiResponse<GetVenuesResponse>>,
-                                            response: Response<ApiResponse<GetVenuesResponse>>) {
-                        if (response.isSuccessful) {
-                            val myVenues = response.body()?.data?.myVenues ?: emptyList()
-                            val nearbyVenues = response.body()?.data?.nearbyVenues ?: emptyList()
+        val filter = this.filters
+        if (filter == null) {
+            RetrofitClient.conversifyApi
+                    .getVenues(latitude = UserManager.getLastLatitude(),
+                            longitude = UserManager.getLastLongitude())
+                    .enqueue(object : Callback<ApiResponse<GetVenuesResponse>> {
+                        override fun onResponse(call: Call<ApiResponse<GetVenuesResponse>>,
+                                                response: Response<ApiResponse<GetVenuesResponse>>) {
+                            if (response.isSuccessful) {
+                                val myVenues = response.body()?.data?.myVenues ?: emptyList()
+                                val nearbyVenues = response.body()?.data?.nearbyVenues
+                                        ?: emptyList()
 
-                            // Set my venue flag to true for all my listVenues
-                            myVenues.forEach { it.myVenue = true }
+                                // Set my venue flag to true for all my listVenues
+                                myVenues.forEach { it.myVenue = true }
 
-                            this@VenuesViewModel.myVenues.clear()
-                            this@VenuesViewModel.myVenues.addAll(myVenues)
+                                this@VenuesViewModel.myVenues.clear()
+                                this@VenuesViewModel.myVenues.addAll(myVenues)
 
-                            this@VenuesViewModel.nearbyVenues.clear()
-                            this@VenuesViewModel.nearbyVenues.addAll(nearbyVenues)
+                                this@VenuesViewModel.nearbyVenues.clear()
+                                this@VenuesViewModel.nearbyVenues.addAll(nearbyVenues)
 
-                            val venueItems = if (searchMapQuery.isBlank()) {
-                                getVenueMapItems(myVenues, nearbyVenues)
+                                val venueItems = if (searchMapQuery.isBlank()) {
+                                    getVenueMapItems(myVenues, nearbyVenues)
+                                } else {
+                                    getSearchVenueMapResult(searchMapQuery)
+                                }
+
+                                mapVenues.value = Resource.success(venueItems)
                             } else {
-                                getSearchVenueMapResult(searchMapQuery)
+                                mapVenues.value = Resource.error(response.getAppError())
                             }
-
-                            mapVenues.value = Resource.success(venueItems)
-                        } else {
-                            mapVenues.value = Resource.error(response.getAppError())
                         }
-                    }
 
-                    override fun onFailure(call: Call<ApiResponse<GetVenuesResponse>>, t: Throwable) {
-                        mapVenues.value = Resource.error(t.failureAppError())
-                    }
-                })
+                        override fun onFailure(call: Call<ApiResponse<GetVenuesResponse>>, t: Throwable) {
+                            mapVenues.value = Resource.error(t.failureAppError())
+                        }
+                    })
+        } else {
+            val categoryId = filter.category?.id
+            val date = DateTimeUtils.formatVenueFiltersDateForServer(filter.date?.dateTimeMillisUtc)
+            val isPrivate = when {
+                filter.privacy?.isPrivate == null -> null
+
+                else -> if (filter.privacy.isPrivate == true) {
+                    AppConstants.PRIVATE_TRUE
+                } else {
+                    AppConstants.PRIVATE_FALSE
+                }
+            }
+            RetrofitClient.conversifyApi
+                    .getVenuesWithFilter(categoryId = categoryId,
+                            date = date,
+                            isPrivate = isPrivate,
+                            latitude = filter.location?.latitude,
+                            longitude = filter.location?.longitude)
+                    .enqueue(object : Callback<ApiResponse<List<VenueDto>>> {
+                        override fun onResponse(call: Call<ApiResponse<List<VenueDto>>>,
+                                                response: Response<ApiResponse<List<VenueDto>>>) {
+                            if (response.isSuccessful) {
+                                val nearbyVenues = response.body()?.data ?: emptyList()
+
+                                this@VenuesViewModel.myVenues.clear()
+
+                                this@VenuesViewModel.nearbyVenues.clear()
+                                this@VenuesViewModel.nearbyVenues.addAll(nearbyVenues)
+
+                                val venueItems = if (searchMapQuery.isBlank()) {
+                                    getVenueMapItems(myVenues, nearbyVenues)
+                                } else {
+                                    getSearchVenueMapResult(searchMapQuery)
+                                }
+
+                                mapVenues.value = Resource.success(venueItems)
+                            } else {
+                                mapVenues.value = Resource.error(response.getAppError())
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ApiResponse<List<VenueDto>>>, t: Throwable) {
+                            mapVenues.value = Resource.error(t.failureAppError())
+                        }
+                    })
+        }
     }
 
     fun joinVenue(venue: VenueDto) {
@@ -131,6 +237,12 @@ class VenuesViewModel : ViewModel() {
                     }
                 })
     }
+
+    fun updateFilters(filters: VenueFilters?) {
+        this.filters = filters
+    }
+
+    fun getFilters(): VenueFilters? = filters
 
     fun searchListVenues(query: String) {
         searchListQuery = query
@@ -175,11 +287,39 @@ class VenuesViewModel : ViewModel() {
         }
 
         if (nearbyVenues.isNotEmpty()) {
-            venueItems.add(VenuesNearYouDto())
+            venueItems.add(VenuesNearYouDto(getAppliedFilterLabel()))
             venueItems.addAll(nearbyVenues)
         }
 
         return venueItems
+    }
+
+    private fun getAppliedFilterLabel(): String? {
+        return when {
+            filters?.category?.name != null -> {
+                filters?.category?.name
+            }
+
+            filters?.date?.dateTimeMillisUtc != null -> {
+                return DateTimeUtils.formatVenueFiltersDate(filters?.date?.dateTimeMillisUtc)
+            }
+
+            filters?.privacy?.isPrivate != null -> {
+                if (filters?.privacy?.isPrivate == true) {
+                    getString(R.string.venue_filters_btn_private)
+                } else {
+                    getString(R.string.venue_filters_btn_public)
+                }
+            }
+
+            filters?.location != null -> filters?.location?.name
+
+            else -> null
+        }
+    }
+
+    private fun getString(@StringRes resId: Int): String {
+        return getApplication<Application>().resources.getString(resId)
     }
 
     /**

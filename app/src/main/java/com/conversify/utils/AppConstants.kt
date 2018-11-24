@@ -21,4 +21,7 @@ object AppConstants {
     const val REQ_CODE_PLACE_PICKER = 105
     const val REQ_CODE_CREATE_VENUE = 106
     const val REQ_CODE_FILE_PICKER = 107
+    const val REQ_CODE_VENUE_FILTERS = 108
+
+    const val EXTRA_VENUE_FILTERS = "EXTRA_VENUE_FILTERS"
 }

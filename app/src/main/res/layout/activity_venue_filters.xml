@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/brandon_text_bold"
+        android:text="@string/venues_btn_filters"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/btnClose"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnClose" />
+
+    <ImageView
+        android:id="@+id/btnClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:padding="16dp"
+        android:src="@drawable/ic_cross_gray_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <RadioGroup
+        android:id="@+id/rgTypes"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@color/venueFiltersParentBackground"
+        app:layout_constraintBottom_toTopOf="@id/btnReset"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnClose">
+
+        <RadioButton
+            android:id="@+id/rbCategory"
+            style="@style/VenueFiltersParent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/venue_filter_label_category" />
+
+        <RadioButton
+            android:id="@+id/rbDate"
+            style="@style/VenueFiltersParent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/venue_filters_label_date" />
+
+        <RadioButton
+            android:id="@+id/rbPrivacy"
+            style="@style/VenueFiltersParent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/venue_filters_label_privacy" />
+
+        <RadioButton
+            android:id="@+id/rbLocation"
+            style="@style/VenueFiltersParent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/venue_filters_label_location" />
+
+    </RadioGroup>
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/btnReset"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/venue_filters_btn_reset"
+        android:textAllCaps="false"
+        android:textColor="@color/venueFiltersReset"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/rgTypes"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvFilterItems"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/rgTypes"
+        app:layout_constraintTop_toBottomOf="@id/btnClose"
+        tools:listitem="@layout/item_venue_filter_category" />
+
+</android.support.constraint.ConstraintLayout>

@@ -18,6 +18,8 @@ import java.io.File
 object FileUtils {
     const val MIME_TYPE_ALL = "*/*"
     const val MIME_TYPE_IMAGE = "image/*"
+    const val MIME_TYPE_JPG = "image/jpeg"
+    const val MIME_TYPE_PNG = "image/png"
     const val MIME_TYPE_VIDEO = "video/*"
     const val MIME_TYPE_PDF = "application/pdf"
     const val MIME_TYPE_DOC = "application/msword"

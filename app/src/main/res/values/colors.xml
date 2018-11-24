@@ -24,4 +24,7 @@
     <color name="textGrayMedium">#B0B5BF</color>
     <color name="textGrayLight">#E0E2E6</color>
     <color name="socialButtonStrokeColor">#1F4C4C4C</color>
+
+    <color name="venueFiltersParentBackground">#F9F4FD</color>
+    <color name="venueFiltersReset">#D11D1D</color>
 </resources>
