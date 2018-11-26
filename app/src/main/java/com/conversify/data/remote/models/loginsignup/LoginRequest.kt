@@ -3,14 +3,9 @@ package com.conversify.data.remote.models.loginsignup
 import com.google.gson.annotations.SerializedName
 
 data class LoginRequest(
-        @field:SerializedName("email")
-        val email: String? = null,
-
-        @field:SerializedName("countryCode")
-        val countryCode: String? = null,
-
-        @field:SerializedName("phoneNumber")
-        val phoneNumber: String? = null,
+        // Containing either of email, username, phone number or phone number with country code.
+        @field:SerializedName("userCredentials")
+        val credentials: String? = null,
 
         @field:SerializedName("facebookId")
         val facebookId: String? = null,

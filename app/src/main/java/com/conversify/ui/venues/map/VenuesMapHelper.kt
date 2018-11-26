@@ -45,7 +45,7 @@ class VenuesMapHelper(context: Context,
 
     private val venueClickListener = ClusterManager.OnClusterItemClickListener<MapVenue> { mapVenue ->
         clusterRenderer.onMarkerClicked(mapVenue)
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mapVenue.position, 16f))
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mapVenue.position, 20f))
         return@OnClusterItemClickListener true
     }
 

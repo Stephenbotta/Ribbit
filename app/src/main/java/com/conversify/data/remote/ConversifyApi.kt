@@ -22,6 +22,10 @@ interface ConversifyApi {
     @POST("user/logIn")
     fun login(@Body request: LoginRequest): Call<ApiResponse<ProfileDto>>
 
+    @POST("user/forgotPassword")
+    @FormUrlEncoded
+    fun resetPassword(@Field("email") email: String): Call<Any>
+
     @POST("user/verifyOTP")
     fun verifyOtp(@Body request: VerifyOtpRequest): Call<ApiResponse<ProfileDto>>
 
@@ -30,6 +34,10 @@ interface ConversifyApi {
 
     @POST("user/signUp")
     fun signUp(@Body request: SignUpRequest): Call<ApiResponse<ProfileDto>>
+
+    @POST("user/userNameCheck")
+    @FormUrlEncoded
+    fun usernameAvailability(@Field("userName") username: String): Call<ApiResponse<UsernameAvailabilityResponse>>
 
     @POST("user/getData")
     @FormUrlEncoded
@@ -49,8 +57,8 @@ interface ConversifyApi {
     fun getVenuesWithFilter(@Field("categoryId") categoryId: String? = null,
                             @Field("date") date: String? = null,
                             @Field("private") isPrivate: Int? = null,
-                            @Field("currentLat") latitude: Double? = null,
-                            @Field("currentLong") longitude: Double? = null): Call<ApiResponse<List<VenueDto>>>
+                            @Field("locationLat") latitude: Double? = null,
+                            @Field("locationLong") longitude: Double? = null): Call<ApiResponse<List<VenueDto>>>
 
     @POST("user/updateUserCategories")
     @FormUrlEncoded

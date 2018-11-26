@@ -40,7 +40,7 @@
     <string name="error_empty_full_name">Please enter full name</string>
     <string name="error_empty_user_name">Please enter username</string>
     <string name="error_user_name_contains_spaces">Username should not contain whitespace</string>
-    <string name="error_invalid_user_name_length">Username should contain at least 3 characters</string>
+    <string name="error_invalid_user_name_length">Username should contain at least 6 characters</string>
     <string name="error_invalid_username_characters">Username can contain underscores, periods, dashes and at least one Alphanumeric character</string>
     <string name="error_empty_phone_number">Please enter phone number</string>
     <string name="error_empty_otp">Please enter OTP</string>
@@ -61,6 +61,7 @@
 
     <string name="login_label_enter_phone_number">Enter phone number</string>
     <string name="login_label_enter_email_id">Enter Email ID</string>
+    <string name="login_label_phone_username_or_email">Phone number, username or email</string>
     <string name="login_label_slash">/</string>
     <string name="login_label_your_registered">Your registered</string>
     <string name="login_label_welcome">Welcome</string>
@@ -72,6 +73,7 @@
     <string name="login_btn_phone_number">Phone Number</string>
     <string name="login_btn_continue_with_facebook">CONTINUE WITH FACEBOOK</string>
     <string name="login_btn_continue_with_google">CONTINUE WITH GOOGLE</string>
+    <string name="login_message_reset_password_link_sent">Reset password link sent successfully</string>
 
     <string name="verification_label_verification">Verification</string>
     <string name="verification_label_we_sent_you_a_code_phone">We sent you a code to verify your number</string>
@@ -93,6 +95,7 @@
     <string name="welcome_label_full_name">Full name</string>
     <string name="welcome_label_enter_username">Enter Username</string>
     <string name="welcome_label_enter_full_name">Enter Full name</string>
+    <string name="welcome_label_username_validation_requirements">*Username must contains at least 6 characters containing only alphanumeric, period, hyphen and underscore.</string>
 
     <string name="choose_interests_label_choose_interests">Tell us about your interests</string>
     <string name="choose_interests_label_choose_at_least">Choose at least 3 interests</string>
@@ -137,6 +140,7 @@
     <string name="create_venue_message_verification_file_size_should_be">Verification file size should be less than 5 MB</string>
 
     <string name="chat_label_type_here">Type here</string>
+
     <string name="venue_filter_label_category">Category</string>
     <string name="venue_filters_label_date">Date</string>
     <string name="venue_filters_label_privacy">Privacy</string>

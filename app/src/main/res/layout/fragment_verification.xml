@@ -44,28 +44,29 @@
 
     <EditText
         android:id="@+id/etEnterCode"
+        style="@style/AppTheme.EditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:background="@null"
+        android:layout_marginEnd="24dp"
         android:hint="@string/verification_label_enter_code"
+        android:importantForAutofill="no"
         android:inputType="number"
         android:maxLength="4"
-        android:textColorHint="@color/textGrayLight"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelCodeSentTo" />
+        app:layout_constraintTop_toBottomOf="@id/tvLabelCodeSentTo"
+        tools:targetApi="o" />
 
     <TextView
         android:id="@+id/tvLabelDidNotReceiveCode"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="48dp"
+        android:layout_marginEnd="24dp"
         android:text="@string/verification_label_did_not_receive_the_code"
         android:textColor="@color/textGray"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:src="@drawable/ic_forward_white"
-        app:backgroundTint="?attr/colorPrimary"
+        app:backgroundTint="@color/selector_fab_background"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -10,6 +10,8 @@ import com.conversify.extensions.hideKeyboard
 import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
+import com.conversify.ui.loginsignup.login.LoginFragment
+import com.conversify.ui.loginsignup.signup.SignUpFragment
 import com.conversify.ui.loginsignup.welcome.WelcomeFragment
 import com.conversify.utils.AppConstants
 import kotlinx.android.synthetic.main.activity_login_sign_up.*
@@ -72,10 +74,21 @@ class LoginSignUpActivity : BaseActivity(), BackButtonEnabledListener {
 
                 else -> {
                     val mode = intent.getIntExtra(EXTRA_MODE, AppConstants.MODE_LOGIN)
-                    val fragment = LoginSignUpFragment.newInstance(mode)
-                    supportFragmentManager.beginTransaction()
-                            .add(R.id.flContainer, fragment, LoginSignUpFragment.TAG)
-                            .commit()
+                    when (mode) {
+                        AppConstants.MODE_LOGIN -> {
+                            val fragment = LoginFragment.newInstance()
+                            supportFragmentManager.beginTransaction()
+                                    .add(R.id.flContainer, fragment, LoginFragment.TAG)
+                                    .commit()
+                        }
+
+                        else -> {
+                            val fragment = SignUpFragment.newInstance()
+                            supportFragmentManager.beginTransaction()
+                                    .add(R.id.flContainer, fragment, SignUpFragment.TAG)
+                                    .commit()
+                        }
+                    }
                 }
             }
         } else {

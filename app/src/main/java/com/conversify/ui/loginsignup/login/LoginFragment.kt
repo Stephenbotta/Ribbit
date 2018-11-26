@@ -1,11 +1,10 @@
-package com.conversify.ui.loginsignup
+package com.conversify.ui.loginsignup.login
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -15,12 +14,14 @@ import com.conversify.data.remote.FacebookLogin
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.LoginRequest
 import com.conversify.data.remote.models.loginsignup.ProfileDto
-import com.conversify.data.remote.models.loginsignup.SignUpRequest
 import com.conversify.data.remote.models.social.FacebookProfile
 import com.conversify.data.remote.models.social.SocialProfile
-import com.conversify.extensions.*
+import com.conversify.extensions.handleError
+import com.conversify.extensions.hideKeyboard
+import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.loginsignup.LoginSignUpViewModel
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
 import com.conversify.ui.loginsignup.createpassword.CreatePasswordFragment
 import com.conversify.ui.loginsignup.loginpassword.LoginPasswordFragment
@@ -29,24 +30,21 @@ import com.conversify.ui.loginsignup.welcome.WelcomeFragment
 import com.conversify.ui.main.MainActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.SocialUtils
-import com.conversify.utils.ValidationUtils
 import com.facebook.FacebookException
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import kotlinx.android.synthetic.main.fragment_sign_up.*
+import kotlinx.android.synthetic.main.fragment_login.*
 import timber.log.Timber
 
-class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginListener {
+class LoginFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginListener {
     companion object {
-        const val TAG = "LoginSignUpFragment"
-        private const val ARGUMENT_MODE = "ARGUMENT_MODE"
+        const val TAG = "LoginFragment"
 
-        fun newInstance(mode: Int): Fragment {
-            val fragment = LoginSignUpFragment()
+        fun newInstance(): Fragment {
+            val fragment = LoginFragment()
             val arguments = Bundle()
-            arguments.putInt(ARGUMENT_MODE, mode)
             fragment.arguments = arguments
             return fragment
         }
@@ -56,17 +54,14 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var facebookLogin: FacebookLogin
     private lateinit var googleSignInClient: GoogleSignInClient
-    private var mode = AppConstants.MODE_LOGIN
-    private var registeredMode = AppConstants.REGISTERED_MODE_PHONE
 
-    override fun getFragmentLayoutResId(): Int = R.layout.fragment_sign_up
+    override fun getFragmentLayoutResId(): Int = R.layout.fragment_login
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this)[LoginSignUpViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())
-        mode = arguments?.getInt(ARGUMENT_MODE) ?: AppConstants.MODE_LOGIN
         facebookLogin = FacebookLogin(this)
 
         setupGoogleSignInClient()
@@ -85,47 +80,11 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
     }
 
     private fun setupViews() {
-        if (mode == AppConstants.MODE_LOGIN) {
-            tvLabelTitle.setText(R.string.login)
-        } else {
-            tvLabelTitle.setText(R.string.sign_up)
-        }
-
         fabProceed.isEnabled = false
-
-        countryCodePicker.registerCarrierNumberEditText(etPhoneNumber)
     }
 
     private fun setListeners() {
-        val selectedTextColor = ContextCompat.getColor(requireActivity(), R.color.colorPrimary)
-        val deSelectedTextColor = ContextCompat.getColor(requireActivity(), R.color.textGray)
-
-        btnPhoneNumber.setOnClickListener {
-            fabProceed.isEnabled = false    // Disable fab
-            registeredMode = AppConstants.REGISTERED_MODE_PHONE     // Update registered mode
-            btnPhoneNumber.setTextColor(selectedTextColor)
-            btnEmail.setTextColor(deSelectedTextColor)
-            countryCodePicker.visible()
-            etPhoneNumber.visible()
-            etPhoneNumber.requestFocus()
-            etEmail.setText("")
-            etEmail.gone()
-        }
-
-        btnEmail.setOnClickListener {
-            fabProceed.isEnabled = false    // Disable fab
-            registeredMode = AppConstants.REGISTERED_MODE_EMAIL     // Update registered mode
-            btnEmail.setTextColor(selectedTextColor)
-            btnPhoneNumber.setTextColor(deSelectedTextColor)
-            countryCodePicker.gone()
-            etEmail.visible()
-            etEmail.requestFocus()
-            etPhoneNumber.setText("")
-            etPhoneNumber.gone()
-        }
-
-        etPhoneNumber.addTextChangedListener(this)
-        etEmail.addTextChangedListener(this)
+        etCredentials.addTextChangedListener(this)
 
         cvContinueWithFacebook.setOnClickListener {
             facebookLogin.performLogin(this)
@@ -137,30 +96,12 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
 
         fabProceed.setOnClickListener {
             if (formDataValid() && requireActivity().isNetworkActiveWithMessage()) {
-                etPhoneNumber.clearFocus()
-                etEmail.clearFocus()
+                etCredentials.clearFocus()
                 it.hideKeyboard()
 
-                if (mode == AppConstants.MODE_LOGIN) {
-                    if (registeredMode == AppConstants.REGISTERED_MODE_PHONE) {
-                        val phoneNumber = etPhoneNumber.text.toString()
-                        val request = LoginRequest(credentials = phoneNumber)
-                        viewModel.login(request)
-                    } else {
-                        val email = etEmail.text.toString()
-                        val request = LoginRequest(credentials = email)
-                        viewModel.login(request)
-                    }
-                } else {
-                    if (registeredMode == AppConstants.REGISTERED_MODE_PHONE) {
-                        val countryCode = countryCodePicker.selectedCountryCodeWithPlus
-                        val phoneNumber = etPhoneNumber.text.toString()
-                        viewModel.registerEmailOrPhoneNumber(countryCode = countryCode, phoneNumber = phoneNumber)
-                    } else {
-                        val email = etEmail.text.toString()
-                        viewModel.registerEmailOrPhoneNumber(email = email)
-                    }
-                }
+                val credentials = etCredentials.text.toString().trim()
+                val request = LoginRequest(credentials = credentials)
+                viewModel.login(request)
             }
         }
     }
@@ -191,41 +132,7 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
     }
 
     private fun formDataValid(): Boolean {
-        return if (registeredMode == AppConstants.REGISTERED_MODE_PHONE) {
-            // Validations for phone number
-            val phoneNumber = etPhoneNumber.text.toString()
-
-            if (phoneNumber.isEmpty()) {
-                requireActivity().shortToast(R.string.error_empty_phone_number)
-                false
-            } else if (!isPhoneNumberValid()) {
-                requireActivity().shortToast(R.string.error_invalid_phone_number)
-                false
-            } else {
-                true
-            }
-        } else {
-            // Validations for email
-            val email = etEmail.text.toString()
-
-            if (email.isEmpty()) {
-                requireActivity().shortToast(R.string.error_empty_email)
-                false
-            } else if (!ValidationUtils.isEmailValid(email)) {
-                requireActivity().shortToast(R.string.error_invalid_email)
-                false
-            } else {
-                true
-            }
-        }
-    }
-
-    private fun isPhoneNumberValid(): Boolean {
-        var isNumberValid = false
-        countryCodePicker.setPhoneNumberValidityChangeListener { isValid ->
-            isNumberValid = isValid
-        }
-        return isNumberValid
+        return etCredentials.text.toString().trim().isNotBlank()
     }
 
     private fun handleNavigation(profile: ProfileDto) {
@@ -246,7 +153,7 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
                         }
                     } else {
                         // Password screen for login
-                        val credentials = etEmail.text.toString()
+                        val credentials = etCredentials.text.toString()
                         val fragment = LoginPasswordFragment.newInstance(profile, credentials)
                         val tag = LoginPasswordFragment.TAG
                         navigateToFragment(fragment, tag)
@@ -293,17 +200,7 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
     }
 
     override fun onTextChanged(text: CharSequence, start: Int, before: Int, count: Int) {
-        when (registeredMode) {
-            AppConstants.REGISTERED_MODE_PHONE -> {
-                val phoneNumber = etPhoneNumber.text.toString()
-                fabProceed.isEnabled = ValidationUtils.isPhoneNumberLengthValid(phoneNumber)
-            }
-
-            AppConstants.REGISTERED_MODE_EMAIL -> {
-                val email = etEmail.text.toString()
-                fabProceed.isEnabled = ValidationUtils.isEmailValid(email)
-            }
-        }
+        fabProceed.isEnabled = formDataValid()
     }
 
     override fun onFacebookLoginSuccess() {
@@ -332,27 +229,12 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
     private fun handleSocialProfileSuccess(socialProfile: SocialProfile) {
         if (!isNetworkActiveWithMessage()) return
 
-        if (mode == AppConstants.MODE_LOGIN) {
-            val request = if (socialProfile.source == ApiConstants.FLAG_REGISTER_FACEBOOK) {
-                LoginRequest(facebookId = socialProfile.socialId)
-            } else {
-                LoginRequest(googleId = socialProfile.socialId)
-            }
-            viewModel.login(request)
+        val request = if (socialProfile.source == ApiConstants.FLAG_REGISTER_FACEBOOK) {
+            LoginRequest(facebookId = socialProfile.socialId)
         } else {
-            val request = if (socialProfile.source == ApiConstants.FLAG_REGISTER_FACEBOOK) {
-                SignUpRequest(flag = ApiConstants.FLAG_REGISTER_FACEBOOK,
-                        facebookId = socialProfile.socialId,
-                        email = socialProfile.email,
-                        fullName = socialProfile.fullName)
-            } else {
-                SignUpRequest(flag = ApiConstants.FLAG_REGISTER_GOOGLE,
-                        googleId = socialProfile.socialId,
-                        email = socialProfile.email,
-                        fullName = socialProfile.fullName)
-            }
-            viewModel.signUp(request)
+            LoginRequest(googleId = socialProfile.socialId)
         }
+        viewModel.login(request)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
@@ -43,6 +45,8 @@ class VerificationFragment : BaseFragment() {
         val profile = arguments?.getParcelable(ARGUMENT_PROFILE) as ProfileDto
         viewModel.start(profile)
 
+        fabProceed.isEnabled = false
+
         displayVerificationDetails(profile)
         setListeners()
         observeChanges()
@@ -77,6 +81,19 @@ class VerificationFragment : BaseFragment() {
                 }
             }
         }
+
+        etEnterCode.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+                val otp = text?.toString() ?: ""
+                fabProceed.isEnabled = ValidationUtils.isOtpValid(otp)
+            }
+        })
 
         val spannableText = getString(R.string.verification_label_resend_code)
         val typeface = ResourcesCompat.getFont(requireActivity(), R.font.brandon_text_bold)

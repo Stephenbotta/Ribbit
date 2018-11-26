@@ -278,7 +278,7 @@ class CreateVenueFragment : BaseFragment() {
                         if (verificationFile.length() <= AppConstants.VENUE_VERIFICATION_FILE_SIZE_LIMIT) {
                             Timber.i(verificationFile.absolutePath)
                             selectedVerificationFile = verificationFile
-                            cbVerificationSelected.visible()
+                            ivVerificationSelected.visible()
                         } else {
                             requireActivity().longToast(R.string.create_venue_message_verification_file_size_should_be)
                         }

@@ -157,6 +157,10 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
         }
     }
 
+    override fun onAppliedFilterLabelClicked() {
+        btnVenuesFilter.callOnClick()
+    }
+
     private fun showMapVenuesFragment() {
         val parentFragment = parentFragment
         if (parentFragment is VenuesModeNavigator) {

@@ -1,4 +1,4 @@
-package com.conversify.ui.loginsignup
+package com.conversify.ui.loginsignup.signup
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.res.ResourcesCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -13,7 +14,6 @@ import com.conversify.R
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.FacebookLogin
 import com.conversify.data.remote.models.Status
-import com.conversify.data.remote.models.loginsignup.LoginRequest
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.loginsignup.SignUpRequest
 import com.conversify.data.remote.models.social.FacebookProfile
@@ -21,6 +21,7 @@ import com.conversify.data.remote.models.social.SocialProfile
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.loginsignup.LoginSignUpViewModel
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
 import com.conversify.ui.loginsignup.createpassword.CreatePasswordFragment
 import com.conversify.ui.loginsignup.loginpassword.LoginPasswordFragment
@@ -38,15 +39,13 @@ import com.google.android.gms.common.api.ApiException
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import timber.log.Timber
 
-class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginListener {
+class SignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginListener {
     companion object {
-        const val TAG = "LoginSignUpFragment"
-        private const val ARGUMENT_MODE = "ARGUMENT_MODE"
+        const val TAG = "SignUpFragment"
 
-        fun newInstance(mode: Int): Fragment {
-            val fragment = LoginSignUpFragment()
+        fun newInstance(): Fragment {
+            val fragment = SignUpFragment()
             val arguments = Bundle()
-            arguments.putInt(ARGUMENT_MODE, mode)
             fragment.arguments = arguments
             return fragment
         }
@@ -56,7 +55,6 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var facebookLogin: FacebookLogin
     private lateinit var googleSignInClient: GoogleSignInClient
-    private var mode = AppConstants.MODE_LOGIN
     private var registeredMode = AppConstants.REGISTERED_MODE_PHONE
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_sign_up
@@ -66,7 +64,6 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
 
         viewModel = ViewModelProviders.of(this)[LoginSignUpViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())
-        mode = arguments?.getInt(ARGUMENT_MODE) ?: AppConstants.MODE_LOGIN
         facebookLogin = FacebookLogin(this)
 
         setupGoogleSignInClient()
@@ -85,14 +82,8 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
     }
 
     private fun setupViews() {
-        if (mode == AppConstants.MODE_LOGIN) {
-            tvLabelTitle.setText(R.string.login)
-        } else {
-            tvLabelTitle.setText(R.string.sign_up)
-        }
-
         fabProceed.isEnabled = false
-
+        countryCodePicker.setTypeFace(ResourcesCompat.getFont(requireActivity(), R.font.brandon_text_medium))
         countryCodePicker.registerCarrierNumberEditText(etPhoneNumber)
     }
 
@@ -141,25 +132,13 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
                 etEmail.clearFocus()
                 it.hideKeyboard()
 
-                if (mode == AppConstants.MODE_LOGIN) {
-                    if (registeredMode == AppConstants.REGISTERED_MODE_PHONE) {
-                        val phoneNumber = etPhoneNumber.text.toString()
-                        val request = LoginRequest(credentials = phoneNumber)
-                        viewModel.login(request)
-                    } else {
-                        val email = etEmail.text.toString()
-                        val request = LoginRequest(credentials = email)
-                        viewModel.login(request)
-                    }
+                if (registeredMode == AppConstants.REGISTERED_MODE_PHONE) {
+                    val countryCode = countryCodePicker.selectedCountryCodeWithPlus
+                    val phoneNumber = etPhoneNumber.text.toString()
+                    viewModel.registerEmailOrPhoneNumber(countryCode = countryCode, phoneNumber = phoneNumber)
                 } else {
-                    if (registeredMode == AppConstants.REGISTERED_MODE_PHONE) {
-                        val countryCode = countryCodePicker.selectedCountryCodeWithPlus
-                        val phoneNumber = etPhoneNumber.text.toString()
-                        viewModel.registerEmailOrPhoneNumber(countryCode = countryCode, phoneNumber = phoneNumber)
-                    } else {
-                        val email = etEmail.text.toString()
-                        viewModel.registerEmailOrPhoneNumber(email = email)
-                    }
+                    val email = etEmail.text.toString()
+                    viewModel.registerEmailOrPhoneNumber(email = email)
                 }
             }
         }
@@ -332,27 +311,18 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
     private fun handleSocialProfileSuccess(socialProfile: SocialProfile) {
         if (!isNetworkActiveWithMessage()) return
 
-        if (mode == AppConstants.MODE_LOGIN) {
-            val request = if (socialProfile.source == ApiConstants.FLAG_REGISTER_FACEBOOK) {
-                LoginRequest(facebookId = socialProfile.socialId)
-            } else {
-                LoginRequest(googleId = socialProfile.socialId)
-            }
-            viewModel.login(request)
+        val request = if (socialProfile.source == ApiConstants.FLAG_REGISTER_FACEBOOK) {
+            SignUpRequest(flag = ApiConstants.FLAG_REGISTER_FACEBOOK,
+                    facebookId = socialProfile.socialId,
+                    email = socialProfile.email,
+                    fullName = socialProfile.fullName)
         } else {
-            val request = if (socialProfile.source == ApiConstants.FLAG_REGISTER_FACEBOOK) {
-                SignUpRequest(flag = ApiConstants.FLAG_REGISTER_FACEBOOK,
-                        facebookId = socialProfile.socialId,
-                        email = socialProfile.email,
-                        fullName = socialProfile.fullName)
-            } else {
-                SignUpRequest(flag = ApiConstants.FLAG_REGISTER_GOOGLE,
-                        googleId = socialProfile.socialId,
-                        email = socialProfile.email,
-                        fullName = socialProfile.fullName)
-            }
-            viewModel.signUp(request)
+            SignUpRequest(flag = ApiConstants.FLAG_REGISTER_GOOGLE,
+                    googleId = socialProfile.socialId,
+                    email = socialProfile.email,
+                    fullName = socialProfile.fullName)
         }
+        viewModel.signUp(request)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

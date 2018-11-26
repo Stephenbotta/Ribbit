@@ -25,6 +25,11 @@
     <color name="textGrayLight">#E0E2E6</color>
     <color name="socialButtonStrokeColor">#1F4C4C4C</color>
 
+    <color name="editTextBackground">#FAFAFA</color>
+    <color name="editTextStroke">#E7E7E7</color>
+    <color name="editTextContent">#2F2F2F</color>
+    <color name="editTextHint">#A1A1A1</color>
+
     <color name="venueFiltersParentBackground">#F9F4FD</color>
     <color name="venueFiltersReset">#D11D1D</color>
 </resources>

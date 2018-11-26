@@ -84,7 +84,7 @@
                 android:singleLine="true"
                 android:textColor="@color/textGray"
                 android:textSize="16sp"
-                android:theme="@style/AppTheme.EditTextTheme"
+                android:theme="@style/AppTheme.EditTextCreateVenue"
                 tools:text="Starbucks Fans" />
 
         </android.support.design.widget.TextInputLayout>
@@ -113,7 +113,7 @@
                 android:textColor="@color/textGray"
                 android:textIsSelectable="false"
                 android:textSize="16sp"
-                android:theme="@style/AppTheme.EditTextTheme"
+                android:theme="@style/AppTheme.EditTextCreateVenue"
                 tools:text="@tools:sample/cities" />
 
         </android.support.design.widget.TextInputLayout>
@@ -138,7 +138,7 @@
                 android:singleLine="true"
                 android:textColor="@color/textGray"
                 android:textSize="16sp"
-                android:theme="@style/AppTheme.EditTextTheme"
+                android:theme="@style/AppTheme.EditTextCreateVenue"
                 tools:text="#movies #action" />
 
         </android.support.design.widget.TextInputLayout>
@@ -167,7 +167,7 @@
                 android:textColor="@color/textGray"
                 android:textIsSelectable="false"
                 android:textSize="16sp"
-                android:theme="@style/AppTheme.EditTextTheme"
+                android:theme="@style/AppTheme.EditTextCreateVenue"
                 tools:text="12 Nov 2018, 06:25 PM" />
 
         </android.support.design.widget.TextInputLayout>
@@ -245,7 +245,7 @@
             android:textColor="@color/textGray"
             android:textColorHint="@color/textGrayMedium"
             android:textSize="16sp"
-            android:theme="@style/AppTheme.EditTextTheme"
+            android:theme="@style/AppTheme.EditTextCreateVenue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvLabelIfYouAreOwner"
@@ -261,9 +261,9 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/background_create_venue_upload_document"
             android:paddingStart="16dp"
-            android:paddingTop="4dp"
+            android:paddingTop="8dp"
             android:paddingEnd="16dp"
-            android:paddingBottom="4dp"
+            android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/etVenueOwnerName">
@@ -271,7 +271,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/cbVerificationSelected"
                 android:drawableStart="@drawable/ic_attachment"
                 android:drawablePadding="16dp"
                 android:ellipsize="end"
@@ -282,23 +281,22 @@
                 android:textColor="?attr/colorPrimary"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/cbVerificationSelected"
+                app:layout_constraintEnd_toStartOf="@id/ivVerificationSelected"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <CheckBox
-                android:id="@+id/cbVerificationSelected"
+            <ImageView
+                android:id="@+id/ivVerificationSelected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:buttonTint="?attr/colorPrimary"
-                android:checked="true"
-                android:enabled="false"
+                android:src="@drawable/ic_verify_success"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
         </android.support.constraint.ConstraintLayout>
 

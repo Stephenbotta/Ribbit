@@ -33,6 +33,9 @@ data class ProfileDto(
         @field:SerializedName("phoneNumber")
         val phoneNumber: String? = null,
 
+        @field:SerializedName("fullphoneNumber")
+        val fullPhoneNumber: String? = null,
+
         @field:SerializedName("isDeleted")
         val isDeleted: Boolean? = null,
 

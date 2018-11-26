@@ -15,121 +15,30 @@
         android:layout_marginStart="24dp"
         android:fontFamily="@font/brandon_text_bold"
         android:includeFontPadding="false"
+        android:text="@string/login"
         android:textColor="@color/textGray"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/login" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvLabelYourRegistered"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/etCredentials"
+        style="@style/AppTheme.EditText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="36dp"
-        android:text="@string/login_label_your_registered"
-        android:textColor="@color/textGray"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelTitle" />
-
-    <TextView
-        android:id="@+id/btnPhoneNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="36dp"
-        android:fontFamily="@font/brandon_text_bold"
-        android:text="@string/login_btn_phone_number"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintStart_toEndOf="@id/tvLabelYourRegistered"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelTitle" />
-
-    <TextView
-        android:id="@+id/tvLabelSlash"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:fontFamily="@font/brandon_text_bold"
-        android:text="@string/login_label_slash"
-        app:layout_constraintStart_toEndOf="@id/btnPhoneNumber"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelTitle" />
-
-    <TextView
-        android:id="@+id/btnEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:fontFamily="@font/brandon_text_bold"
-        android:text="@string/login_btn_email_id"
-        android:textColor="@color/textGray"
-        app:layout_constraintStart_toEndOf="@id/tvLabelSlash"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelTitle" />
-
-    <com.hbb20.CountryCodePicker
-        android:id="@+id/countryCodePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:ccp_autoDetectCountry="true"
-        app:ccp_contentColor="@color/textGray"
-        app:ccp_showArrow="false"
-        app:ccp_showNameCode="false"
-        app:ccp_autoFormatNumber="false"
-        app:ccp_textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelYourRegistered" />
-
-    <EditText
-        android:id="@+id/etPhoneNumber"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:layout_marginStart="4dp"
-        android:background="@null"
-        android:hint="@string/login_label_enter_phone_number"
+        android:hint="@string/login_label_phone_username_or_email"
         android:imeOptions="actionDone"
-        android:inputType="number"
-        android:maxLength="@integer/phone_number_max_length"
-        android:singleLine="true"
-        android:textColor="@color/textGray"
-        android:textColorHint="@color/textGrayLight"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@id/countryCodePicker"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/countryCodePicker"
-        app:layout_constraintTop_toTopOf="@id/countryCodePicker"
-        tools:ignore="TextFields" />
-
-    <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:background="@null"
-        android:hint="@string/login_label_enter_email_id"
-        android:imeOptions="actionDone"
+        android:importantForAutofill="no"
         android:inputType="textEmailAddress"
         android:maxLength="@integer/email_max_length"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp"
         android:singleLine="true"
-        android:textColor="@color/textGray"
-        android:textColorHint="@color/textGrayLight"
-        android:textSize="20sp"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelYourRegistered" />
-
-    <android.support.constraint.Barrier
-        android:id="@+id/barrierPhoneEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="countryCodePicker,etPhoneNumber,etEmail" />
+        app:layout_constraintTop_toBottomOf="@id/tvLabelTitle"
+        tools:targetApi="o" />
 
     <TextView
         android:id="@+id/tvLabelOrYouCould"
@@ -140,15 +49,15 @@
         android:text="@string/login_label_or_you_could"
         android:textColor="@color/textGray"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barrierPhoneEmail" />
+        app:layout_constraintTop_toBottomOf="@id/etCredentials" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cvContinueWithFacebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/background_social_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -169,9 +78,9 @@
             android:id="@+id/dividerFacebook"
             android:layout_width="1dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:background="@color/socialButtonStrokeColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/ivFacebook"
@@ -183,8 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/brandon_text_bold"
-            android:paddingBottom="16dp"
             android:paddingTop="16dp"
+            android:paddingBottom="16dp"
             android:text="@string/login_btn_continue_with_facebook"
             android:textColor="@color/textGray"
             android:textSize="12sp"
@@ -197,9 +106,9 @@
         android:id="@+id/cvContinueWithGoogle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/background_social_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -220,9 +129,9 @@
             android:id="@+id/dividerGoogle"
             android:layout_width="1dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:background="@color/socialButtonStrokeColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/ivGoogle"
@@ -234,8 +143,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:fontFamily="@font/brandon_text_bold"
-            android:paddingBottom="16dp"
             android:paddingTop="16dp"
+            android:paddingBottom="16dp"
             android:text="@string/login_btn_continue_with_google"
             android:textColor="@color/textGray"
             android:textSize="12sp"

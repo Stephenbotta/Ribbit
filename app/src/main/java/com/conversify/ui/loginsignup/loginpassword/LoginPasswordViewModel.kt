@@ -16,6 +16,7 @@ import retrofit2.Response
 
 class LoginPasswordViewModel : ViewModel() {
     val login by lazy { SingleLiveEvent<Resource<ProfileDto>>() }
+    val resetPassword by lazy { SingleLiveEvent<Resource<Any>>() }
 
     fun login(request: LoginRequest) {
         login.value = Resource.loading()
@@ -38,6 +39,26 @@ class LoginPasswordViewModel : ViewModel() {
 
                     override fun onFailure(call: Call<ApiResponse<ProfileDto>>, t: Throwable) {
                         login.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
+    fun resetPassword(email: String) {
+        resetPassword.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .resetPassword(email)
+                .enqueue(object : Callback<Any> {
+                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                        if (response.isSuccessful) {
+                            resetPassword.value = Resource.success()
+                        } else {
+                            resetPassword.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Any>, t: Throwable) {
+                        resetPassword.value = Resource.error(t.failureAppError())
                     }
                 })
     }

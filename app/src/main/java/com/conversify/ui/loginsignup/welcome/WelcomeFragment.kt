@@ -5,6 +5,9 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.res.ResourcesCompat
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.ApiConstants
@@ -42,6 +45,18 @@ class WelcomeFragment : BaseFragment() {
     private lateinit var profile: ProfileDto
     private var backButtonEnabledListener: BackButtonEnabledListener? = null
 
+    private val commonTextWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+            fabProceed.isEnabled = isFormValid()
+        }
+    }
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         if (context is BackButtonEnabledListener) {
@@ -66,6 +81,8 @@ class WelcomeFragment : BaseFragment() {
     }
 
     private fun setupViews() {
+        fabProceed.isEnabled = false
+        countryCodePicker.setTypeFace(ResourcesCompat.getFont(requireActivity(), R.font.brandon_text_medium))
         etFullName.setText(profile.fullName)
 
         // Hide email fields if email exists in profile
@@ -79,12 +96,58 @@ class WelcomeFragment : BaseFragment() {
         // Hide phone number fields if phone number exists in profile
         if (!profile.phoneNumber.isNullOrBlank()) {
             tvLabelPhoneNumber.gone()
+            llPhoneNumber.gone()
             countryCodePicker.gone()
             etPhoneNumber.gone()
         }
     }
 
     private fun setListeners() {
+        etFullName.addTextChangedListener(commonTextWatcher)
+        etEmail.addTextChangedListener(commonTextWatcher)
+        etPhoneNumber.addTextChangedListener(commonTextWatcher)
+
+        countryCodePicker.registerCarrierNumberEditText(etPhoneNumber)
+
+        countryCodePicker.setPhoneNumberValidityChangeListener { isValid ->
+            val phoneNumber = etPhoneNumber.text?.toString()
+            if (phoneNumber.isNullOrBlank()) {
+                viewModel.updateUsernameAvailability(false)
+                return@setPhoneNumberValidityChangeListener
+            }
+
+            if (!ivPhoneVerify.isVisible()) {
+                ivPhoneVerify.visible()
+            }
+
+            ivPhoneVerify.setImageResource(if (isValid) {
+                R.drawable.ic_verify_success
+            } else {
+                R.drawable.ic_verify_failed
+            })
+        }
+
+        etUsername.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+                val username = text?.toString() ?: ""
+                if (isUsernameValid(username)) {
+                    viewModel.checkUsernameAvailability(username)
+                } else {
+                    viewModel.updateUsernameAvailability(false)
+                    ivUsernameVerify.setImageResource(R.drawable.ic_verify_failed)
+                    ivUsernameVerify.visible()
+                    progressBarUsername.gone()
+                    fabProceed.isEnabled = false
+                }
+            }
+        })
+
         fabProceed.setOnClickListener {
             // Visible in all cases
             val fullName = etFullName.text.toString()
@@ -129,7 +192,8 @@ class WelcomeFragment : BaseFragment() {
                     requireActivity().shortToast(R.string.error_empty_phone_number)
                 }
 
-                etPhoneNumber.isVisible() && !ValidationUtils.isPhoneNumberLengthValid(phoneNumber) -> {
+                etPhoneNumber.isVisible() &&
+                        (phoneNumber.isEmpty() || !countryCodePicker.isValidFullNumber) -> {
                     requireActivity().shortToast(R.string.error_invalid_phone_number)
                 }
 
@@ -207,6 +271,77 @@ class WelcomeFragment : BaseFragment() {
                 Status.LOADING -> loadingDialog.setLoading(true)
             }
         })
+
+        viewModel.usernameAvailability.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    if (resource.data == true) {
+                        ivUsernameVerify.setImageResource(R.drawable.ic_verify_success)
+                    } else {
+                        ivUsernameVerify.setImageResource(R.drawable.ic_verify_failed)
+                    }
+                    ivUsernameVerify.visible()
+                    progressBarUsername.gone()
+                }
+
+                Status.ERROR -> {
+                    ivUsernameVerify.setImageResource(R.drawable.ic_verify_failed)
+                    ivUsernameVerify.visible()
+                    progressBarUsername.gone()
+                }
+
+                Status.LOADING -> {
+                    ivUsernameVerify.gone()
+                    progressBarUsername.visible()
+                }
+            }
+
+            fabProceed.isEnabled = isFormValid()
+        })
+    }
+
+    private fun isFormValid(): Boolean {
+        val fullName = etFullName.text.toString()
+        val email = etEmail.text.toString()
+        val phoneNumber = etPhoneNumber.text.toString()
+
+        return when {
+            fullName.isBlank() -> false
+
+            !viewModel.isUsernameAvailable() -> false
+
+            etEmail.isVisible() &&
+                    (email.isEmpty() || !ValidationUtils.isEmailValid(email)) -> false
+
+            etPhoneNumber.isVisible() &&
+                    (phoneNumber.isEmpty() || !countryCodePicker.isValidFullNumber) -> false
+
+            else -> true
+        }
+    }
+
+    private fun isUsernameValid(username: String): Boolean {
+        return when {
+            username.isBlank() -> {
+                false
+            }
+
+            !ValidationUtils.isUsernameLengthValid(username) -> {
+                false
+            }
+
+            username.contains(" ") -> {
+                false
+            }
+
+            !ValidationUtils.isUsernameCharactersValid(username) -> {
+                false
+            }
+
+            else -> true
+        }
     }
 
     override fun onDestroyView() {
