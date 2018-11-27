@@ -162,4 +162,8 @@
     <string name="venue_details_label_admin">ADMIN</string>
     <string name="venue_details_label_members_with_count">Members · %d</string>
     <string name="venue_details_btn_exit_group">Exit group</string>
+
+    <string name="groups_label_search_for_groups">Search for groups</string>
+    <string name="groups_label_add_new_group">Add New Group</string>
+    <string name="groups_label_topics">Topics</string>
 </resources>

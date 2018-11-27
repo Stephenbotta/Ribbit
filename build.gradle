@@ -25,6 +25,7 @@ buildscript {
         facebookLoginVersion = '4.38.1'
         awsSdkVersion = '2.8.2'
         socketIoVersion = '1.0.0'
+        fabSpeedDialVersion = '2.0.1'
     }
 
     repositories {

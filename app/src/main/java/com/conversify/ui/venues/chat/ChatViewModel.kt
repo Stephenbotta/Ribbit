@@ -95,6 +95,7 @@ class ChatViewModel : ViewModel() {
 
                         // Update the notification for current venue
                         venue.notification = response.body()?.data?.notification
+                        venue.memberCount = members.size
 
                         venueDetailsLoaded = true
                     }

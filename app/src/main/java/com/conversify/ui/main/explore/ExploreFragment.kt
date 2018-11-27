@@ -38,7 +38,10 @@ class ExploreFragment : BaseFragment(), VenuesModeNavigator {
         viewModel.getInterests()
 
         fragmentSwitcher = FragmentSwitcher(childFragmentManager, R.id.flExploreContainer)
-
+        if (!fragmentSwitcher.fragmentExist(GroupsFragment.TAG)) {
+            fragmentSwitcher.addFragment(GroupsFragment(), GroupsFragment.TAG)
+        }
+        
         btnNotification.setOnClickListener { }
 
         setupTabs()

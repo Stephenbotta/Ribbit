@@ -32,7 +32,7 @@ data class VenueDto(
         val imageUrl: ImageUrlDto? = null,
 
         @field:SerializedName("memberCount")
-        val memberCount: Int? = null,
+        var memberCount: Int? = null,
 
         @field:SerializedName("isPrivate")
         val isPrivate: Boolean? = null,

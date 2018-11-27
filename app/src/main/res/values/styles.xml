@@ -77,6 +77,10 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
+    <style name="AppTheme.FabGroups">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
     <style name="VenueFiltersParent" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:background">@drawable/selector_venue_filters_parent_background</item>
         <item name="android:button">@null</item>

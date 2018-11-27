@@ -127,6 +127,9 @@ dependencies {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
+
+    // https://github.com/leinardi/FloatingActionButtonSpeedDial
+    implementation "com.leinardi.android:speed-dial:$fabSpeedDialVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'
