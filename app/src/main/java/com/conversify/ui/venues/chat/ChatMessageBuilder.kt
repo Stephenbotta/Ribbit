@@ -1,4 +1,4 @@
-package com.conversify.ui.chat
+package com.conversify.ui.venues.chat
 
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.RetrofitClient

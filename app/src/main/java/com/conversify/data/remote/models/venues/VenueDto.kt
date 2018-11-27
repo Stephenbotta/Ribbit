@@ -46,4 +46,7 @@ data class VenueDto(
         @field:SerializedName("venueTime")
         val dateTimeMillis: Long? = null,
 
+        @field:SerializedName("notification")
+        var notification: Boolean? = null,
+
         var myVenue: Boolean = false) : Parcelable

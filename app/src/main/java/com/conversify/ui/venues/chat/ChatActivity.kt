@@ -1,4 +1,4 @@
-package com.conversify.ui.chat
+package com.conversify.ui.venues.chat
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -17,6 +17,7 @@ import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseActivity
+import com.conversify.ui.venues.details.VenueDetailsActivity
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_chat.*
 
@@ -30,7 +31,6 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         }
     }
 
-    private val venue by lazy { intent.getParcelableExtra<VenueDto>(EXTRA_VENUE) }
     private lateinit var viewModel: ChatViewModel
     private lateinit var adapter: ChatAdapter
 
@@ -68,12 +68,13 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
+        val venue = intent.getParcelableExtra<VenueDto>(EXTRA_VENUE)
         viewModel = ViewModelProviders.of(this)[ChatViewModel::class.java]
         viewModel.start(venue)
         setListeners()
         observeChanges()
         setupChatRecycler()
-        displayToolbarDetails()
+        displayToolbarDetails(venue)
         getOldMessages()
     }
 
@@ -109,7 +110,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         })
     }
 
-    private fun displayToolbarDetails() {
+    private fun displayToolbarDetails(venue: VenueDto) {
         GlideApp.with(this)
                 .load(venue.imageUrl?.thumbnail)
                 .into(ivVenue)
@@ -132,7 +133,9 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     }
 
     private fun showVenueDetails() {
-        // todo Open venue details screen
+        if (viewModel.isVenueDetailsLoaded()) {
+            VenueDetailsActivity.start(this, viewModel.getVenue(), viewModel.getMembers())
+        }
     }
 
     override fun onDestroy() {

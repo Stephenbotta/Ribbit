@@ -1,4 +1,4 @@
-package com.conversify.ui.chat.viewholders
+package com.conversify.ui.venues.chat.viewholders
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

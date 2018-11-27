@@ -1,4 +1,4 @@
-package com.conversify.ui.chat
+package com.conversify.ui.venues.chat
 
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.extensions.isSameDay

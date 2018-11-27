@@ -1,4 +1,4 @@
-package com.conversify.ui.chat
+package com.conversify.ui.venues.chat
 
 import android.arch.lifecycle.ViewModel
 import com.conversify.data.local.UserManager
@@ -11,6 +11,7 @@ import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.VenueDetailsResponse
+import com.conversify.data.remote.models.chat.VenueMemberDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.data.remote.socket.SocketManager
 import com.conversify.utils.SingleLiveEvent
@@ -32,29 +33,39 @@ class ChatViewModel : ViewModel() {
     private val chatMessageBuilder by lazy { ChatMessageBuilder(ownUserId) }
     private val socketManager by lazy { SocketManager.getInstance() }
 
-    private lateinit var conversationId: String
-    private lateinit var venueId: String
+    private val venueMembers by lazy { arrayListOf<VenueMemberDto>() }
+
+    private lateinit var venue: VenueDto
 
     private var lastMessageId: String? = null
     private var isChatLoading = false
     private var isLastChatMessageReceived = false
 
+    private var venueDetailsLoaded = false
+
     private val newMessageListener = Emitter.Listener { args ->
         val chatMessage = chatMessageBuilder.getChatMessageFromSocketArgument(args.firstOrNull())
         Timber.i("New message received:\n$chatMessage")
-        if (chatMessage != null && chatMessage.conversationId == conversationId) {
+        if (chatMessage != null && chatMessage.conversationId == venue.conversationId) {
             newMessage.postValue(chatMessage)
         }
     }
 
     fun start(venue: VenueDto) {
-        this.conversationId = venue.conversationId ?: ""
-        this.venueId = venue.id ?: ""
+        this.venue = venue
+        venueDetailsLoaded = false
+        lastMessageId = null
         socketManager.on(SocketManager.EVENT_NEW_MESSAGE, newMessageListener)
         socketManager.connect()
     }
 
     fun isValidForPaging() = !isChatLoading && !isLastChatMessageReceived
+
+    fun isVenueDetailsLoaded() = venueDetailsLoaded
+
+    fun getMembers(): ArrayList<VenueMemberDto> = venueMembers
+
+    fun getVenue(): VenueDto = venue
 
     fun sendTextMessage(textMessage: String) {
         val message = chatMessageBuilder.buildTextMessage(textMessage)
@@ -66,16 +77,26 @@ class ChatViewModel : ViewModel() {
         oldMessages.value = Resource.loading()
         isChatLoading = true
         val firstPage = lastMessageId == null
-        val call = RetrofitClient.conversifyApi.getVenueDetails(venueId, lastMessageId)
+        val call = RetrofitClient.conversifyApi.getVenueDetails(venue.id, lastMessageId)
         apiCalls.add(call)
         call.enqueue(object : Callback<ApiResponse<VenueDetailsResponse>> {
             override fun onResponse(call: Call<ApiResponse<VenueDetailsResponse>>,
                                     response: Response<ApiResponse<VenueDetailsResponse>>) {
                 if (response.isSuccessful) {
-                    // Reset for first page
                     if (firstPage) {
+                        // Reset for first page
                         isLastChatMessageReceived = false
                         lastMessageId = null
+
+                        // Update venue members on response of first page
+                        val members = response.body()?.data?.venueMembers ?: emptyList()
+                        venueMembers.clear()
+                        venueMembers.addAll(members)
+
+                        // Update the notification for current venue
+                        venue.notification = response.body()?.data?.notification
+
+                        venueDetailsLoaded = true
                     }
 
                     val messages = response.body()?.data?.chatMessages ?: emptyList()
@@ -124,7 +145,7 @@ class ChatViewModel : ViewModel() {
     private fun getMessageJsonObject(message: ChatMessageDto): JSONObject {
         val jsonObject = JSONObject()
         jsonObject.putOpt("senderId", ownUserId)
-        jsonObject.putOpt("groupId", venueId)
+        jsonObject.putOpt("groupId", venue.id)
         jsonObject.putOpt("groupType", ApiConstants.TYPE_VENUE)
         jsonObject.putOpt("type", ApiConstants.MESSAGE_TYPE_TEXT)
         jsonObject.putOpt("message", message.details?.message)

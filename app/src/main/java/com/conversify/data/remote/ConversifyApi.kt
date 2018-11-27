@@ -73,6 +73,6 @@ interface ConversifyApi {
 
     @POST("user/venueConversationDetails")
     @FormUrlEncoded
-    fun getVenueDetails(@Field("groupId") venueId: String,
+    fun getVenueDetails(@Field("groupId") venueId: String?,
                         @Field("chatId") lastMessageId: String?): Call<ApiResponse<VenueDetailsResponse>>
 }

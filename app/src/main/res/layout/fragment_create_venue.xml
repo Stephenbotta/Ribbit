@@ -188,6 +188,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:text="@string/create_venue_label_private"
+            android:theme="@style/AppTheme.SwitchCompat"
             android:textColor="@color/textGray"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"

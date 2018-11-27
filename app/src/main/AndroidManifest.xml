@@ -45,12 +45,16 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.chat.ChatActivity"
+            android:name="com.conversify.ui.venues.chat.ChatActivity"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.venues.filters.VenueFiltersActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.venues.details.VenueDetailsActivity"
             android:screenOrientation="portrait" />
 
         <activity

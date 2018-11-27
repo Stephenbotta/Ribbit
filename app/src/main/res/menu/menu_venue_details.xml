@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/menuShare"
+        android:icon="@drawable/ic_share_white"
+        android:title="@string/venue_details_label_share"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menuMore"
+        android:icon="@drawable/ic_more_white"
+        android:title="@string/venue_details_label_more"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+</menu>

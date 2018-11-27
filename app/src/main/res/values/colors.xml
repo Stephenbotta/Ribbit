@@ -12,7 +12,10 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
+    <color name="black44">#44000000</color>
     <color name="black0F">#0F000000</color>
+
+    <color name="red">#FF0000</color>
 
     <color name="textGray">#4A566C</color>
     <color name="textGrayDE">#DE4A566C</color>
@@ -31,5 +34,4 @@
     <color name="editTextHint">#A1A1A1</color>
 
     <color name="venueFiltersParentBackground">#F9F4FD</color>
-    <color name="venueFiltersReset">#D11D1D</color>
 </resources>

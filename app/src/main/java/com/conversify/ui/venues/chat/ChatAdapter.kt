@@ -1,4 +1,4 @@
-package com.conversify.ui.chat
+package com.conversify.ui.venues.chat
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -8,7 +8,7 @@ import com.conversify.R
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.MessageStatus
-import com.conversify.ui.chat.viewholders.ViewHolderChatText
+import com.conversify.ui.venues.chat.viewholders.ViewHolderChatText
 import com.conversify.utils.GlideApp
 
 class ChatAdapter(context: Context,

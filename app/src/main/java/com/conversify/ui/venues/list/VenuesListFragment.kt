@@ -15,11 +15,11 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseFragment
-import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.createvenue.CreateVenueActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.main.explore.VenuesModeNavigator
 import com.conversify.ui.venues.VenuesViewModel
+import com.conversify.ui.venues.chat.ChatActivity
 import com.conversify.ui.venues.filters.VenueFiltersActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
