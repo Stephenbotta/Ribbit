@@ -62,7 +62,7 @@ class VenuesListAdapter(private val glide: GlideRequests,
             is YourVenuesDto -> VIEW_TYPE_LABEL_YOUR_VENUES
 
             is VenueDto -> {
-                if (item.myVenue) {
+                if (item.isMember == true) {
                     VIEW_TYPE_MY_VENUE
                 } else {
                     VIEW_TYPE_NEARBY_VENUE
@@ -77,6 +77,14 @@ class VenuesListAdapter(private val glide: GlideRequests,
         this.items.clear()
         this.items.addAll(items)
         notifyDataSetChanged()
+    }
+
+    fun removeMyVenue(venue: VenueDto) {
+        val index = items.indexOfFirst { it is VenueDto && it.id == venue.id }
+        if (index != -1) {
+            items.removeAt(index)
+            notifyItemRemoved(index)
+        }
     }
 
     interface Callback : VenueViewHolder.Callback, VenuesNearLabelViewHolder.Callback

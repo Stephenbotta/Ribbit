@@ -115,7 +115,8 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
                             requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
                         } else {
                             // Open the joined venue chat if venue is public
-                            ChatActivity.start(requireActivity(), venue)
+                            val intent = ChatActivity.getStartIntent(requireActivity(), venue)
+                            startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
                             getVenues(false)
                         }
                     }
@@ -146,8 +147,9 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
 
     override fun onVenueClicked(venue: VenueDto) {
         // Open own venues
-        if (venue.myVenue) {
-            ChatActivity.start(requireActivity(), venue)
+        if (venue.isMember == true) {
+            val intent = ChatActivity.getStartIntent(requireActivity(), venue)
+            startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
             return
         }
 
@@ -171,6 +173,17 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
+            AppConstants.REQ_CODE_VENUE_CHAT -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val venue = data?.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
+                    if (venue != null && venue.isMember == false) {
+                        // Only valid if user has exit a venue
+                        venuesListAdapter.removeMyVenue(venue)
+                    }
+                    getVenues(false)
+                }
+            }
+
             AppConstants.REQ_CODE_CREATE_VENUE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     getVenues(false)

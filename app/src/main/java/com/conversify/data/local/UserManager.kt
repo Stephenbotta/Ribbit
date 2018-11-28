@@ -3,8 +3,12 @@ package com.conversify.data.local
 import android.location.Location
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 object UserManager {
+    // Minimum difference between current millis and last location millis for it to be considered as valid
+    private val lastLocationDifferenceMillis = TimeUnit.MINUTES.toMillis(5)
+
     fun isFirstAppLaunch(): Boolean {
         return PrefsManager.get().getBoolean(PrefsManager.PREF_FIRST_APP_LAUNCH, true)
     }
@@ -33,11 +37,25 @@ object UserManager {
     }
 
     fun updateLocation(location: Location) {
+        PrefsManager.get().save(PrefsManager.PREF_LOCATION_UPDATE_MILLIS, System.currentTimeMillis())
         PrefsManager.get().save(PrefsManager.PREF_LATITUDE, location.latitude.toFloat())
         PrefsManager.get().save(PrefsManager.PREF_LONGITUDE, location.longitude.toFloat())
     }
 
+    fun isLastLocationUpdated(): Boolean {
+        return if (!PrefsManager.get().contains(PrefsManager.PREF_LOCATION_UPDATE_MILLIS)) {
+            false
+        } else {
+            val lastLocationMillis = PrefsManager.get().getLong(PrefsManager.PREF_LOCATION_UPDATE_MILLIS, 0)
+            System.currentTimeMillis() - lastLocationMillis < lastLocationDifferenceMillis
+        }
+    }
+
     fun getLastLatitude(): Double? {
+        if (!isLastLocationUpdated()) {
+            return null
+        }
+
         val latitude = PrefsManager.get().getFloat(PrefsManager.PREF_LATITUDE, 0.0f)
         return if (latitude == 0.0f) {
             null
@@ -47,6 +65,10 @@ object UserManager {
     }
 
     fun getLastLongitude(): Double? {
+        if (!isLastLocationUpdated()) {
+            return null
+        }
+        
         val longitude = PrefsManager.get().getFloat(PrefsManager.PREF_LONGITUDE, 0.0f)
         return if (longitude == 0.0f) {
             null

@@ -18,6 +18,7 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.venues.details.VenueDetailsActivity
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_chat.*
 
@@ -25,9 +26,9 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     companion object {
         private const val EXTRA_VENUE = "EXTRA_VENUE"
 
-        fun start(context: Context, venue: VenueDto) {
-            context.startActivity(Intent(context, ChatActivity::class.java)
-                    .putExtra(EXTRA_VENUE, venue))
+        fun getStartIntent(context: Context, venue: VenueDto): Intent {
+            return Intent(context, ChatActivity::class.java)
+                    .putExtra(EXTRA_VENUE, venue)
         }
     }
 
@@ -134,7 +135,27 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
 
     private fun showVenueDetails() {
         if (viewModel.isVenueDetailsLoaded()) {
-            VenueDetailsActivity.start(this, viewModel.getVenue(), viewModel.getMembers())
+            val intent = VenueDetailsActivity.getStartIntent(this, viewModel.getVenue(), viewModel.getMembers())
+            startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_DETAILS)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstants.REQ_CODE_VENUE_DETAILS &&
+                resultCode == Activity.RESULT_OK &&
+                data != null) {
+            val venue = data.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
+            if (venue != null) {
+                if (venue.isMember == false) {
+                    // Will be false if user has exit the venue
+                    setResult(Activity.RESULT_OK, data)
+                    finish()
+                } else {
+                    // Otherwise update the venue
+                    viewModel.updateVenue(venue)
+                }
+            }
         }
     }
 

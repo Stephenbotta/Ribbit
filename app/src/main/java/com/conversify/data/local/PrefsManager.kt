@@ -11,7 +11,6 @@ class PrefsManager private constructor(context: Context) {
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     companion object {
-        const val PREF_REMEMBERED_EMAIL = "PREF_REMEMBERED_EMAIL"
         const val PREF_FIRST_APP_LAUNCH = "PREF_FIRST_APP_LAUNCH"
         const val PREF_ACCESS_TOKEN = "PREF_ACCESS_TOKEN"
         const val PREF_USER_PROFILE = "PREF_USER_PROFILE"
@@ -19,6 +18,7 @@ class PrefsManager private constructor(context: Context) {
         const val PREF_UNIQUE_ID = "PREF_UNIQUE_ID"
         const val PREF_LATITUDE = "PREF_LATITUDE"
         const val PREF_LONGITUDE = "PREF_LONGITUDE"
+        const val PREF_LOCATION_UPDATE_MILLIS = "PREF_LOCATION_UPDATE_MILLIS"
 
         private lateinit var instance: PrefsManager
         private val isInitialized = AtomicBoolean()     // To check if instance was previously initialized or not
@@ -56,18 +56,25 @@ class PrefsManager private constructor(context: Context) {
         preferences.edit().putBoolean(key, value).apply()
     }
 
+    fun save(key: String, value: Long) {
+        preferences.edit().putLong(key, value).apply()
+    }
+
     fun save(key: String, `object`: Any) {
         // Convert the provided object to JSON string
         save(key, gson.toJson(`object`))
     }
 
     fun getString(key: String, defValue: String): String = preferences.getString(key, defValue)
+            ?: ""
 
     fun getInt(key: String, defValue: Int): Int = preferences.getInt(key, defValue)
 
     fun getBoolean(key: String, defValue: Boolean): Boolean = preferences.getBoolean(key, defValue)
 
     fun getFloat(key: String, defValue: Float): Float = preferences.getFloat(key, defValue)
+
+    fun getLong(key: String, defValue: Long): Long = preferences.getLong(key, defValue)
 
     fun <T> getObject(key: String, objectClass: Class<T>): T? {
         val jsonString = preferences.getString(key, null)

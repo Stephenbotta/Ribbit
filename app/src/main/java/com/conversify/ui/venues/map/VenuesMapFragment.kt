@@ -80,8 +80,9 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
         clSelectedVenue.setOnClickListener {
             selectedVenue?.let { venue ->
                 // Open own venues
-                if (venue.myVenue) {
-                    ChatActivity.start(requireActivity(), venue)
+                if (venue.isMember == true) {
+                    val intent = ChatActivity.getStartIntent(requireActivity(), venue)
+                    startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
                     return@setOnClickListener
                 }
 
@@ -105,8 +106,8 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
             when (resource.status) {
                 Status.SUCCESS -> {
                     val venues = resource.data ?: emptyList()
-                    mapHelper?.displayVenues(venues)
                     onMapVenueDeselected()
+                    mapHelper?.displayVenues(venues)
                 }
 
                 Status.ERROR -> {
@@ -130,7 +131,8 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
                             requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
                         } else {
                             // Open the joined venue chat if venue is public
-                            ChatActivity.start(requireActivity(), venue)
+                            val intent = ChatActivity.getStartIntent(requireActivity(), venue)
+                            startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
                             getVenues()
                         }
                     }
@@ -211,6 +213,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
+            AppConstants.REQ_CODE_VENUE_CHAT,
             AppConstants.REQ_CODE_CREATE_VENUE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     getVenues()

@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Looper
 import com.conversify.R
 import com.conversify.data.local.UserManager
+import com.conversify.extensions.longToast
 import com.conversify.extensions.shortToast
 import com.conversify.utils.AppConstants
 import com.conversify.utils.PermissionUtils
@@ -146,7 +147,7 @@ abstract class BaseLocationActivity : BaseActivity() {
 
     @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)
     fun onLocationPermissionDenied() {
-        shortToast(R.string.permission_denied_location)
+        longToast(R.string.permission_denied_location)
     }
 
     @OnNeverAskAgain(Manifest.permission.ACCESS_FINE_LOCATION)

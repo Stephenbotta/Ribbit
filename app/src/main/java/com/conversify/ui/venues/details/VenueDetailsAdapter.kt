@@ -69,6 +69,12 @@ class VenueDetailsAdapter(val glide: GlideRequests,
         notifyDataSetChanged()
     }
 
+    fun updateHeader() {
+        if (items.firstOrNull() is VenueDto) {
+            notifyItemChanged(0)
+        }
+    }
+
     interface Callback : VenueDetailsHeaderViewHolder.Callback,
             VenueDetailsMemberViewHolder.Callback,
             VenueDetailsExitGroupViewHolder.Callback

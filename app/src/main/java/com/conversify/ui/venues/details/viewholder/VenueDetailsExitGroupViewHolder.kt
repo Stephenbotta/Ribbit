@@ -7,10 +7,10 @@ import kotlinx.android.synthetic.main.item_venue_details_exit_group.view.*
 class VenueDetailsExitGroupViewHolder(itemView: View,
                                       private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
     init {
-        itemView.btnExitGroup.setOnClickListener { callback.onExitGroupClicked() }
+        itemView.btnExitGroup.setOnClickListener { callback.onExitVenueClicked() }
     }
 
     interface Callback {
-        fun onExitGroupClicked()
+        fun onExitVenueClicked()
     }
 }

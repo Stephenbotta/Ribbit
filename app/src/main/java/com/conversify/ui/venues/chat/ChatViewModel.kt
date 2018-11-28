@@ -52,11 +52,15 @@ class ChatViewModel : ViewModel() {
     }
 
     fun start(venue: VenueDto) {
-        this.venue = venue
+        updateVenue(venue)
         venueDetailsLoaded = false
         lastMessageId = null
         socketManager.on(SocketManager.EVENT_NEW_MESSAGE, newMessageListener)
         socketManager.connect()
+    }
+
+    fun updateVenue(venue: VenueDto) {
+        this.venue = venue
     }
 
     fun isValidForPaging() = !isChatLoading && !isLastChatMessageReceived

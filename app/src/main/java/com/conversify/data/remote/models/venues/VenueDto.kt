@@ -49,4 +49,5 @@ data class VenueDto(
         @field:SerializedName("notification")
         var notification: Boolean? = null,
 
-        var myVenue: Boolean = false) : Parcelable
+        @field:SerializedName("isMember")
+        var isMember: Boolean? = null) : Parcelable

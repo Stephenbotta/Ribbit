@@ -75,4 +75,13 @@ interface ConversifyApi {
     @FormUrlEncoded
     fun getVenueDetails(@Field("groupId") venueId: String?,
                         @Field("chatId") lastMessageId: String?): Call<ApiResponse<VenueDetailsResponse>>
+
+    @POST("user/configNotification")
+    @FormUrlEncoded
+    fun changeVenueNotifications(@Field("venueId") venueId: String,
+                                 @Field("action") isEnabled: Boolean): Call<Any>
+
+    @POST("user/exitGroup")
+    @FormUrlEncoded
+    fun exitVenue(@Field("venueId") venueId: String): Call<Any>
 }

@@ -24,7 +24,7 @@ class VenueViewHolder(itemView: View,
     fun bind(venue: VenueDto) {
         this.venue = venue
 
-        if (venue.myVenue) {
+        if (venue.isMember == true) {
             itemView.btnMore.visible()
             itemView.tvDistance.gone()
         } else {

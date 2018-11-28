@@ -54,9 +54,6 @@ class VenuesViewModel(application: Application) : AndroidViewModel(application) 
                                 val nearbyVenues = response.body()?.data?.nearbyVenues
                                         ?: emptyList()
 
-                                // Set my venue flag to true for all my listVenues
-                                myVenues.forEach { it.myVenue = true }
-
                                 this@VenuesViewModel.myVenues.clear()
                                 this@VenuesViewModel.myVenues.addAll(myVenues)
 
@@ -142,9 +139,6 @@ class VenuesViewModel(application: Application) : AndroidViewModel(application) 
                                 val myVenues = response.body()?.data?.myVenues ?: emptyList()
                                 val nearbyVenues = response.body()?.data?.nearbyVenues
                                         ?: emptyList()
-
-                                // Set my venue flag to true for all my listVenues
-                                myVenues.forEach { it.myVenue = true }
 
                                 this@VenuesViewModel.myVenues.clear()
                                 this@VenuesViewModel.myVenues.addAll(myVenues)
