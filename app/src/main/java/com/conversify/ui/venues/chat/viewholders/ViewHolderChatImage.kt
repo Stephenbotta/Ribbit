@@ -3,20 +3,30 @@ package com.conversify.ui.venues.chat.viewholders
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.conversify.data.remote.models.chat.ChatMessageDto
+import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.extensions.gone
-import com.conversify.extensions.invisible
+import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.visible
 import com.conversify.ui.venues.chat.ResendMessageCallback
-import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_chat_image_left.view.*
 
 class ViewHolderChatImage(itemView: View,
                           private val glide: GlideRequests,
-                          private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                          private val callback: Callback) : ViewHolderChat(itemView) {
     init {
+        itemView.btnResend.setOnClickListener {
+            if (adapterPosition != RecyclerView.NO_POSITION && itemView.context.isNetworkActiveWithMessage()) {
+                chatMessage.messageStatus = MessageStatus.SENDING
+                updateMessageStatus(chatMessage.messageStatus)
+                callback.onResendMessageClicked(chatMessage)
+            }
+        }
+
         itemView.ivImage.setOnClickListener {
-            callback.onImageMessageClicked(chatMessage)
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                callback.onImageMessageClicked(chatMessage)
+            }
         }
     }
 
@@ -24,32 +34,40 @@ class ViewHolderChatImage(itemView: View,
 
     fun bind(chatMessage: ChatMessageDto) {
         this.chatMessage = chatMessage
+        displayCommonValues(chatMessage, glide)
 
-        // Display profile image and username if message is of other user
-        if (!chatMessage.ownMessage) {
-            if (chatMessage.showProfileImage) {
-                itemView.tvUserName.visible()
-                itemView.ivProfile.visible()
-            } else {
-                itemView.tvUserName.gone()
-                itemView.ivProfile.invisible()
+        // Display local file if it exists otherwise display the image from the url
+        val image: Any? = if (chatMessage.localFile != null) {
+            chatMessage.localFile
+        } else {
+            chatMessage.details?.image?.original
+        }
+        glide.load(image)
+                .into(itemView.ivImage)
+
+        updateMessageStatus(chatMessage.messageStatus)
+    }
+
+    private fun updateMessageStatus(status: MessageStatus) {
+        when (status) {
+            MessageStatus.SENDING -> {
+                itemView.progressBar.visible()
+                itemView.btnResend.isEnabled = false
+                itemView.btnResend.gone()
             }
 
-            glide.load(chatMessage.sender?.image?.thumbnail)
-                    .into(itemView.ivProfile)
-            itemView.tvUserName.text = chatMessage.sender?.userName
-        }
+            MessageStatus.SENT -> {
+                itemView.progressBar.gone()
+                itemView.btnResend.isEnabled = false
+                itemView.btnResend.gone()
+            }
 
-        if (chatMessage.showDate) {
-            itemView.tvDate.visible()
-            itemView.tvDate.text = DateTimeUtils.formatChatDateHeader(chatMessage.createdDateTime)
-        } else {
-            itemView.tvDate.gone()
+            MessageStatus.ERROR -> {
+                itemView.progressBar.gone()
+                itemView.btnResend.isEnabled = true
+                itemView.btnResend.visible()
+            }
         }
-
-        glide.load(chatMessage.details?.image?.original)
-                .into(itemView.ivImage)
-        itemView.tvTime.text = DateTimeUtils.formatChatMessageTime(chatMessage.createdDateTime)
     }
 
     interface Callback : ResendMessageCallback {

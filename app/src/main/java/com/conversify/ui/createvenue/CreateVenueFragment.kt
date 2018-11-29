@@ -233,7 +233,7 @@ class CreateVenueFragment : BaseFragment() {
 
     @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun showImagePicker() {
-        imagePicker.showImagePicker()
+        imagePicker.show()
     }
 
     @OnShowRationale(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -243,7 +243,7 @@ class CreateVenueFragment : BaseFragment() {
 
     @OnPermissionDenied(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun cameraStorageDenied() {
-        activity?.shortToast(R.string.permission_denied_camera_storage)
+        activity?.longToast(R.string.permission_denied_camera_storage)
     }
 
     @OnNeverAskAgain(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)

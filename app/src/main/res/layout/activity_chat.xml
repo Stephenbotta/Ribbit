@@ -22,7 +22,6 @@
             android:id="@+id/ivVenue"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginEnd="8dp"
             android:scaleType="centerCrop"
             app:riv_corner_radius="4dp"
             tools:src="@tools:sample/backgrounds/scenic" />
@@ -35,6 +34,8 @@
             android:fontFamily="@font/brandon_text_bold"
             android:gravity="center_vertical"
             android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:textColor="@color/textGray"
             tools:text="Movie Mania" />
 
@@ -81,7 +82,7 @@
                 android:src="@drawable/ic_attachment"
                 tools:ignore="ContentDescription" />
 
-            <android.support.text.emoji.widget.EmojiAppCompatTextView
+            <android.support.text.emoji.widget.EmojiEditText
                 android:id="@+id/etMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

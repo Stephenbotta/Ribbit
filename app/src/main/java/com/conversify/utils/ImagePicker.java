@@ -65,7 +65,7 @@ public class ImagePicker {
      * Removes all listeners and references
      */
     public void clear() {
-        dismissImagePicker();
+        dismiss();
         this.imagePickerListener = null;
         this.context = null;
         this.fragment = null;
@@ -96,12 +96,12 @@ public class ImagePicker {
         pickerDialog = builder.create();
     }
 
-    public void showImagePicker() {
+    public void show() {
         if (pickerDialog != null)
             pickerDialog.show();
     }
 
-    public void dismissImagePicker() {
+    public void dismiss() {
         if (pickerDialog != null && pickerDialog.isShowing())
             pickerDialog.dismiss();
     }

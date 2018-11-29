@@ -7,13 +7,13 @@ import java.io.File
 
 data class ChatMessageDto(
         @field:SerializedName("isDelivered")
-        val isDelivered: Boolean? = null,
+        var isDelivered: Boolean? = null,
 
         @field:SerializedName("senderId")
         val sender: ProfileDto? = null,
 
         @field:SerializedName("conversationId")
-        val conversationId: String? = null,
+        var conversationId: String? = null,
 
         @field:SerializedName("createdDate")
         val createdDateTime: ZonedDateTime? = null,
@@ -22,7 +22,7 @@ data class ChatMessageDto(
         val details: ChatMessageDetailsDto? = null,
 
         @field:SerializedName("_id")
-        val id: String? = null,
+        var id: String? = null,
 
         var localId: String? = null,
         var localFile: File? = null,

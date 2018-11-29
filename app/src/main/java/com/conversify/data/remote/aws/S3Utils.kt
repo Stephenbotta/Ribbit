@@ -8,7 +8,7 @@ import com.amazonaws.services.s3.AmazonS3Client
 import com.conversify.ConversifyApp
 
 object S3Utils {
-    const val BUCKET_NAME = "conversifybucket"
+    private const val BUCKET_NAME = "conversifybucket"
     private const val IDENTITY_POOL_ID = "us-west-2:cd53aa78-1269-4138-874c-0f6e08cd23c0"
     private val REGION = Regions.US_WEST_2
 
@@ -20,20 +20,20 @@ object S3Utils {
         return S3_CLIENT.getResourceUrl(BUCKET_NAME, key) ?: ""
     }
 
-    val COGNITO_CREDENTIAL_PROVIDER by lazy {
+    private val COGNITO_CREDENTIAL_PROVIDER by lazy {
         CognitoCachingCredentialsProvider(
                 ConversifyApp.getApplicationContext(),
                 IDENTITY_POOL_ID,
                 REGION)
     }
 
-    val S3_CLIENT by lazy {
+    private val S3_CLIENT by lazy {
         AmazonS3Client(COGNITO_CREDENTIAL_PROVIDER).apply {
             setRegion(Region.getRegion(REGION))
         }
     }
 
-    val TRANSFER_UTILITY by lazy {
+    val TRANSFER_UTILITY: TransferUtility by lazy {
         TransferUtility.builder()
                 .s3Client(S3_CLIENT)
                 .context(ConversifyApp.getApplicationContext())

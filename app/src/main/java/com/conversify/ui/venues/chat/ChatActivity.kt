@@ -1,5 +1,7 @@
 package com.conversify.ui.venues.chat
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -11,19 +13,26 @@ import android.support.v7.widget.SimpleItemAnimator
 import android.view.Menu
 import android.view.MenuItem
 import com.conversify.R
+import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.ChatMessageDto
+import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
+import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.venues.details.VenueDetailsActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
+import com.conversify.utils.ImagePicker
+import com.conversify.utils.PermissionUtils
 import kotlinx.android.synthetic.main.activity_chat.*
+import permissions.dispatcher.*
 
+@RuntimePermissions
 class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     companion object {
         private const val EXTRA_VENUE = "EXTRA_VENUE"
@@ -36,6 +45,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
 
     private lateinit var viewModel: ChatViewModel
     private lateinit var adapter: ChatAdapter
+    private lateinit var imagePicker: ImagePicker
 
     private val newMessageObserver = Observer<ChatMessageDto> {
         it ?: return@Observer
@@ -67,6 +77,39 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         }
     }
 
+    private val sendMessageObserver = Observer<Resource<ChatMessageDto>> {
+        it ?: return@Observer
+        when (it.status) {
+            Status.SUCCESS -> {
+                adapter.updateMessageStatus(it.data?.localId ?: "", MessageStatus.SENT)
+            }
+
+            Status.ERROR -> {
+                handleError(it.error)
+            }
+
+            Status.LOADING -> {
+            }
+        }
+    }
+
+    private val uploadFileObserver = Observer<Resource<String>> {
+        it ?: return@Observer
+        when (it.status) {
+            Status.SUCCESS -> {
+            }
+
+            Status.ERROR -> {
+                if (it.error is AppError.FileUploadFailed) {
+                    adapter.updateMessageStatus(it.error.id, MessageStatus.ERROR)
+                }
+            }
+
+            Status.LOADING -> {
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
@@ -74,6 +117,8 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         val venue = intent.getParcelableExtra<VenueDto>(EXTRA_VENUE)
         viewModel = ViewModelProviders.of(this)[ChatViewModel::class.java]
         viewModel.start(venue)
+
+        imagePicker = ImagePicker(this)
         setListeners()
         observeChanges()
         setupChatRecycler()
@@ -82,10 +127,14 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     }
 
     private fun setListeners() {
+        imagePicker.setImagePickerListener { imageFile ->
+            viewModel.sendImageMessage(imageFile)
+        }
+
         ivVenue.setOnClickListener { showVenueDetails() }
         tvVenueName.setOnClickListener { showVenueDetails() }
 
-        btnAttachment.setOnClickListener { }
+        btnAttachment.setOnClickListener { imagePicker.show() }
 
         fabSend.setOnClickListener { sendTextMessage() }
     }
@@ -93,6 +142,8 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     private fun observeChanges() {
         viewModel.newMessage.observeForever(newMessageObserver)
         viewModel.oldMessages.observeForever(oldMessagesObserver)
+        viewModel.sendMessage.observeForever(sendMessageObserver)
+        viewModel.uploadFile.observeForever(uploadFileObserver)
     }
 
     private fun setupChatRecycler() {
@@ -135,7 +186,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     private fun sendTextMessage() {
         val message = etMessage.text.toString().trim()
         if (message.isNotBlank() && isNetworkActiveWithMessage()) {
-            etMessage.text = ""
+            etMessage.setText("")
             viewModel.sendTextMessage(message)
         }
     }
@@ -151,6 +202,27 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     }
 
     override fun onResendMessageClicked(chatMessage: ChatMessageDto) {
+        viewModel.resendMessage(chatMessage)
+    }
+
+    @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun showImagePicker() {
+        imagePicker.show()
+    }
+
+    @OnShowRationale(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun cameraStorageRationale(request: PermissionRequest) {
+        PermissionUtils.showRationalDialog(this, R.string.permission_rationale_camera_storage, request)
+    }
+
+    @OnPermissionDenied(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun cameraStorageDenied() {
+        longToast(R.string.permission_denied_camera_storage)
+    }
+
+    @OnNeverAskAgain(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun cameraStorageNeverAsk() {
+        PermissionUtils.showAppSettingsDialog(this, R.string.permission_never_ask_camera_storage, AppConstants.REQ_CODE_APP_SETTINGS)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -169,6 +241,12 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         }
     }
 
+    @SuppressLint("NeedOnRequestPermissionsResult")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstants.REQ_CODE_VENUE_DETAILS &&
@@ -185,6 +263,8 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                     viewModel.updateVenue(venue)
                 }
             }
+        } else {
+            imagePicker.onActivityResult(requestCode, resultCode, data)
         }
     }
 
@@ -192,5 +272,8 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         super.onDestroy()
         viewModel.newMessage.removeObserver(newMessageObserver)
         viewModel.oldMessages.removeObserver(oldMessagesObserver)
+        viewModel.sendMessage.removeObserver(sendMessageObserver)
+        viewModel.uploadFile.removeObserver(uploadFileObserver)
+        imagePicker.clear()
     }
 }

@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class ImageUrlDto(
         @field:SerializedName("thumbnail")
-        val thumbnail: String? = null,
+        var thumbnail: String? = null,
 
         @field:SerializedName("original")
-        val original: String? = null) : Parcelable
+        var original: String? = null) : Parcelable
