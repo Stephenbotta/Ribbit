@@ -59,6 +59,7 @@ dependencies {
     implementation "com.android.support:customtabs:$supportVersion"
     implementation "com.android.support:support-media-compat:$supportVersion"
     implementation "com.android.support:animated-vector-drawable:$supportVersion"
+    implementation "com.android.support:support-emoji-appcompat:$supportVersion"
     implementation "com.android.support.constraint:constraint-layout:$constraintVersion"
     implementation "com.android.support:multidex:$multiDexVersion"
 

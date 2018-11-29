@@ -81,6 +81,11 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
+    <style name="ProgressBarChatMessage" parent="AppTheme">
+        <item name="colorAccent">@color/white</item>
+        <item name="android:background">@drawable/background_chat_message_progress_bar</item>
+    </style>
+
     <style name="VenueFiltersParent" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:background">@drawable/selector_venue_filters_parent_background</item>
         <item name="android:button">@null</item>

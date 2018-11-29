@@ -34,7 +34,7 @@
         android:paddingBottom="4dp"
         android:textColor="@color/textGrayMedium"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@id/tvMessage"
+        app:layout_constraintStart_toStartOf="@id/ivImage"
         app:layout_constraintTop_toBottomOf="@id/spaceAboveUsername"
         tools:text="@tools:sample/full_names" />
 
@@ -46,30 +46,42 @@
         android:layout_marginTop="2dp"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tvMessage"
+        app:layout_constraintTop_toTopOf="@id/ivImage"
         app:riv_oval="true"
         tools:ignore="ContentDescription"
         tools:src="@tools:sample/avatars" />
 
-    <android.support.text.emoji.widget.EmojiAppCompatTextView
-        android:id="@+id/tvMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/ivImage"
+        android:layout_width="@dimen/chat_image_width"
+        android:layout_height="@dimen/chat_image_height"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="@dimen/chat_item_margin"
         android:background="@drawable/background_chat_text_left"
-        android:includeFontPadding="false"
-        android:paddingStart="12dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="8dp"
-        android:textColor="@color/textGrayDE"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toEndOf="@id/ivProfile"
         app:layout_constraintTop_toBottomOf="@id/tvUserName"
-        tools:text="Yeah! " />
+        app:riv_corner_radius="16dp"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:theme="@style/ProgressBarChatMessage"
+        android:visibility="gone"
+        app:layout_constraintCircle="@id/ivImage" />
+
+    <ImageView
+        android:id="@+id/btnResend"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/background_chat_message_progress_bar"
+        android:scaleType="center"
+        android:src="@drawable/ic_share_white"
+        android:visibility="gone"
+        app:layout_constraintCircle="@id/ivImage"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tvTime"
@@ -79,8 +91,8 @@
         android:padding="4dp"
         android:textColor="@color/textGrayMedium"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@id/tvMessage"
-        app:layout_constraintTop_toBottomOf="@id/tvMessage"
+        app:layout_constraintStart_toStartOf="@id/ivImage"
+        app:layout_constraintTop_toBottomOf="@id/ivImage"
         tools:text="5:30 AM" />
 
 </android.support.constraint.ConstraintLayout>

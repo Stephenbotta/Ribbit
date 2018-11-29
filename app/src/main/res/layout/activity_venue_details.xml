@@ -44,7 +44,6 @@
                 android:layout_height="?attr/actionBarSize"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                app:contentInsetStart="0dp"
                 app:contentInsetStartWithNavigation="0dp"
                 app:layout_collapseMode="pin" />
 

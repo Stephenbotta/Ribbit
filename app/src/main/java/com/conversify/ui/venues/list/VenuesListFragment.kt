@@ -39,11 +39,17 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var venuesListAdapter: VenuesListAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this)[VenuesViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())
+        venuesListAdapter = VenuesListAdapter(GlideApp.with(this), this)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         setListeners()
         observeChanges()
         setupVenuesRecycler()
@@ -133,7 +139,6 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
     }
 
     private fun setupVenuesRecycler() {
-        venuesListAdapter = VenuesListAdapter(GlideApp.with(this), this)
         rvVenues.adapter = venuesListAdapter
     }
 

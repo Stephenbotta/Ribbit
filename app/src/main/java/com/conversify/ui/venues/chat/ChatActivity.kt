@@ -8,6 +8,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
+import android.view.Menu
+import android.view.MenuItem
 import com.conversify.R
 import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
@@ -75,13 +77,11 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         setListeners()
         observeChanges()
         setupChatRecycler()
-        displayToolbarDetails(venue)
+        setupToolbar(venue)
         getOldMessages()
     }
 
     private fun setListeners() {
-        toolbar.setNavigationOnClickListener { onBackPressed() }
-
         ivVenue.setOnClickListener { showVenueDetails() }
         tvVenueName.setOnClickListener { showVenueDetails() }
 
@@ -111,7 +111,14 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         })
     }
 
-    private fun displayToolbarDetails(venue: VenueDto) {
+    private fun setupToolbar(venue: VenueDto) {
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_back)
+            setDisplayShowTitleEnabled(false)
+        }
+
         GlideApp.with(this)
                 .load(venue.imageUrl?.thumbnail)
                 .into(ivVenue)
@@ -128,7 +135,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     private fun sendTextMessage() {
         val message = etMessage.text.toString().trim()
         if (message.isNotBlank() && isNetworkActiveWithMessage()) {
-            etMessage.setText("")
+            etMessage.text = ""
             viewModel.sendTextMessage(message)
         }
     }
@@ -137,6 +144,28 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         if (viewModel.isVenueDetailsLoaded()) {
             val intent = VenueDetailsActivity.getStartIntent(this, viewModel.getVenue(), viewModel.getMembers())
             startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_DETAILS)
+        }
+    }
+
+    override fun onImageMessageClicked(chatMessage: ChatMessageDto) {
+    }
+
+    override fun onResendMessageClicked(chatMessage: ChatMessageDto) {
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_venue_chat, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

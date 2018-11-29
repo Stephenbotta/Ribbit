@@ -14,4 +14,5 @@ object ApiConstants {
     const val FLAG_REGISTER_EMAIL = 4
 
     const val MESSAGE_TYPE_TEXT = "TEXT"
+    const val MESSAGE_TYPE_IMAGE = "IMAGE"
 }

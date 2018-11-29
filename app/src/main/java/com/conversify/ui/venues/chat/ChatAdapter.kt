@@ -8,6 +8,7 @@ import com.conversify.R
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.MessageStatus
+import com.conversify.ui.venues.chat.viewholders.ViewHolderChatImage
 import com.conversify.ui.venues.chat.viewholders.ViewHolderChatText
 import com.conversify.utils.GlideApp
 
@@ -16,6 +17,8 @@ class ChatAdapter(context: Context,
     companion object {
         private const val TYPE_TEXT_LEFT = 0
         private const val TYPE_TEXT_RIGHT = 1
+        private const val TYPE_IMAGE_LEFT = 2
+        private const val TYPE_IMAGE_RIGHT = 3
     }
 
     private val glide = GlideApp.with(context)
@@ -30,6 +33,14 @@ class ChatAdapter(context: Context,
 
             TYPE_TEXT_RIGHT -> {
                 ViewHolderChatText(inflater.inflate(R.layout.item_chat_text_right, parent, false), glide)
+            }
+
+            TYPE_IMAGE_LEFT -> {
+                ViewHolderChatImage(inflater.inflate(R.layout.item_chat_image_left, parent, false), glide, callback)
+            }
+
+            TYPE_IMAGE_RIGHT -> {
+                ViewHolderChatImage(inflater.inflate(R.layout.item_chat_image_right, parent, false), glide, callback)
             }
 
             else -> throw IllegalArgumentException("Invalid view type")
@@ -50,6 +61,14 @@ class ChatAdapter(context: Context,
                 }
             }
 
+            ApiConstants.MESSAGE_TYPE_IMAGE -> {
+                if (message.ownMessage) {
+                    TYPE_IMAGE_RIGHT
+                } else {
+                    TYPE_IMAGE_LEFT
+                }
+            }
+
             else -> TYPE_TEXT_LEFT
         }
     }
@@ -61,6 +80,7 @@ class ChatAdapter(context: Context,
 
         when (holder) {
             is ViewHolderChatText -> holder.bind(currentMessage)
+            is ViewHolderChatImage -> holder.bind(currentMessage)
         }
     }
 
@@ -95,5 +115,5 @@ class ChatAdapter(context: Context,
         }
     }
 
-    interface Callback
+    interface Callback : ViewHolderChatImage.Callback
 }

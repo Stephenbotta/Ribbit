@@ -31,19 +31,23 @@ class ExploreFragment : BaseFragment(), VenuesModeNavigator {
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_explore
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this)[ExploreViewModel::class.java]
         viewModel.getInterests()
 
         fragmentSwitcher = FragmentSwitcher(childFragmentManager, R.id.flExploreContainer)
+
         if (!fragmentSwitcher.fragmentExist(GroupsFragment.TAG)) {
             fragmentSwitcher.addFragment(GroupsFragment(), GroupsFragment.TAG)
         }
-        
-        btnNotification.setOnClickListener { }
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        btnNotification.setOnClickListener { }
         setupTabs()
     }
 
