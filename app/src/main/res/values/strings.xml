@@ -17,8 +17,10 @@
 
     <string name="message_google_maps_is_not_installed">Google maps is not installed. Would you like to install it?</string>
 
-    <string name="image_picker_dialog_camera">Camera</string>
-    <string name="image_picker_dialog_gallery">Gallery</string>
+    <string name="image_picker_dialog_capture_image">Capture image</string>
+    <string name="image_picker_dialog_capture_video">Capture video</string>
+    <string name="image_picker_dialog_gallery_image">Gallery image</string>
+    <string name="image_picker_dialog_gallery_video">Gallery video</string>
     <string name="image_picker_dialog_select_your_choice">Select your choice</string>
 
     <string name="permission_btn_allow">Allow</string>

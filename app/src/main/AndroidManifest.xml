@@ -46,8 +46,8 @@
 
         <activity
             android:name="com.conversify.ui.venues.chat.ChatActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.venues.filters.VenueFiltersActivity"
@@ -56,6 +56,16 @@
         <activity
             android:name=".ui.venues.details.VenueDetailsActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.images.ImagesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Images" />
+
+        <activity
+            android:name=".ui.videoplayer.VideoPlayerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Images" />
 
         <activity
             android:name="com.facebook.FacebookActivity"

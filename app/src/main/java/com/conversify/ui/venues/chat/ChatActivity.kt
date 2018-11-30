@@ -131,10 +131,14 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
             viewModel.sendImageMessage(imageFile)
         }
 
+        imagePicker.setVideoPickerListener { videoFile ->
+            viewModel.sendVideoMessage(videoFile)
+        }
+
         ivVenue.setOnClickListener { showVenueDetails() }
         tvVenueName.setOnClickListener { showVenueDetails() }
 
-        btnAttachment.setOnClickListener { imagePicker.show() }
+        btnAttachment.setOnClickListener { showImagePickerWithPermissionCheck() }
 
         fabSend.setOnClickListener { sendTextMessage() }
     }

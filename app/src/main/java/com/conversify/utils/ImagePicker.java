@@ -45,6 +45,9 @@ public class ImagePicker {
     private AlertDialog pickerDialog;
 
     private ImagePickerListener imagePickerListener;
+    private VideoPickerListener videoPickerListener;
+
+    private boolean allowVideo = false;
 
     public ImagePicker(@NonNull Activity activity) {
         this.context = activity;
@@ -61,6 +64,14 @@ public class ImagePicker {
         this.imagePickerListener = imagePickerListener;
     }
 
+    public void setVideoPickerListener(VideoPickerListener videoPickerListener) {
+        this.videoPickerListener = videoPickerListener;
+    }
+
+    public void setAllowVideo(boolean allowVideo) {
+        this.allowVideo = allowVideo;
+    }
+
     /**
      * Removes all listeners and references
      */
@@ -75,8 +86,10 @@ public class ImagePicker {
 
     private void setupPickerDialog() {
         String[] pickerItems = {
-                context.getString(R.string.image_picker_dialog_camera),
-                context.getString(R.string.image_picker_dialog_gallery),
+                context.getString(R.string.image_picker_dialog_capture_image),
+                context.getString(R.string.image_picker_dialog_gallery_image),
+                context.getString(R.string.image_picker_dialog_capture_video),
+                context.getString(R.string.image_picker_dialog_gallery_video),
                 context.getString(android.R.string.cancel)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -84,11 +97,18 @@ public class ImagePicker {
         builder.setItems(pickerItems, (dialog, which) -> {
             switch (which) {
                 case 0:
-                    openCamera();
+                    openImageCamera();
                     break;
 
                 case 1:
-                    openGallery();
+                    openImageGallery();
+                    break;
+
+                case 2:
+                    openVideoCamera();
+                    break;
+
+                case 3:
                     break;
             }
             dialog.dismiss();
@@ -142,38 +162,72 @@ public class ImagePicker {
                 imagePickerListener.onImageSelectedFromPicker(imageFile);
                 revokeUriPermission();
             }
+        } else if ((requestCode == AppConstants.REQ_CODE_CAMERA_VIDEO) && (resultCode == Activity.RESULT_OK)) {
+            if (imageFile != null) {
+                videoPickerListener.onVideoSelectedFromPicker(imageFile);
+                revokeUriPermission();
+            }
         }
     }
 
     /**
      * Save the image to device external cache
      */
-    private void openCamera() {
+    private void openImageCamera() {
         checkListener();
 
         File imageDirectory = context.getExternalCacheDir();
 
         if (imageDirectory != null)
-            startCameraIntent(imageDirectory.getAbsolutePath());
+            startCameraImageIntent(imageDirectory.getAbsolutePath());
     }
 
     /**
      * Save the image to a custom directory
      */
-    private void openCamera(@NonNull final String imageDirectory) {
+    private void openImageCamera(@NonNull final String imageDirectory) {
         checkListener();
 
-        startCameraIntent(imageDirectory);
+        startCameraImageIntent(imageDirectory);
     }
 
-    private void startCameraIntent(@NonNull final String imageDirectory) {
+    private void startCameraImageIntent(@NonNull final String imageDirectory) {
         try {
             imageFile = createImageFile(imageDirectory);
 
             if (fragment == null)
-                context.startActivityForResult(getCameraIntent(), AppConstants.REQ_CODE_CAMERA_IMAGE);
+                context.startActivityForResult(getCameraImageIntent(imageFile, MediaStore.ACTION_IMAGE_CAPTURE),
+                        AppConstants.REQ_CODE_CAMERA_IMAGE);
             else
-                fragment.startActivityForResult(getCameraIntent(), AppConstants.REQ_CODE_CAMERA_IMAGE);
+                fragment.startActivityForResult(getCameraImageIntent(imageFile, MediaStore.ACTION_IMAGE_CAPTURE),
+                        AppConstants.REQ_CODE_CAMERA_IMAGE);
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+    }
+
+    /**
+     * Save the video to device external cache
+     */
+    private void openVideoCamera() {
+        checkListener();
+
+        File videoDirectory = context.getExternalCacheDir();
+
+        if (videoDirectory != null)
+            startCameraVideoIntent(videoDirectory.getAbsolutePath());
+    }
+
+    private void startCameraVideoIntent(@NonNull final String imageDirectory) {
+        try {
+            imageFile = createVideoFile(imageDirectory);
+
+            if (fragment == null)
+                context.startActivityForResult(getCameraImageIntent(imageFile, MediaStore.ACTION_VIDEO_CAPTURE),
+                        AppConstants.REQ_CODE_CAMERA_VIDEO);
+            else
+                fragment.startActivityForResult(getCameraImageIntent(imageFile, MediaStore.ACTION_VIDEO_CAPTURE),
+                        AppConstants.REQ_CODE_CAMERA_VIDEO);
         } catch (Exception e) {
             Timber.e(e);
         }
@@ -181,9 +235,10 @@ public class ImagePicker {
 
     /**
      * Returns the camera intent using FileProvider to avoid the FileUriExposedException in Android N and above
+     * @param imageFile File for which we need the intent
      */
-    private Intent getCameraIntent() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    private Intent getCameraImageIntent(File imageFile, @NonNull String action) {
+        Intent cameraIntent = new Intent(action);
 
         // Put the uri of the image file as intent extra
         Uri imageUri = FileProvider.getUriForFile(context,
@@ -209,7 +264,7 @@ public class ImagePicker {
         return cameraIntent;
     }
 
-    private void openGallery() {
+    private void openImageGallery() {
         checkListener();
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         try {
@@ -217,6 +272,19 @@ public class ImagePicker {
                 context.startActivityForResult(intent, AppConstants.REQ_CODE_GALLERY_IMAGE);
             else
                 fragment.startActivityForResult(intent, AppConstants.REQ_CODE_GALLERY_IMAGE);
+        } catch (Exception ex) {
+            Timber.e(ex);
+        }
+    }
+
+    private void openVideoGallery() {
+        checkListener();
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        try {
+            if (fragment == null)
+                context.startActivityForResult(intent, AppConstants.REQ_CODE_GALLERY_VIDEO);
+            else
+                fragment.startActivityForResult(intent, AppConstants.REQ_CODE_GALLERY_VIDEO);
         } catch (Exception ex) {
             Timber.e(ex);
         }
@@ -252,6 +320,23 @@ public class ImagePicker {
         return imageFile;
     }
 
+    @Nullable
+    private File createVideoFile(@NonNull final String directory) throws IOException {
+        File imageFile = null;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            File storageDir = new File(directory);
+            if (!storageDir.mkdirs()) {
+                if (!storageDir.exists()) {
+                    return null;
+                }
+            }
+            String imageFileName = "VID_" + UUID.randomUUID().toString();
+
+            imageFile = File.createTempFile(imageFileName, ".mp4", storageDir);
+        }
+        return imageFile;
+    }
+
     /**
      * Revoke access permission for the content URI to the specified package otherwise the permission won't be
      * revoked until the device restarts.
@@ -270,5 +355,9 @@ public class ImagePicker {
 
     public interface ImagePickerListener {
         void onImageSelectedFromPicker(@NonNull File imageFile);
+    }
+
+    public interface VideoPickerListener {
+        void onVideoSelectedFromPicker(@NonNull File videoFile);
     }
 }

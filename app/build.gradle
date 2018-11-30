@@ -131,6 +131,10 @@ dependencies {
 
     // https://github.com/leinardi/FloatingActionButtonSpeedDial
     implementation "com.leinardi.android:speed-dial:$fabSpeedDialVersion"
+
+    // https://github.com/google/ExoPlayer
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoPlayerVersion"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exoPlayerVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

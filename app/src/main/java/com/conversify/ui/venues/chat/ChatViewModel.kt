@@ -2,6 +2,7 @@ package com.conversify.ui.venues.chat
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
+import android.provider.MediaStore
 import com.conversify.data.local.UserManager
 import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.ApiConstants
@@ -19,6 +20,7 @@ import com.conversify.data.remote.models.chat.VenueMemberDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.data.remote.socket.SocketManager
 import com.conversify.utils.GetSampledImage
+import com.conversify.utils.MediaUtils
 import com.conversify.utils.SingleLiveEvent
 import io.socket.client.Ack
 import io.socket.emitter.Emitter
@@ -41,7 +43,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private val chatMessageBuilder by lazy { ChatMessageBuilder(ownUserId) }
     private val socketManager by lazy { SocketManager.getInstance() }
     private val s3ImageUploader by lazy { S3Uploader(S3Utils.TRANSFER_UTILITY) }
-    private val imageDirectory by lazy {
+    private val imageCacheDirectory by lazy {
         getApplication<Application>().externalCacheDir?.absolutePath ?: ""
     }
 
@@ -90,17 +92,26 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun sendImageMessage(image: File) {
-        val message = chatMessageBuilder.buildImageMessage(image)
-
         // todo move to async
-        val sampledImage = GetSampledImage.sampleImageSync(image.absolutePath, imageDirectory, 650)
-        sampledImage ?: return
+        val sampledImage = GetSampledImage.sampleImageSync(image.absolutePath, imageCacheDirectory, 650)
+        if (sampledImage != null) {
+            val message = chatMessageBuilder.buildImageMessage(sampledImage)
+            newMessage.value = message
+            uploadImage(message)
+        } else {
+            Timber.w("Sampled image is null")
+        }
+    }
 
-        message.localFile = image
-        message.localFileThumbnail = image
-
-        newMessage.value = message
-        uploadImage(message)
+    fun sendVideoMessage(video: File) {
+        val thumbnailImage = MediaUtils.getThumbnailFromVideo(video.absolutePath,
+                imageCacheDirectory, MediaStore.Video.Thumbnails.MICRO_KIND)
+        if (thumbnailImage != null) {
+            val message = chatMessageBuilder.buildVideoMessage(video, thumbnailImage)
+            newMessage.value = message
+        } else {
+            Timber.w("Thumbnail image is null")
+        }
     }
 
     fun resendMessage(chatMessage: ChatMessageDto) {

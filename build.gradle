@@ -26,6 +26,7 @@ buildscript {
         awsSdkVersion = '2.8.2'
         socketIoVersion = '1.0.0'
         fabSpeedDialVersion = '2.0.1'
+        exoPlayerVersion = '2.9.1'
     }
 
     repositories {
