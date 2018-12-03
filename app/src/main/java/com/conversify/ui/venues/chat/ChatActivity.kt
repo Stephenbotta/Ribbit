@@ -23,11 +23,14 @@ import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.longToast
+import com.conversify.extensions.shortToast
 import com.conversify.ui.base.BaseActivity
+import com.conversify.ui.images.ImagesActivity
 import com.conversify.ui.venues.details.VenueDetailsActivity
+import com.conversify.ui.videoplayer.VideoPlayerActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
-import com.conversify.utils.ImagePicker
+import com.conversify.utils.MediaPicker
 import com.conversify.utils.PermissionUtils
 import kotlinx.android.synthetic.main.activity_chat.*
 import permissions.dispatcher.*
@@ -45,7 +48,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
 
     private lateinit var viewModel: ChatViewModel
     private lateinit var adapter: ChatAdapter
-    private lateinit var imagePicker: ImagePicker
+    private lateinit var mediaPicker: MediaPicker
 
     private val newMessageObserver = Observer<ChatMessageDto> {
         it ?: return@Observer
@@ -118,7 +121,8 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         viewModel = ViewModelProviders.of(this)[ChatViewModel::class.java]
         viewModel.start(venue)
 
-        imagePicker = ImagePicker(this)
+        mediaPicker = MediaPicker(this)
+        mediaPicker.setAllowVideo(true)
         setListeners()
         observeChanges()
         setupChatRecycler()
@@ -127,11 +131,11 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     }
 
     private fun setListeners() {
-        imagePicker.setImagePickerListener { imageFile ->
+        mediaPicker.setImagePickerListener { imageFile ->
             viewModel.sendImageMessage(imageFile)
         }
 
-        imagePicker.setVideoPickerListener { videoFile ->
+        mediaPicker.setVideoPickerListener { videoFile ->
             viewModel.sendVideoMessage(videoFile)
         }
 
@@ -203,6 +207,21 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     }
 
     override fun onImageMessageClicked(chatMessage: ChatMessageDto) {
+        // Display local image file if exists, otherwise display online image
+        val localImage = chatMessage.localFile?.absolutePath
+        val onlineImage = chatMessage.details?.image?.original
+        ImagesActivity.start(this, arrayListOf(localImage ?: onlineImage ?: ""))
+    }
+
+    override fun onVideoMessageClicked(chatMessage: ChatMessageDto) {
+        val localVideo = chatMessage.localFile?.absolutePath
+        val onlineVideo = chatMessage.details?.video?.original
+        val videoPath = localVideo ?: onlineVideo ?: ""
+        if (videoPath.isNotBlank()) {
+            VideoPlayerActivity.start(this, videoPath)
+        } else {
+            shortToast(R.string.chat_message_invalid_video_path)
+        }
     }
 
     override fun onResendMessageClicked(chatMessage: ChatMessageDto) {
@@ -211,7 +230,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
 
     @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun showImagePicker() {
-        imagePicker.show()
+        mediaPicker.show()
     }
 
     @OnShowRationale(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -268,7 +287,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                 }
             }
         } else {
-            imagePicker.onActivityResult(requestCode, resultCode, data)
+            mediaPicker.onActivityResult(requestCode, resultCode, data)
         }
     }
 
@@ -278,6 +297,6 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         viewModel.oldMessages.removeObserver(oldMessagesObserver)
         viewModel.sendMessage.removeObserver(sendMessageObserver)
         viewModel.uploadFile.removeObserver(uploadFileObserver)
-        imagePicker.clear()
+        mediaPicker.clear()
     }
 }

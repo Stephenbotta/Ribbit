@@ -109,6 +109,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         if (thumbnailImage != null) {
             val message = chatMessageBuilder.buildVideoMessage(video, thumbnailImage)
             newMessage.value = message
+            uploadVideo(message)
         } else {
             Timber.w("Thumbnail image is null")
         }
@@ -119,6 +120,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
         when (chatMessage.details?.type) {
             ApiConstants.MESSAGE_TYPE_IMAGE -> uploadImage(chatMessage)
+            ApiConstants.MESSAGE_TYPE_VIDEO -> uploadVideo(chatMessage)
         }
     }
 
@@ -141,6 +143,68 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                         val error = AppError.FileUploadFailed(message.localId ?: "")
                         uploadFile.value = Resource.error(error)
                     }
+        }
+    }
+
+    private fun uploadVideo(message: ChatMessageDto) {
+        // If video url and thumbnail url already exist, then proceed to send message.
+        if (message.details?.video?.original != null &&
+                message.details.image?.original != null) {
+            Timber.i("Both video and video thumbnail are already uploaded")
+            uploadFile.value = Resource.success(message.localId)
+            sendMessage(message)
+            return
+        }
+
+        val localVideo = message.localFile
+        val localVideoThumbnail = message.localFileThumbnail
+
+        if (localVideo != null && localVideoThumbnail != null) {
+            // Upload the video only if it hasn't been uploaded.
+            if (message.details?.video?.original == null) {
+                Timber.i("Uploading video")
+                s3ImageUploader.upload(localVideo)
+                        .addUploadCompleteListener { videoUrl ->
+                            message.details?.video?.thumbnail = videoUrl
+                            message.details?.video?.original = videoUrl
+
+                            if (message.details?.video?.original != null &&
+                                    message.details?.image?.original != null) {
+                                Timber.i("Proceeding to send video message")
+                                uploadFile.value = Resource.success(message.localId)
+                                sendMessage(message)
+                            }
+                        }
+                        .addUploadFailedListener {
+                            val error = AppError.FileUploadFailed(message.localId ?: "")
+                            uploadFile.value = Resource.error(error)
+                        }
+            }
+
+            // Upload the video thumbnail only if it hasn't been uploaded.
+            if (message.details?.image?.original == null) {
+                Timber.i("Uploading video thumbnail")
+                s3ImageUploader.upload(localVideoThumbnail)
+                        .addUploadCompleteListener { thumbnailUrl ->
+                            message.details?.image?.thumbnail = thumbnailUrl
+                            message.details?.image?.original = thumbnailUrl
+
+                            if (message.details?.video?.original != null &&
+                                    message.details.image?.original != null) {
+                                Timber.i("Proceeding to send video message")
+                                uploadFile.value = Resource.success(message.localId)
+                                sendMessage(message)
+                            }
+                        }
+                        .addUploadFailedListener {
+                            val error = AppError.FileUploadFailed(message.localId ?: "")
+                            uploadFile.value = Resource.error(error)
+                        }
+            }
+        } else {
+            Timber.w("Local video file or thumbnail file is null for message $message")
+            val error = AppError.FileUploadFailed(message.localId ?: "")
+            uploadFile.value = Resource.error(error)
         }
     }
 

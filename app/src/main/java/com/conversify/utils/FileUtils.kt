@@ -28,6 +28,7 @@ object FileUtils {
     /**
      * https://github.com/iPaulPro/aFileChooser/blob/master/aFileChooser/src/com/ipaulpro/afilechooser/utils/FileUtils.java
      * */
+    @JvmStatic
     fun getPath(context: Context, uri: Uri): String? {
         when {
             // DocumentProvider
@@ -153,7 +154,8 @@ object FileUtils {
      * @param uri The Uri to check.
      * @return Whether the Uri authority is Google Photos.
      */
-    private fun isGooglePhotosUri(uri: Uri): Boolean {
+    @JvmStatic
+    fun isGooglePhotosUri(uri: Uri): Boolean {
         return "com.google.android.apps.photos.content" == uri.authority
     }
 

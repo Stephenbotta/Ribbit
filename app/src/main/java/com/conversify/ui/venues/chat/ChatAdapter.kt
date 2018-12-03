@@ -10,6 +10,7 @@ import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.ui.venues.chat.viewholders.ViewHolderChatImage
 import com.conversify.ui.venues.chat.viewholders.ViewHolderChatText
+import com.conversify.ui.venues.chat.viewholders.ViewHolderChatVideo
 import com.conversify.utils.GlideApp
 
 class ChatAdapter(context: Context,
@@ -19,6 +20,8 @@ class ChatAdapter(context: Context,
         private const val TYPE_TEXT_RIGHT = 1
         private const val TYPE_IMAGE_LEFT = 2
         private const val TYPE_IMAGE_RIGHT = 3
+        private const val TYPE_VIDEO_LEFT = 4
+        private const val TYPE_VIDEO_RIGHT = 5
     }
 
     private val glide = GlideApp.with(context)
@@ -41,6 +44,14 @@ class ChatAdapter(context: Context,
 
             TYPE_IMAGE_RIGHT -> {
                 ViewHolderChatImage(inflater.inflate(R.layout.item_chat_image_right, parent, false), glide, callback)
+            }
+
+            TYPE_VIDEO_LEFT -> {
+                ViewHolderChatVideo(inflater.inflate(R.layout.item_chat_video_left, parent, false), glide, callback)
+            }
+
+            TYPE_VIDEO_RIGHT -> {
+                ViewHolderChatVideo(inflater.inflate(R.layout.item_chat_video_right, parent, false), glide, callback)
             }
 
             else -> throw IllegalArgumentException("Invalid view type")
@@ -69,6 +80,14 @@ class ChatAdapter(context: Context,
                 }
             }
 
+            ApiConstants.MESSAGE_TYPE_VIDEO -> {
+                if (message.ownMessage) {
+                    TYPE_VIDEO_RIGHT
+                } else {
+                    TYPE_VIDEO_LEFT
+                }
+            }
+
             else -> TYPE_TEXT_LEFT
         }
     }
@@ -81,6 +100,7 @@ class ChatAdapter(context: Context,
         when (holder) {
             is ViewHolderChatText -> holder.bind(currentMessage)
             is ViewHolderChatImage -> holder.bind(currentMessage)
+            is ViewHolderChatVideo -> holder.bind(currentMessage)
         }
     }
 
@@ -115,5 +135,5 @@ class ChatAdapter(context: Context,
         }
     }
 
-    interface Callback : ViewHolderChatImage.Callback
+    interface Callback : ViewHolderChatImage.Callback, ViewHolderChatVideo.Callback
 }

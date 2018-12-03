@@ -25,20 +25,20 @@ import java.util.UUID;
 
 import timber.log.Timber;
 
-public class ImagePicker {
-    private File imageFile;
+public class MediaPicker {
+    private File mediaFile;
 
     /**
      * Activity object that will be used while calling startActivityForResult(). Activity then will
      * receive the callbacks to its own onActivityResult() and is responsible of calling the
-     * onActivityResult() of the ImagePicker for handling result and being notified.
+     * onActivityResult() of the MediaPicker for handling result and being notified.
      */
     private Activity context;
 
     /**
      * Fragment object that will be used while calling startActivityForResult(). Fragment then will
      * receive the callbacks to its own onActivityResult() and is responsible of calling the
-     * onActivityResult() of the ImagePicker for handling result and being notified.
+     * onActivityResult() of the MediaPicker for handling result and being notified.
      */
     private Fragment fragment;
 
@@ -49,15 +49,13 @@ public class ImagePicker {
 
     private boolean allowVideo = false;
 
-    public ImagePicker(@NonNull Activity activity) {
+    public MediaPicker(@NonNull Activity activity) {
         this.context = activity;
-        setupPickerDialog();
     }
 
-    public ImagePicker(@NonNull Fragment fragment) {
+    public MediaPicker(@NonNull Fragment fragment) {
         this.fragment = fragment;
         this.context = fragment.getActivity();
-        setupPickerDialog();
     }
 
     public void setImagePickerListener(@NonNull ImagePickerListener imagePickerListener) {
@@ -80,20 +78,27 @@ public class ImagePicker {
         this.imagePickerListener = null;
         this.context = null;
         this.fragment = null;
-        this.imageFile = null;
+        this.mediaFile = null;
         this.pickerDialog = null;
     }
 
     private void setupPickerDialog() {
-        String[] pickerItems = {
-                context.getString(R.string.image_picker_dialog_capture_image),
-                context.getString(R.string.image_picker_dialog_gallery_image),
-                context.getString(R.string.image_picker_dialog_capture_video),
-                context.getString(R.string.image_picker_dialog_gallery_video),
-                context.getString(android.R.string.cancel)};
+        String[] pickerItems;
+
+        if (allowVideo) {
+            pickerItems = new String[]{context.getString(R.string.image_picker_dialog_capture_image),
+                    context.getString(R.string.image_picker_dialog_gallery_image),
+                    context.getString(R.string.image_picker_dialog_capture_video),
+                    context.getString(R.string.image_picker_dialog_gallery_video),
+                    context.getString(android.R.string.cancel)};
+        } else {
+            pickerItems = new String[]{context.getString(R.string.image_picker_dialog_capture_image),
+                    context.getString(R.string.image_picker_dialog_gallery_image),
+                    context.getString(android.R.string.cancel)};
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.image_picker_dialog_select_your_choice);
+        //builder.setTitle(R.string.image_picker_dialog_select_your_choice);
         builder.setItems(pickerItems, (dialog, which) -> {
             switch (which) {
                 case 0:
@@ -101,14 +106,19 @@ public class ImagePicker {
                     break;
 
                 case 1:
-                    openImageGallery();
+                    openGallery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, AppConstants.REQ_CODE_GALLERY_IMAGE);
                     break;
 
                 case 2:
-                    openVideoCamera();
+                    if (allowVideo) {
+                        openVideoCamera();
+                    }
                     break;
 
                 case 3:
+                    if (allowVideo) {
+                        openGallery(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, AppConstants.REQ_CODE_GALLERY_VIDEO);
+                    }
                     break;
             }
             dialog.dismiss();
@@ -117,6 +127,10 @@ public class ImagePicker {
     }
 
     public void show() {
+        if (pickerDialog == null) {
+            setupPickerDialog();
+        }
+
         if (pickerDialog != null)
             pickerDialog.show();
     }
@@ -127,46 +141,49 @@ public class ImagePicker {
     }
 
     /**
-     * Returns the gallery/camera imageFile.
-     * <p>
-     * File object might be null if method is called before calling the openCamera() or openGallery()
-     */
-    @Nullable
-    public File getImageFile() {
-        return imageFile;
-    }
-
-    /**
-     * Set the image file. Used in case the existing file needs to be updated with compressed/resized image file
-     */
-    public void setImageFile(@NonNull File imageFile) {
-        this.imageFile = imageFile;
-    }
-
-    /**
      * Handles the result of events that the Activity or Fragment receives on its own
      * onActivityResult(). This method must be called inside the onActivityResult()
      * of the container Activity or Fragment.
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if ((requestCode == AppConstants.REQ_CODE_GALLERY_IMAGE) && (resultCode == Activity.RESULT_OK)) {
-            if (data.getData() != null) {
-                String imagePath = getImagePathFromGallery(context, data.getData());
-                if (imagePath != null) {
-                    imageFile = new File(imagePath);
-                    imagePickerListener.onImageSelectedFromPicker(imageFile);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        switch (requestCode) {
+            case AppConstants.REQ_CODE_GALLERY_IMAGE:
+                if (data.getData() != null) {
+                    String imagePath = getPathFromGallery(context, data.getData());
+                    if (imagePath != null) {
+                        mediaFile = new File(imagePath);
+                        imagePickerListener.onImageSelectedFromPicker(mediaFile);
+                    }
                 }
-            }
-        } else if ((requestCode == AppConstants.REQ_CODE_CAMERA_IMAGE) && (resultCode == Activity.RESULT_OK)) {
-            if (imageFile != null) {
-                imagePickerListener.onImageSelectedFromPicker(imageFile);
-                revokeUriPermission();
-            }
-        } else if ((requestCode == AppConstants.REQ_CODE_CAMERA_VIDEO) && (resultCode == Activity.RESULT_OK)) {
-            if (imageFile != null) {
-                videoPickerListener.onVideoSelectedFromPicker(imageFile);
-                revokeUriPermission();
-            }
+                break;
+
+            case AppConstants.REQ_CODE_GALLERY_VIDEO:
+                if (data.getData() != null && !FileUtils.isGooglePhotosUri(data.getData())) {
+                    String videoPath = FileUtils.getPath(context, data.getData());
+                    if (videoPath != null) {
+                        mediaFile = new File(videoPath);
+                        videoPickerListener.onVideoSelectedFromPicker(mediaFile);
+                    }
+                }
+                break;
+
+            case AppConstants.REQ_CODE_CAMERA_IMAGE:
+                if (mediaFile != null) {
+                    imagePickerListener.onImageSelectedFromPicker(mediaFile);
+                    revokeUriPermission();
+                }
+                break;
+
+            case AppConstants.REQ_CODE_CAMERA_VIDEO:
+                if (mediaFile != null) {
+                    videoPickerListener.onVideoSelectedFromPicker(mediaFile);
+                    revokeUriPermission();
+                }
+                break;
         }
     }
 
@@ -193,13 +210,15 @@ public class ImagePicker {
 
     private void startCameraImageIntent(@NonNull final String imageDirectory) {
         try {
-            imageFile = createImageFile(imageDirectory);
+            String fileName = "IMG_" + UUID.randomUUID().toString();
+            String fileSuffix = ".jpg";
+            mediaFile = createFile(imageDirectory, fileName, fileSuffix);
 
             if (fragment == null)
-                context.startActivityForResult(getCameraImageIntent(imageFile, MediaStore.ACTION_IMAGE_CAPTURE),
+                context.startActivityForResult(getCameraIntent(mediaFile, MediaStore.ACTION_IMAGE_CAPTURE),
                         AppConstants.REQ_CODE_CAMERA_IMAGE);
             else
-                fragment.startActivityForResult(getCameraImageIntent(imageFile, MediaStore.ACTION_IMAGE_CAPTURE),
+                fragment.startActivityForResult(getCameraIntent(mediaFile, MediaStore.ACTION_IMAGE_CAPTURE),
                         AppConstants.REQ_CODE_CAMERA_IMAGE);
         } catch (Exception e) {
             Timber.e(e);
@@ -220,13 +239,15 @@ public class ImagePicker {
 
     private void startCameraVideoIntent(@NonNull final String imageDirectory) {
         try {
-            imageFile = createVideoFile(imageDirectory);
+            String fileName = "VID_" + UUID.randomUUID().toString();
+            String fileSuffix = ".mp4";
+            mediaFile = createFile(imageDirectory, fileName, fileSuffix);
 
             if (fragment == null)
-                context.startActivityForResult(getCameraImageIntent(imageFile, MediaStore.ACTION_VIDEO_CAPTURE),
+                context.startActivityForResult(getCameraIntent(mediaFile, MediaStore.ACTION_VIDEO_CAPTURE),
                         AppConstants.REQ_CODE_CAMERA_VIDEO);
             else
-                fragment.startActivityForResult(getCameraImageIntent(imageFile, MediaStore.ACTION_VIDEO_CAPTURE),
+                fragment.startActivityForResult(getCameraIntent(mediaFile, MediaStore.ACTION_VIDEO_CAPTURE),
                         AppConstants.REQ_CODE_CAMERA_VIDEO);
         } catch (Exception e) {
             Timber.e(e);
@@ -235,15 +256,16 @@ public class ImagePicker {
 
     /**
      * Returns the camera intent using FileProvider to avoid the FileUriExposedException in Android N and above
-     * @param imageFile File for which we need the intent
+     *
+     * @param file File for which we need the intent
      */
-    private Intent getCameraImageIntent(File imageFile, @NonNull String action) {
+    private Intent getCameraIntent(File file, @NonNull String action) {
         Intent cameraIntent = new Intent(action);
 
         // Put the uri of the image file as intent extra
         Uri imageUri = FileProvider.getUriForFile(context,
                 BuildConfig.APPLICATION_ID + ".provider",
-                imageFile);
+                file);
 
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
 
@@ -264,39 +286,27 @@ public class ImagePicker {
         return cameraIntent;
     }
 
-    private void openImageGallery() {
+    private void openGallery(@NonNull final Uri uri, final int requestCode) {
         checkListener();
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK, uri);
         try {
             if (fragment == null)
-                context.startActivityForResult(intent, AppConstants.REQ_CODE_GALLERY_IMAGE);
+                context.startActivityForResult(intent, requestCode);
             else
-                fragment.startActivityForResult(intent, AppConstants.REQ_CODE_GALLERY_IMAGE);
+                fragment.startActivityForResult(intent, requestCode);
         } catch (Exception ex) {
             Timber.e(ex);
         }
     }
 
-    private void openVideoGallery() {
-        checkListener();
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-        try {
-            if (fragment == null)
-                context.startActivityForResult(intent, AppConstants.REQ_CODE_GALLERY_VIDEO);
-            else
-                fragment.startActivityForResult(intent, AppConstants.REQ_CODE_GALLERY_VIDEO);
-        } catch (Exception ex) {
-            Timber.e(ex);
-        }
-    }
-
-    private String getImagePathFromGallery(@NonNull final Context context, @NonNull final Uri imageUri) {
+    @Nullable
+    private String getPathFromGallery(@NonNull final Context context, @NonNull final Uri imageUri) {
         String imagePath = null;
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-        Cursor cursor = context.getContentResolver().query(imageUri, filePathColumn, null, null, null);
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(imageUri, projection, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            int columnIndex = cursor.getColumnIndex(projection[0]);
             imagePath = cursor.getString(columnIndex);
             cursor.close();
         }
@@ -304,8 +314,9 @@ public class ImagePicker {
     }
 
     @Nullable
-    private File createImageFile(@NonNull final String directory) throws IOException {
-        File imageFile = null;
+    private File createFile(@NonNull final String directory, @NonNull final String fileName,
+                            @NonNull final String fileSuffix) throws IOException {
+        File file = null;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             File storageDir = new File(directory);
             if (!storageDir.mkdirs()) {
@@ -313,28 +324,9 @@ public class ImagePicker {
                     return null;
                 }
             }
-            String imageFileName = "IMG_" + UUID.randomUUID().toString();
-
-            imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
+            file = File.createTempFile(fileName, fileSuffix, storageDir);
         }
-        return imageFile;
-    }
-
-    @Nullable
-    private File createVideoFile(@NonNull final String directory) throws IOException {
-        File imageFile = null;
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            File storageDir = new File(directory);
-            if (!storageDir.mkdirs()) {
-                if (!storageDir.exists()) {
-                    return null;
-                }
-            }
-            String imageFileName = "VID_" + UUID.randomUUID().toString();
-
-            imageFile = File.createTempFile(imageFileName, ".mp4", storageDir);
-        }
-        return imageFile;
+        return file;
     }
 
     /**
@@ -343,13 +335,17 @@ public class ImagePicker {
      */
     private void revokeUriPermission() {
         context.revokeUriPermission(FileProvider.getUriForFile(context,
-                BuildConfig.APPLICATION_ID + ".provider", imageFile),
+                BuildConfig.APPLICATION_ID + ".provider", mediaFile),
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
     }
 
     private void checkListener() {
         if (imagePickerListener == null) {
-            throw new RuntimeException("ImagePickerListener must be set before calling openCamera() or openGallery()");
+            throw new RuntimeException("ImagePickerListener must be set before calling openImageCamera() or openImageGallery()");
+        }
+
+        if (allowVideo && videoPickerListener == null) {
+            throw new RuntimeException("VideoPickerListener must be set before calling openVideoCamera() or openVideoGallery()");
         }
     }
 

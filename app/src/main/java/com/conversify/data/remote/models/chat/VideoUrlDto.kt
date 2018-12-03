@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class VideoUrlDto(
         @field:SerializedName("thumbnail")
-        val thumbnail: String? = null,
+        var thumbnail: String? = null,
 
         @field:SerializedName("original")
-        val original: String? = null)
+        var original: String? = null)

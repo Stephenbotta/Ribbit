@@ -62,25 +62,22 @@ class S3Uploader(private val transferUtility: TransferUtility) {
 
     fun clear() {
         items.values.forEach { item ->
-            cancelUpload(item)
+            cancelUpload(item.observer)     // Cancel upload
+            item.clear()    // Clear the listeners for this item
         }
-        items.clear()
     }
 
     private fun cancelUpload(item: S3UploadItem?) {
         item ?: return
 
-        val observer = transferUtility.getTransferById(item.observer.id)
-        if (observer != null) {
-            cancelUpload(observer)
-        }
-        item.clear()
+        cancelUpload(item.observer)     // Cancel upload
+        items.remove(item.observer.id)  // Remove the item from the items map
+        item.clear()        // Clear the listeners for this item
     }
 
     private fun cancelUpload(observer: TransferObserver) {
         transferUtility.cancel(observer.id)
         observer.cleanTransferListener()
-        items.remove(observer.id)
     }
 
     object NetworkError : Throwable()

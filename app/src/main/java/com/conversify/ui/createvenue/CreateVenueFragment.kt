@@ -47,7 +47,7 @@ class CreateVenueFragment : BaseFragment() {
     private lateinit var viewModel: CreateVenueViewModel
     private lateinit var request: CreateEditVenueRequest
     private lateinit var loadingDialog: LoadingDialog
-    private lateinit var imagePicker: ImagePicker
+    private lateinit var mediaPicker: MediaPicker
     private lateinit var createVenueMenuItem: MenuItem
 
     private var getSampledImage: GetSampledImage? = null
@@ -70,7 +70,7 @@ class CreateVenueFragment : BaseFragment() {
         request = CreateEditVenueRequest(categoryId = category?.id)
 
         loadingDialog = LoadingDialog(requireActivity())
-        imagePicker = ImagePicker(this)
+        mediaPicker = MediaPicker(this)
 
         setListeners()
         observeChanges()
@@ -79,7 +79,7 @@ class CreateVenueFragment : BaseFragment() {
     }
 
     private fun setListeners() {
-        imagePicker.setImagePickerListener { imageFile ->
+        mediaPicker.setImagePickerListener { imageFile ->
             getSampledImage?.removeListener()
             getSampledImage?.cancel(true)
 
@@ -233,7 +233,7 @@ class CreateVenueFragment : BaseFragment() {
 
     @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun showImagePicker() {
-        imagePicker.show()
+        mediaPicker.show()
     }
 
     @OnShowRationale(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -287,7 +287,7 @@ class CreateVenueFragment : BaseFragment() {
             }
 
             else -> {
-                imagePicker.onActivityResult(requestCode, resultCode, data)
+                mediaPicker.onActivityResult(requestCode, resultCode, data)
             }
         }
     }
@@ -297,6 +297,6 @@ class CreateVenueFragment : BaseFragment() {
         getSampledImage?.removeListener()
         getSampledImage?.cancel(true)
         loadingDialog.setLoading(false)
-        imagePicker.clear()
+        mediaPicker.clear()
     }
 }
