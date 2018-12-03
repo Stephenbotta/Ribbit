@@ -104,6 +104,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun sendVideoMessage(video: File) {
+        // todo move to async and add compression
         val thumbnailImage = MediaUtils.getThumbnailFromVideo(video.absolutePath,
                 imageCacheDirectory, MediaStore.Video.Thumbnails.MICRO_KIND)
         if (thumbnailImage != null) {
