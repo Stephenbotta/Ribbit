@@ -1,7 +1,9 @@
 package com.conversify.ui.groups
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.SearchView
@@ -12,7 +14,9 @@ import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.creategroup.CreateGroupActivity
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import kotlinx.android.synthetic.main.fragment_groups.*
@@ -85,6 +89,8 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
         fabGroups.setOnActionSelectedListener { item ->
             return@setOnActionSelectedListener when (item.id) {
                 R.id.fabAddGroup -> {
+                    val intent = Intent(requireActivity(), CreateGroupActivity::class.java)
+                    startActivityForResult(intent, AppConstants.REQ_CODE_CREATE_GROUP)
                     false
                 }
 
@@ -139,6 +145,13 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
     }
 
     override fun onYourGroupClicked(group: GroupDto) {
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstants.REQ_CODE_CREATE_GROUP && resultCode == Activity.RESULT_OK) {
+            getGroups(false)
+        }
     }
 
     override fun onDestroyView() {

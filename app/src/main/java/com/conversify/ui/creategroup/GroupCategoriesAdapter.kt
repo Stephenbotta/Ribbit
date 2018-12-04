@@ -1,4 +1,4 @@
-package com.conversify.ui.createvenue
+package com.conversify.ui.creategroup
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -10,7 +10,7 @@ import com.conversify.extensions.inflate
 import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_create_group_venue_category.view.*
 
-class VenueCategoriesAdapter(private val glide: GlideRequests,
+class GroupCategoriesAdapter(private val glide: GlideRequests,
                              private val callback: (InterestDto) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val TYPE_HEADER = 0
@@ -21,7 +21,7 @@ class VenueCategoriesAdapter(private val glide: GlideRequests,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TYPE_HEADER) {
-            ViewHolderHeader(parent.inflate(R.layout.item_create_venue_header))
+            ViewHolderHeader(parent.inflate(R.layout.item_create_group_header))
         } else {
             ViewHolderCategory(parent.inflate(R.layout.item_create_group_venue_category), glide, callback)
         }

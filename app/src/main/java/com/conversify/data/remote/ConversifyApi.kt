@@ -2,6 +2,7 @@ package com.conversify.data.remote
 
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.chat.VenueDetailsResponse
+import com.conversify.data.remote.models.groups.CreateEditGroupRequest
 import com.conversify.data.remote.models.groups.GetGroupsResponse
 import com.conversify.data.remote.models.loginsignup.*
 import com.conversify.data.remote.models.venues.CreateEditVenueRequest
@@ -90,4 +91,6 @@ interface ConversifyApi {
     @FormUrlEncoded
     fun getGroups(@Field("flag") flag: Int = ApiConstants.FLAG_GET_GROUPS): Call<ApiResponse<GetGroupsResponse>>
 
+    @POST("user/addEditPostGroup")
+    fun createGroup(@Body request: CreateEditGroupRequest): Call<Any>
 }

@@ -178,4 +178,9 @@
     <string name="groups_label_suggested_groups">SUGGESTED GROUPS</string>
     <string name="groups_label_your_groups">YOUR GROUPS</string>
     <string name="groups_label_no_groups_found">No groups found</string>
+
+    <string name="create_group_label_groups">Groups</string>
+    <string name="create_group_label_create_a_group">Create a Group</string>
+    <string name="create_group_label_create_channels_based_on_your_interest">Create channels based on your interest, location and invite your friends, family and colleagues to join.</string>
+    <string name="create_group_label_group_s_title">Group\'s title</string>
 </resources>
