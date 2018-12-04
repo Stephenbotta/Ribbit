@@ -2,6 +2,7 @@ package com.conversify.data.remote
 
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.chat.VenueDetailsResponse
+import com.conversify.data.remote.models.groups.GetGroupsResponse
 import com.conversify.data.remote.models.loginsignup.*
 import com.conversify.data.remote.models.venues.CreateEditVenueRequest
 import com.conversify.data.remote.models.venues.GetVenuesResponse
@@ -84,4 +85,9 @@ interface ConversifyApi {
     @POST("user/exitGroup")
     @FormUrlEncoded
     fun exitVenue(@Field("venueId") venueId: String): Call<Any>
+
+    @POST("user/getData")
+    @FormUrlEncoded
+    fun getGroups(@Field("flag") flag: Int = ApiConstants.FLAG_GET_GROUPS): Call<ApiResponse<GetGroupsResponse>>
+
 }

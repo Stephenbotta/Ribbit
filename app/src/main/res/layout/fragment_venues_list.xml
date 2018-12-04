@@ -45,7 +45,7 @@
                 android:clipToPadding="false"
                 android:orientation="vertical"
                 android:overScrollMode="never"
-                android:paddingBottom="72dp"
+                android:paddingBottom="80dp"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_venue" />
 

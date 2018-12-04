@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.venues.VenuesNearYouDto
-import kotlinx.android.synthetic.main.item_label_venues_near_you.view.*
+import kotlinx.android.synthetic.main.item_venue_venues_near_you_label.view.*
 
 class VenuesNearLabelViewHolder(itemView: View,
                                 private val callback: Callback) : RecyclerView.ViewHolder(itemView) {

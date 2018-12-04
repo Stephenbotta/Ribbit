@@ -15,6 +15,15 @@
     <string name="distance_mile_with_value">%.1f Mi</string>
     <string name="yesterday">Yesterday</string>
 
+    <plurals name="active_members_with_count">
+        <item quantity="one">%d Active member</item>
+        <item quantity="other">%d Active members</item>
+    </plurals>
+    <plurals name="members_with_count">
+        <item quantity="one">%d member</item>
+        <item quantity="other">%d members</item>
+    </plurals>
+
     <string name="message_google_maps_is_not_installed">Google maps is not installed. Would you like to install it?</string>
 
     <string name="image_picker_dialog_capture_image">Capture image from camera</string>
@@ -117,11 +126,6 @@
     <string name="venues_btn_filters">Filters</string>
     <string name="venues_label_search_for_venues_by_name">Search for venues by name</string>
     <string name="venues_label_your_venues">YOUR VENUES</string>
-    <plurals name="venues_label_active_members_with_count">
-        <item quantity="one">%d Active member</item>
-        <item quantity="other">%d Active members</item>
-    </plurals>
-    <string name="venues_label_active_members_with_count">%d Active members</string>
     <string name="venues_label_venues_near_you">VENUES NEAR YOU</string>
     <string name="venues_label_suggested">Suggested</string>
     <string name="venues_label_no_venues_found">No venues found</string>
@@ -172,4 +176,6 @@
     <string name="groups_label_add_new_group">Add New Group</string>
     <string name="groups_label_topics">Topics</string>
     <string name="groups_label_suggested_groups">SUGGESTED GROUPS</string>
+    <string name="groups_label_your_groups">YOUR GROUPS</string>
+    <string name="groups_label_no_groups_found">No groups found</string>
 </resources>

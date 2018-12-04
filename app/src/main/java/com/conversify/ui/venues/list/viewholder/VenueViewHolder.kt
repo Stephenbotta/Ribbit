@@ -54,7 +54,7 @@ class VenueViewHolder(itemView: View,
         itemView.tvVenueLocation.text = AppUtils.getFormattedAddress(venue.locationName, venue.locationAddress)
 
         val memberCount = venue.memberCount ?: 0
-        itemView.tvActiveMembers.text = itemView.context.resources.getQuantityString(R.plurals.venues_label_active_members_with_count, memberCount, memberCount)
+        itemView.tvActiveMembers.text = itemView.context.resources.getQuantityString(R.plurals.active_members_with_count, memberCount, memberCount)
         itemView.tvDistance.text = itemView.context.getString(R.string.distance_mile_with_value, venue.distance)
     }
 

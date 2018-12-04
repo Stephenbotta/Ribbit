@@ -45,15 +45,15 @@
                 android:clipToPadding="false"
                 android:orientation="vertical"
                 android:overScrollMode="never"
-                android:paddingBottom="72dp"
+                android:paddingBottom="80dp"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_venue" />
+                tools:listitem="@layout/item_suggested_groups_parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/venues_label_no_venues_found"
+                android:text="@string/groups_label_no_groups_found"
                 android:textColor="@color/textGray" />
 
         </ViewSwitcher>
