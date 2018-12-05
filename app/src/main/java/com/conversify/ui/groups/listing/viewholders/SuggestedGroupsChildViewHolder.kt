@@ -19,8 +19,6 @@ class SuggestedGroupsChildViewHolder(itemView: View,
             }
         }
 
-        itemView.ivFavourite.setOnClickListener { }
-
         itemView.ivRemove.setOnClickListener {
             if (adapterPosition != RecyclerView.NO_POSITION) {
                 callback.onRemoveSuggestedGroupClicked(group)

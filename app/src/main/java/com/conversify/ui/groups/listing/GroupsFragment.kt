@@ -17,12 +17,12 @@ import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.creategroup.CreateGroupActivity
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.groups.topicgroups.TopicGroupsActivity
 import com.conversify.ui.groups.topics.GroupTopicsFragment
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import kotlinx.android.synthetic.main.fragment_groups.*
-import timber.log.Timber
 
 class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
     companion object {
@@ -165,7 +165,7 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
             AppConstants.REQ_CODE_GROUP_TOPIC -> {
                 if (resultCode == Activity.RESULT_OK && data != null && data.hasExtra(AppConstants.EXTRA_INTEREST)) {
                     val topic = data.getParcelableExtra<InterestDto>(AppConstants.EXTRA_INTEREST)
-                    Timber.i(topic.toString())
+                    TopicGroupsActivity.start(requireActivity(), topic)
                 }
             }
         }

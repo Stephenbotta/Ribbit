@@ -12,9 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.conversify.R
-import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.Status
-import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.extensions.handleError
 import com.conversify.ui.creategroup.CreateGroupViewModel
 import com.conversify.utils.AppConstants
@@ -69,7 +67,7 @@ class GroupTopicsFragment : DialogFragment() {
     }
 
     private fun observeChanges() {
-        viewModel.interests.observe(this, Observer<Resource<List<InterestDto>>> { resource ->
+        viewModel.interests.observe(this, Observer { resource ->
             resource ?: return@Observer
 
             when (resource.status) {

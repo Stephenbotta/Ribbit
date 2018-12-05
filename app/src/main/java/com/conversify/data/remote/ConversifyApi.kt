@@ -4,6 +4,7 @@ import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.chat.VenueDetailsResponse
 import com.conversify.data.remote.models.groups.CreateEditGroupRequest
 import com.conversify.data.remote.models.groups.GetGroupsResponse
+import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.loginsignup.*
 import com.conversify.data.remote.models.venues.CreateEditVenueRequest
 import com.conversify.data.remote.models.venues.GetVenuesResponse
@@ -93,4 +94,10 @@ interface ConversifyApi {
 
     @POST("user/addEditPostGroup")
     fun createGroup(@Body request: CreateEditGroupRequest): Call<Any>
+
+    @POST("user/getCatPostGroups")
+    @FormUrlEncoded
+    fun getTopicGroups(@Field("categoryId") topicId: String,
+                       @Field("pageNo") page: Int,
+                       @Field("limit") limit: Int): Call<ApiResponse<List<GroupDto>>>
 }
