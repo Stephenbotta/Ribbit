@@ -1,4 +1,4 @@
-package com.conversify.ui.groups
+package com.conversify.ui.groups.listing
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
@@ -7,9 +7,9 @@ import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.SuggestedGroupsDto
 import com.conversify.data.remote.models.groups.YourGroupsDto
 import com.conversify.extensions.inflate
-import com.conversify.ui.groups.viewholders.SuggestedGroupsParentViewHolder
-import com.conversify.ui.groups.viewholders.YourGroupViewHolder
-import com.conversify.ui.groups.viewholders.YourGroupsLabelViewHolder
+import com.conversify.ui.groups.listing.viewholders.SuggestedGroupsParentViewHolder
+import com.conversify.ui.groups.listing.viewholders.YourGroupViewHolder
+import com.conversify.ui.groups.listing.viewholders.YourGroupsLabelViewHolder
 import com.conversify.utils.GlideRequests
 
 class GroupsAdapter(private val glide: GlideRequests,

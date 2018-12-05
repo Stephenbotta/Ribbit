@@ -87,6 +87,11 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
+    <style name="DialogFragmentAnimation">
+        <item name="android:windowEnterAnimation">@anim/parallax_right_in</item>
+        <item name="android:windowExitAnimation">@anim/parallax_right_out</item>
+    </style>
+
     <style name="ProgressBarChatMessage" parent="AppTheme">
         <item name="colorAccent">@color/white</item>
         <item name="android:background">@drawable/background_chat_message_progress_bar</item>

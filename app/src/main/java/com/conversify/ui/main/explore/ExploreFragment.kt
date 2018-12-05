@@ -6,7 +6,7 @@ import android.support.design.widget.TabLayout
 import android.view.View
 import com.conversify.R
 import com.conversify.ui.base.BaseFragment
-import com.conversify.ui.groups.GroupsFragment
+import com.conversify.ui.groups.listing.GroupsFragment
 import com.conversify.ui.people.PeopleFragment
 import com.conversify.ui.venues.list.VenuesListFragment
 import com.conversify.ui.venues.map.VenuesMapFragment

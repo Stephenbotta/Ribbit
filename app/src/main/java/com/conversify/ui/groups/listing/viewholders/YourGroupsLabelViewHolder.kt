@@ -1,4 +1,4 @@
-package com.conversify.ui.groups.viewholders
+package com.conversify.ui.groups.listing.viewholders
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

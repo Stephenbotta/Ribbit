@@ -1,4 +1,4 @@
-package com.conversify.ui.groups
+package com.conversify.ui.groups.listing
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel

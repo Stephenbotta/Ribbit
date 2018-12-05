@@ -4,8 +4,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.conversify.R
+import com.conversify.data.remote.models.groups.GroupCategoriesHeader
 import com.conversify.data.remote.models.loginsignup.InterestDto
-import com.conversify.data.remote.models.venues.VenueCategoriesHeader
 import com.conversify.extensions.inflate
 import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_create_group_venue_category.view.*
@@ -17,7 +17,7 @@ class GroupCategoriesAdapter(private val glide: GlideRequests,
         private const val TYPE_CATEGORY = 1
     }
 
-    private val items = mutableListOf<Any>(VenueCategoriesHeader)
+    private val items = mutableListOf<Any>(GroupCategoriesHeader)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TYPE_HEADER) {
@@ -37,7 +37,7 @@ class GroupCategoriesAdapter(private val glide: GlideRequests,
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (items[position] is VenueCategoriesHeader) {
+        return if (items[position] is GroupCategoriesHeader) {
             TYPE_HEADER
         } else {
             TYPE_CATEGORY
@@ -45,7 +45,7 @@ class GroupCategoriesAdapter(private val glide: GlideRequests,
     }
 
     fun displayCategories(interests: List<InterestDto>) {
-        items.removeAll { it !is VenueCategoriesHeader }
+        items.removeAll { it !is GroupCategoriesHeader }
         items.addAll(interests)
         notifyDataSetChanged()
     }

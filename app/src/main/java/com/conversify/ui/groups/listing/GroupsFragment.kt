@@ -1,4 +1,4 @@
-package com.conversify.ui.groups
+package com.conversify.ui.groups.listing
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -11,15 +11,18 @@ import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
+import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.creategroup.CreateGroupActivity
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.groups.topics.GroupTopicsFragment
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import kotlinx.android.synthetic.main.fragment_groups.*
+import timber.log.Timber
 
 class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
     companion object {
@@ -95,6 +98,9 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
                 }
 
                 R.id.fabTopics -> {
+                    val fragment = GroupTopicsFragment()
+                    fragment.setTargetFragment(this, AppConstants.REQ_CODE_GROUP_TOPIC)
+                    fragment.show(fragmentManager, GroupTopicsFragment.TAG)
                     false
                 }
 
@@ -149,8 +155,19 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppConstants.REQ_CODE_CREATE_GROUP && resultCode == Activity.RESULT_OK) {
-            getGroups(false)
+        when (requestCode) {
+            AppConstants.REQ_CODE_CREATE_GROUP -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    getGroups(false)
+                }
+            }
+
+            AppConstants.REQ_CODE_GROUP_TOPIC -> {
+                if (resultCode == Activity.RESULT_OK && data != null && data.hasExtra(AppConstants.EXTRA_INTEREST)) {
+                    val topic = data.getParcelableExtra<InterestDto>(AppConstants.EXTRA_INTEREST)
+                    Timber.i(topic.toString())
+                }
+            }
         }
     }
 

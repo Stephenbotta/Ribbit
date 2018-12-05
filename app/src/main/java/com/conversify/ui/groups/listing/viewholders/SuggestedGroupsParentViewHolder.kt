@@ -1,9 +1,9 @@
-package com.conversify.ui.groups.viewholders
+package com.conversify.ui.groups.listing.viewholders
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.conversify.data.remote.models.groups.SuggestedGroupsDto
-import com.conversify.ui.groups.SuggestedGroupsAdapter
+import com.conversify.ui.groups.listing.SuggestedGroupsAdapter
 import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_suggested_groups_parent.view.*
 
