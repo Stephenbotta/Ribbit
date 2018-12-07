@@ -3,6 +3,7 @@ package com.conversify.ui.main
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.conversify.R
+import com.conversify.data.repository.InterestsRepository
 import com.conversify.ui.base.BaseLocationActivity
 import com.conversify.ui.main.chats.ChatsFragment
 import com.conversify.ui.main.explore.ExploreFragment
@@ -50,6 +51,9 @@ class MainActivity : BaseLocationActivity() {
         }
 
         setupBottomTabs()
+
+        // Get and cache interests. Callback is not required.
+        InterestsRepository.getInstance().getInterests()
     }
 
     private fun setupBottomTabs() {

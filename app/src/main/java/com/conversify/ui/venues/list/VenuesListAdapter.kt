@@ -73,6 +73,8 @@ class VenuesListAdapter(private val glide: GlideRequests,
         }
     }
 
+    fun getVenuesCount(): Int = items.count { it is VenueDto }
+
     fun displayItems(items: List<Any>) {
         this.items.clear()
         this.items.addAll(items)

@@ -1,6 +1,5 @@
 package com.conversify.ui.main.explore
 
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.view.View
@@ -25,7 +24,6 @@ class ExploreFragment : BaseFragment(), VenuesModeNavigator {
         private const val VENUE_MODE_MAP = 1
     }
 
-    private lateinit var viewModel: ExploreViewModel
     private lateinit var fragmentSwitcher: FragmentSwitcher
     private var displayedVenuesMode = VENUES_MODE_LIST
 
@@ -33,9 +31,6 @@ class ExploreFragment : BaseFragment(), VenuesModeNavigator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProviders.of(this)[ExploreViewModel::class.java]
-        viewModel.getInterests()
 
         fragmentSwitcher = FragmentSwitcher(childFragmentManager, R.id.flExploreContainer)
 

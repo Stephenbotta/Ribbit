@@ -92,7 +92,7 @@ class CreateVenueFragment : BaseFragment() {
                         .error(R.color.greyImageBackground)
                         .into(ivVenue)
             }
-            val imageDirectory = requireActivity().externalCacheDir?.absolutePath ?: ""
+            val imageDirectory = AppUtils.getAppCacheDirectoryPath(requireActivity())
             getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
         }
 

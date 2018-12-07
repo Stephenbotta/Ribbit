@@ -9,6 +9,7 @@ import com.conversify.data.remote.models.Status
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsViewModel
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_group_categories.*
 
@@ -17,7 +18,7 @@ class GroupCategoriesFragment : BaseFragment() {
         const val TAG = "GroupCategoriesFragment"
     }
 
-    private lateinit var viewModel: CreateGroupViewModel
+    private lateinit var interestsViewModel: ChooseInterestsViewModel
     private lateinit var adapter: GroupCategoriesAdapter
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_group_categories
@@ -25,7 +26,7 @@ class GroupCategoriesFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this)[CreateGroupViewModel::class.java]
+        interestsViewModel = ViewModelProviders.of(this)[ChooseInterestsViewModel::class.java]
         adapter = GroupCategoriesAdapter(GlideApp.with(this)) {
             val fragment = CreateGroupFragment.newInstance(it)
             fragmentManager?.apply {
@@ -43,7 +44,7 @@ class GroupCategoriesFragment : BaseFragment() {
     }
 
     private fun observeChanges() {
-        viewModel.interests.observe(this, Observer { resource ->
+        interestsViewModel.interests.observe(this, Observer { resource ->
             resource ?: return@Observer
 
             when (resource.status) {
@@ -63,9 +64,9 @@ class GroupCategoriesFragment : BaseFragment() {
     }
 
     private fun getCategories() {
-        val shouldFetchInterests = viewModel.hasCachedInterests() || isNetworkActiveWithMessage()
+        val shouldFetchInterests = interestsViewModel.hasInterests() || isNetworkActiveWithMessage()
         if (shouldFetchInterests) {
-            viewModel.getInterests()
+            interestsViewModel.getInterests()
         }
     }
 }

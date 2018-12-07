@@ -25,7 +25,7 @@ class InterestsRepository(private val memoryCache: MemoryCache) {
 
     fun getCachedInterests(): List<InterestDto> = memoryCache.getInterests()
 
-    fun getInterests(callback: GetInterestsCallback?) {
+    fun getInterests(callback: GetInterestsCallback? = null) {
         if (hasCachedInterests()) {
             callback?.onGetInterestsSuccess(memoryCache.getInterests())
             return

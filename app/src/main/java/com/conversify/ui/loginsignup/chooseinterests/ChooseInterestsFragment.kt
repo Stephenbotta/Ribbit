@@ -118,7 +118,8 @@ class ChooseInterestsFragment : BaseFragment() {
     }
 
     private fun getInterests() {
-        if (requireActivity().isNetworkActiveWithMessage()) {
+        val shouldFetchInterests = viewModel.hasInterests() || isNetworkActiveWithMessage()
+        if (shouldFetchInterests) {
             viewModel.getInterests()
         }
     }

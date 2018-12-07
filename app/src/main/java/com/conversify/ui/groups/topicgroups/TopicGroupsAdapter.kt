@@ -74,8 +74,4 @@ class TopicGroupsAdapter(private val glide: GlideRequests,
             })
         }
     }
-
-    interface Callback {
-        fun onGroupClicked(group: GroupDto)
-    }
 }

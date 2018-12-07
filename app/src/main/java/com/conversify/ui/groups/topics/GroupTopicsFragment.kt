@@ -14,7 +14,7 @@ import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.extensions.handleError
-import com.conversify.ui.creategroup.CreateGroupViewModel
+import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsViewModel
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_group_topics.*
@@ -24,7 +24,7 @@ class GroupTopicsFragment : DialogFragment() {
         const val TAG = "GroupTopicsFragment"
     }
 
-    private lateinit var viewModel: CreateGroupViewModel
+    private lateinit var interestsViewModel: ChooseInterestsViewModel
     private lateinit var topicsAdapter: GroupTopicsAdapter
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -34,7 +34,7 @@ class GroupTopicsFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this)[CreateGroupViewModel::class.java]
+        interestsViewModel = ViewModelProviders.of(this)[ChooseInterestsViewModel::class.java]
         topicsAdapter = GroupTopicsAdapter(GlideApp.with(this)) { topic ->
             val data = Intent()
             data.putExtra(AppConstants.EXTRA_INTEREST, topic)
@@ -63,11 +63,11 @@ class GroupTopicsFragment : DialogFragment() {
         rvTopics.adapter = topicsAdapter
         observeChanges()
         viewEmpty.setOnClickListener { dismiss() }
-        viewModel.getInterests()
+        interestsViewModel.getInterests()
     }
 
     private fun observeChanges() {
-        viewModel.interests.observe(this, Observer { resource ->
+        interestsViewModel.interests.observe(this, Observer { resource ->
             resource ?: return@Observer
 
             when (resource.status) {

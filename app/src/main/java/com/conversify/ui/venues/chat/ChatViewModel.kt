@@ -19,32 +19,36 @@ import com.conversify.data.remote.models.chat.VenueDetailsResponse
 import com.conversify.data.remote.models.chat.VenueMemberDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.data.remote.socket.SocketManager
+import com.conversify.utils.AppUtils
 import com.conversify.utils.GetSampledImage
 import com.conversify.utils.MediaUtils
 import com.conversify.utils.SingleLiveEvent
 import io.socket.client.Ack
 import io.socket.emitter.Emitter
+import kotlinx.coroutines.*
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 import java.io.File
+import kotlin.coroutines.CoroutineContext
 
-class ChatViewModel(application: Application) : AndroidViewModel(application) {
+class ChatViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
     val newMessage by lazy { SingleLiveEvent<ChatMessageDto>() }
     val oldMessages by lazy { SingleLiveEvent<Resource<PagingResult<List<ChatMessageDto>>>>() }
     val uploadFile by lazy { SingleLiveEvent<Resource<String>>() }
     val sendMessage by lazy { SingleLiveEvent<Resource<ChatMessageDto>>() }
 
     private val apiCalls by lazy { mutableListOf<Call<*>>() }   // Containing all on-going api calls that needs to be canceled when viewModel is cleared
+    private val parentJob by lazy { Job() }
 
     private val ownUserId by lazy { UserManager.getUserId() }
     private val chatMessageBuilder by lazy { ChatMessageBuilder(ownUserId) }
     private val socketManager by lazy { SocketManager.getInstance() }
     private val s3ImageUploader by lazy { S3Uploader(S3Utils.TRANSFER_UTILITY) }
     private val imageCacheDirectory by lazy {
-        getApplication<Application>().externalCacheDir?.absolutePath ?: ""
+        AppUtils.getAppCacheDirectoryPath(getApplication())
     }
 
     private val venueMembers by lazy { arrayListOf<VenueMemberDto>() }
@@ -56,6 +60,9 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private var isLastChatMessageReceived = false
 
     private var venueDetailsLoaded = false
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + parentJob
 
     private val newMessageListener = Emitter.Listener { args ->
         val chatMessage = chatMessageBuilder.getChatMessageFromSocketArgument(args.firstOrNull())
@@ -92,27 +99,37 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun sendImageMessage(image: File) {
-        // todo move to async
-        val sampledImage = GetSampledImage.sampleImageSync(image.absolutePath, imageCacheDirectory, 650)
-        if (sampledImage != null) {
-            val message = chatMessageBuilder.buildImageMessage(sampledImage)
-            newMessage.value = message
-            uploadImage(message)
-        } else {
-            Timber.w("Sampled image is null")
+        launch {
+            val start = System.currentTimeMillis()
+            Timber.i("Started sampling")
+            val sampledImage = withContext(Dispatchers.IO) {
+                GetSampledImage.sampleImageSync(image.absolutePath, imageCacheDirectory, 650)
+            }
+            val totalTime = System.currentTimeMillis() - start
+            Timber.i("Sampling completed : $totalTime")
+            if (sampledImage != null) {
+                val message = chatMessageBuilder.buildImageMessage(sampledImage)
+                newMessage.value = message
+                uploadImage(message)
+            } else {
+                Timber.w("Sampled image is null")
+            }
         }
     }
 
     fun sendVideoMessage(video: File) {
-        // todo move to async and add compression
-        val thumbnailImage = MediaUtils.getThumbnailFromVideo(video.absolutePath,
-                imageCacheDirectory, MediaStore.Video.Thumbnails.MICRO_KIND)
-        if (thumbnailImage != null) {
-            val message = chatMessageBuilder.buildVideoMessage(video, thumbnailImage)
-            newMessage.value = message
-            uploadVideo(message)
-        } else {
-            Timber.w("Thumbnail image is null")
+        launch {
+            val thumbnailImage = withContext(Dispatchers.IO) {
+                MediaUtils.getThumbnailFromVideo(video.absolutePath,
+                        imageCacheDirectory, MediaStore.Video.Thumbnails.MICRO_KIND)
+            }
+            if (thumbnailImage != null) {
+                val message = chatMessageBuilder.buildVideoMessage(video, thumbnailImage)
+                newMessage.value = message
+                uploadVideo(message)
+            } else {
+                Timber.w("Thumbnail image is null")
+            }
         }
     }
 
@@ -311,6 +328,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         super.onCleared()
         socketManager.off(SocketManager.EVENT_NEW_MESSAGE, newMessageListener)
         apiCalls.forEach { it.cancel() }
+        parentJob.cancel()
         s3ImageUploader.clear()
     }
 }

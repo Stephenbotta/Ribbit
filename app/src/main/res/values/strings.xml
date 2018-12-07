@@ -183,4 +183,6 @@
     <string name="create_group_label_create_a_group">Create a Group</string>
     <string name="create_group_label_create_channels_based_on_your_interest">Create channels based on your interest, location and invite your friends, family and colleagues to join.</string>
     <string name="create_group_label_group_s_title">Group\'s title</string>
+
+    <string name="profile_btn_logout">Logout</string>
 </resources>

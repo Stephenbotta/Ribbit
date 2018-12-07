@@ -17,7 +17,7 @@ buildscript {
         glideVersion = '4.7.1'
         roundedImageViewVersion = '2.3.0'
         countryCodePickerVersion = '2.2.3'
-        firebaseCoreVersion = '16.0.5'
+        firebaseCoreVersion = '16.0.6'
         googleAuthVersion = '16.0.1'
         googlePlacesVersion = '16.0.0'
         googleLocationVersion = '16.0.0'

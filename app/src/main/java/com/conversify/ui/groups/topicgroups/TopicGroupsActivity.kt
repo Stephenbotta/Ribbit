@@ -10,6 +10,7 @@ import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.extensions.handleError
+import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseActivity
 import com.conversify.utils.GlideApp
@@ -54,7 +55,7 @@ class TopicGroupsActivity : BaseActivity() {
         rvGroups.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (!rvGroups.canScrollVertically(1) && viewModel.validForPaging()) {
+                if (!rvGroups.canScrollVertically(1) && viewModel.validForPaging() && isNetworkActive()) {
                     viewModel.getGroups(false)
                 }
             }

@@ -43,7 +43,7 @@ class S3Uploader(private val transferUtility: TransferUtility) {
                 Timber.d("Upload error, no item found for id : $id")
             } else {
                 Timber.w(ex)
-                item.uploadFailedListener?.let { it(Throwable(ex)) }
+                item.uploadFailedListener?.let { it(Exception(ex)) }
                 cancelUpload(item)
             }
         }
@@ -80,18 +80,18 @@ class S3Uploader(private val transferUtility: TransferUtility) {
         observer.cleanTransferListener()
     }
 
-    object NetworkError : Throwable()
+    object NetworkError : Exception()
 
     class S3UploadItem(val observer: TransferObserver) {
         var uploadCompleteListener: ((String) -> Unit)? = null
-        var uploadFailedListener: ((Throwable) -> Unit)? = null
+        var uploadFailedListener: ((Exception) -> Unit)? = null
 
         fun addUploadCompleteListener(listener: (String) -> Unit): S3UploadItem {
             this.uploadCompleteListener = listener
             return this
         }
 
-        fun addUploadFailedListener(listener: (Throwable) -> Unit): S3UploadItem {
+        fun addUploadFailedListener(listener: (Exception) -> Unit): S3UploadItem {
             this.uploadFailedListener = listener
             return this
         }

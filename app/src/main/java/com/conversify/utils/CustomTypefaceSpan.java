@@ -2,6 +2,7 @@ package com.conversify.utils;
 
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.text.TextPaint;
 import android.text.style.TypefaceSpan;
 
@@ -35,12 +36,12 @@ public class CustomTypefaceSpan extends TypefaceSpan {
     }
 
     @Override
-    public void updateDrawState(TextPaint ds) {
+    public void updateDrawState(@NonNull TextPaint ds) {
         applyCustomTypeFace(ds, newType);
     }
 
     @Override
-    public void updateMeasureState(TextPaint paint) {
+    public void updateMeasureState(@NonNull TextPaint paint) {
         applyCustomTypeFace(paint, newType);
     }
 }

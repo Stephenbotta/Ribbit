@@ -184,6 +184,11 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
                     if (venue != null && venue.isMember == false) {
                         // Only valid if user has exit a venue
                         venuesListAdapter.removeMyVenue(venue)
+
+                        // Set displayed child to no venues if venues count is 0
+                        if (venuesListAdapter.getVenuesCount() == 0) {
+                            viewSwitcher.displayedChild = CHILD_NO_VENUES
+                        }
                     }
                     getVenues(false)
                 }

@@ -2,8 +2,8 @@ package com.conversify.ui.loginsignup.chooseinterests
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.conversify.data.MemoryCache
 import com.conversify.data.local.UserManager
+import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
@@ -11,6 +11,7 @@ import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.repository.InterestsRepository
 import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,33 +21,29 @@ class ChooseInterestsViewModel : ViewModel() {
     val interests by lazy { MutableLiveData<Resource<List<InterestDto>>>() }
     val updateInterests by lazy { SingleLiveEvent<Resource<Any>>() }
 
+    private val interestsRepository by lazy { InterestsRepository.getInstance() }
+
+    fun hasInterests(): Boolean = interestsRepository.hasCachedInterests()
+
     fun getInterests() {
-        val cachedInterests = MemoryCache.getInterests()
-        if (cachedInterests.isNotEmpty()) {
-            interests.value = Resource.success(cachedInterests)
+        if (hasInterests()) {
+            interests.value = Resource.success(interestsRepository.getCachedInterests())
             return
         }
 
-        interests.value = Resource.loading()
+        interestsRepository.getInterests(object : InterestsRepository.GetInterestsCallback {
+            override fun onGetInterestsLoading() {
+                interests.value = Resource.loading()
+            }
 
-        RetrofitClient.conversifyApi
-                .getInterests()
-                .enqueue(object : Callback<ApiResponse<List<InterestDto>>> {
-                    override fun onResponse(call: Call<ApiResponse<List<InterestDto>>>,
-                                            response: Response<ApiResponse<List<InterestDto>>>) {
-                        if (response.isSuccessful) {
-                            val allInterests = response.body()?.data ?: emptyList()
-                            interests.value = Resource.success(allInterests)
-                            MemoryCache.updateInterests(allInterests)
-                        } else {
-                            interests.value = Resource.error(response.getAppError())
-                        }
-                    }
+            override fun onGetInterestsSuccess(allInterests: List<InterestDto>) {
+                interests.value = Resource.success(allInterests)
+            }
 
-                    override fun onFailure(call: Call<ApiResponse<List<InterestDto>>>, t: Throwable) {
-                        interests.value = Resource.error(t.failureAppError())
-                    }
-                })
+            override fun onGetInterestsFailed(error: AppError) {
+                interests.value = Resource.error(error)
+            }
+        })
     }
 
     fun updateInterests(selectedInterests: List<InterestDto>) {
