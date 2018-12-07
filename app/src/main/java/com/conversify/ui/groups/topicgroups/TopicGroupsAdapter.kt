@@ -37,6 +37,13 @@ class TopicGroupsAdapter(private val glide: GlideRequests,
         notifyItemRangeInserted(oldListSize, groups.size)
     }
 
+    fun updateGroup(group: GroupDto) {
+        val index = groups.indexOfFirst { it.id == group.id }
+        if (index != -1) {
+            notifyItemChanged(index)
+        }
+    }
+
     class ViewHolder(itemView: View,
                      private val glide: GlideRequests,
                      private val callback: (GroupDto) -> Unit) : RecyclerView.ViewHolder(itemView) {

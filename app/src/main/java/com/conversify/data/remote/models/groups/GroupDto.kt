@@ -1,14 +1,17 @@
 package com.conversify.data.remote.models.groups
 
+import android.os.Parcelable
 import com.conversify.data.remote.models.loginsignup.ImageUrlDto
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class GroupDto(
         @field:SerializedName("groupName")
         val name: String? = null,
 
         @field:SerializedName("memberCounts")
-        val memberCount: Int? = null,
+        var memberCount: Int? = null,
 
         @field:SerializedName("unReadCounts")
         val unreadCount: Int? = null,
@@ -26,4 +29,4 @@ data class GroupDto(
         val isPrivate: Boolean? = null,
 
         @field:SerializedName("isMember")
-        val isMember: Boolean? = null)
+        var isMember: Boolean? = null) : Parcelable

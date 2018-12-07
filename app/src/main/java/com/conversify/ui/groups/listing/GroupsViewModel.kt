@@ -116,6 +116,12 @@ class GroupsViewModel : ViewModel() {
                 .enqueue(object : Callback<Any> {
                     override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         if (response.isSuccessful) {
+                            // Set member flag to true and increment member count for public group
+                            if (group.isPrivate == false) {
+                                group.isMember = true
+                                val updatedCount = (group.memberCount ?: 0) + 1
+                                group.memberCount = updatedCount
+                            }
                             joinGroup.value = Resource.success(group)
                         } else {
                             joinGroup.value = Resource.error(response.getAppError())

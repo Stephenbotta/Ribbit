@@ -185,4 +185,6 @@
     <string name="create_group_label_group_s_title">Group\'s title</string>
 
     <string name="profile_btn_logout">Logout</string>
+
+    <string name="group_posts_label_no_posts">No posts found</string>
 </resources>

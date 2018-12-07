@@ -18,6 +18,7 @@ import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.creategroup.CreateGroupActivity
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.groups.groupposts.GroupPostsActivity
 import com.conversify.ui.groups.topicgroups.TopicGroupsActivity
 import com.conversify.ui.groups.topics.GroupTopicsFragment
 import com.conversify.utils.AppConstants
@@ -100,7 +101,7 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
 
                 R.id.fabTopics -> {
                     val fragment = GroupTopicsFragment()
-                    fragment.setTargetFragment(this, AppConstants.REQ_CODE_GROUP_TOPIC)
+                    fragment.setTargetFragment(this, AppConstants.REQ_CODE_GROUP_TOPICS)
                     fragment.show(fragmentManager, GroupTopicsFragment.TAG)
                     false
                 }
@@ -143,10 +144,11 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
 
-                    resource.data?.let { venue ->
-                        if (venue.isPrivate == true) {
+                    resource.data?.let { group ->
+                        if (group.isPrivate == true) {
                             requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
                         } else {
+                            GroupPostsActivity.start(requireActivity(), group)
                             getGroups(false)
                         }
                     }
@@ -180,6 +182,7 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
     }
 
     override fun onYourGroupClicked(group: GroupDto) {
+        GroupPostsActivity.start(requireActivity(), group)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -191,10 +194,17 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
                 }
             }
 
-            AppConstants.REQ_CODE_GROUP_TOPIC -> {
+            AppConstants.REQ_CODE_GROUP_TOPICS -> {
                 if (resultCode == Activity.RESULT_OK && data != null && data.hasExtra(AppConstants.EXTRA_INTEREST)) {
                     val topic = data.getParcelableExtra<InterestDto>(AppConstants.EXTRA_INTEREST)
-                    TopicGroupsActivity.start(requireActivity(), topic)
+                    val intent = TopicGroupsActivity.getStartIntent(requireActivity(), topic)
+                    startActivityForResult(intent, AppConstants.REQ_CODE_TOPIC_GROUPS)
+                }
+            }
+
+            AppConstants.REQ_CODE_TOPIC_GROUPS -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    getGroups(false)
                 }
             }
         }

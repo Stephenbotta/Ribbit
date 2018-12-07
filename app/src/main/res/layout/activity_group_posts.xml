@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginStart="4dp"
+        android:drawableStart="@drawable/ic_back"
+        android:drawablePadding="6dp"
+        android:fontFamily="@font/brandon_text_bold"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="@string/create_group_label_groups"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btnMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:padding="16dp"
+        android:src="@drawable/ic_more"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/brandon_text_bold"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textColor="@color/textGray"
+        android:textSize="32sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        tools:text="Movie Mania" />
+
+    <ImageView
+        android:id="@+id/ivFavourite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvTitle"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/ic_star_selected" />
+
+    <View
+        android:id="@+id/dividerTitle"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/greyImageBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dividerTitle">
+
+        <ViewSwitcher
+            android:id="@+id/viewSwitcher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvPosts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:padding="8dp"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/group_posts_label_no_posts"
+                android:textColor="@color/textGray" />
+        </ViewSwitcher>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</android.support.constraint.ConstraintLayout>

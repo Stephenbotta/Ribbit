@@ -38,7 +38,7 @@ class TopicGroupsViewModel : ViewModel() {
         groups.value = Resource.loading()
 
         RetrofitClient.conversifyApi
-                .getTopicGroups(topicId, page, PAGE_LIMIT)
+                .getTopicGroups(topicId, if (firstPage) 1 else page, PAGE_LIMIT)
                 .enqueue(object : Callback<ApiResponse<List<GroupDto>>> {
                     override fun onResponse(call: Call<ApiResponse<List<GroupDto>>>,
                                             response: Response<ApiResponse<List<GroupDto>>>) {
