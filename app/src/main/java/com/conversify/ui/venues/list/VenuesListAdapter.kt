@@ -81,7 +81,7 @@ class VenuesListAdapter(private val glide: GlideRequests,
         notifyDataSetChanged()
     }
 
-    fun removeMyVenue(venue: VenueDto) {
+    fun removeVenue(venue: VenueDto) {
         val index = items.indexOfFirst { it is VenueDto && it.id == venue.id }
         if (index != -1) {
             items.removeAt(index)

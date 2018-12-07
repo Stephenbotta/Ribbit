@@ -14,6 +14,7 @@ import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
+import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.creategroup.CreateGroupActivity
 import com.conversify.ui.custom.LoadingDialog
@@ -134,6 +135,31 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
                 Status.LOADING -> swipeRefreshLayout.isRefreshing = true
             }
         })
+
+        viewModel.joinGroup.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    loadingDialog.setLoading(false)
+
+                    resource.data?.let { venue ->
+                        if (venue.isPrivate == true) {
+                            requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
+                        } else {
+                            getGroups(false)
+                        }
+                    }
+                }
+
+                Status.ERROR -> {
+                    loadingDialog.setLoading(false)
+                    handleError(resource.error)
+                }
+
+                Status.LOADING -> loadingDialog.setLoading(true)
+            }
+        })
     }
 
     private fun getGroups(showLoading: Boolean = true) {
@@ -145,6 +171,9 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
     }
 
     override fun onSuggestedGroupClicked(group: GroupDto) {
+        if (isNetworkActiveWithMessage()) {
+            viewModel.joinGroup(group)
+        }
     }
 
     override fun onRemoveSuggestedGroupClicked(group: GroupDto) {

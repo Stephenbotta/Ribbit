@@ -11,12 +11,14 @@ import com.conversify.data.remote.models.groups.GetGroupsResponse
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.SuggestedGroupsDto
 import com.conversify.data.remote.models.groups.YourGroupsDto
+import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class GroupsViewModel : ViewModel() {
     val groups by lazy { MutableLiveData<Resource<List<Any>>>() }
+    val joinGroup by lazy { SingleLiveEvent<Resource<GroupDto>>() }
 
     private val suggestedGroups by lazy { mutableListOf<GroupDto>() }
     private val yourGroups by lazy { mutableListOf<GroupDto>() }
@@ -102,5 +104,27 @@ class GroupsViewModel : ViewModel() {
         }
 
         return groupItems
+    }
+
+    fun joinGroup(group: GroupDto) {
+        joinGroup.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .joinGroup(groupId = group.id ?: "",
+                        adminId = group.adminId ?: "",
+                        isPrivate = group.isPrivate ?: false)
+                .enqueue(object : Callback<Any> {
+                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                        if (response.isSuccessful) {
+                            joinGroup.value = Resource.success(group)
+                        } else {
+                            joinGroup.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Any>, t: Throwable) {
+                        joinGroup.value = Resource.error(t.failureAppError())
+                    }
+                })
     }
 }

@@ -220,6 +220,10 @@ class VenuesViewModel(application: Application) : AndroidViewModel(application) 
                 .enqueue(object : Callback<Any> {
                     override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         if (response.isSuccessful) {
+                            // If venue is public then set member flag to true
+                            if (venue.isPrivate == false) {
+                                venue.isMember = true
+                            }
                             joinVenue.value = Resource.success(venue)
                         } else {
                             joinVenue.value = Resource.error(response.getAppError())

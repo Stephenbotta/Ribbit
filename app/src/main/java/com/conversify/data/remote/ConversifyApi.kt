@@ -100,4 +100,11 @@ interface ConversifyApi {
     fun getTopicGroups(@Field("categoryId") topicId: String,
                        @Field("pageNo") page: Int,
                        @Field("limit") limit: Int): Call<ApiResponse<List<GroupDto>>>
+
+    @POST("user/joinGroup")
+    @FormUrlEncoded
+    fun joinGroup(@Field("groupId") groupId: String,
+                  @Field("adminId") adminId: String,
+                  @Field("isPrivate") isPrivate: Boolean,
+                  @Field("groupType") type: String = ApiConstants.TYPE_GROUP): Call<Any>
 }

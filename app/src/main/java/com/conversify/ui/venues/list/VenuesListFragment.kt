@@ -183,7 +183,7 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
                     val venue = data?.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
                     if (venue != null && venue.isMember == false) {
                         // Only valid if user has exit a venue
-                        venuesListAdapter.removeMyVenue(venue)
+                        venuesListAdapter.removeVenue(venue)
 
                         // Set displayed child to no venues if venues count is 0
                         if (venuesListAdapter.getVenuesCount() == 0) {
