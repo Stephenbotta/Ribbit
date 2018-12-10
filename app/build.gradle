@@ -135,6 +135,9 @@ dependencies {
     // https://github.com/google/ExoPlayer
     implementation "com.google.android.exoplayer:exoplayer-core:$exoPlayerVersion"
     implementation "com.google.android.exoplayer:exoplayer-ui:$exoPlayerVersion"
+
+    // https://github.com/sannies/mp4parser
+    implementation "com.googlecode.mp4parser:isoparser:$mp4ParserVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

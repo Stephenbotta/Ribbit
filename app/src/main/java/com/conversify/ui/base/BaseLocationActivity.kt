@@ -3,12 +3,15 @@ package com.conversify.ui.base
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
-import android.content.IntentSender
+import android.content.*
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
+import android.support.v4.content.ContextCompat
 import com.conversify.R
 import com.conversify.data.local.UserManager
+import com.conversify.extensions.isGpsEnabled
 import com.conversify.extensions.longToast
 import com.conversify.extensions.shortToast
 import com.conversify.utils.AppConstants
@@ -22,7 +25,26 @@ import java.util.concurrent.TimeUnit
 
 @RuntimePermissions
 abstract class BaseLocationActivity : BaseActivity() {
+    companion object {
+        private const val ACTION_LOCATION_PROVIDERS_CHANGED = "android.location.PROVIDERS_CHANGED"
+    }
+
     private val updateInterval: Long = TimeUnit.SECONDS.toMillis(15)
+
+    private val gpsChangedReceiver = GpsSettingsChangedReceiver { isEnabled ->
+        if (isEnabled) {
+            // When gps is turned on, if location permission is already granted then start location updates.
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                startLocationUpdatesWithPermissionCheck()
+            }
+        } else {
+            // Set location updates flag to false when gps is turned off
+            locationUpdatesEnabled = false
+        }
+    }
+
+    private var locationUpdatesEnabled = true
 
     // Provides access to the Fused Location Provider API.
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -50,6 +72,8 @@ abstract class BaseLocationActivity : BaseActivity() {
         createLocationCallback()
         createLocationRequest()
         buildLocationSettingsRequest()
+        registerReceiver(gpsChangedReceiver, IntentFilter(ACTION_LOCATION_PROVIDERS_CHANGED))
+        startLocationUpdatesWithPermissionCheck()
     }
 
     private fun createLocationCallback() {
@@ -99,9 +123,11 @@ abstract class BaseLocationActivity : BaseActivity() {
         settingsClient.checkLocationSettings(locationSettingsRequest)
                 .addOnSuccessListener(this) {
                     Timber.i("All location settings are satisfied.")
+                    locationUpdatesEnabled = true
                     fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
                 }
                 .addOnFailureListener(this) { exception ->
+                    locationUpdatesEnabled = false
                     val statusCode = (exception as ApiException).statusCode
                     when (statusCode) {
                         LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
@@ -117,7 +143,6 @@ abstract class BaseLocationActivity : BaseActivity() {
                             } catch (intentException: IntentSender.SendIntentException) {
                                 Timber.i("PendingIntent unable to execute request.")
                             }
-
                         }
 
                         LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
@@ -148,21 +173,22 @@ abstract class BaseLocationActivity : BaseActivity() {
     @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)
     fun onLocationPermissionDenied() {
         longToast(R.string.permission_denied_location)
+        locationUpdatesEnabled = false
     }
 
     @OnNeverAskAgain(Manifest.permission.ACCESS_FINE_LOCATION)
     fun onLocationNeverAskAgain() {
         PermissionUtils.showAppSettingsDialog(this, R.string.permission_never_ask_again_location, AppConstants.REQ_CODE_APP_SETTINGS)
+        locationUpdatesEnabled = false
     }
 
-    override fun onStart() {
-        super.onStart()
-        startLocationUpdatesWithPermissionCheck()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        stopLocationUpdates()
+    override fun onResume() {
+        super.onResume()
+        // If location permission is granted, location updates is not running and gps is enabled, then start location updates.
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED && !locationUpdatesEnabled && isGpsEnabled()) {
+            startLocationUpdatesWithPermissionCheck()
+        }
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")
@@ -184,8 +210,27 @@ abstract class BaseLocationActivity : BaseActivity() {
                     // User does not want to update setting.
                     Activity.RESULT_CANCELED -> {
                         shortToast(R.string.permission_denied_location)
+                        locationUpdatesEnabled = false
                     }
                 }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(gpsChangedReceiver)
+        stopLocationUpdates()
+    }
+
+    class GpsSettingsChangedReceiver(private val callback: (Boolean) -> Unit) : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == ACTION_LOCATION_PROVIDERS_CHANGED) {
+                val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+                Timber.i("GPS settings changed. Enabled : $isGpsEnabled")
+                callback(isGpsEnabled)
             }
         }
     }

@@ -187,4 +187,5 @@
     <string name="profile_btn_logout">Logout</string>
 
     <string name="group_posts_label_no_posts">No posts found</string>
+    <string name="group_posts_label_leave_a_reply">Leave a reply</string>
 </resources>

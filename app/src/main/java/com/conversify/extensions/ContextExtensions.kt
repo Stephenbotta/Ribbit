@@ -4,6 +4,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Point
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.support.annotation.StringRes
@@ -136,4 +137,14 @@ fun Context.startLandingWithClear() {
     val intent = Intent(this, LandingActivity::class.java)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
     startActivity(intent)
+}
+
+fun Context.isGpsEnabled(): Boolean {
+    val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    return try {
+        locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+    } catch (exception: Exception) {
+        Timber.w(exception)
+        false
+    }
 }

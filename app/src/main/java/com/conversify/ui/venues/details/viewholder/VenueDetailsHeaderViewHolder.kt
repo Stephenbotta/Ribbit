@@ -7,6 +7,7 @@ import com.conversify.R
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.toLatLng
+import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.MapUtils
 import kotlinx.android.synthetic.main.item_venue_details_header.view.*
 
@@ -28,6 +29,7 @@ class VenueDetailsHeaderViewHolder(itemView: View,
 
         itemView.apply {
             updateNotificationsState(venue.notification ?: false)
+            tvDateAndTime.text = DateTimeUtils.formatVenueDateTime(venue.venueDateTime)
             tvLocationName.text = venue.locationName
             tvLocationAddress.text = venue.locationAddress
             tvLabelMembers.text = context.getString(R.string.venue_details_label_members_with_count, venue.memberCount)

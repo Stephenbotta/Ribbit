@@ -40,6 +40,7 @@ class VenuesMapMarkerRenderer(context: Context,
     override fun onBeforeClusterItemRendered(venue: MapVenue, markerOptions: MarkerOptions) {
         super.onBeforeClusterItemRendered(venue, markerOptions)
 
+        // Update the marker before it is rendered
         updateMarkerView(venue)
 
         markerOptions.flat(true)
@@ -47,6 +48,7 @@ class VenuesMapMarkerRenderer(context: Context,
     }
 
     override fun onClusterItemRendered(clusterItem: MapVenue, marker: Marker) {
+        // Add marker to the markers HashMap when it is rendered
         venueMarkersMap[clusterItem.venue.id ?: ""] = marker
         super.onClusterItemRendered(clusterItem, marker)
     }
@@ -127,12 +129,19 @@ class VenuesMapMarkerRenderer(context: Context,
     override fun onBeforeClusterRendered(cluster: Cluster<MapVenue>?, markerOptions: MarkerOptions?) {
         val lastSelectedVenue = lastSelectedMapVenue
 
+        /*
+        * Before rendering the cluster, first check if the last selected venue is going to be
+        * inside the cluster. If true then de-select the venue on the map.
+        * */
         if (lastSelectedVenue != null) {
             val clusterItems = cluster?.items ?: emptyList()
+
+            // Find selected venue in cluster
             val selectedItemInCluster = clusterItems.firstOrNull {
                 it.venue.id == lastSelectedVenue.venue.id
             } != null
 
+            // If selected venue is in cluster, then de-select it.
             if (selectedItemInCluster) {
                 updateMarkerSelection(lastSelectedVenue, false)
                 callback.onMapVenueDeselected()

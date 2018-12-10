@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.conversify.data.remote.models.loginsignup.ImageUrlDto
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import org.threeten.bp.ZonedDateTime
 
 @Parcelize
 data class VenueDto(
@@ -44,7 +45,7 @@ data class VenueDto(
         val venueLocation: List<Double>? = null,
 
         @field:SerializedName("venueTime")
-        val dateTimeMillis: Long? = null,
+        val venueDateTime: ZonedDateTime? = null,
 
         @field:SerializedName("notification")
         var notification: Boolean? = null,

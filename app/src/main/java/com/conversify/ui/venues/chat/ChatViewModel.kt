@@ -15,6 +15,7 @@ import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.chat.ChatMessageDto
+import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.data.remote.models.chat.VenueDetailsResponse
 import com.conversify.data.remote.models.chat.VenueMemberDto
 import com.conversify.data.remote.models.venues.VenueDto
@@ -23,6 +24,7 @@ import com.conversify.utils.AppUtils
 import com.conversify.utils.GetSampledImage
 import com.conversify.utils.MediaUtils
 import com.conversify.utils.SingleLiveEvent
+import com.conversify.utils.video.MediaController
 import io.socket.client.Ack
 import io.socket.emitter.Emitter
 import kotlinx.coroutines.*
@@ -47,9 +49,9 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
     private val chatMessageBuilder by lazy { ChatMessageBuilder(ownUserId) }
     private val socketManager by lazy { SocketManager.getInstance() }
     private val s3ImageUploader by lazy { S3Uploader(S3Utils.TRANSFER_UTILITY) }
-    private val imageCacheDirectory by lazy {
-        AppUtils.getAppCacheDirectoryPath(getApplication())
-    }
+    private val cacheDirectory by lazy { AppUtils.getAppCacheDirectory(getApplication()) }
+    private val cacheDirectoryPath by lazy { cacheDirectory.absolutePath }
+    private val mediaController by lazy { MediaController.getInstance() }
 
     private val venueMembers by lazy { arrayListOf<VenueMemberDto>() }
 
@@ -103,7 +105,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
             val start = System.currentTimeMillis()
             Timber.i("Started sampling")
             val sampledImage = withContext(Dispatchers.IO) {
-                GetSampledImage.sampleImageSync(image.absolutePath, imageCacheDirectory, 650)
+                GetSampledImage.sampleImageSync(image.absolutePath, cacheDirectoryPath, 650)
             }
             val totalTime = System.currentTimeMillis() - start
             Timber.i("Sampling completed : $totalTime")
@@ -121,12 +123,29 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
         launch {
             val thumbnailImage = withContext(Dispatchers.IO) {
                 MediaUtils.getThumbnailFromVideo(video.absolutePath,
-                        imageCacheDirectory, MediaStore.Video.Thumbnails.MICRO_KIND)
+                        cacheDirectoryPath, MediaStore.Video.Thumbnails.MICRO_KIND)
             }
             if (thumbnailImage != null) {
                 val message = chatMessageBuilder.buildVideoMessage(video, thumbnailImage)
                 newMessage.value = message
-                uploadVideo(message)
+
+                val compressedVideoFile = try {
+                    withContext(Dispatchers.IO) {
+                        mediaController.convertVideo(video.absolutePath, cacheDirectory)
+                    }
+                } catch (exception: Exception) {
+                    Timber.e(exception)
+                    null
+                }
+
+                if (compressedVideoFile != null) {
+                    Timber.i("Video compression successful : $compressedVideoFile")
+                    message.localFile = compressedVideoFile
+                    uploadVideo(message)
+                } else {
+                    message.messageStatus = MessageStatus.ERROR
+                    Timber.w("Compressed video is null")
+                }
             } else {
                 Timber.w("Thumbnail image is null")
             }
@@ -296,6 +315,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
                 message.id = acknowledgeMessage?.id
                 message.conversationId = acknowledgeMessage?.conversationId
                 message.isDelivered = true
+                message.messageStatus = MessageStatus.SENT  // todo verify update
                 sendMessage.postValue(Resource.success(message))
             }
         })

@@ -27,6 +27,7 @@ buildscript {
         socketIoVersion = '1.0.0'
         fabSpeedDialVersion = '2.0.1'
         exoPlayerVersion = '2.9.1'
+        mp4ParserVersion = '1.1.21'
     }
 
     repositories {
