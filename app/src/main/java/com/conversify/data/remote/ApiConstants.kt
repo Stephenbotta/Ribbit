@@ -17,4 +17,7 @@ object ApiConstants {
     const val MESSAGE_TYPE_TEXT = "TEXT"
     const val MESSAGE_TYPE_IMAGE = "IMAGE"
     const val MESSAGE_TYPE_VIDEO = "VIDEO"
+
+    const val GROUP_POST_TYPE_TEXT = "TEXT"
+    const val GROUP_POST_TYPE_IMAGE = "IMAGE"
 }

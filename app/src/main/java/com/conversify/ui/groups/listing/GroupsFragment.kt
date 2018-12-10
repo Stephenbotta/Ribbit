@@ -3,9 +3,13 @@ package com.conversify.ui.groups.listing
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.SearchView
 import android.view.View
 import com.conversify.R
@@ -38,6 +42,17 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var groupsAdapter: GroupsAdapter
 
+    private val groupPostsLoadedReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.hasExtra(AppConstants.EXTRA_GROUP)) {
+                val group = intent.getParcelableExtra<GroupDto>(AppConstants.EXTRA_GROUP)
+                if (group != null) {
+                    groupsAdapter.resetUnreadCount(group)
+                }
+            }
+        }
+    }
+
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_groups
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +65,10 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Register receiver to listen for group posts loaded to reset unread count
+        val intentFilter = IntentFilter(AppConstants.ACTION_GROUP_POSTS_LOADED)
+        LocalBroadcastManager.getInstance(requireActivity())
+                .registerReceiver(groupPostsLoadedReceiver, intentFilter)
         setupGroupsRecycler()
         setupGroupsFab()
         observeChanges()
@@ -213,5 +232,7 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
     override fun onDestroyView() {
         super.onDestroyView()
         loadingDialog.setLoading(false)
+        LocalBroadcastManager.getInstance(requireActivity())
+                .unregisterReceiver(groupPostsLoadedReceiver)
     }
 }

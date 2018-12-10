@@ -33,4 +33,7 @@ object AppConstants {
     const val EXTRA_VENUE_FILTERS = "EXTRA_VENUE_FILTERS"
     const val EXTRA_VENUE = "EXTRA_VENUE"
     const val EXTRA_INTEREST = "EXTRA_INTEREST"
+    const val EXTRA_GROUP = "EXTRA_GROUP"
+
+    const val ACTION_GROUP_POSTS_LOADED = "ACTION_GROUP_POSTS_LOADED"
 }

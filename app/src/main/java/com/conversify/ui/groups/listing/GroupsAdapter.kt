@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.SuggestedGroupsDto
-import com.conversify.data.remote.models.groups.YourGroupsDto
+import com.conversify.data.remote.models.groups.YourGroupsLabelDto
 import com.conversify.extensions.inflate
 import com.conversify.ui.groups.listing.viewholders.SuggestedGroupsParentViewHolder
 import com.conversify.ui.groups.listing.viewholders.YourGroupViewHolder
@@ -59,7 +59,7 @@ class GroupsAdapter(private val glide: GlideRequests,
 
         return when (item) {
             is SuggestedGroupsDto -> VIEW_TYPE_SUGGESTED_GROUPS
-            is YourGroupsDto -> VIEW_TYPE_LABEL_YOUR_GROUPS
+            is YourGroupsLabelDto -> VIEW_TYPE_LABEL_YOUR_GROUPS
             else -> VIEW_TYPE_YOUR_GROUP
         }
     }
@@ -68,6 +68,15 @@ class GroupsAdapter(private val glide: GlideRequests,
         this.items.clear()
         this.items.addAll(items)
         notifyDataSetChanged()
+    }
+
+    fun resetUnreadCount(group: GroupDto) {
+        val index = items.indexOfFirst { it is GroupDto && it.id == group.id }
+        if (index != -1) {
+            val existingGroup = items[index] as GroupDto
+            existingGroup.unreadCount = 0
+            notifyItemChanged(index)
+        }
     }
 
     interface Callback : SuggestedGroupsParentViewHolder.Callback, YourGroupViewHolder.Callback

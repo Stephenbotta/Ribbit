@@ -1,3 +1,3 @@
 package com.conversify.data.remote.models.groups
 
-object YourGroupsDto
+object YourGroupsLabelDto

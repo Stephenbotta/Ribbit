@@ -14,7 +14,7 @@ data class GroupDto(
         var memberCount: Int? = null,
 
         @field:SerializedName("unReadCounts")
-        val unreadCount: Int? = null,
+        var unreadCount: Int? = null,
 
         @field:SerializedName("imageUrl")
         val imageUrl: ImageUrlDto? = null,

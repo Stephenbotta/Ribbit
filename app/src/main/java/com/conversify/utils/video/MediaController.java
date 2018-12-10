@@ -182,7 +182,7 @@ public class MediaController {
 
     @Nullable
     public File convertVideo(@NonNull final String videoPath, @NonNull final File cacheDir) {
-        return convertVideo(videoPath, cacheDir, 640, 480, 450000, 25);
+        return convertVideo(videoPath, cacheDir, 896, 504, 500000, 25);
     }
 
     @TargetApi(16)
@@ -626,6 +626,7 @@ public class MediaController {
             return null;
         }
         didWriteData(true, error);
+        Timber.i("Compressed file size = %d bytes", cacheFile.length());
         return cacheFile;
     }
 }

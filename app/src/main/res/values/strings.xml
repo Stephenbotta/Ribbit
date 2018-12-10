@@ -23,6 +23,14 @@
         <item quantity="one">%d member</item>
         <item quantity="other">%d members</item>
     </plurals>
+    <plurals name="replies_with_count">
+        <item quantity="one">%d Reply</item>
+        <item quantity="other">%d Replies</item>
+    </plurals>
+    <plurals name="likes_with_count">
+        <item quantity="one">%d Like</item>
+        <item quantity="other">%d Likes</item>
+    </plurals>
 
     <string name="message_google_maps_is_not_installed">Google maps is not installed. Would you like to install it?</string>
 

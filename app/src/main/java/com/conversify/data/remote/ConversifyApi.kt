@@ -3,6 +3,7 @@ package com.conversify.data.remote
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.chat.VenueDetailsResponse
 import com.conversify.data.remote.models.groups.CreateEditGroupRequest
+import com.conversify.data.remote.models.groups.GetGroupPostsResponse
 import com.conversify.data.remote.models.groups.GetGroupsResponse
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.loginsignup.*
@@ -107,4 +108,10 @@ interface ConversifyApi {
                   @Field("adminId") adminId: String,
                   @Field("isPrivate") isPrivate: Boolean,
                   @Field("groupType") type: String = ApiConstants.TYPE_GROUP): Call<Any>
+
+    @POST("user/postGroupConversation")
+    @FormUrlEncoded
+    fun getGroupPosts(@Field("groupId") groupId: String,
+                      @Field("pageNo") page: Int,
+                      @Field("limit") limit: Int): Call<ApiResponse<GetGroupPostsResponse>>
 }

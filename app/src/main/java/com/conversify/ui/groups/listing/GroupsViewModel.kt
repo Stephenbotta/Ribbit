@@ -10,7 +10,7 @@ import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.groups.GetGroupsResponse
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.SuggestedGroupsDto
-import com.conversify.data.remote.models.groups.YourGroupsDto
+import com.conversify.data.remote.models.groups.YourGroupsLabelDto
 import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -99,7 +99,7 @@ class GroupsViewModel : ViewModel() {
         }
 
         if (yourGroups.isNotEmpty()) {
-            groupItems.add(YourGroupsDto)
+            groupItems.add(YourGroupsLabelDto)
             groupItems.addAll(yourGroups)
         }
 

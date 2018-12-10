@@ -58,11 +58,8 @@ object DateTimeUtils {
         return zonedDateTime?.format(CHAT_MESSAGE_SAME_DAY_FORMATTER) ?: ""
     }
 
-    fun formatChatListingTime(dateTimeMillis: Long?, context: Context): String {
-        if (dateTimeMillis == null) return ""
-
-        val zonedDateTime = parseServerToZonedDateTime(dateTimeMillis)
-        zonedDateTime ?: return ""
+    fun formatChatListingTime(zonedDateTime: ZonedDateTime?, context: Context): String {
+        if (zonedDateTime == null) return ""
 
         val zonedDateTimeNow = ZonedDateTime.now()
         return when {
