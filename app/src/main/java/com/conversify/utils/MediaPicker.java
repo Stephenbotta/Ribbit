@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.text.format.Formatter;
 
 import com.conversify.BuildConfig;
 import com.conversify.R;
@@ -156,6 +157,7 @@ public class MediaPicker {
                     String imagePath = getPathFromGallery(context, data.getData());
                     if (imagePath != null) {
                         mediaFile = new File(imagePath);
+                        Timber.i("Media size : %s", Formatter.formatShortFileSize(context, mediaFile.length()));
                         imagePickerListener.onImageSelectedFromPicker(mediaFile);
                     }
                 }
@@ -166,6 +168,7 @@ public class MediaPicker {
                     String videoPath = FileUtils.getPath(context, data.getData());
                     if (videoPath != null) {
                         mediaFile = new File(videoPath);
+                        Timber.i("Media size : %s", Formatter.formatShortFileSize(context, mediaFile.length()));
                         videoPickerListener.onVideoSelectedFromPicker(mediaFile);
                     }
                 }
@@ -173,6 +176,7 @@ public class MediaPicker {
 
             case AppConstants.REQ_CODE_CAMERA_IMAGE:
                 if (mediaFile != null) {
+                    Timber.i("Media size : %s", Formatter.formatShortFileSize(context, mediaFile.length()));
                     imagePickerListener.onImageSelectedFromPicker(mediaFile);
                     revokeUriPermission();
                 }
@@ -180,6 +184,7 @@ public class MediaPicker {
 
             case AppConstants.REQ_CODE_CAMERA_VIDEO:
                 if (mediaFile != null) {
+                    Timber.i("Media size : %s", Formatter.formatShortFileSize(context, mediaFile.length()));
                     videoPickerListener.onVideoSelectedFromPicker(mediaFile);
                     revokeUriPermission();
                 }

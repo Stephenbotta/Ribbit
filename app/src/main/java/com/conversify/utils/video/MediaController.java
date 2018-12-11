@@ -182,25 +182,23 @@ public class MediaController {
 
     @Nullable
     public File convertVideo(@NonNull final String videoPath, @NonNull final File cacheDir) {
-        return convertVideo(videoPath, cacheDir, 896, 504, 500000, 25);
+        return convertVideo(videoPath, cacheDir, 640.0f, 500000, 25);
     }
 
     @TargetApi(16)
     @Nullable
     public File convertVideo(@NonNull final String videoPath, @NonNull final File cacheDir,
-                             final int requiredResultWidth, final int requiredResultHeight,
-                             final int requiredBitrate, final int requiredFrameRate) {
+                             final float maxSize, final int requiredBitrate, final int requiredFrameRate) {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         retriever.setDataSource(videoPath);
         String width = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
         String height = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
         String rotation = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
 
+        Timber.i("Original height: " + height + ", Original width: " + width + ", Rotation: " + rotation);
+
         long startTime = -1;
         long endTime = -1;
-
-        int resultWidth = requiredResultWidth;
-        int resultHeight = requiredResultHeight;
 
         int rotationValue = Integer.valueOf(rotation);
         int originalWidth = Integer.valueOf(width);
@@ -210,8 +208,19 @@ public class MediaController {
         int frameRate = requiredFrameRate;
         int rotateRender = 0;
 
+        final float scale;
+        if (originalHeight < maxSize || originalWidth < maxSize) {
+            scale = 0.9f;
+        } else {
+            scale = originalWidth > originalHeight ? maxSize / originalWidth : maxSize / originalHeight;
+        }
+        int resultWidth = Math.round(originalWidth * scale / 2) * 2;
+        int resultHeight = Math.round(originalHeight * scale / 2) * 2;
+
+        Timber.i("\nScale:" + scale + "\nResult height: " + resultHeight + ", Result width: " + resultWidth);
+
         File cacheFile = new File(cacheDir + File.separator +
-                "VIDEO_" + UUID.randomUUID().toString() + ".mp4");
+                "VID_" + UUID.randomUUID().toString() + ".mp4");
 
         if (Build.VERSION.SDK_INT < 18 && resultHeight > resultWidth && resultWidth != originalWidth && resultHeight != originalHeight) {
             int temp = resultHeight;
@@ -221,23 +230,29 @@ public class MediaController {
             rotateRender = 270;
         } else if (Build.VERSION.SDK_INT > 20) {
             if (rotationValue == 90) {
-                int temp = resultHeight;
+                /*int temp = resultHeight;
                 resultHeight = resultWidth;
-                resultWidth = temp;
+                resultWidth = temp;*/
                 rotationValue = 0;
                 rotateRender = 270;
             } else if (rotationValue == 180) {
-                rotateRender = 180;
-                rotationValue = 0;
-            } else if (rotationValue == 270) {
                 int temp = resultHeight;
                 resultHeight = resultWidth;
                 resultWidth = temp;
                 rotationValue = 0;
+                rotateRender = 180;
+            } else if (rotationValue == 270) {
+                /*int temp = resultHeight;
+                resultHeight = resultWidth;
+                resultWidth = temp;*/
+                rotationValue = 0;
                 rotateRender = 90;
+            } else if (rotationValue == 0) {
+                int temp = resultHeight;
+                resultHeight = resultWidth;
+                resultWidth = temp;
             }
         }
-
 
         File inputFile = new File(videoPath);
         if (!inputFile.canRead()) {
