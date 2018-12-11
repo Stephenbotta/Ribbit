@@ -114,4 +114,7 @@ interface ConversifyApi {
     fun getGroupPosts(@Field("groupId") groupId: String,
                       @Field("pageNo") page: Int,
                       @Field("limit") limit: Int): Call<ApiResponse<GetGroupPostsResponse>>
+
+    @POST("user/logOut")
+    fun logout(): Call<Any>
 }
