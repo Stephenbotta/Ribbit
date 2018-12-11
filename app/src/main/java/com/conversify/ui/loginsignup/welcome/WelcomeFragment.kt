@@ -2,7 +2,6 @@ package com.conversify.ui.loginsignup.welcome
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
@@ -17,7 +16,6 @@ import com.conversify.data.remote.models.loginsignup.SignUpRequest
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
-import com.conversify.ui.loginsignup.BackButtonEnabledListener
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
 import com.conversify.utils.ValidationUtils
 import kotlinx.android.synthetic.main.fragment_welcome.*
@@ -43,7 +41,6 @@ class WelcomeFragment : BaseFragment() {
     private lateinit var viewModel: WelcomeViewModel
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var profile: ProfileDto
-    private var backButtonEnabledListener: BackButtonEnabledListener? = null
 
     private val commonTextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
@@ -57,20 +54,12 @@ class WelcomeFragment : BaseFragment() {
         }
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        if (context is BackButtonEnabledListener) {
-            backButtonEnabledListener = context
-        }
-    }
-
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_welcome
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         profile = arguments?.getParcelable(ARGUMENT_PROFILE) as ProfileDto
-        backButtonEnabledListener?.onBackButtonEnabled(false)
 
         viewModel = ViewModelProviders.of(this)[WelcomeViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())

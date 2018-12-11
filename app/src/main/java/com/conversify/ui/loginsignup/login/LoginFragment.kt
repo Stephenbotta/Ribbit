@@ -149,7 +149,7 @@ class LoginFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginLi
                             // When interests are not selected for social profile
                             val fragment = ChooseInterestsFragment()
                             val tag = ChooseInterestsFragment.TAG
-                            navigateToFragment(fragment, tag, true)
+                            navigateToFragment(fragment, tag, true, false)
                         }
                     } else {
                         // Password screen for login
@@ -162,7 +162,7 @@ class LoginFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginLi
                     // Welcome screen to fill user details. In case of social login.
                     val fragment = WelcomeFragment.newInstance(profile)
                     val tag = WelcomeFragment.TAG
-                    navigateToFragment(fragment, tag, true)
+                    navigateToFragment(fragment, tag, false, true)
                 }
             } else {
                 // Create Password
@@ -178,7 +178,7 @@ class LoginFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginLi
         }
     }
 
-    private fun navigateToFragment(fragment: Fragment, tag: String, replace: Boolean = false) {
+    private fun navigateToFragment(fragment: Fragment, tag: String, replace: Boolean = false, backStack: Boolean = true) {
         fragmentManager?.apply {
             val transaction = beginTransaction()
             transaction.setCustomAnimations(R.anim.parallax_right_in, R.anim.parallax_left_out,
@@ -187,6 +187,8 @@ class LoginFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginLi
                 transaction.replace(R.id.flContainer, fragment, tag)
             } else {
                 transaction.add(R.id.flContainer, fragment, tag)
+            }
+            if (backStack) {
                 transaction.addToBackStack(null)
             }
             transaction.commit()

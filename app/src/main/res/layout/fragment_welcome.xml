@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,250 +8,267 @@
     android:clickable="true"
     android:focusable="true">
 
-    <TextView
-        android:id="@+id/tvLabelCreatePassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/brandon_text_bold"
-        android:includeFontPadding="false"
-        android:text="@string/welcome_label_welcome"
-        android:textColor="@color/textGray"
-        android:textSize="36sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnBack"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvLabelFullName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/brandon_text_medium"
-        android:includeFontPadding="false"
-        android:text="@string/welcome_label_what_s_your_full_name"
-        android:textColor="@color/textGray"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelCreatePassword" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/etFullName"
-        style="@style/AppTheme.EditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:hint="@string/welcome_label_enter_full_name"
-        android:importantForAutofill="no"
-        android:includeFontPadding="false"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:inputType="textPersonName|textNoSuggestions|textCapWords"
-        android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelFullName"
-        tools:ignore="LabelFor"
-        tools:targetApi="o"
-        tools:text="@tools:sample/full_names" />
+            <TextView
+                android:id="@+id/tvLabelCreatePassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:fontFamily="@font/brandon_text_bold"
+                android:includeFontPadding="false"
+                android:text="@string/welcome_label_welcome"
+                android:textColor="@color/textGray"
+                android:textSize="36sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnBack"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvLabelUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/brandon_text_medium"
-        android:includeFontPadding="false"
-        android:text="@string/welcome_label_username"
-        android:textColor="@color/textGray"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etFullName" />
+            <TextView
+                android:id="@+id/tvLabelFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/brandon_text_medium"
+                android:includeFontPadding="false"
+                android:text="@string/welcome_label_what_s_your_full_name"
+                android:textColor="@color/textGray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelCreatePassword" />
 
-    <LinearLayout
-        android:id="@+id/llUsername"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/background_edit_text_gray_rounded_4dp"
-        android:gravity="center_vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelUsername">
+            <EditText
+                android:id="@+id/etFullName"
+                style="@style/AppTheme.EditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:hint="@string/welcome_label_enter_full_name"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:includeFontPadding="false"
+                android:inputType="textPersonName|textNoSuggestions|textCapWords"
+                android:nextFocusForward="@id/etUsername"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelFullName"
+                tools:ignore="LabelFor"
+                tools:targetApi="o"
+                tools:text="@tools:sample/full_names" />
 
-        <EditText
-            android:id="@+id/etUsername"
-            style="@style/AppTheme.EditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="@string/welcome_label_enter_username"
-            android:importantForAutofill="no"
-            android:includeFontPadding="false"
-            android:inputType="textNoSuggestions"
-            android:maxLength="@integer/username_max_length"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:singleLine="true"
-            tools:ignore="LabelFor"
-            tools:targetApi="o"
-            tools:text="userabc" />
+            <TextView
+                android:id="@+id/tvLabelUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/brandon_text_medium"
+                android:includeFontPadding="false"
+                android:text="@string/welcome_label_username"
+                android:textColor="@color/textGray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etFullName" />
 
-        <ProgressBar
-            android:id="@+id/progressBarUsername"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_margin="8dp"
-            android:visibility="gone" />
+            <LinearLayout
+                android:id="@+id/llUsername"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/background_edit_text_gray_rounded_4dp"
+                android:gravity="center_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelUsername">
 
-        <ImageView
-            android:id="@+id/ivUsernameVerify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:visibility="gone"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_verify_success" />
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/etUsername"
+                    style="@style/AppTheme.EditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/welcome_label_enter_username"
+                    android:importantForAutofill="no"
+                    android:includeFontPadding="false"
+                    android:inputType="text"
+                    android:maxLength="@integer/username_max_length"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:singleLine="true"
+                    tools:ignore="LabelFor"
+                    tools:targetApi="o"
+                    tools:text="userabc" />
 
-    <TextView
-        android:id="@+id/tvLabelUsernameValidation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="24dp"
-        android:text="@string/welcome_label_username_validation_requirements"
-        android:textColor="@color/textGray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llUsername" />
+                <ProgressBar
+                    android:id="@+id/progressBarUsername"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="8dp"
+                    android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/tvLabelEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/brandon_text_medium"
-        android:includeFontPadding="false"
-        android:text="@string/welcome_label_your_email_id"
-        android:textColor="@color/textGray"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelUsernameValidation" />
+                <ImageView
+                    android:id="@+id/ivUsernameVerify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription"
+                    tools:src="@drawable/ic_verify_success" />
+            </LinearLayout>
 
-    <EditText
-        android:id="@+id/etEmail"
-        style="@style/AppTheme.EditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:importantForAutofill="no"
-        android:includeFontPadding="false"
-        android:hint="@string/login_label_enter_email_id"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:inputType="textEmailAddress"
-        android:maxLength="@integer/email_max_length"
-        android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelEmail"
-        tools:ignore="LabelFor"
-        tools:targetApi="o"
-        tools:text="user@abc.com" />
+            <TextView
+                android:id="@+id/tvLabelUsernameValidation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/welcome_label_username_validation_requirements"
+                android:textColor="@color/textGray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llUsername" />
 
-    <TextView
-        android:id="@+id/tvLabelPhoneNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/brandon_text_medium"
-        android:includeFontPadding="false"
-        android:text="@string/welcome_label_your_phone_number"
-        android:textColor="@color/textGray"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etEmail" />
+            <TextView
+                android:id="@+id/tvLabelEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/brandon_text_medium"
+                android:includeFontPadding="false"
+                android:text="@string/welcome_label_your_email_id"
+                android:textColor="@color/textGray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelUsernameValidation" />
 
-    <LinearLayout
-        android:id="@+id/llPhoneNumber"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/background_edit_text_gray_rounded_4dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelPhoneNumber">
+            <EditText
+                android:id="@+id/etEmail"
+                style="@style/AppTheme.EditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:hint="@string/login_label_enter_email_id"
+                android:importantForAutofill="no"
+                android:includeFontPadding="false"
+                android:inputType="textEmailAddress"
+                android:maxLength="@integer/email_max_length"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelEmail"
+                tools:ignore="LabelFor"
+                tools:targetApi="o"
+                tools:text="user@abc.com" />
 
-        <com.hbb20.CountryCodePicker
-            android:id="@+id/countryCodePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            app:ccp_autoDetectCountry="true"
-            app:ccp_contentColor="@color/editTextContent"
-            app:ccp_showArrow="false"
-            app:ccp_showNameCode="false"
-            app:ccp_textSize="16sp" />
+            <TextView
+                android:id="@+id/tvLabelPhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/brandon_text_medium"
+                android:includeFontPadding="false"
+                android:text="@string/welcome_label_your_phone_number"
+                android:textColor="@color/textGray"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etEmail" />
 
-        <EditText
-            android:id="@+id/etPhoneNumber"
-            style="@style/AppTheme.EditText"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="@string/login_label_enter_phone_number"
-            android:imeOptions="actionDone"
-            android:importantForAutofill="no"
-            android:inputType="number"
-            android:maxLength="@integer/phone_number_max_length"
-            android:paddingStart="4dp"
-            android:paddingTop="0dp"
-            android:paddingEnd="4dp"
-            android:paddingBottom="0dp"
-            android:singleLine="true"
-            tools:ignore="TextFields"
-            tools:targetApi="o"
-            tools:text="@tools:sample/us_phones" />
+            <LinearLayout
+                android:id="@+id/llPhoneNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/background_edit_text_gray_rounded_4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelPhoneNumber">
 
-        <ImageView
-            android:id="@+id/ivPhoneVerify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:visibility="invisible"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_verify_success" />
-    </LinearLayout>
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/countryCodePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    app:ccp_autoDetectCountry="true"
+                    app:ccp_contentColor="@color/editTextContent"
+                    app:ccp_showArrow="false"
+                    app:ccp_showNameCode="false"
+                    app:ccp_textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/etPhoneNumber"
+                    style="@style/AppTheme.EditText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/login_label_enter_phone_number"
+                    android:imeOptions="actionDone"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:maxLength="@integer/phone_number_max_length"
+                    android:paddingStart="4dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="4dp"
+                    android:paddingBottom="0dp"
+                    android:singleLine="true"
+                    tools:ignore="TextFields"
+                    tools:targetApi="o"
+                    tools:text="@tools:sample/us_phones" />
+
+                <ImageView
+                    android:id="@+id/ivPhoneVerify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:visibility="invisible"
+                    tools:ignore="ContentDescription"
+                    tools:src="@drawable/ic_verify_success" />
+            </LinearLayout>
+
+            <Space
+                android:id="@+id/spaceBottom"
+                android:layout_width="wrap_content"
+                android:layout_height="88dp"
+                app:layout_constraintTop_toBottomOf="@id/llPhoneNumber" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabProceed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
         android:layout_margin="20dp"
         android:src="@drawable/ic_forward_white"
         app:backgroundTint="@color/selector_fab_background"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-</android.support.constraint.ConstraintLayout>
+        app:fabSize="normal" />
+</FrameLayout>

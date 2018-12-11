@@ -62,6 +62,7 @@ class LoginSignUpActivity : BaseActivity(), BackButtonEnabledListener {
                     val fragment = WelcomeFragment.newInstance(UserManager.getProfile())
                     supportFragmentManager.beginTransaction()
                             .replace(R.id.flContainer, fragment, WelcomeFragment.TAG)
+                            .addToBackStack(null)
                             .commit()
                 }
 
