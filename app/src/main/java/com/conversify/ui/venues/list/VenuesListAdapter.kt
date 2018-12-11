@@ -75,6 +75,8 @@ class VenuesListAdapter(private val glide: GlideRequests,
 
     fun getVenuesCount(): Int = items.count { it is VenueDto }
 
+    private fun getYourVenuesCount(): Int = items.count { it is VenueDto && it.isMember == true }
+
     fun displayItems(items: List<Any>) {
         this.items.clear()
         this.items.addAll(items)
@@ -86,6 +88,15 @@ class VenuesListAdapter(private val glide: GlideRequests,
         if (index != -1) {
             items.removeAt(index)
             notifyItemRemoved(index)
+        }
+
+        // If your venues count is 0, then remove the "YOUR VENUES" label item.
+        if (getYourVenuesCount() == 0) {
+            val yourVenuesLabelIndex = items.indexOfFirst { it is YourVenuesDto }
+            if (yourVenuesLabelIndex != -1) {
+                items.removeAt(yourVenuesLabelIndex)
+                notifyItemRemoved(yourVenuesLabelIndex)
+            }
         }
     }
 
