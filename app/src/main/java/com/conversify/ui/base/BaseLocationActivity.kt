@@ -5,12 +5,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
 import android.content.pm.PackageManager
+import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.support.v4.content.ContextCompat
 import com.conversify.R
-import com.conversify.data.local.UserManager
 import com.conversify.extensions.isGpsEnabled
 import com.conversify.extensions.longToast
 import com.conversify.extensions.shortToast
@@ -82,7 +82,7 @@ abstract class BaseLocationActivity : BaseActivity() {
                 super.onLocationResult(locationResult)
                 locationResult?.lastLocation?.let { location ->
                     Timber.d(location.toString())
-                    UserManager.updateLocation(location)
+                    onLocationUpdated(location)
                 }
             }
         }
@@ -234,4 +234,6 @@ abstract class BaseLocationActivity : BaseActivity() {
             }
         }
     }
+
+    abstract fun onLocationUpdated(location: Location)
 }

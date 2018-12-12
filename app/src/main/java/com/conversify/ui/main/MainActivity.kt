@@ -1,10 +1,10 @@
 package com.conversify.ui.main
 
+import android.arch.lifecycle.ViewModelProviders
+import android.location.Location
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.conversify.R
-import com.conversify.data.remote.socket.SocketManager
-import com.conversify.data.repository.InterestsRepository
 import com.conversify.ui.base.BaseLocationActivity
 import com.conversify.ui.main.chats.ChatsFragment
 import com.conversify.ui.main.explore.ExploreFragment
@@ -27,12 +27,14 @@ class MainActivity : BaseLocationActivity() {
         private const val EXTRA_SELECTED_FRAGMENT_TAG = "EXTRA_SELECTED_FRAGMENT_TAG"
     }
 
+    private lateinit var viewModel: MainViewModel
     private lateinit var fragmentSwitcher: FragmentSwitcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
         fragmentSwitcher = FragmentSwitcher(supportFragmentManager, R.id.flMainContainer)
 
         if (savedInstanceState == null) {
@@ -52,12 +54,6 @@ class MainActivity : BaseLocationActivity() {
         }
 
         setupBottomTabs()
-
-        // Get and cache interests. Callback is not required.
-        InterestsRepository.getInstance().getInterests()
-
-        // Connect socket
-        SocketManager.getInstance().connect()
     }
 
     private fun setupBottomTabs() {
@@ -108,5 +104,9 @@ class MainActivity : BaseLocationActivity() {
         outState.putInt(EXTRA_SELECTED_TAB_INDEX, selectedTabIndex)
         outState.putString(EXTRA_SELECTED_FRAGMENT_TAG, fragmentSwitcher.getCurrentFragmentTag())
         Timber.d("Saving instance state. Selected tab index : $selectedTabIndex")
+    }
+
+    override fun onLocationUpdated(location: Location) {
+        viewModel.currentLocationUpdated(location)
     }
 }
