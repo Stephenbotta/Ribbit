@@ -80,6 +80,8 @@ class SocketManager(private val userManager: UserManager) {
     }
 
     fun emit(event: String, args: Any, acknowledge: Ack) {
-        socket.emit(event, args, acknowledge)
+        if (socket.connected()) {
+            socket.emit(event, args, acknowledge)
+        }
     }
 }
