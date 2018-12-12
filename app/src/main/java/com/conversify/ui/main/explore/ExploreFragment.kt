@@ -1,11 +1,13 @@
 package com.conversify.ui.main.explore
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.view.View
 import com.conversify.R
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.groups.listing.GroupsFragment
+import com.conversify.ui.notifications.NotificationsActivity
 import com.conversify.ui.people.PeopleFragment
 import com.conversify.ui.venues.list.VenuesListFragment
 import com.conversify.ui.venues.map.VenuesMapFragment
@@ -42,7 +44,9 @@ class ExploreFragment : BaseFragment(), VenuesModeNavigator {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnNotification.setOnClickListener { }
+        btnNotification.setOnClickListener {
+            startActivity(Intent(requireActivity(), NotificationsActivity::class.java))
+        }
         setupTabs()
     }
 

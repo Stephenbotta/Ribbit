@@ -7,6 +7,7 @@ import com.conversify.data.remote.models.groups.GetGroupPostsResponse
 import com.conversify.data.remote.models.groups.GetGroupsResponse
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.loginsignup.*
+import com.conversify.data.remote.models.notifications.NotificationDto
 import com.conversify.data.remote.models.venues.CreateEditVenueRequest
 import com.conversify.data.remote.models.venues.GetVenuesResponse
 import com.conversify.data.remote.models.venues.VenueDto
@@ -114,6 +115,18 @@ interface ConversifyApi {
     fun getGroupPosts(@Field("groupId") groupId: String,
                       @Field("pageNo") page: Int,
                       @Field("limit") limit: Int): Call<ApiResponse<GetGroupPostsResponse>>
+
+    @POST("user/getNotifications")
+    @FormUrlEncoded
+    fun getNotifications(@Field("pageNo") page: Int): Call<ApiResponse<List<NotificationDto>>>
+
+    @POST("user/acceptInviteRequest")
+    @FormUrlEncoded
+    fun acceptRejectVenueJoinRequest(@Field("acceptType") acceptType: String,
+                                     @Field("groupType") groupType: String,
+                                     @Field("userId") userId: String,
+                                     @Field("groupId") venueId: String,
+                                     @Field("accept") accept: Boolean): Call<Any>
 
     @POST("user/logOut")
     fun logout(): Call<Any>

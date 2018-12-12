@@ -196,4 +196,9 @@
 
     <string name="group_posts_label_no_posts">No posts found</string>
     <string name="group_posts_label_leave_a_reply">Leave a reply</string>
+
+    <string name="notifications_btn_accept">Accept</string>
+    <string name="notifications_btn_reject">Reject</string>
+    <string name="notifications_label_no_notifications_found">No notifications found</string>
+    <string name="notifications_label_send_request_to_join">%s send request to join %s</string>
 </resources>

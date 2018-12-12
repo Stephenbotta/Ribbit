@@ -35,4 +35,7 @@
     <color name="editTextHint">#A1A1A1</color>
 
     <color name="venueFiltersParentBackground">#F9F4FD</color>
+
+    <color name="notificationsRejectBackground">#ECECEC</color>
+    <color name="notificationsRejectText">#767676</color>
 </resources>

@@ -81,6 +81,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.notifications.NotificationsActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
