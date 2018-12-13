@@ -11,32 +11,32 @@ import android.net.Uri
 import android.support.annotation.StringRes
 import android.util.Patterns
 import android.view.WindowManager
-import android.widget.Toast
 import com.conversify.R
 import com.conversify.data.local.UserManager
 import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.socket.SocketManager
+import com.conversify.ui.custom.AppToast
 import com.conversify.ui.landing.LandingActivity
 import timber.log.Timber
 
 @SuppressLint("ShowToast")
 fun Context.shortToast(text: CharSequence) {
-    Toast.makeText(this, text, Toast.LENGTH_SHORT).updateAndShow()
+    AppToast.shortToast(applicationContext, text)
 }
 
 @SuppressLint("ShowToast")
 fun Context.shortToast(@StringRes resId: Int) {
-    Toast.makeText(this, resId, Toast.LENGTH_SHORT).updateAndShow()
+    AppToast.shortToast(applicationContext, resId)
 }
 
 @SuppressLint("ShowToast")
 fun Context.longToast(text: CharSequence) {
-    Toast.makeText(this, text, Toast.LENGTH_LONG).updateAndShow()
+    AppToast.shortToast(applicationContext, text)
 }
 
 @SuppressLint("ShowToast")
 fun Context.longToast(@StringRes resId: Int) {
-    Toast.makeText(this, resId, Toast.LENGTH_LONG).updateAndShow()
+    AppToast.shortToast(applicationContext, resId)
 }
 
 fun Context.clearNotifications() {

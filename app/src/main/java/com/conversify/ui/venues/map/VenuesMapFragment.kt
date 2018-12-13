@@ -224,6 +224,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
                 if (resultCode == Activity.RESULT_OK) {
                     val filters = data?.getParcelableExtra<VenueFilters>(AppConstants.EXTRA_VENUE_FILTERS)
                     viewModel.updateFilters(filters)
+                    viewModel.getMapVenues()
                 }
             }
         }
