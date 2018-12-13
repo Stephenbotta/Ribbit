@@ -92,7 +92,7 @@ class CreateGroupFragment : BaseFragment() {
                         .error(R.color.greyImageBackground)
                         .into(ivGroup)
             }
-            val imageDirectory = AppUtils.getAppCacheDirectoryPath(requireActivity())
+            val imageDirectory = FileUtils.getAppCacheDirectoryPath(requireActivity())
             getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
         }
 

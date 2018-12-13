@@ -25,12 +25,12 @@ object AppToast {
 
     @JvmStatic
     fun longToast(applicationContext: Context, text: CharSequence) {
-        show(applicationContext, text, Toast.LENGTH_LONG)
+        show(applicationContext, text, Toast.LENGTH_SHORT)
     }
 
     @JvmStatic
     fun longToast(applicationContext: Context, @StringRes resId: Int) {
-        show(applicationContext, applicationContext.getString(resId), Toast.LENGTH_LONG)
+        show(applicationContext, applicationContext.getString(resId), Toast.LENGTH_SHORT)
     }
 
     @JvmStatic

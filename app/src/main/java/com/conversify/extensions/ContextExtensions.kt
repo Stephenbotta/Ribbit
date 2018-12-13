@@ -1,6 +1,5 @@
 package com.conversify.extensions
 
-import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
@@ -19,24 +18,20 @@ import com.conversify.ui.custom.AppToast
 import com.conversify.ui.landing.LandingActivity
 import timber.log.Timber
 
-@SuppressLint("ShowToast")
 fun Context.shortToast(text: CharSequence) {
     AppToast.shortToast(applicationContext, text)
 }
 
-@SuppressLint("ShowToast")
 fun Context.shortToast(@StringRes resId: Int) {
     AppToast.shortToast(applicationContext, resId)
 }
 
-@SuppressLint("ShowToast")
 fun Context.longToast(text: CharSequence) {
-    AppToast.shortToast(applicationContext, text)
+    AppToast.longToast(applicationContext, text)
 }
 
-@SuppressLint("ShowToast")
 fun Context.longToast(@StringRes resId: Int) {
-    AppToast.shortToast(applicationContext, resId)
+    AppToast.longToast(applicationContext, resId)
 }
 
 fun Context.clearNotifications() {

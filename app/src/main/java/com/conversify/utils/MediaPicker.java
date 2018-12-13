@@ -18,6 +18,7 @@ import android.text.format.Formatter;
 
 import com.conversify.BuildConfig;
 import com.conversify.R;
+import com.conversify.ui.custom.AppToast;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,13 +51,18 @@ public class MediaPicker {
 
     private boolean allowVideo = false;
 
+    @NonNull
+    private final String cacheDirectory;
+
     public MediaPicker(@NonNull Activity activity) {
         this.context = activity;
+        cacheDirectory = FileUtils.getAppCacheDirectoryPath(activity);
     }
 
     public MediaPicker(@NonNull Fragment fragment) {
         this.fragment = fragment;
-        this.context = fragment.getActivity();
+        this.context = fragment.requireActivity();
+        cacheDirectory = FileUtils.getAppCacheDirectoryPath(context);
     }
 
     public void setImagePickerListener(@NonNull ImagePickerListener imagePickerListener) {
@@ -87,19 +93,18 @@ public class MediaPicker {
         String[] pickerItems;
 
         if (allowVideo) {
-            pickerItems = new String[]{context.getString(R.string.image_picker_dialog_capture_image),
-                    context.getString(R.string.image_picker_dialog_gallery_image),
-                    context.getString(R.string.image_picker_dialog_capture_video),
-                    context.getString(R.string.image_picker_dialog_gallery_video),
+            pickerItems = new String[]{context.getString(R.string.media_picker_dialog_capture_image),
+                    context.getString(R.string.media_picker_dialog_gallery_image),
+                    context.getString(R.string.media_picker_dialog_capture_video),
+                    context.getString(R.string.media_picker_dialog_gallery_video),
                     context.getString(android.R.string.cancel)};
         } else {
-            pickerItems = new String[]{context.getString(R.string.image_picker_dialog_capture_image),
-                    context.getString(R.string.image_picker_dialog_gallery_image),
+            pickerItems = new String[]{context.getString(R.string.media_picker_dialog_capture_image),
+                    context.getString(R.string.media_picker_dialog_gallery_image),
                     context.getString(android.R.string.cancel)};
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        //builder.setTitle(R.string.image_picker_dialog_select_your_choice);
         builder.setItems(pickerItems, (dialog, which) -> {
             switch (which) {
                 case 0:
@@ -128,17 +133,24 @@ public class MediaPicker {
     }
 
     public void show() {
+        if (FileUtils.isLowStorage(context)) {
+            AppToast.longToast(context.getApplicationContext(), R.string.media_picker_message_please_free_up_space);
+            return;
+        }
+
         if (pickerDialog == null) {
             setupPickerDialog();
         }
 
-        if (pickerDialog != null)
+        if (pickerDialog != null) {
             pickerDialog.show();
+        }
     }
 
     public void dismiss() {
-        if (pickerDialog != null && pickerDialog.isShowing())
+        if (pickerDialog != null && pickerDialog.isShowing()) {
             pickerDialog.dismiss();
+        }
     }
 
     /**
@@ -197,11 +209,7 @@ public class MediaPicker {
      */
     private void openImageCamera() {
         checkListener();
-
-        File imageDirectory = context.getExternalCacheDir();
-
-        if (imageDirectory != null)
-            startCameraImageIntent(imageDirectory.getAbsolutePath());
+        startCameraImageIntent(cacheDirectory);
     }
 
     /**
@@ -209,15 +217,14 @@ public class MediaPicker {
      */
     private void openImageCamera(@NonNull final String imageDirectory) {
         checkListener();
-
         startCameraImageIntent(imageDirectory);
     }
 
-    private void startCameraImageIntent(@NonNull final String imageDirectory) {
+    private void startCameraImageIntent(@NonNull final String videoDirectory) {
         try {
             String fileName = "IMG_" + UUID.randomUUID().toString();
             String fileSuffix = ".jpg";
-            mediaFile = createFile(imageDirectory, fileName, fileSuffix);
+            mediaFile = createFile(videoDirectory, fileName, fileSuffix);
 
             if (fragment == null)
                 context.startActivityForResult(getCameraIntent(mediaFile, MediaStore.ACTION_IMAGE_CAPTURE),
@@ -235,11 +242,7 @@ public class MediaPicker {
      */
     private void openVideoCamera() {
         checkListener();
-
-        File videoDirectory = context.getExternalCacheDir();
-
-        if (videoDirectory != null)
-            startCameraVideoIntent(videoDirectory.getAbsolutePath());
+        startCameraVideoIntent(cacheDirectory);
     }
 
     private void startCameraVideoIntent(@NonNull final String imageDirectory) {

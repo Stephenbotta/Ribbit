@@ -20,7 +20,7 @@ import com.conversify.data.remote.models.chat.VenueDetailsResponse
 import com.conversify.data.remote.models.chat.VenueMemberDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.data.remote.socket.SocketManager
-import com.conversify.utils.AppUtils
+import com.conversify.utils.FileUtils
 import com.conversify.utils.GetSampledImage
 import com.conversify.utils.MediaUtils
 import com.conversify.utils.SingleLiveEvent
@@ -49,7 +49,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
     private val chatMessageBuilder by lazy { ChatMessageBuilder(ownUserId) }
     private val socketManager by lazy { SocketManager.getInstance() }
     private val s3ImageUploader by lazy { S3Uploader(S3Utils.TRANSFER_UTILITY) }
-    private val cacheDirectory by lazy { AppUtils.getAppCacheDirectory(getApplication()) }
+    private val cacheDirectory by lazy { FileUtils.getAppCacheDirectory(getApplication()) }
     private val cacheDirectoryPath by lazy { cacheDirectory.absolutePath }
     private val mediaController by lazy { MediaController.getInstance() }
 
@@ -315,7 +315,6 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
                 message.id = acknowledgeMessage?.id
                 message.conversationId = acknowledgeMessage?.conversationId
                 message.isDelivered = true
-                message.messageStatus = MessageStatus.SENT  // todo verify update
                 sendMessage.postValue(Resource.success(message))
             }
         })

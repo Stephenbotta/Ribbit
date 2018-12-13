@@ -1,7 +1,5 @@
 package com.conversify.utils
 
-import android.content.Context
-import java.io.File
 import java.util.regex.Pattern
 
 object AppUtils {
@@ -30,14 +28,5 @@ object AppUtils {
 
             else -> ""
         }
-    }
-
-    fun getAppCacheDirectory(context: Context): File {
-        return context.externalCacheDir
-                ?: context.cacheDir
-    }
-
-    fun getAppCacheDirectoryPath(context: Context): String {
-        return getAppCacheDirectory(context).absolutePath
     }
 }

@@ -25,6 +25,7 @@ import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.longToast
 import com.conversify.extensions.shortToast
 import com.conversify.ui.base.BaseActivity
+import com.conversify.ui.custom.AppToast
 import com.conversify.ui.images.ImagesActivity
 import com.conversify.ui.venues.details.VenueDetailsActivity
 import com.conversify.ui.videoplayer.VideoPlayerActivity
@@ -136,7 +137,11 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         }
 
         mediaPicker.setVideoPickerListener { videoFile ->
-            viewModel.sendVideoMessage(videoFile)
+            if (videoFile.length() < AppConstants.MAXIMUM_VIDEO_SIZE) {
+                viewModel.sendVideoMessage(videoFile)
+            } else {
+                AppToast.longToast(applicationContext, R.string.message_select_smaller_video)
+            }
         }
 
         ivVenue.setOnClickListener { showVenueDetails() }

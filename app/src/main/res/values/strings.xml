@@ -33,12 +33,14 @@
     </plurals>
 
     <string name="message_google_maps_is_not_installed">Google maps is not installed. Would you like to install it?</string>
+    <string name="message_select_smaller_video">Please select a smaller video</string>
 
-    <string name="image_picker_dialog_capture_image">Capture image from camera</string>
-    <string name="image_picker_dialog_capture_video">Capture video from camera</string>
-    <string name="image_picker_dialog_gallery_image">Select image from gallery</string>
-    <string name="image_picker_dialog_gallery_video">Select video from gallery</string>
-    <string name="image_picker_dialog_select_your_choice">Select your choice</string>
+    <string name="media_picker_dialog_capture_image">Capture image from camera</string>
+    <string name="media_picker_dialog_capture_video">Capture video from camera</string>
+    <string name="media_picker_dialog_gallery_image">Select image from gallery</string>
+    <string name="media_picker_dialog_gallery_video">Select video from gallery</string>
+    <string name="media_picker_dialog_select_your_choice">Select your choice</string>
+    <string name="media_picker_message_please_free_up_space">Please free up some space on device before proceeding</string>
 
     <string name="permission_btn_allow">Allow</string>
     <string name="permission_btn_deny">Deny</string>

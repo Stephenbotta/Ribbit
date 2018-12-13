@@ -243,14 +243,30 @@ object FileUtils {
         return intent
     }
 
+    @JvmStatic
     fun getSelectedFileFromResult(context: Context, data: Intent?): File? {
         return if (data != null) {
             val fileUri = data.data ?: return null
-            val filePath = FileUtils.getPath(context, fileUri) ?: return null
+            val filePath = getPath(context, fileUri) ?: return null
             return File(filePath)
         } else {
             Timber.d("Result data is null")
             null
         }
+    }
+
+    @JvmStatic
+    fun getAppCacheDirectory(context: Context): File {
+        return context.externalCacheDir ?: context.cacheDir
+    }
+
+    @JvmStatic
+    fun getAppCacheDirectoryPath(context: Context): String {
+        return getAppCacheDirectory(context).absolutePath
+    }
+
+    @JvmStatic
+    fun isLowStorage(context: Context): Boolean {
+        return getAppCacheDirectory(context).usableSpace < AppConstants.MINIMUM_FREE_SPACE
     }
 }
