@@ -21,8 +21,26 @@ data class ProfileDto(
         @field:SerializedName("fullName")
         val fullName: String? = null,
 
+        @field:SerializedName("followingCount")
+        val followingCount: Long? = null,
+
+        @field:SerializedName("followerCount")
+        val followerCount: Long? = null,
+
         @field:SerializedName("userName")
         val userName: String? = null,
+
+        @field:SerializedName("bio")
+        val bio: String? = null,
+
+        @field:SerializedName("age")
+        val age: Int? = null,
+
+        @field:SerializedName("company")
+        val company: String? = null,
+
+        @field:SerializedName("designation")
+        val designation: String? = null,
 
         @field:SerializedName("accessToken")
         val accessToken: String? = null,

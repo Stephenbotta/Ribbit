@@ -203,4 +203,9 @@
     <string name="notifications_btn_reject">Reject</string>
     <string name="notifications_label_no_notifications_found">No notifications found</string>
     <string name="notifications_label_send_request_to_join">%s send request to join %s</string>
+    <string name="profile_label_profile">Profile</string>
+    <string name="profile_label_followers">Followers</string>
+    <string name="profile_label_following">Following</string>
+    <string name="profile_label_bio">Bio</string>
+    <string name="profile_label_my_interests">My Interests</string>
 </resources>
