@@ -13,7 +13,6 @@ import android.support.v4.content.ContextCompat
 import com.conversify.R
 import com.conversify.extensions.isGpsEnabled
 import com.conversify.extensions.longToast
-import com.conversify.extensions.shortToast
 import com.conversify.utils.AppConstants
 import com.conversify.utils.PermissionUtils
 import com.google.android.gms.common.api.ApiException
@@ -209,7 +208,7 @@ abstract class BaseLocationActivity : BaseActivity() {
 
                     // User does not want to update setting.
                     Activity.RESULT_CANCELED -> {
-                        shortToast(R.string.permission_denied_location)
+                        longToast(R.string.permission_denied_location)
                         locationUpdatesEnabled = false
                     }
                 }

@@ -15,22 +15,26 @@ object AppToast {
 
     @JvmStatic
     fun shortToast(applicationContext: Context, text: CharSequence) {
-        show(applicationContext, text, Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT)
+        show(applicationContext, text, toast)
     }
 
     @JvmStatic
     fun shortToast(applicationContext: Context, @StringRes resId: Int) {
-        show(applicationContext, applicationContext.getString(resId), Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(applicationContext, resId, Toast.LENGTH_SHORT)
+        show(applicationContext, applicationContext.getString(resId), toast)
     }
 
     @JvmStatic
     fun longToast(applicationContext: Context, text: CharSequence) {
-        show(applicationContext, text, Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(applicationContext, text, Toast.LENGTH_LONG)
+        show(applicationContext, text, toast)
     }
 
     @JvmStatic
     fun longToast(applicationContext: Context, @StringRes resId: Int) {
-        show(applicationContext, applicationContext.getString(resId), Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(applicationContext, resId, Toast.LENGTH_LONG)
+        show(applicationContext, applicationContext.getString(resId), toast)
     }
 
     @JvmStatic
@@ -39,15 +43,13 @@ object AppToast {
         previousToast = null
     }
 
-    private fun show(applicationContext: Context, message: CharSequence, duration: Int) {
+    private fun show(applicationContext: Context, message: CharSequence, toast: Toast) {
         try {
             // First cancel any previous toast
             cancelPreviousToast()
 
             // Inflate new layout for toast
             val view = View.inflate(applicationContext, R.layout.layout_toast, null)
-            val toast = Toast(applicationContext)
-            toast.duration = duration
 
             // Get toast text view from newly inflated toast layout and set the text
             val typeface = ResourcesCompat.getFont(applicationContext, R.font.brandon_text_regular)
