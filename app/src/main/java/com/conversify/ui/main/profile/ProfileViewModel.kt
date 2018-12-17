@@ -1,6 +1,7 @@
 package com.conversify.ui.main.profile
 
 import android.arch.lifecycle.ViewModel
+import com.conversify.data.local.UserManager
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
@@ -11,6 +12,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProfileViewModel : ViewModel() {
+    val profile by lazy { UserManager.getProfile() }
     val logout by lazy { SingleLiveEvent<Resource<Any>>() }
 
     fun logout() {

@@ -25,7 +25,7 @@ data class ProfileDto(
         val followingCount: Long? = null,
 
         @field:SerializedName("followerCount")
-        val followerCount: Long? = null,
+        val followersCount: Long? = null,
 
         @field:SerializedName("userName")
         val userName: String? = null,

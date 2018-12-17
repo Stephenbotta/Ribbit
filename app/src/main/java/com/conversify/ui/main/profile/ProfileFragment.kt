@@ -6,14 +6,16 @@ import android.os.Bundle
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
-import com.conversify.extensions.handleError
-import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.startLandingWithClear
+import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.utils.GlideApp
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-class ProfileFragment : BaseFragment() {
+class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     companion object {
         const val TAG = "ProfileFragment"
     }
@@ -21,6 +23,7 @@ class ProfileFragment : BaseFragment() {
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_profile
 
     private val viewModel by lazy { ViewModelProviders.of(this)[ProfileViewModel::class.java] }
+    private lateinit var interestsAdapter: ProfileInterestsAdapter
     private lateinit var loadingDialog: LoadingDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,12 +34,50 @@ class ProfileFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupInterestsRecycler()
+        displayProfile(viewModel.profile)
         btnLogout.setOnClickListener {
             if (isNetworkActiveWithMessage()) {
                 viewModel.logout()
             }
         }
         observeChanges()
+    }
+
+    private fun setupInterestsRecycler() {
+        interestsAdapter = ProfileInterestsAdapter(this)
+        val layoutManager = FlexboxLayoutManager(requireActivity())
+        layoutManager.flexWrap = FlexWrap.WRAP
+        rvInterests.layoutManager = layoutManager
+        rvInterests.isNestedScrollingEnabled = false
+        rvInterests.adapter = interestsAdapter
+    }
+
+    private fun displayProfile(profile: ProfileDto) {
+        GlideApp.with(this)
+                .load(profile.image?.original)
+                .into(ivProfile)
+        tvNameAndAge.text = profile.fullName
+        if (profile.designation.isNullOrBlank() || profile.company.isNullOrBlank()) {
+            tvDesignation.gone()
+        } else {
+            tvDesignation.visible()
+            tvDesignation.text = getString(R.string.profile_designation_at_company, profile.designation, profile.company)
+        }
+
+        tvFollowersCount.text = (profile.followersCount ?: 0).toString()
+        tvFollowingCount.text = (profile.followingCount ?: 0).toString()
+
+        if (profile.bio.isNullOrBlank()) {
+            tvLabelBio.gone()
+            tvBio.gone()
+        } else {
+            tvLabelBio.visible()
+            tvBio.visible()
+            tvBio.text = profile.bio
+        }
+
+        interestsAdapter.displayInterests(profile.interests ?: emptyList())
     }
 
     private fun observeChanges() {
@@ -59,6 +100,9 @@ class ProfileFragment : BaseFragment() {
                 }
             }
         })
+    }
+
+    override fun onEditInterestsClicked() {
     }
 
     override fun onDestroyView() {

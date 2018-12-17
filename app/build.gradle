@@ -66,6 +66,9 @@ dependencies {
     // Lifecycle extensions (ViewModel and Live data)
     implementation "android.arch.lifecycle:extensions:$lifecycleVersion"
 
+    // https://github.com/google/flexbox-layout
+    implementation "com.google.android:flexbox:$flexboxVersion"
+
     // Runtime permission
     implementation("com.github.hotchemi:permissionsdispatcher:$permissionDispatcherVersion") {
         // if you don't use android.app.Fragment you can exclude support for them
