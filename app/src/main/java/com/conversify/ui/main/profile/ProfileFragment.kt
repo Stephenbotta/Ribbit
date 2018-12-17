@@ -57,7 +57,11 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         GlideApp.with(this)
                 .load(profile.image?.original)
                 .into(ivProfile)
-        tvNameAndAge.text = profile.fullName
+        tvNameAndAge.text = if (profile.age == null) {
+            profile.fullName
+        } else {
+            getString(R.string.profile_label_name_with_age, profile.fullName, profile.age)
+        }
         if (profile.designation.isNullOrBlank() || profile.company.isNullOrBlank()) {
             tvDesignation.gone()
         } else {
