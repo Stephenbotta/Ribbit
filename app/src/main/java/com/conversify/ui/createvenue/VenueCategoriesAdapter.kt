@@ -21,7 +21,7 @@ class VenueCategoriesAdapter(private val glide: GlideRequests,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TYPE_HEADER) {
-            ViewHolderHeader(parent.inflate(R.layout.item_create_venue_header))
+            ViewHolderHeader(parent.inflate(R.layout.item_create_venue_categories_header))
         } else {
             ViewHolderCategory(parent.inflate(R.layout.item_create_group_venue_category), glide, callback)
         }

@@ -210,4 +210,6 @@
     <string name="profile_label_my_interests">My Interests</string>
     <string name="profile_designation_at_company">%s at %s</string>
     <string name="profile_btn_edit">Edit</string>
+    <string name="add_group_label_add_participants">Add Participants</string>
+    <string name="add_group_label_no_followers_found">No followers found</string>
 </resources>

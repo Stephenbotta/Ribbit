@@ -79,4 +79,6 @@ data class ProfileDto(
         val interests: List<InterestDto>? = null,
 
         @field:SerializedName("isProfileComplete")
-        val isProfileComplete: Boolean? = null) : Parcelable
+        val isProfileComplete: Boolean? = null,
+
+        var isSelected: Boolean = false) : Parcelable

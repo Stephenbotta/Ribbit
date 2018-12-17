@@ -130,4 +130,8 @@ interface ConversifyApi {
 
     @POST("user/logOut")
     fun logout(): Call<Any>
+
+    @POST("user/listFollowerFollowing")
+    @FormUrlEncoded
+    fun getFollowers(@Field("flag") flag: Int = ApiConstants.FLAG_FOLLOWERS): Call<ApiResponse<List<ProfileDto>>>
 }

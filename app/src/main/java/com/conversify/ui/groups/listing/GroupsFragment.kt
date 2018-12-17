@@ -20,7 +20,7 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseFragment
-import com.conversify.ui.creategroup.CreateGroupActivity
+import com.conversify.ui.creategroup.create.CreateGroupActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.groups.groupposts.GroupPostsActivity
 import com.conversify.ui.groups.topicgroups.TopicGroupsActivity

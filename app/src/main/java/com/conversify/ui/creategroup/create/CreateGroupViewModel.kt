@@ -1,4 +1,4 @@
-package com.conversify.ui.creategroup
+package com.conversify.ui.creategroup.create
 
 import android.arch.lifecycle.ViewModel
 import com.conversify.data.local.models.AppError

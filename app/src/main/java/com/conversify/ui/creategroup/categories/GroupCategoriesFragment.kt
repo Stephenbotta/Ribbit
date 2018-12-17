@@ -1,4 +1,4 @@
-package com.conversify.ui.creategroup
+package com.conversify.ui.creategroup.categories
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -9,6 +9,7 @@ import com.conversify.data.remote.models.Status
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.creategroup.create.CreateGroupFragment
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsViewModel
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_group_categories.*

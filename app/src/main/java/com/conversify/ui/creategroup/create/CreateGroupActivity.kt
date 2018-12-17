@@ -1,8 +1,9 @@
-package com.conversify.ui.creategroup
+package com.conversify.ui.creategroup.create
 
 import android.os.Bundle
 import com.conversify.R
 import com.conversify.ui.base.BaseActivity
+import com.conversify.ui.creategroup.categories.GroupCategoriesFragment
 import kotlinx.android.synthetic.main.activity_create_venue.*
 
 class CreateGroupActivity : BaseActivity() {

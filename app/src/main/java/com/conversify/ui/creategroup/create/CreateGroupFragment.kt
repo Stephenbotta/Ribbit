@@ -1,4 +1,4 @@
-package com.conversify.ui.creategroup
+package com.conversify.ui.creategroup.create
 
 import android.Manifest
 import android.app.Activity

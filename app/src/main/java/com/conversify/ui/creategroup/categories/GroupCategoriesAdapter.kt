@@ -1,4 +1,4 @@
-package com.conversify.ui.creategroup
+package com.conversify.ui.creategroup.categories
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -21,7 +21,7 @@ class GroupCategoriesAdapter(private val glide: GlideRequests,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TYPE_HEADER) {
-            ViewHolderHeader(parent.inflate(R.layout.item_create_group_header))
+            ViewHolderHeader(parent.inflate(R.layout.item_create_group_categories_header))
         } else {
             ViewHolderCategory(parent.inflate(R.layout.item_create_group_venue_category), glide, callback)
         }
