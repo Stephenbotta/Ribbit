@@ -31,4 +31,8 @@ object ApiConstants {
 
     const val ACCEPT_TYPE_INVITE = "INVITE"
     const val ACCEPT_TYPE_REQUEST = "REQUEST"
+
+    const val REQUEST_STATUS_NONE = "NONE"
+    const val REQUEST_STATUS_PENDING = "PENDING"
+    const val REQUEST_STATUS_REJECTED = "REJECTED"
 }

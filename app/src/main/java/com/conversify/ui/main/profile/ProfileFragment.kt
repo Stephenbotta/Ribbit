@@ -1,7 +1,9 @@
 package com.conversify.ui.main.profile
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.conversify.R
@@ -10,6 +12,8 @@ import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -35,7 +39,7 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         super.onViewCreated(view, savedInstanceState)
 
         setupInterestsRecycler()
-        displayProfile(viewModel.profile)
+        displayProfile(viewModel.getProfile())
         btnLogout.setOnClickListener {
             if (isNetworkActiveWithMessage()) {
                 viewModel.logout()
@@ -107,6 +111,24 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     }
 
     override fun onEditInterestsClicked() {
+        val fragment = ChooseInterestsFragment.newInstance(true)
+        fragment.setTargetFragment(this, AppConstants.REQ_CODE_CHOOSE_INTERESTS)
+        fragmentManager?.apply {
+            beginTransaction()
+                    .setCustomAnimations(R.anim.slide_up_in, R.anim.slide_up_out,
+                            R.anim.slide_down_in, R.anim.slide_down_out)
+                    .add(android.R.id.content, fragment, ChooseInterestsFragment.TAG)
+                    .addToBackStack(null)
+                    .commit()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstants.REQ_CODE_CHOOSE_INTERESTS && resultCode == Activity.RESULT_OK) {
+            viewModel.profileUpdated()
+            displayProfile(viewModel.getProfile())
+        }
     }
 
     override fun onDestroyView() {

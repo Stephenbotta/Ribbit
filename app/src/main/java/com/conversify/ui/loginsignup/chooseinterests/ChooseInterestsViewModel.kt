@@ -20,6 +20,7 @@ import retrofit2.Response
 class ChooseInterestsViewModel : ViewModel() {
     val interests by lazy { MutableLiveData<Resource<List<InterestDto>>>() }
     val updateInterests by lazy { SingleLiveEvent<Resource<Any>>() }
+    val myInterests by lazy { UserManager.getProfile().interests ?: emptyList() }
 
     private val interestsRepository by lazy { InterestsRepository.getInstance() }
 

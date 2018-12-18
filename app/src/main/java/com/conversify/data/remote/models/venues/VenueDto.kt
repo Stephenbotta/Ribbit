@@ -29,6 +29,15 @@ data class VenueDto(
         @field:SerializedName("venueTitle")
         val name: String? = null,
 
+        @field:SerializedName("requestStatus")
+        val requestStatus: String? = null,
+
+        @field:SerializedName("participationRole")
+        val participationRole: String? = null,
+
+        @field:SerializedName("createdBy")
+        val createdBy: String? = null,
+
         @field:SerializedName("imageUrl")
         val imageUrl: ImageUrlDto? = null,
 

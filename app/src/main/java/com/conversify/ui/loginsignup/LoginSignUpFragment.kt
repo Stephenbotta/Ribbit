@@ -240,7 +240,7 @@ class LoginSignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookL
                             requireActivity().finishAffinity()
                         } else {
                             // When interests are not selected for social profile
-                            val fragment = ChooseInterestsFragment()
+                            val fragment = ChooseInterestsFragment.newInstance()
                             val tag = ChooseInterestsFragment.TAG
                             navigateToFragment(fragment, tag, true)
                         }

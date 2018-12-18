@@ -125,7 +125,7 @@ class LoginPasswordFragment : BaseFragment() {
                         startActivity(Intent(requireActivity(), MainActivity::class.java))
                         requireActivity().finishAffinity()
                     } else {
-                        val fragment = ChooseInterestsFragment()
+                        val fragment = ChooseInterestsFragment.newInstance()
                         fragmentManager?.apply {
                             beginTransaction()
                                     .setCustomAnimations(R.anim.parallax_right_in, R.anim.parallax_left_out,

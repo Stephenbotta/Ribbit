@@ -12,7 +12,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProfileViewModel : ViewModel() {
-    val profile by lazy { UserManager.getProfile() }
+    private var profile = UserManager.getProfile()
     val logout by lazy { SingleLiveEvent<Resource<Any>>() }
 
     fun logout() {
@@ -32,5 +32,11 @@ class ProfileViewModel : ViewModel() {
                         logout.value = Resource.error(t.failureAppError())
                     }
                 })
+    }
+
+    fun getProfile() = profile
+
+    fun profileUpdated() {
+        profile = UserManager.getProfile()
     }
 }
