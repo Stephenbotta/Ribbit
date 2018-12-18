@@ -1,7 +1,10 @@
 package com.conversify.ui.creategroup.addparticipants
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import com.conversify.R
 import com.conversify.data.remote.models.Status
@@ -10,13 +13,20 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseActivity
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_add_participants.*
 
-class AddParticipantsActivity : BaseActivity(), AddParticipantsAdapter.Callback {
+class AddParticipantsActivity : BaseActivity() {
     companion object {
         private const val CHILD_FOLLOWERS = 0
         private const val CHILD_NO_FOLLOWERS = 1
+
+        fun getStartIntent(context: Context): Intent {
+            val intent = Intent(context, AddParticipantsActivity::class.java)
+            intent.putParcelableArrayListExtra(AppConstants.EXTRA_PARTICIPANTS, arrayListOf())
+            return intent
+        }
     }
 
     private val viewModel by lazy { ViewModelProviders.of(this)[AddParticipantsViewModel::class.java] }
@@ -27,14 +37,25 @@ class AddParticipantsActivity : BaseActivity(), AddParticipantsAdapter.Callback 
         setContentView(R.layout.activity_add_participants)
 
         swipeRefreshLayout.isEnabled = false
-        btnBack.setOnClickListener { onBackPressed() }
+        setListeners()
         setupParticipantsRecycler()
         observeChanges()
         getFollowers()
     }
 
+    private fun setListeners() {
+        btnBack.setOnClickListener { onBackPressed() }
+        btnContinue.setOnClickListener {
+            val participants = adapter.getSelectedFollowers()
+            val data = Intent()
+            data.putParcelableArrayListExtra(AppConstants.EXTRA_PARTICIPANTS, participants)
+            setResult(Activity.RESULT_OK, data)
+            finish()
+        }
+    }
+
     private fun setupParticipantsRecycler() {
-        adapter = AddParticipantsAdapter(GlideApp.with(this), this)
+        adapter = AddParticipantsAdapter(GlideApp.with(this))
         rvParticipants.adapter = adapter
     }
 
@@ -47,10 +68,12 @@ class AddParticipantsActivity : BaseActivity(), AddParticipantsAdapter.Callback 
                     swipeRefreshLayout.isRefreshing = false
                     val followers = resource.data ?: emptyList()
                     adapter.displayFollowers(followers)
-                    viewSwitcher.displayedChild = if (adapter.itemCount == 0) {
-                        CHILD_NO_FOLLOWERS
+                    if (adapter.itemCount == 0) {
+                        viewSwitcher.displayedChild = CHILD_NO_FOLLOWERS
+                        btnContinue.gone()
                     } else {
-                        CHILD_FOLLOWERS
+                        viewSwitcher.displayedChild = CHILD_FOLLOWERS
+                        btnContinue.visible()
                     }
                 }
 
@@ -71,15 +94,6 @@ class AddParticipantsActivity : BaseActivity(), AddParticipantsAdapter.Callback 
             viewModel.getFollowers()
         } else {
             swipeRefreshLayout.isRefreshing = false
-        }
-    }
-
-    override fun onParticipantSelectionChanged() {
-        val selectedCount = adapter.getSelectedFollowers().size
-        if (selectedCount > 0) {
-            btnContinue.visible()
-        } else {
-            btnContinue.gone()
         }
     }
 }

@@ -19,4 +19,7 @@ data class CreateEditGroupRequest(
         var imageOriginalUrl: String? = null,
 
         @field:SerializedName("groupImageThumbnail")
-        var imageThumbnailUrl: String? = null)
+        var imageThumbnailUrl: String? = null,
+
+        @field:SerializedName("participantIds")
+        var participantIds: List<String>? = null)

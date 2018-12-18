@@ -12,11 +12,11 @@ import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_create_group_participant.view.*
 
 class AddParticipantsAdapter(private val glide: GlideRequests,
-                             private val callback: Callback) : RecyclerView.Adapter<AddParticipantsAdapter.ViewHolder>() {
+                             private val clickableParticipants: Boolean = true) : RecyclerView.Adapter<AddParticipantsAdapter.ViewHolder>() {
     private val participants = mutableListOf<ProfileDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(parent.inflate(R.layout.item_create_group_participant), glide, callback)
+        return ViewHolder(parent.inflate(R.layout.item_create_group_participant), glide, clickableParticipants)
     }
 
     override fun getItemCount(): Int = participants.size
@@ -31,18 +31,19 @@ class AddParticipantsAdapter(private val glide: GlideRequests,
         notifyDataSetChanged()
     }
 
-    fun getSelectedFollowers(): List<ProfileDto> {
-        return participants.filter { it.isSelected }
+    fun getSelectedFollowers(): ArrayList<ProfileDto> {
+        return ArrayList(participants.filter { it.isSelected })
     }
 
     class ViewHolder(itemView: View,
                      private val glide: GlideRequests,
-                     private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                     clickableParticipants: Boolean) : RecyclerView.ViewHolder(itemView) {
         init {
-            itemView.setOnClickListener {
-                profile.isSelected = !profile.isSelected
-                changeSelectedState(profile.isSelected)
-                callback.onParticipantSelectionChanged()
+            if (clickableParticipants) {
+                itemView.setOnClickListener {
+                    profile.isSelected = !profile.isSelected
+                    changeSelectedState(profile.isSelected)
+                }
             }
         }
 
@@ -65,9 +66,5 @@ class AddParticipantsAdapter(private val glide: GlideRequests,
                 itemView.ivSelected.gone()
             }
         }
-    }
-
-    interface Callback {
-        fun onParticipantSelectionChanged()
     }
 }

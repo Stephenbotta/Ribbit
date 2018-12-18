@@ -18,11 +18,14 @@ import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.CreateEditGroupRequest
 import com.conversify.data.remote.models.loginsignup.InterestDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.hideKeyboard
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.creategroup.addparticipants.AddParticipantsActivity
+import com.conversify.ui.creategroup.addparticipants.AddParticipantsAdapter
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.utils.*
 import com.conversify.utils.PermissionUtils
@@ -50,6 +53,7 @@ class CreateGroupFragment : BaseFragment() {
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var mediaPicker: MediaPicker
     private lateinit var createGroupMenuItem: MenuItem
+    private lateinit var participantsAdapter: AddParticipantsAdapter
 
     private var getSampledImage: GetSampledImage? = null
     private var selectedGroupImageFile: File? = null
@@ -72,10 +76,19 @@ class CreateGroupFragment : BaseFragment() {
         loadingDialog = LoadingDialog(requireActivity())
         mediaPicker = MediaPicker(this)
 
+        setupParticipantsRecycler()
         setListeners()
         observeChanges()
 
         tvCategory.text = category?.name
+    }
+
+    private fun setupParticipantsRecycler() {
+        participantsAdapter = AddParticipantsAdapter(GlideApp.with(this), false)
+        rvParticipants.adapter = participantsAdapter
+
+        // Initially set the member count to 0
+        tvLabelMembers.text = getString(R.string.venue_details_label_members_with_count, 0)
     }
 
     private fun setListeners() {
@@ -109,6 +122,11 @@ class CreateGroupFragment : BaseFragment() {
                 updateCreateGroupMenuState()
             }
         })
+
+        btnAddParticipants.setOnClickListener {
+            val intent = AddParticipantsActivity.getStartIntent(requireActivity())
+            startActivityForResult(intent, AppConstants.REQ_CODE_ADD_PARTICIPANTS)
+        }
     }
 
     private fun observeChanges() {
@@ -204,7 +222,24 @@ class CreateGroupFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        mediaPicker.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstants.REQ_CODE_ADD_PARTICIPANTS
+                && resultCode == Activity.RESULT_OK
+                && data != null) {
+            val participants = data.getParcelableArrayListExtra<ProfileDto>(AppConstants.EXTRA_PARTICIPANTS)
+
+            // Update member ids in the create group request
+            if (participants.isEmpty()) {
+                request.participantIds = null
+            } else {
+                request.participantIds = participants.mapNotNull { it.id }
+            }
+
+            // Display the selected participants and update the member count
+            participantsAdapter.displayFollowers(participants)
+            tvLabelMembers.text = getString(R.string.venue_details_label_members_with_count, participants.size)
+        } else {
+            mediaPicker.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     override fun onDestroyView() {

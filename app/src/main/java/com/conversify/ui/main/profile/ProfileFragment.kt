@@ -5,7 +5,10 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.app.AlertDialog
 import android.view.View
+import android.widget.TextView
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
@@ -41,9 +44,7 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         setupInterestsRecycler()
         displayProfile(viewModel.getProfile())
         btnLogout.setOnClickListener {
-            if (isNetworkActiveWithMessage()) {
-                viewModel.logout()
-            }
+            showLogoutConfirmationDialog()
         }
         observeChanges()
     }
@@ -70,7 +71,7 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
             tvDesignation.gone()
         } else {
             tvDesignation.visible()
-            tvDesignation.text = getString(R.string.profile_designation_at_company, profile.designation, profile.company)
+            tvDesignation.text = getString(R.string.profile_label_designation_at_company, profile.designation, profile.company)
         }
 
         tvFollowersCount.text = (profile.followersCount ?: 0).toString()
@@ -108,6 +109,21 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
                 }
             }
         })
+    }
+
+    private fun showLogoutConfirmationDialog() {
+        val dialog = AlertDialog.Builder(requireActivity())
+                .setMessage(R.string.profile_message_confirm_logout)
+                .setPositiveButton(R.string.profile_btn_logout) { _, _ ->
+                    if (isNetworkActiveWithMessage()) {
+                        viewModel.logout()
+                    }
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+        dialog.show()
+        val typeface = ResourcesCompat.getFont(requireActivity(), R.font.brandon_text_regular)
+        dialog.findViewById<TextView>(android.R.id.message)?.typeface = typeface
     }
 
     override fun onEditInterestsClicked() {

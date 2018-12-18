@@ -28,6 +28,10 @@
         <item name="android:windowBackground">@color/black</item>
     </style>
 
+    <style name="AppTheme.AlertDialog">
+
+    </style>
+
     <style name="LoadingDialog" parent="AppTheme">    
         <item name="android:windowFrame">@null</item>   
         <item name="android:windowBackground">@android:color/transparent</item>   
