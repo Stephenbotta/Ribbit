@@ -3,12 +3,13 @@ package com.conversify.ui.creategroup.create
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.conversify.R
-import com.conversify.data.remote.models.chat.VenueMemberDto
+import com.conversify.data.remote.models.groups.AddParticipantsDto
 import com.conversify.data.remote.models.groups.CreateGroupHeaderDto
-import com.conversify.data.remote.models.groups.GroupAddParticipantsDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.inflate
+import com.conversify.ui.creategroup.addparticipants.ParticipantViewHolder
+import com.conversify.ui.creategroup.create.viewholders.AddParticipantsViewHolder
 import com.conversify.ui.creategroup.create.viewholders.CreateGroupHeaderViewHolder
-import com.conversify.ui.venues.details.viewholder.VenueDetailsMemberViewHolder
 import com.conversify.utils.GlideRequests
 
 class CreateGroupAdapter(val glide: GlideRequests,
@@ -23,8 +24,9 @@ class CreateGroupAdapter(val glide: GlideRequests,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            VIEW_TYPE_HEADER -> CreateGroupHeaderViewHolder(parent.inflate(R.layout.item_venue_details_header), glide, callback)
-
+            VIEW_TYPE_HEADER -> CreateGroupHeaderViewHolder(parent.inflate(R.layout.item_create_group_header), glide, callback)
+            VIEW_TYPE_ADD_PARTICIPANTS -> AddParticipantsViewHolder(parent.inflate(R.layout.item_group_add_participants), callback)
+            VIEW_TYPE_MEMBER -> ParticipantViewHolder(parent.inflate(R.layout.item_group_participant), glide, false)
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -41,8 +43,8 @@ class CreateGroupAdapter(val glide: GlideRequests,
                 }
             }
 
-            is VenueDetailsMemberViewHolder -> {
-                if (item is VenueMemberDto) {
+            is ParticipantViewHolder -> {
+                if (item is ProfileDto) {
                     holder.bind(item)
                 }
             }
@@ -54,7 +56,7 @@ class CreateGroupAdapter(val glide: GlideRequests,
 
         return when (item) {
             is CreateGroupHeaderDto -> VIEW_TYPE_HEADER
-            is GroupAddParticipantsDto -> VIEW_TYPE_ADD_PARTICIPANTS
+            is AddParticipantsDto -> VIEW_TYPE_ADD_PARTICIPANTS
             else -> VIEW_TYPE_MEMBER
         }
     }
@@ -71,5 +73,12 @@ class CreateGroupAdapter(val glide: GlideRequests,
         }
     }
 
-    interface Callback : CreateGroupHeaderViewHolder.Callback
+    fun displayMembers(members: List<ProfileDto>) {
+        // Remove all existing members before adding/updating new ones
+        this.items.removeAll { it is ProfileDto }
+        this.items.addAll(members)
+        notifyDataSetChanged()
+    }
+
+    interface Callback : CreateGroupHeaderViewHolder.Callback, AddParticipantsViewHolder.Callback
 }

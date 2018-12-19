@@ -22,14 +22,17 @@ class AddParticipantsActivity : BaseActivity() {
         private const val CHILD_FOLLOWERS = 0
         private const val CHILD_NO_FOLLOWERS = 1
 
-        fun getStartIntent(context: Context): Intent {
+        private const val EXTRA_PARTICIPANT_IDS = "EXTRA_PARTICIPANT_IDS"
+
+        fun getStartIntent(context: Context, participantIds: ArrayList<String>): Intent {
             val intent = Intent(context, AddParticipantsActivity::class.java)
-            intent.putParcelableArrayListExtra(AppConstants.EXTRA_PARTICIPANTS, arrayListOf())
+            intent.putStringArrayListExtra(EXTRA_PARTICIPANT_IDS, participantIds)
             return intent
         }
     }
 
     private val viewModel by lazy { ViewModelProviders.of(this)[AddParticipantsViewModel::class.java] }
+    private val participantIds by lazy { intent.getStringArrayListExtra(EXTRA_PARTICIPANT_IDS) }
     private lateinit var adapter: AddParticipantsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +70,12 @@ class AddParticipantsActivity : BaseActivity() {
                 Status.SUCCESS -> {
                     swipeRefreshLayout.isRefreshing = false
                     val followers = resource.data ?: emptyList()
+                    followers.forEach {
+                        // Select the previously selected participant ids
+                        if (participantIds.contains(it.id)) {
+                            it.isSelected = true
+                        }
+                    }
                     adapter.displayFollowers(followers)
                     if (adapter.itemCount == 0) {
                         viewSwitcher.displayedChild = CHILD_NO_FOLLOWERS

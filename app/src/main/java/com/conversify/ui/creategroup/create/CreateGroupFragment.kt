@@ -7,8 +7,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -16,7 +14,9 @@ import android.view.View
 import com.conversify.R
 import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.Status
+import com.conversify.data.remote.models.groups.AddParticipantsDto
 import com.conversify.data.remote.models.groups.CreateEditGroupRequest
+import com.conversify.data.remote.models.groups.CreateGroupHeaderDto
 import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.handleError
@@ -25,16 +25,14 @@ import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.creategroup.addparticipants.AddParticipantsActivity
-import com.conversify.ui.creategroup.addparticipants.AddParticipantsAdapter
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.utils.*
 import com.conversify.utils.PermissionUtils
 import kotlinx.android.synthetic.main.fragment_create_group.*
 import permissions.dispatcher.*
-import java.io.File
 
 @RuntimePermissions
-class CreateGroupFragment : BaseFragment() {
+class CreateGroupFragment : BaseFragment(), CreateGroupAdapter.Callback {
     companion object {
         const val TAG = "CreateGroupFragment"
         private const val ARGUMENT_CATEGORY = "ARGUMENT_CATEGORY"
@@ -53,10 +51,10 @@ class CreateGroupFragment : BaseFragment() {
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var mediaPicker: MediaPicker
     private lateinit var createGroupMenuItem: MenuItem
-    private lateinit var participantsAdapter: AddParticipantsAdapter
+    private lateinit var createGroupAdapter: CreateGroupAdapter
+    private lateinit var createGroupHeader: CreateGroupHeaderDto
 
     private var getSampledImage: GetSampledImage? = null
-    private var selectedGroupImageFile: File? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,22 +71,24 @@ class CreateGroupFragment : BaseFragment() {
         val category = arguments?.getParcelable<InterestDto>(ARGUMENT_CATEGORY)
         request = CreateEditGroupRequest(categoryId = category?.id)
 
+        // Create header with initial values
+        createGroupHeader = CreateGroupHeaderDto(category?.name, category?.id)
+
         loadingDialog = LoadingDialog(requireActivity())
         mediaPicker = MediaPicker(this)
 
-        setupParticipantsRecycler()
+        setupCreateGroupRecycler()
         setListeners()
         observeChanges()
-
-        tvCategory.text = category?.name
     }
 
-    private fun setupParticipantsRecycler() {
-        participantsAdapter = AddParticipantsAdapter(GlideApp.with(this), false)
-        rvParticipants.adapter = participantsAdapter
+    private fun setupCreateGroupRecycler() {
+        createGroupAdapter = CreateGroupAdapter(GlideApp.with(this), this)
+        rvCreateGroup.adapter = createGroupAdapter
 
-        // Initially set the member count to 0
-        tvLabelMembers.text = getString(R.string.venue_details_label_members_with_count, 0)
+        // Initially add create group header and "Add Participants" item
+        val items = listOf(createGroupHeader, AddParticipantsDto)
+        createGroupAdapter.displayItems(items)
     }
 
     private fun setListeners() {
@@ -98,34 +98,11 @@ class CreateGroupFragment : BaseFragment() {
 
             getSampledImage = GetSampledImage()
             getSampledImage?.setListener { sampledImage ->
-                selectedGroupImageFile = sampledImage
-                GlideApp.with(this)
-                        .load(sampledImage)
-                        .placeholder(R.color.greyImageBackground)
-                        .error(R.color.greyImageBackground)
-                        .into(ivGroup)
+                createGroupHeader.selectedGroupImageFile = sampledImage
+                createGroupAdapter.updateHeader()
             }
             val imageDirectory = FileUtils.getAppCacheDirectoryPath(requireActivity())
             getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
-        }
-
-        ivGroup.setOnClickListener { showImagePickerWithPermissionCheck() }
-
-        etGroupTitle.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                updateCreateGroupMenuState()
-            }
-        })
-
-        btnAddParticipants.setOnClickListener {
-            val intent = AddParticipantsActivity.getStartIntent(requireActivity())
-            startActivityForResult(intent, AppConstants.REQ_CODE_ADD_PARTICIPANTS)
         }
     }
 
@@ -154,15 +131,22 @@ class CreateGroupFragment : BaseFragment() {
         })
     }
 
-    private fun formDataValid(): Boolean {
-        return when {
-            etGroupTitle?.text.isNullOrBlank() -> false
-            else -> true
-        }
+    private fun updateCreateGroupMenuState() {
+        createGroupMenuItem.isEnabled = !createGroupHeader.groupTitle.isNullOrBlank()
     }
 
-    private fun updateCreateGroupMenuState() {
-        createGroupMenuItem.isEnabled = formDataValid()
+    override fun onGroupImageClicked() {
+        showImagePickerWithPermissionCheck()
+    }
+
+    override fun onGroupTitleTextChanged() {
+        updateCreateGroupMenuState()
+    }
+
+    override fun onAddParticipantsClicked() {
+        val participantIds = ArrayList(request.participantIds ?: emptyList())
+        val intent = AddParticipantsActivity.getStartIntent(requireActivity(), participantIds)
+        startActivityForResult(intent, AppConstants.REQ_CODE_ADD_PARTICIPANTS)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
@@ -177,18 +161,16 @@ class CreateGroupFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menuCreateVenue) {
-            etGroupTitle.hideKeyboard()
-            etGroupTitle.clearFocus()
-
+            rvCreateGroup.hideKeyboard()
             if (isNetworkActiveWithMessage()) {
-                request.title = etGroupTitle.text?.toString()?.trim()
-                request.isPrivate = if (switchPrivateGroup.isChecked) {
+                request.title = createGroupHeader.groupTitle
+                request.isPrivate = if (createGroupHeader.isPrivate) {
                     AppConstants.PRIVATE_TRUE
                 } else {
                     AppConstants.PRIVATE_FALSE
                 }
 
-                viewModel.createGroup(request, selectedGroupImageFile)
+                viewModel.createGroup(request, createGroupHeader.selectedGroupImageFile)
             }
             return true
         }
@@ -231,12 +213,15 @@ class CreateGroupFragment : BaseFragment() {
             if (participants.isEmpty()) {
                 request.participantIds = null
             } else {
-                request.participantIds = participants.mapNotNull { it.id }
+                request.participantIds = participants.asSequence()
+                        .onEach { it.isSelected = false }   // Set selected to false for all
+                        .mapNotNull { it.id }   // Map to non-null ids
+                        .toList()
             }
 
             // Display the selected participants and update the member count
-            participantsAdapter.displayFollowers(participants)
-            tvLabelMembers.text = getString(R.string.venue_details_label_members_with_count, participants.size)
+            createGroupHeader.memberCount = participants.size
+            createGroupAdapter.displayMembers(participants)
         } else {
             mediaPicker.onActivityResult(requestCode, resultCode, data)
         }

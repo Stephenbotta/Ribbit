@@ -15,10 +15,6 @@
     <string name="distance_mile_with_value">%.1f Mi</string>
     <string name="yesterday">Yesterday</string>
 
-    <plurals name="active_members_with_count">
-        <item quantity="one">%d Active member</item>
-        <item quantity="other">%d Active members</item>
-    </plurals>
     <plurals name="members_with_count">
         <item quantity="one">%d member</item>
         <item quantity="other">%d members</item>

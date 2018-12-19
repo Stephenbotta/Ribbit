@@ -169,7 +169,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
         tvVenueLocation.text = AppUtils.getFormattedAddress(venue.locationName, venue.locationAddress)
 
         val memberCount = venue.memberCount ?: 0
-        tvActiveMembers.text = resources.getQuantityString(R.plurals.active_members_with_count, memberCount, memberCount)
+        tvActiveMembers.text = resources.getQuantityString(R.plurals.members_with_count, memberCount, memberCount)
         tvDistance.text = if (venue.distance == null) {
             ""
         } else {
