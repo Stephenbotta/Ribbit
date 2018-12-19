@@ -5,7 +5,10 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.conversify.R
 import com.conversify.data.remote.models.Status
@@ -51,6 +54,14 @@ class GroupPostsActivity : BaseActivity(), GroupPostsAdapter.Callback {
 
     private fun setupPostsRecycler() {
         postsAdapter = GroupPostsAdapter(GlideApp.with(this), this)
+
+        val dividerItemDecoration = DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
+        val dividerDrawable = ContextCompat.getDrawable(this, R.drawable.divider_recycler)
+        if (dividerDrawable != null) {
+            dividerItemDecoration.setDrawable(dividerDrawable)
+        }
+        rvPosts.addItemDecoration(dividerItemDecoration)
+
         rvPosts.adapter = postsAdapter
         rvPosts.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

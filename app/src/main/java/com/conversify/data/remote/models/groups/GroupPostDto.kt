@@ -30,5 +30,11 @@ data class GroupPostDto(
         @field:SerializedName("type")
         val type: String? = null,
 
+        @field:SerializedName("groupId")
+        val group: GroupDto? = null,
+
+        @field:SerializedName("hashTags")
+        val hashTags: List<String>? = null,
+
         @field:SerializedName("commentCount")
         val commentsCount: Int? = null)

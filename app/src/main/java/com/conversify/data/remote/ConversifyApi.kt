@@ -2,10 +2,7 @@ package com.conversify.data.remote
 
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.chat.VenueDetailsResponse
-import com.conversify.data.remote.models.groups.CreateEditGroupRequest
-import com.conversify.data.remote.models.groups.GetGroupPostsResponse
-import com.conversify.data.remote.models.groups.GetGroupsResponse
-import com.conversify.data.remote.models.groups.GroupDto
+import com.conversify.data.remote.models.groups.*
 import com.conversify.data.remote.models.loginsignup.*
 import com.conversify.data.remote.models.notifications.NotificationDto
 import com.conversify.data.remote.models.venues.CreateEditVenueRequest
@@ -134,4 +131,10 @@ interface ConversifyApi {
     @POST("user/listFollowerFollowing")
     @FormUrlEncoded
     fun getFollowers(@Field("flag") flag: Int = ApiConstants.FLAG_FOLLOWERS): Call<ApiResponse<List<ProfileDto>>>
+
+    @POST("user/getData")
+    @FormUrlEncoded
+    fun getHomeFeed(@Field("flag") flag: Int = ApiConstants.FLAG_GET_HOME_FEED,
+                    @Field("pageNo") page: Int,
+                    @Field("limit") limit: Int): Call<ApiResponse<List<GroupPostDto>>>
 }

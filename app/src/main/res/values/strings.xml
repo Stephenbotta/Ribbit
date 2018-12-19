@@ -212,4 +212,8 @@
 
     <string name="add_group_label_add_participants">Add Participants</string>
     <string name="add_group_label_no_followers_found">No followers found</string>
+
+    <string name="home_label_search">Search</string>
+    <string name="home_label_no_posts_found">No posts found</string>
+    <string name="home_label_username_with_group_name">%s in %s</string>
 </resources>

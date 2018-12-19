@@ -4,6 +4,7 @@ object ApiConstants {
     const val FLAG_INTERESTS = 1
     const val FLAG_GET_VENUES = 2
     const val FLAG_GET_GROUPS = 3
+    const val FLAG_GET_HOME_FEED = 4
 
     const val TYPE_VENUE = "VENUE"
     const val TYPE_GROUP = "GROUP"
