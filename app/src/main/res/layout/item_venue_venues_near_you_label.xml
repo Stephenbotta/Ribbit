@@ -32,6 +32,6 @@
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
         android:text="@string/venues_label_suggested"
-        android:textColor="?attr/colorPrimary" />
+        android:textColor="@color/colorPrimary" />
 
 </RelativeLayout>

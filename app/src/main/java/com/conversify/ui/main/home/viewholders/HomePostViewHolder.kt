@@ -47,19 +47,30 @@ class HomePostViewHolder(itemView: View,
 
         val username = post.user?.userName ?: ""
         val groupName = post.group?.name ?: ""
-        val completeText = itemView.context.getString(R.string.home_label_username_with_group_name, username, groupName)
+        val applyGroupNameSpannable = !groupName.isBlank()  // Only applied if group is available
+        val completeText = if (applyGroupNameSpannable) {
+            itemView.context.getString(R.string.home_label_username_with_group_name, username, groupName)
+        } else {
+            username
+        }
         val usernameStartIndex = completeText.indexOf(username)
         val usernameEndIndex = usernameStartIndex + username.length
-        val groupNameStartIndex = completeText.indexOf(groupName)
-        val groupNameEndIndex = groupNameStartIndex + groupName.length
 
         val usernameBoldSpannable = CustomTypefaceSpan("", boldTypeface)
-        val groupNameBoldSpannable = CustomTypefaceSpan("", boldTypeface)
-        val foregroundColorSpan = ForegroundColorSpan(usernameColor)
+
         val spannableString = SpannableString(completeText)
         spannableString.setSpan(usernameBoldSpannable, usernameStartIndex, usernameEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannableString.setSpan(groupNameBoldSpannable, groupNameStartIndex, groupNameEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannableString.setSpan(foregroundColorSpan, groupNameStartIndex, groupNameEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        if (applyGroupNameSpannable) {
+            val groupNameStartIndex = completeText.indexOf(groupName)
+            val groupNameEndIndex = groupNameStartIndex + groupName.length
+
+            val groupNameBoldSpannable = CustomTypefaceSpan("", boldTypeface)
+            val foregroundColorSpan = ForegroundColorSpan(usernameColor)
+
+            spannableString.setSpan(groupNameBoldSpannable, groupNameStartIndex, groupNameEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannableString.setSpan(foregroundColorSpan, groupNameStartIndex, groupNameEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
 
         itemView.tvUserName.setText(spannableString, TextView.BufferType.SPANNABLE)
 

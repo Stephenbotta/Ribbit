@@ -84,7 +84,7 @@
             android:paddingEnd="12dp"
             android:paddingBottom="8dp"
             android:text="@string/venues_btn_list"
-            android:textColor="?attr/colorPrimary" />
+            android:textColor="@color/colorPrimary" />
 
         <View
             android:layout_width="1dp"
@@ -106,7 +106,7 @@
             android:paddingEnd="12dp"
             android:paddingBottom="8dp"
             android:text="@string/venues_btn_filters"
-            android:textColor="?attr/colorPrimary" />
+            android:textColor="@color/colorPrimary" />
 
     </LinearLayout>
 
@@ -116,7 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/ic_plus_white"
-        app:backgroundTint="?attr/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

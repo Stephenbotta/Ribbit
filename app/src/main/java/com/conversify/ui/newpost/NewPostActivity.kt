@@ -1,20 +1,19 @@
-package com.conversify.ui.creategroup.create
+package com.conversify.ui.newpost
 
 import android.os.Bundle
 import com.conversify.R
 import com.conversify.extensions.hideKeyboard
 import com.conversify.ui.base.BaseActivity
-import com.conversify.ui.creategroup.categories.GroupCategoriesFragment
-import kotlinx.android.synthetic.main.activity_create_venue.*
+import kotlinx.android.synthetic.main.activity_new_post.*
 
-class CreateGroupActivity : BaseActivity() {
+class NewPostActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_group)
+        setContentView(R.layout.activity_new_post)
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .add(R.id.flContainer, GroupCategoriesFragment(), GroupCategoriesFragment.TAG)
+                    .add(R.id.flContainer, ChooseGroupFragment(), ChooseGroupFragment.TAG)
                     .commit()
         }
 

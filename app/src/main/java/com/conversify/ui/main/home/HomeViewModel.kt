@@ -29,9 +29,11 @@ class HomeViewModel : ViewModel() {
 
     fun validForPaging(): Boolean = !isGetHomeFeedLoading && !isLastHomeFeedReceived
 
-    fun getHomeFeed(firstPage: Boolean = true) {
+    fun getHomeFeed(firstPage: Boolean = true, showLoading: Boolean = true) {
         isGetHomeFeedLoading = true
-        homeFeed.value = Resource.loading()
+        if (showLoading) {
+            homeFeed.value = Resource.loading()
+        }
 
         getHomeFeedCall?.cancel()
         val call = RetrofitClient.conversifyApi

@@ -8,7 +8,7 @@
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="back">BACK</string>
+    <string name="back">Back</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
     <string name="retry">Retry</string>
@@ -216,4 +216,11 @@
     <string name="home_label_search">Search</string>
     <string name="home_label_no_posts_found">No posts found</string>
     <string name="home_label_username_with_group_name">%s in %s</string>
+
+    <string name="new_post_label_new_post">New Post</string>
+    <string name="new_post_label_choose_a_group_you_want_to_post_into">Choose a group you want to post into</string>
+    <string name="new_post_label_skip">Skip</string>
+    <string name="new_post_label_post">Post</string>
+    <string name="new_post_label_type_here">Type here</string>
+    <string name="new_post_label_posting_in">Posting in</string>
 </resources>

@@ -25,7 +25,7 @@
             android:fontFamily="@font/brandon_text_bold"
             android:gravity="center_vertical"
             android:text="@string/create_venue_label_venues"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
     </android.support.v7.widget.Toolbar>
 

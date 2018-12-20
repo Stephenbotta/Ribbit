@@ -1,7 +1,9 @@
 package com.conversify.ui.main.home
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -12,6 +14,8 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.newpost.NewPostActivity
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_home.*
 import timber.log.Timber
@@ -38,6 +42,10 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout.setOnRefreshListener { getHomeFeed() }
+        fabPost.setOnClickListener {
+            val intent = Intent(requireActivity(), NewPostActivity::class.java)
+            startActivityForResult(intent, AppConstants.REQ_CODE_NEW_POST)
+        }
         setupHomeRecycler()
         observeChanges()
         getHomeFeed()
@@ -89,9 +97,9 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         })
     }
 
-    private fun getHomeFeed() {
+    private fun getHomeFeed(showLoading: Boolean = true) {
         if (isNetworkActiveWithMessage()) {
-            viewModel.getHomeFeed()
+            viewModel.getHomeFeed(showLoading = showLoading)
         } else {
             swipeRefreshLayout.isRefreshing = false
         }
@@ -103,5 +111,12 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onPostClicked(post: GroupPostDto) {
         Timber.i("Post clicked\n$post")
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstants.REQ_CODE_NEW_POST && resultCode == Activity.RESULT_OK) {
+            getHomeFeed(false)
+        }
     }
 }

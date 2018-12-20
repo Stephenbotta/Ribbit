@@ -13,12 +13,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="fill"
-        app:tabIndicatorColor="?attr/colorPrimary"
+        app:tabIndicatorColor="@color/colorPrimary"
         app:tabIndicatorFullWidth="false"
         app:tabMode="fixed"
         app:tabPaddingEnd="0dp"
         app:tabPaddingStart="0dp"
-        app:tabSelectedTextColor="?attr/colorPrimary"
+        app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextAppearance="@style/ExploreTabTextAppearance"
         app:tabTextColor="@color/textGray">
 

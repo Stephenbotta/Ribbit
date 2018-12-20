@@ -33,6 +33,7 @@ object AppConstants {
     const val REQ_CODE_TOPIC_GROUPS = 115
     const val REQ_CODE_CHOOSE_INTERESTS = 116
     const val REQ_CODE_ADD_PARTICIPANTS = 117
+    const val REQ_CODE_NEW_POST = 118
 
     const val EXTRA_VENUE_FILTERS = "EXTRA_VENUE_FILTERS"
     const val EXTRA_VENUE = "EXTRA_VENUE"

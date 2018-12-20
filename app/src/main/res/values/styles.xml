@@ -61,6 +61,7 @@
     <style name="ToolbarBoldMenuText" parent="Theme.MaterialComponents.Light">
         <item name="actionMenuTextColor">@color/toolbar_menu_text</item>
         <item name="android:fontFamily">@font/brandon_text_bold</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="AppTheme.EditText">

@@ -19,7 +19,7 @@
         android:layout_marginBottom="6dp"
         android:fontFamily="@font/brandon_text_bold"
         android:includeFontPadding="false"
-        android:textColor="?attr/colorPrimary"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp"
         tools:text="9" />
 

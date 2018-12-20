@@ -5,6 +5,7 @@ import com.conversify.data.remote.models.chat.VenueDetailsResponse
 import com.conversify.data.remote.models.groups.*
 import com.conversify.data.remote.models.loginsignup.*
 import com.conversify.data.remote.models.notifications.NotificationDto
+import com.conversify.data.remote.models.post.CreatePostRequest
 import com.conversify.data.remote.models.venues.CreateEditVenueRequest
 import com.conversify.data.remote.models.venues.GetVenuesResponse
 import com.conversify.data.remote.models.venues.VenueDto
@@ -137,4 +138,11 @@ interface ConversifyApi {
     fun getHomeFeed(@Field("flag") flag: Int = ApiConstants.FLAG_GET_HOME_FEED,
                     @Field("pageNo") page: Int,
                     @Field("limit") limit: Int): Call<ApiResponse<List<GroupPostDto>>>
+
+    @POST("user/getData")
+    @FormUrlEncoded
+    fun getYourGroups(@Field("flag") flag: Int = ApiConstants.FLAG_GET_YOUR_GROUPS): Call<ApiResponse<List<GroupDto>>>
+
+    @POST("user/addEditPost")
+    fun createPost(@Body request: CreatePostRequest): Call<Any>
 }

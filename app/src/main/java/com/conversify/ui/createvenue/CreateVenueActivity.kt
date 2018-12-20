@@ -2,6 +2,7 @@ package com.conversify.ui.createvenue
 
 import android.os.Bundle
 import com.conversify.R
+import com.conversify.extensions.hideKeyboard
 import com.conversify.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_create_venue.*
 
@@ -21,6 +22,9 @@ class CreateVenueActivity : BaseActivity() {
             setDisplayShowTitleEnabled(false)
         }
 
-        btnBack.setOnClickListener { onBackPressed() }
+        btnBack.setOnClickListener {
+            it.hideKeyboard()
+            onBackPressed()
+        }
     }
 }

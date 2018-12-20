@@ -38,7 +38,7 @@
         android:paddingTop="20dp"
         android:text="@string/login_sign_up_btn_get_started"
         android:textAllCaps="false"
-        android:textColor="?attr/colorPrimary"
+        android:textColor="@color/colorPrimary"
         app:backgroundTint="@color/white"
         app:cornerRadius="32dp"
         app:layout_constraintBottom_toTopOf="@id/tvLabelAlreadyAMember"

@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:tabGravity="fill"
         app:tabIconTint="@null"
-        app:tabIndicatorColor="?attr/colorPrimary"
+        app:tabIndicatorColor="@color/colorPrimary"
         app:tabMode="fixed" />
 
 </android.support.constraint.ConstraintLayout>

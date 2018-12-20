@@ -18,7 +18,7 @@
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:text="@string/back"
-        android:textColor="?attr/colorPrimary"
+        android:textColor="@color/colorPrimary"
         android:textSize="12sp" />
 
     <TextView
