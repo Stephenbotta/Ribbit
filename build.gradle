@@ -28,7 +28,8 @@ buildscript {
         fabSpeedDialVersion = '2.0.1'
         exoPlayerVersion = '2.9.1'
         mp4ParserVersion = '1.0.6'
-        flexboxVersion = '1.0.0'
+        crashlyticsVersion = '2.9.7'
+        flexboxVersion = '1.0.0'    // (1.1.0 and above is based on AndroidX)
     }
 
     repositories {
@@ -41,6 +42,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.2.0'
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'io.fabric.tools:gradle:1.27.0'
     }
 }
 

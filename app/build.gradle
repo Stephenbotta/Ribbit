@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 
 androidExtensions {
     experimental = true
@@ -111,6 +112,9 @@ dependencies {
 
     // Firebase
     implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
+
+    // https://firebase.google.com/docs/crashlytics
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 
     // https://developers.facebook.com/docs/facebook-login/android/?sdk=maven
     implementation "com.facebook.android:facebook-login:$facebookLoginVersion"
