@@ -9,7 +9,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
+import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
@@ -110,7 +112,19 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
     }
 
     override fun onPostClicked(post: GroupPostDto) {
-        Timber.i("Post clicked\n$post")
+        Timber.i("Post clicked : $post")
+    }
+
+    override fun onGroupClicked(group: GroupDto) {
+        Timber.i("Group name clicked : $group")
+    }
+
+    override fun onUserProfileClicked(profile: ProfileDto) {
+        Timber.i("User profile clicked : $profile")
+    }
+
+    override fun onHashtagClicked(tag: String) {
+        Timber.i("Hashtag clicked : $tag")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

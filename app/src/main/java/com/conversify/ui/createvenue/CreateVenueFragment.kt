@@ -203,7 +203,7 @@ class CreateVenueFragment : BaseFragment() {
             etVenueOwnerName.clearFocus()
 
             val tagsString = etVenueTags.text?.toString()?.trim() ?: ""
-            val tags = AppUtils.getTagsFromString(tagsString)
+            val tags = AppUtils.getHashTagsFromString(tagsString)
 
             if (tags.isEmpty()) {
                 requireActivity().shortToast(R.string.create_venue_message_please_add_at_least_one_tag)

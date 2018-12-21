@@ -7,11 +7,15 @@ import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.extensions.clickSpannable
 import com.conversify.extensions.gone
 import com.conversify.extensions.inflate
 import com.conversify.extensions.visible
+import com.conversify.utils.AppUtils
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.GlideRequests
+import com.conversify.utils.SpannableTextClickListener
 import kotlinx.android.synthetic.main.item_group_post.view.*
 
 class GroupPostsAdapter(private val glide: GlideRequests,
@@ -19,7 +23,7 @@ class GroupPostsAdapter(private val glide: GlideRequests,
     private val posts = mutableListOf<GroupPostDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(parent.inflate(R.layout.item_group_post), glide)
+        return ViewHolder(parent.inflate(R.layout.item_group_post), glide, callback)
     }
 
     override fun getItemCount(): Int = posts.size
@@ -41,11 +45,28 @@ class GroupPostsAdapter(private val glide: GlideRequests,
     }
 
     class ViewHolder(itemView: View,
-                     private val glide: GlideRequests) : RecyclerView.ViewHolder(itemView) {
+                     private val glide: GlideRequests,
+                     private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+        private val userProfileClickListener = View.OnClickListener {
+            post.user?.let { profile ->
+                callback.onUserProfileClicked(profile)
+            }
+        }
+        private val hashtagClickListener = object : SpannableTextClickListener {
+            override fun onSpannableTextClicked(text: String, view: View) {
+                callback.onHashtagClicked(text)
+            }
+        }
+
         init {
-            itemView.setOnClickListener { }
+            itemView.setOnClickListener {
+                callback.onPostClicked(post)
+            }
 
             itemView.ivLike.setOnClickListener { }
+
+            itemView.ivProfile.setOnClickListener(userProfileClickListener)
+            itemView.tvUserName.setOnClickListener(userProfileClickListener)
         }
 
         private lateinit var post: GroupPostDto
@@ -68,6 +89,12 @@ class GroupPostsAdapter(private val glide: GlideRequests,
                 itemView.ivImage.gone()
             }
 
+            // Add clickable span to all hash tags in the message
+            val hashTags = AppUtils.getHashTagsFromString(itemView.tvMessage.text.toString())
+            itemView.tvMessage.clickSpannable(spannableTexts = hashTags,
+                    textColorRes = R.color.colorPrimary,
+                    clickListener = hashtagClickListener)
+
             itemView.tvRepliesLikes.text = getFormattedRepliesAndLikes(post, itemView.context)
         }
 
@@ -83,5 +110,9 @@ class GroupPostsAdapter(private val glide: GlideRequests,
         }
     }
 
-    interface Callback
+    interface Callback {
+        fun onPostClicked(post: GroupPostDto)
+        fun onUserProfileClicked(profile: ProfileDto)
+        fun onHashtagClicked(tag: String)
+    }
 }

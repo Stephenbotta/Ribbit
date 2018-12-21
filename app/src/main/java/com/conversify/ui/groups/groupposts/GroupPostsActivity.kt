@@ -13,6 +13,8 @@ import android.support.v7.widget.RecyclerView
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
+import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
@@ -20,6 +22,7 @@ import com.conversify.ui.base.BaseActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_group_posts.*
+import timber.log.Timber
 
 class GroupPostsActivity : BaseActivity(), GroupPostsAdapter.Callback {
     companion object {
@@ -133,5 +136,17 @@ class GroupPostsActivity : BaseActivity(), GroupPostsAdapter.Callback {
             LocalBroadcastManager.getInstance(this)
                     .sendBroadcast(intent)
         }
+    }
+
+    override fun onPostClicked(post: GroupPostDto) {
+        Timber.i("Post clicked : $post")
+    }
+
+    override fun onUserProfileClicked(profile: ProfileDto) {
+        Timber.i("User profile clicked : $profile")
+    }
+
+    override fun onHashtagClicked(tag: String) {
+        Timber.i("Hash tag clicked : $tag")
     }
 }
