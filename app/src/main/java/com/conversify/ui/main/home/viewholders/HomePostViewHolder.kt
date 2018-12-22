@@ -1,18 +1,16 @@
 package com.conversify.ui.main.home.viewholders
 
-import android.content.Context
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.conversify.R
 import com.conversify.data.remote.ApiConstants
-import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
-import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.clickSpannable
 import com.conversify.extensions.gone
 import com.conversify.extensions.visible
+import com.conversify.ui.groups.GroupPostCallback
 import com.conversify.utils.AppUtils
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.GlideRequests
@@ -21,8 +19,14 @@ import kotlinx.android.synthetic.main.item_home_feed_post.view.*
 
 class HomePostViewHolder(itemView: View,
                          private val glide: GlideRequests,
-                         callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                         callback: GroupPostCallback) : RecyclerView.ViewHolder(itemView) {
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.brandon_text_bold) }
+    private val postClickListener = View.OnClickListener {
+        callback.onPostClicked(post, false)
+    }
+    private val likesCountClickListener = View.OnClickListener {
+        callback.onLikesCountClicked(post)
+    }
     private val userProfileClickListener = View.OnClickListener {
         post.user?.let { profile ->
             callback.onUserProfileClicked(profile)
@@ -40,13 +44,13 @@ class HomePostViewHolder(itemView: View,
     }
 
     init {
-        itemView.setOnClickListener {
-            if (adapterPosition != RecyclerView.NO_POSITION) {
-                callback.onPostClicked(post)
-            }
-        }
+        itemView.setOnClickListener(postClickListener)
 
         itemView.ivLike.setOnClickListener { }
+
+        itemView.ivReply.setOnClickListener {
+            callback.onPostClicked(post, true)
+        }
 
         itemView.ivProfile.setOnClickListener(userProfileClickListener)
     }
@@ -102,24 +106,23 @@ class HomePostViewHolder(itemView: View,
                 textColorRes = R.color.colorPrimary,
                 clickListener = hashtagClickListener)
 
-        itemView.tvRepliesLikes.text = getFormattedRepliesAndLikes(post, itemView.context)
-    }
-
-    private fun getFormattedRepliesAndLikes(post: GroupPostDto, context: Context): String {
+        // Show formatted replies and likes count
         val repliesCount = post.commentsCount ?: 0
-        val formattedReplies = context.resources.getQuantityString(R.plurals.replies_with_count, repliesCount, repliesCount)
+        val formattedReplies = itemView.resources.getQuantityString(R.plurals.replies_with_count, repliesCount, repliesCount)
 
         val likesCount = post.likesCount ?: 0
-        val formattedLikes = context.resources.getQuantityString(R.plurals.likes_with_count, likesCount, likesCount)
+        val formattedLikes = itemView.resources.getQuantityString(R.plurals.likes_with_count, likesCount, likesCount)
 
         // e.g. "156 Replies · 156 Likes"
-        return String.format("%s · %s", formattedReplies, formattedLikes)
-    }
+        val formattedRepliesAndLikes = String.format("%s · %s", formattedReplies, formattedLikes)
+        itemView.tvRepliesLikes.setText(formattedRepliesAndLikes, TextView.BufferType.SPANNABLE)
 
-    interface Callback {
-        fun onPostClicked(post: GroupPostDto)
-        fun onGroupClicked(group: GroupDto)
-        fun onUserProfileClicked(profile: ProfileDto)
-        fun onHashtagClicked(tag: String)
+        itemView.tvRepliesLikes.clickSpannable(spannableText = formattedReplies,
+                textColorRes = R.color.textGrayMedium,
+                clickListener = postClickListener)
+
+        itemView.tvRepliesLikes.clickSpannable(spannableText = formattedLikes,
+                textColorRes = R.color.textGrayMedium,
+                clickListener = likesCountClickListener)
     }
 }

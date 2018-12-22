@@ -6,6 +6,7 @@ import com.conversify.R
 import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.home.HomeSearchDto
 import com.conversify.extensions.inflate
+import com.conversify.ui.groups.GroupPostCallback
 import com.conversify.ui.main.home.viewholders.HomePostViewHolder
 import com.conversify.ui.main.home.viewholders.HomeSearchViewHolder
 import com.conversify.utils.GlideRequests
@@ -57,5 +58,9 @@ class HomeAdapter(private val glide: GlideRequests,
         notifyItemRangeInserted(oldListSize, posts.size)
     }
 
-    interface Callback : HomeSearchViewHolder.Callback, HomePostViewHolder.Callback
+    fun isEmpty(): Boolean {
+        return items.size == 1 && items.first() is HomeSearchDto
+    }
+
+    interface Callback : HomeSearchViewHolder.Callback, GroupPostCallback
 }

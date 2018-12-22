@@ -8,8 +8,8 @@
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/ivProfile"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:scaleType="centerCrop"
@@ -25,7 +25,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
-        android:maxLines="1"
+        android:includeFontPadding="false"
+        android:lineSpacingMultiplier="0.85"
+        android:maxLines="2"
         android:textColor="@color/textGray"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@id/ivProfile"
@@ -77,48 +79,43 @@
         android:id="@+id/tvRepliesLikes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/textGrayMedium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvMessage"
-        tools:text="156 Replies · 156 Likes" />
-
-    <EditText
-        android:id="@+id/etReply"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/background_chat_input_edit_text"
-        android:enabled="false"
-        android:hint="@string/group_posts_label_leave_a_reply"
-        android:importantForAutofill="no"
-        android:inputType="textCapSentences"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
-        android:singleLine="true"
-        android:textColor="@color/textGray"
-        android:textColorHint="@color/textGray7F"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/ivLike"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvRepliesLikes"
-        tools:targetApi="o" />
+        android:textColor="@color/textGrayMedium"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/ivLike"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/ivReply"
+        app:layout_constraintTop_toTopOf="@id/ivLike"
+        tools:text="156 Replies · 156 Likes" />
 
     <ImageView
         android:id="@+id/ivLike"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_heart_normal"
-        app:layout_constraintBottom_toBottomOf="@id/etReply"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/etReply"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMessage"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/ivReply"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_heart_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivLike"
+        app:layout_constraintTop_toBottomOf="@id/tvMessage"
         tools:ignore="ContentDescription" />
 
     <View
@@ -129,6 +126,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etReply" />
+        app:layout_constraintTop_toBottomOf="@id/ivLike" />
 
 </android.support.constraint.ConstraintLayout>

@@ -12,9 +12,7 @@ import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
-import com.conversify.extensions.handleError
-import com.conversify.extensions.isNetworkActive
-import com.conversify.extensions.isNetworkActiveWithMessage
+import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.newpost.NewPostActivity
 import com.conversify.utils.AppConstants
@@ -25,9 +23,6 @@ import timber.log.Timber
 class HomeFragment : BaseFragment(), HomeAdapter.Callback {
     companion object {
         const val TAG = "HomeFragment"
-
-        private const val CHILD_POSTS = 0
-        private const val CHILD_NO_POSTS = 1
     }
 
     private lateinit var viewModel: HomeViewModel
@@ -80,10 +75,10 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
                         adapter.addItems(posts)
                     }
 
-                    viewSwitcher.displayedChild = if (adapter.itemCount == 0) {
-                        CHILD_NO_POSTS
+                    if (adapter.isEmpty()) {
+                        tvNoPosts.visible()
                     } else {
-                        CHILD_POSTS
+                        tvNoPosts.gone()
                     }
                 }
 
@@ -111,8 +106,12 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         Timber.i("Home search clicked")
     }
 
-    override fun onPostClicked(post: GroupPostDto) {
-        Timber.i("Post clicked : $post")
+    override fun onPostClicked(post: GroupPostDto, focusReplyEditText: Boolean) {
+        Timber.i("Post clicked : $post\nFocus reply edit text : $focusReplyEditText")
+    }
+
+    override fun onLikesCountClicked(post: GroupPostDto) {
+        Timber.i("Likes count clicked")
     }
 
     override fun onGroupClicked(group: GroupDto) {

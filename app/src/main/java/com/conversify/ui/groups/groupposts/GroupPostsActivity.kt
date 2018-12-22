@@ -19,12 +19,13 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseActivity
+import com.conversify.ui.groups.PostCallback
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_group_posts.*
 import timber.log.Timber
 
-class GroupPostsActivity : BaseActivity(), GroupPostsAdapter.Callback {
+class GroupPostsActivity : BaseActivity(), PostCallback {
     companion object {
         private const val EXTRA_GROUP = "EXTRA_GROUP"
         private const val CHILD_POSTS = 0
@@ -138,12 +139,16 @@ class GroupPostsActivity : BaseActivity(), GroupPostsAdapter.Callback {
         }
     }
 
-    override fun onPostClicked(post: GroupPostDto) {
-        Timber.i("Post clicked : $post")
-    }
-
     override fun onUserProfileClicked(profile: ProfileDto) {
         Timber.i("User profile clicked : $profile")
+    }
+
+    override fun onPostClicked(post: GroupPostDto, focusReplyEditText: Boolean) {
+        Timber.i("Post clicked : $post\nFocus reply edit text : $focusReplyEditText")
+    }
+
+    override fun onLikesCountClicked(post: GroupPostDto) {
+
     }
 
     override fun onHashtagClicked(tag: String) {
