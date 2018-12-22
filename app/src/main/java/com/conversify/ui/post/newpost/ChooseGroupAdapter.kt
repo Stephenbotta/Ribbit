@@ -1,4 +1,4 @@
-package com.conversify.ui.newpost
+package com.conversify.ui.post.newpost
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

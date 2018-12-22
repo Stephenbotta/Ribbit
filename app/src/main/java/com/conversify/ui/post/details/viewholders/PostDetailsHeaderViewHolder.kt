@@ -1,4 +1,4 @@
-package com.conversify.ui.main.home.viewholders
+package com.conversify.ui.post.details.viewholders
 
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.RecyclerView
@@ -6,24 +6,22 @@ import android.view.View
 import android.widget.TextView
 import com.conversify.R
 import com.conversify.data.remote.ApiConstants
+import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.clickSpannable
 import com.conversify.extensions.gone
 import com.conversify.extensions.visible
-import com.conversify.ui.groups.GroupPostCallback
 import com.conversify.utils.AppUtils
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.GlideRequests
 import com.conversify.utils.SpannableTextClickListener
-import kotlinx.android.synthetic.main.item_home_feed_post.view.*
+import kotlinx.android.synthetic.main.item_post_details_header.view.*
 
-class HomePostViewHolder(itemView: View,
-                         private val glide: GlideRequests,
-                         callback: GroupPostCallback) : RecyclerView.ViewHolder(itemView) {
+class PostDetailsHeaderViewHolder(itemView: View,
+                                  private val glide: GlideRequests,
+                                  private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.brandon_text_bold) }
-    private val postClickListener = View.OnClickListener {
-        callback.onPostClicked(post, false)
-    }
     private val likesCountClickListener = View.OnClickListener {
         callback.onLikesCountClicked(post)
     }
@@ -46,18 +44,6 @@ class HomePostViewHolder(itemView: View,
         override fun onSpannableTextClicked(text: String, view: View) {
             callback.onUsernameMentionClicked(text)
         }
-    }
-
-    init {
-        itemView.setOnClickListener(postClickListener)
-
-        itemView.ivLike.setOnClickListener { }
-
-        itemView.ivReply.setOnClickListener {
-            callback.onPostClicked(post, true)
-        }
-
-        itemView.ivProfile.setOnClickListener(userProfileClickListener)
     }
 
     private lateinit var post: GroupPostDto
@@ -128,12 +114,16 @@ class HomePostViewHolder(itemView: View,
         val formattedRepliesAndLikes = String.format("%s · %s", formattedReplies, formattedLikes)
         itemView.tvRepliesLikes.setText(formattedRepliesAndLikes, TextView.BufferType.SPANNABLE)
 
-        itemView.tvRepliesLikes.clickSpannable(spannableText = formattedReplies,
-                textColorRes = R.color.textGrayMedium,
-                clickListener = postClickListener)
-
         itemView.tvRepliesLikes.clickSpannable(spannableText = formattedLikes,
                 textColorRes = R.color.textGrayMedium,
                 clickListener = likesCountClickListener)
+    }
+
+    interface Callback {
+        fun onLikesCountClicked(post: GroupPostDto)
+        fun onGroupClicked(group: GroupDto)
+        fun onUserProfileClicked(profile: ProfileDto)
+        fun onHashtagClicked(tag: String)
+        fun onUsernameMentionClicked(username: String)
     }
 }

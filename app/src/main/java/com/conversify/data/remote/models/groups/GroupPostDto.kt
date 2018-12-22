@@ -1,10 +1,14 @@
 package com.conversify.data.remote.models.groups
 
+import android.os.Parcelable
 import com.conversify.data.remote.models.loginsignup.ImageUrlDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.post.PostReplyDto
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.ZonedDateTime
 
+@Parcelize
 data class GroupPostDto(
         @field:SerializedName("postText")
         val postText: String? = null,
@@ -33,8 +37,8 @@ data class GroupPostDto(
         @field:SerializedName("groupId")
         val group: GroupDto? = null,
 
-        @field:SerializedName("hashTags")
-        val hashTags: List<String>? = null,
+        @field:SerializedName("comment")
+        val replies: List<PostReplyDto>? = null,
 
         @field:SerializedName("commentCount")
-        val commentsCount: Int? = null)
+        val commentsCount: Int? = null) : Parcelable

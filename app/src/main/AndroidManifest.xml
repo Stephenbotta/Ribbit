@@ -89,7 +89,11 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.newpost.NewPostActivity"
+            android:name="com.conversify.ui.post.newpost.NewPostActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.post.details.PostDetailsActivity"
             android:screenOrientation="portrait" />
 
         <activity

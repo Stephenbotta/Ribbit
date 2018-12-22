@@ -20,6 +20,7 @@ import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.groups.PostCallback
+import com.conversify.ui.post.details.PostDetailsActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_group_posts.*
@@ -145,13 +146,19 @@ class GroupPostsActivity : BaseActivity(), PostCallback {
 
     override fun onPostClicked(post: GroupPostDto, focusReplyEditText: Boolean) {
         Timber.i("Post clicked : $post\nFocus reply edit text : $focusReplyEditText")
+        val intent = PostDetailsActivity.getStartIntent(this, post)
+        startActivity(intent)
     }
 
     override fun onLikesCountClicked(post: GroupPostDto) {
-
+        Timber.i("Likes count clicked for post : $post")
     }
 
     override fun onHashtagClicked(tag: String) {
         Timber.i("Hash tag clicked : $tag")
+    }
+
+    override fun onUsernameMentionClicked(username: String) {
+        Timber.i("Username mention clicked : $username")
     }
 }

@@ -8,4 +8,5 @@ interface PostCallback {
     fun onLikesCountClicked(post: GroupPostDto)
     fun onUserProfileClicked(profile: ProfileDto)
     fun onHashtagClicked(tag: String)
+    fun onUsernameMentionClicked(username: String)
 }

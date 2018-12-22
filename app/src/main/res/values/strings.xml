@@ -223,4 +223,6 @@
     <string name="new_post_label_post">Post</string>
     <string name="new_post_label_type_here">Type here</string>
     <string name="new_post_label_posting_in">Posting in</string>
+
+    <string name="post_details_btn_reply">Reply</string>
 </resources>

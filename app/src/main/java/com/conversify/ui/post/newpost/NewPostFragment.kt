@@ -1,4 +1,4 @@
-package com.conversify.ui.newpost
+package com.conversify.ui.post.newpost
 
 import android.Manifest
 import android.app.Activity

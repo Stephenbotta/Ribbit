@@ -63,6 +63,11 @@ class GroupPostsAdapter(private val glide: GlideRequests,
                 callback.onHashtagClicked(text)
             }
         }
+        private val usernameClickListener = object : SpannableTextClickListener {
+            override fun onSpannableTextClicked(text: String, view: View) {
+                callback.onUsernameMentionClicked(text)
+            }
+        }
 
         init {
             itemView.setOnClickListener(postClickListener)
@@ -101,6 +106,12 @@ class GroupPostsAdapter(private val glide: GlideRequests,
             itemView.tvMessage.clickSpannable(spannableTexts = hashTags,
                     textColorRes = R.color.colorPrimary,
                     clickListener = hashtagClickListener)
+
+            // Add clickable span to all username mentions in the message
+            val usernameMentions = AppUtils.getMentionsFromString(itemView.tvMessage.text.toString())
+            itemView.tvMessage.clickSpannable(spannableTexts = usernameMentions,
+                    textColorRes = R.color.colorPrimary,
+                    clickListener = usernameClickListener)
 
             // Show formatted replies and likes count
             val repliesCount = post.commentsCount ?: 0

@@ -14,7 +14,8 @@ import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
-import com.conversify.ui.newpost.NewPostActivity
+import com.conversify.ui.post.details.PostDetailsActivity
+import com.conversify.ui.post.newpost.NewPostActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -108,6 +109,8 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onPostClicked(post: GroupPostDto, focusReplyEditText: Boolean) {
         Timber.i("Post clicked : $post\nFocus reply edit text : $focusReplyEditText")
+        val intent = PostDetailsActivity.getStartIntent(requireActivity(), post)
+        startActivity(intent)
     }
 
     override fun onLikesCountClicked(post: GroupPostDto) {
@@ -124,6 +127,10 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onHashtagClicked(tag: String) {
         Timber.i("Hashtag clicked : $tag")
+    }
+
+    override fun onUsernameMentionClicked(username: String) {
+        Timber.i("Username mention clicked : $username")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

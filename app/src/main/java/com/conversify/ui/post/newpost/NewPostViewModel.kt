@@ -1,4 +1,4 @@
-package com.conversify.ui.newpost
+package com.conversify.ui.post.newpost
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel

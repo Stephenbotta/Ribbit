@@ -5,7 +5,9 @@ import android.support.multidex.MultiDexApplication
 import android.support.text.emoji.EmojiCompat
 import android.support.text.emoji.FontRequestEmojiCompatConfig
 import android.support.v4.provider.FontRequest
+import android.util.Log
 import com.conversify.data.local.PrefsManager
+import com.crashlytics.android.Crashlytics
 import com.jakewharton.threetenabp.AndroidThreeTen
 import timber.log.Timber
 
@@ -31,6 +33,8 @@ class ConversifyApp : MultiDexApplication() {
     private fun setupTimber() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+        } else {
+            Timber.plant(CrashReportingTree())
         }
     }
 
@@ -61,5 +65,17 @@ class ConversifyApp : MultiDexApplication() {
                     }
                 })
         EmojiCompat.init(config)
+    }
+
+    /** A tree which logs important information for crash reporting. */
+    private class CrashReportingTree : Timber.Tree() {
+        override fun log(priority: Int, tag: String?, message: String, throwable: Throwable?) {
+            if (priority == Log.ERROR) {
+                Crashlytics.log(priority, tag, message)
+                if (throwable != null) {
+                    Crashlytics.logException(throwable)
+                }
+            }
+        }
     }
 }

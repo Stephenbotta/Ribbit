@@ -145,4 +145,8 @@ interface ConversifyApi {
 
     @POST("user/addEditPost")
     fun createPost(@Body request: CreatePostRequest): Call<Any>
+
+    @POST("user/getPostWithComment")
+    @FormUrlEncoded
+    fun getPostWithReplies(@Field("postId") postId: String): Call<ApiResponse<GroupPostDto>>
 }
