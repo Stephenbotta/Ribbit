@@ -6,6 +6,7 @@ import com.conversify.data.remote.models.groups.*
 import com.conversify.data.remote.models.loginsignup.*
 import com.conversify.data.remote.models.notifications.NotificationDto
 import com.conversify.data.remote.models.post.CreatePostRequest
+import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.data.remote.models.venues.CreateEditVenueRequest
 import com.conversify.data.remote.models.venues.GetVenuesResponse
 import com.conversify.data.remote.models.venues.VenueDto
@@ -149,4 +150,10 @@ interface ConversifyApi {
     @POST("user/getPostWithComment")
     @FormUrlEncoded
     fun getPostWithReplies(@Field("postId") postId: String): Call<ApiResponse<GroupPostDto>>
+
+    @POST("user/getCommentReplies")
+    @FormUrlEncoded
+    fun getSubReplies(@Field("commentId") parentReplyId: String,
+                      @Field("totalReply") parentTotalSubRepliesCount: Int,
+                      @Field("replyId") lastParentSubReplyId: String? = null): Call<ApiResponse<List<PostReplyDto>>>
 }

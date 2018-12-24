@@ -6,6 +6,7 @@ import com.conversify.R
 import com.conversify.data.remote.models.LoadingItem
 import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.post.PostReplyDto
+import com.conversify.data.remote.models.post.SubReplyDto
 import com.conversify.extensions.inflate
 import com.conversify.ui.post.details.viewholders.LoadingViewHolder
 import com.conversify.ui.post.details.viewholders.PostDetailsHeaderViewHolder
@@ -79,6 +80,61 @@ class PostDetailsAdapter(private val glide: GlideRequests,
                 items.removeAt(loadingIndex)
                 notifyItemRemoved(loadingIndex)
             }
+        }
+    }
+
+    fun displaySubReplies(subReply: SubReplyDto) {
+        val parentReplyIndex = items.indexOfFirst {
+            it is PostReplyDto && it.id == subReply.parentReply.id
+        }
+
+        if (parentReplyIndex != -1) {
+            notifyItemChanged(parentReplyIndex)
+            items.addAll(parentReplyIndex + 1, subReply.replies)
+            notifyItemRangeInserted(parentReplyIndex + 1, subReply.replies.size)
+        }
+    }
+
+    fun notifyParentReplyChange(parentReply: PostReplyDto) {
+        val parentReplyIndex = items.indexOfFirst {
+            it is PostReplyDto && it.id == parentReply.id
+        }
+        if (parentReplyIndex != -1) {
+            notifyItemChanged(parentReplyIndex)
+        }
+    }
+
+    fun hideAllSubReplies(parentReply: PostReplyDto) {
+        val parentReplyIndex = items.indexOfFirst {
+            it is PostReplyDto && it.id == parentReply.id
+        }
+        if (parentReplyIndex != -1) {
+            val subRepliesStartIndex = parentReplyIndex + 1
+            val subRepliesCount = parentReply.subReplies.size
+
+            for (subReplyIndex in 0 until subRepliesCount) {
+                items.removeAt(subRepliesStartIndex)
+            }
+
+            parentReply.visibleReplyCount = 0
+            notifyItemChanged(parentReplyIndex)
+            notifyItemRangeRemoved(subRepliesStartIndex, subRepliesCount)
+        }
+    }
+
+    fun showAllSubReplies(parentReply: PostReplyDto) {
+        val parentReplyIndex = items.indexOfFirst {
+            it is PostReplyDto && it.id == parentReply.id
+        }
+        if (parentReplyIndex != -1) {
+            val subRepliesStartIndex = parentReplyIndex + 1
+            val subRepliesCount = parentReply.subReplies.size
+
+            items.addAll(subRepliesStartIndex, parentReply.subReplies)
+            notifyItemRangeInserted(subRepliesStartIndex, subRepliesCount)
+
+            parentReply.visibleReplyCount = subRepliesCount
+            notifyItemChanged(parentReplyIndex)
         }
     }
 

@@ -9,6 +9,7 @@ import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.extensions.clickSpannable
 import com.conversify.extensions.gone
+import com.conversify.extensions.isNonLinkClick
 import com.conversify.extensions.visible
 import com.conversify.ui.groups.GroupPostCallback
 import com.conversify.utils.AppUtils
@@ -49,7 +50,20 @@ class HomePostViewHolder(itemView: View,
     }
 
     init {
+        itemView.tvUserName.setOnClickListener {
+            if (itemView.tvUserName.isNonLinkClick()) {
+                // Forward click to the post click listener.
+                postClickListener.onClick(it)
+            }
+        }
+
         itemView.setOnClickListener(postClickListener)
+        itemView.tvMessage.setOnClickListener {
+            if (itemView.tvMessage.isNonLinkClick()) {
+                // Forward click to the post click listener.
+                postClickListener.onClick(it)
+            }
+        }
 
         itemView.ivLike.setOnClickListener { }
 
@@ -68,7 +82,9 @@ class HomePostViewHolder(itemView: View,
         glide.load(post.user?.image?.thumbnail)
                 .into(itemView.ivProfile)
         itemView.tvTime.text = DateTimeUtils.formatChatListingTime(post.createdOnDateTime, itemView.context)
-        itemView.tvMessage.text = post.postText
+
+        val message = post.postText ?: ""
+        itemView.tvMessage.text = message
 
         // Image is only visible when post type is image
         if (post.type == ApiConstants.GROUP_POST_TYPE_IMAGE) {
@@ -82,14 +98,14 @@ class HomePostViewHolder(itemView: View,
         val username = post.user?.userName ?: ""
         val groupName = post.group?.name ?: ""
         val applyGroupNameSpannable = !groupName.isBlank()  // Only applied if group is available
-        val completeText = if (applyGroupNameSpannable) {
+        val completeUsername = if (applyGroupNameSpannable) {
             itemView.context.getString(R.string.home_label_username_with_group_name, username, groupName)
         } else {
             username
         }
 
         // First set the complete text
-        itemView.tvUserName.setText(completeText, TextView.BufferType.SPANNABLE)
+        itemView.tvUserName.setText(completeUsername, TextView.BufferType.SPANNABLE)
 
         // Set clickable span to the username
         itemView.tvUserName.clickSpannable(spannableText = username,

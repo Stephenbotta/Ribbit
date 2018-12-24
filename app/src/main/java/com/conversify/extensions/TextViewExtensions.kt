@@ -104,3 +104,10 @@ fun TextView.typefaceSpannable(spannableText: String, textTypeface: Typeface) {
 fun TextView.isEllipsized(): Boolean {
     return layout.getEllipsisCount(lineCount - 1) > 0
 }
+
+/**
+ * This will only call if its not a hyperlink
+ * */
+fun TextView.isNonLinkClick(): Boolean {
+    return selectionStart == -1 && selectionEnd == -1
+}

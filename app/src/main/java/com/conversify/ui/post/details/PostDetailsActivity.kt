@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.SimpleItemAnimator
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
@@ -46,6 +47,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
     private fun setupPostRecycler() {
         postDetailsAdapter = PostDetailsAdapter(GlideApp.with(this), this)
         rvPostDetails.adapter = postDetailsAdapter
+        (rvPostDetails.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         postDetailsAdapter.displayItems(listOf(groupPost))
     }
 
@@ -67,6 +69,25 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
 
                 Status.LOADING -> {
                     postDetailsAdapter.setLoading(true)
+                }
+            }
+        })
+
+        viewModel.subReplies.observe(this, Observer { resource ->
+            val subReply = resource?.data ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    postDetailsAdapter.displaySubReplies(subReply)
+                }
+
+                Status.ERROR -> {
+                    handleError(resource.error)
+                    postDetailsAdapter.notifyParentReplyChange(subReply.parentReply)
+                }
+
+                Status.LOADING -> {
+                    postDetailsAdapter.notifyParentReplyChange(subReply.parentReply)
                 }
             }
         })
@@ -97,5 +118,19 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
     }
 
     override fun onReplyClicked(reply: PostReplyDto) {
+    }
+
+    override fun onLoadRepliesClicked(parentReply: PostReplyDto) {
+        if (isNetworkActiveWithMessage()) {
+            viewModel.getSubReplies(parentReply)
+        }
+    }
+
+    override fun onShowAllRepliesClicked(parentReply: PostReplyDto) {
+        postDetailsAdapter.showAllSubReplies(parentReply)
+    }
+
+    override fun onHideAllRepliesClicked(parentReply: PostReplyDto) {
+        postDetailsAdapter.hideAllSubReplies(parentReply)
     }
 }

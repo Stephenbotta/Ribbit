@@ -3,18 +3,25 @@ package com.conversify.ui.post.details.viewholders
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.extensions.clickSpannable
+import com.conversify.extensions.gone
+import com.conversify.extensions.pxFromDp
+import com.conversify.extensions.visible
 import com.conversify.utils.AppUtils
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.GlideRequests
 import com.conversify.utils.SpannableTextClickListener
 import kotlinx.android.synthetic.main.item_post_details_reply.view.*
+import timber.log.Timber
 
 class PostDetailsReplyViewHolder(itemView: View,
                                  private val glide: GlideRequests,
                                  private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+    private val topLevelReplyStartMargin by lazy { itemView.context.pxFromDp(16) }
+    private val subLevelReplyStartMargin by lazy { itemView.context.pxFromDp(56) }
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.brandon_text_bold) }
     private val userProfileClickListener = View.OnClickListener {
 
@@ -40,12 +47,42 @@ class PostDetailsReplyViewHolder(itemView: View,
         }
 
         itemView.ivLike.setOnClickListener { }
+
+        itemView.btnLoadReplies.setOnClickListener {
+            if (reply.subRepliesLoading) {
+                Timber.d("Load replies clicked. Sub-replies is already loading.")
+                return@setOnClickListener
+            }
+
+            if (reply.pendingReplyCount == 0) {
+                if ((reply.replyCount ?: 0) == reply.visibleReplyCount) {
+                    // All replies are loaded
+                    callback.onHideAllRepliesClicked(reply)
+                } else if (reply.visibleReplyCount == 0) {
+                    callback.onShowAllRepliesClicked(reply)
+                }
+            } else {
+                callback.onLoadRepliesClicked(reply)
+            }
+            Timber.i("Load replies clicked, pending replies : ${reply.pendingReplyCount}")
+        }
     }
 
     private lateinit var reply: PostReplyDto
 
     fun bind(reply: PostReplyDto) {
         this.reply = reply
+
+        // "commentBy" is available only for top-level replies. "replyBy" is available for sub-replies.
+        val isTopLevelReply = reply.commentBy != null
+
+        // Set the start margin of profile image based on its level
+        val profileImageParams = (itemView.ivProfile.layoutParams as ViewGroup.MarginLayoutParams)
+        profileImageParams.marginStart = if (isTopLevelReply) {
+            topLevelReplyStartMargin
+        } else {
+            subLevelReplyStartMargin
+        }
 
         val profile = reply.commentBy ?: reply.replyBy
         glide.load(profile?.image?.thumbnail)
@@ -55,6 +92,28 @@ class PostDetailsReplyViewHolder(itemView: View,
         val likesCount = reply.likeCount ?: 0
         itemView.tvLikes.text = itemView.resources.getQuantityString(R.plurals.likes_with_count, likesCount, likesCount)
 
+        val replyCount = reply.replyCount ?: 0
+        if (replyCount == 0) {
+            itemView.btnLoadReplies.gone()
+        } else {
+            itemView.btnLoadReplies.visible()
+
+            val pendingReplyCount = replyCount - reply.visibleReplyCount
+            if (pendingReplyCount == 0) {
+                itemView.btnLoadReplies.setText(R.string.post_details_label_hide_all_replies)
+            } else {
+                itemView.btnLoadReplies.text = itemView.context.getString(R.string.post_details_btn_load_replies_with_count, pendingReplyCount)
+            }
+        }
+
+        // Set the sub replies loading state
+        if (reply.subRepliesLoading) {
+            itemView.loadRepliesLoading.visible()
+        } else {
+            itemView.loadRepliesLoading.gone()
+        }
+
+        // Set formatted username and message
         val username = profile?.userName ?: ""
         val message = reply.comment ?: reply.reply
         itemView.tvMessage.text = String.format("%s %s", username, message)
@@ -81,5 +140,8 @@ class PostDetailsReplyViewHolder(itemView: View,
     interface Callback {
         fun onLikesCountClicked(reply: PostReplyDto)
         fun onReplyClicked(reply: PostReplyDto)
+        fun onLoadRepliesClicked(parentReply: PostReplyDto)
+        fun onShowAllRepliesClicked(parentReply: PostReplyDto)
+        fun onHideAllRepliesClicked(parentReply: PostReplyDto)
     }
 }

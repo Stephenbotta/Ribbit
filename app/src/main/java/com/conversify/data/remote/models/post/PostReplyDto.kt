@@ -33,4 +33,10 @@ data class PostReplyDto(
         val createdOnDateTime: ZonedDateTime? = null,
 
         @field:SerializedName("liked")
-        val liked: Boolean? = null) : Parcelable
+        val liked: Boolean? = null,
+
+        var parentReplyId: String? = null,
+        var subRepliesLoading: Boolean = false,
+        var pendingReplyCount: Int = 0,
+        var visibleReplyCount: Int = 0,
+        var subReplies: List<PostReplyDto> = emptyList()) : Parcelable
