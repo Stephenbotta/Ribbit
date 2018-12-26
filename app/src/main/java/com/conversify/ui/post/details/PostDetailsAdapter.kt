@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.data.remote.models.LoadingItem
-import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.data.remote.models.post.PostDetailsHeader
 import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.data.remote.models.post.SubReplyDto
 import com.conversify.extensions.inflate
@@ -36,7 +36,7 @@ class PostDetailsAdapter(private val glide: GlideRequests,
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
-            is GroupPostDto -> TYPE_HEADER
+            is PostDetailsHeader -> TYPE_HEADER
             is LoadingItem -> TYPE_LOADING
             else -> TYPE_REPLY
         }
@@ -46,8 +46,8 @@ class PostDetailsAdapter(private val glide: GlideRequests,
         val item = items[position]
         when (holder) {
             is PostDetailsHeaderViewHolder -> {
-                if (item is GroupPostDto) {
-                    holder.bind(item)
+                if (item is PostDetailsHeader) {
+                    holder.bind(item.groupPost)
                 }
             }
             is PostDetailsReplyViewHolder -> {
@@ -68,6 +68,11 @@ class PostDetailsAdapter(private val glide: GlideRequests,
         val oldListSize = this.items.size
         this.items.addAll(items)
         notifyItemRangeInserted(oldListSize, items.size)
+    }
+
+    fun addItem(newReply: PostReplyDto) {
+        items.add(newReply)
+        notifyItemInserted(items.size - 1)
     }
 
     fun setLoading(visible: Boolean) {
@@ -135,6 +140,12 @@ class PostDetailsAdapter(private val glide: GlideRequests,
 
             parentReply.visibleReplyCount = subRepliesCount
             notifyItemChanged(parentReplyIndex)
+        }
+    }
+
+    fun notifyHeaderChanged() {
+        if (items.firstOrNull() is PostDetailsHeader) {
+            notifyItemChanged(0)
         }
     }
 

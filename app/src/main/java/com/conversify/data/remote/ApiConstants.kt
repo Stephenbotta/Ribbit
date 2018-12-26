@@ -19,6 +19,9 @@ object ApiConstants {
     const val FLAG_FOLLOWERS = 1
     const val FLAG_FOLLOWINGS = 2
 
+    const val LIKED_TRUE = 1
+    const val LIKED_FALSE = 2
+
     const val MESSAGE_TYPE_TEXT = "TEXT"
     const val MESSAGE_TYPE_IMAGE = "IMAGE"
     const val MESSAGE_TYPE_VIDEO = "VIDEO"

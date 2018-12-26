@@ -114,7 +114,7 @@ class GroupPostsAdapter(private val glide: GlideRequests,
                     clickListener = usernameClickListener)
 
             // Show formatted replies and likes count
-            val repliesCount = post.commentsCount ?: 0
+            val repliesCount = post.repliesCount ?: 0
             val formattedReplies = itemView.resources.getQuantityString(R.plurals.replies_with_count, repliesCount, repliesCount)
 
             val likesCount = post.likesCount ?: 0

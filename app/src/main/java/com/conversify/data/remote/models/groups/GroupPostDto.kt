@@ -20,7 +20,7 @@ data class GroupPostDto(
         val user: ProfileDto? = null,
 
         @field:SerializedName("likeCount")
-        val likesCount: Int? = null,
+        var likesCount: Int? = null,
 
         @field:SerializedName("_id")
         val id: String? = null,
@@ -29,7 +29,7 @@ data class GroupPostDto(
         val createdOnDateTime: ZonedDateTime? = null,
 
         @field:SerializedName("liked")
-        val isLiked: Boolean? = null,
+        var isLiked: Boolean? = null,
 
         @field:SerializedName("type")
         val type: String? = null,
@@ -41,4 +41,4 @@ data class GroupPostDto(
         val replies: List<PostReplyDto>? = null,
 
         @field:SerializedName("commentCount")
-        val commentsCount: Int? = null) : Parcelable
+        var repliesCount: Int? = null) : Parcelable

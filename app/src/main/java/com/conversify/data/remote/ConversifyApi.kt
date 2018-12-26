@@ -5,6 +5,7 @@ import com.conversify.data.remote.models.chat.VenueDetailsResponse
 import com.conversify.data.remote.models.groups.*
 import com.conversify.data.remote.models.loginsignup.*
 import com.conversify.data.remote.models.notifications.NotificationDto
+import com.conversify.data.remote.models.post.AddPostReplyRequest
 import com.conversify.data.remote.models.post.CreatePostRequest
 import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.data.remote.models.venues.CreateEditVenueRequest
@@ -156,4 +157,25 @@ interface ConversifyApi {
     fun getSubReplies(@Field("commentId") parentReplyId: String,
                       @Field("totalReply") parentTotalSubRepliesCount: Int,
                       @Field("replyId") lastParentSubReplyId: String? = null): Call<ApiResponse<List<PostReplyDto>>>
+
+    @POST("user/addEditComment")
+    fun addPostReply(@Body request: AddPostReplyRequest): Call<ApiResponse<PostReplyDto>>
+
+    @POST("user/likeOrUnlike")
+    @FormUrlEncoded
+    fun likeUnlikePost(@Field("postId") postId: String,
+                       @Field("postBy") postOwnerId: String,
+                       @Field("action") action: Int): Call<Any>
+
+    @POST("user/likeOrUnlike")
+    @FormUrlEncoded
+    fun likeUnlikeReply(@Field("commentId") replyId: String,
+                        @Field("commentBy") replyOwnerId: String,
+                        @Field("action") action: Int): Call<Any>
+
+    @POST("user/likeOrUnlike")
+    @FormUrlEncoded
+    fun likeUnlikeSubReply(@Field("replyId") subReplyId: String,
+                           @Field("replyBy") subReplyOwnerId: String,
+                           @Field("action") action: Int): Call<Any>
 }

@@ -62,5 +62,13 @@ class HomeAdapter(private val glide: GlideRequests,
         return items.size == 1 && items.first() is HomeSearchDto
     }
 
+    fun updatePost(updatedPost: GroupPostDto) {
+        val postIndex = items.indexOfFirst { it is GroupPostDto && it.id == updatedPost.id }
+        if (postIndex != -1) {
+            items[postIndex] = updatedPost
+            notifyItemChanged(postIndex)
+        }
+    }
+
     interface Callback : HomeSearchViewHolder.Callback, GroupPostCallback
 }

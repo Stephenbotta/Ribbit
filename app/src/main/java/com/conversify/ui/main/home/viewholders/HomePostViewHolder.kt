@@ -86,6 +86,12 @@ class HomePostViewHolder(itemView: View,
         val message = post.postText ?: ""
         itemView.tvMessage.text = message
 
+        itemView.ivLike.setImageResource(if (post.isLiked == true) {
+            R.drawable.ic_heart_selected
+        } else {
+            R.drawable.ic_heart_normal
+        })
+
         // Image is only visible when post type is image
         if (post.type == ApiConstants.GROUP_POST_TYPE_IMAGE) {
             itemView.ivImage.visible()
@@ -134,7 +140,7 @@ class HomePostViewHolder(itemView: View,
                 clickListener = usernameClickListener)
 
         // Show formatted replies and likes count
-        val repliesCount = post.commentsCount ?: 0
+        val repliesCount = post.repliesCount ?: 0
         val formattedReplies = itemView.resources.getQuantityString(R.plurals.replies_with_count, repliesCount, repliesCount)
 
         val likesCount = post.likesCount ?: 0

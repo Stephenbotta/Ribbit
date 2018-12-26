@@ -3,9 +3,14 @@ package com.conversify.ui.main.home
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
@@ -29,6 +34,15 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
     private lateinit var viewModel: HomeViewModel
     private lateinit var adapter: HomeAdapter
 
+    private val postUpdatedReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent != null && intent.hasExtra(AppConstants.EXTRA_GROUP_POST)) {
+                val updatedPost = intent.getParcelableExtra<GroupPostDto>(AppConstants.EXTRA_GROUP_POST)
+                adapter.updatePost(updatedPost)
+            }
+        }
+    }
+
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_home
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,13 +58,21 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
             val intent = Intent(requireActivity(), NewPostActivity::class.java)
             startActivityForResult(intent, AppConstants.REQ_CODE_NEW_POST)
         }
+        registerPostUpdatedReceiver()
         setupHomeRecycler()
         observeChanges()
         getHomeFeed()
     }
 
+    private fun registerPostUpdatedReceiver() {
+        val filter = IntentFilter(AppConstants.ACTION_GROUP_POSTS_UPDATED)
+        LocalBroadcastManager.getInstance(requireActivity())
+                .registerReceiver(postUpdatedReceiver, filter)
+    }
+
     private fun setupHomeRecycler() {
         rvHome.adapter = adapter
+        (rvHome.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         rvHome.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -110,7 +132,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
     override fun onPostClicked(post: GroupPostDto, focusReplyEditText: Boolean) {
         Timber.i("Post clicked : $post\nFocus reply edit text : $focusReplyEditText")
         val intent = PostDetailsActivity.getStartIntent(requireActivity(), post)
-        startActivity(intent)
+        startActivityForResult(intent, AppConstants.REQ_CODE_POST_DETAILS)
     }
 
     override fun onLikesCountClicked(post: GroupPostDto) {
@@ -135,8 +157,18 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppConstants.REQ_CODE_NEW_POST && resultCode == Activity.RESULT_OK) {
-            getHomeFeed(false)
+        when (requestCode) {
+            AppConstants.REQ_CODE_NEW_POST -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    getHomeFeed(false)
+                }
+            }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        LocalBroadcastManager.getInstance(requireActivity())
+                .unregisterReceiver(postUpdatedReceiver)
     }
 }
