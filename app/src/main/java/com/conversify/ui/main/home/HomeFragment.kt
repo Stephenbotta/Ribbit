@@ -20,6 +20,7 @@ import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.post.details.PostDetailsActivity
+import com.conversify.ui.post.details.PostDetailsViewModel
 import com.conversify.ui.post.newpost.NewPostActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
@@ -31,7 +32,8 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         const val TAG = "HomeFragment"
     }
 
-    private lateinit var viewModel: HomeViewModel
+    private val homeViewModel by lazy { ViewModelProviders.of(this)[HomeViewModel::class.java] }
+    private val postDetailsViewModel by lazy { ViewModelProviders.of(this)[PostDetailsViewModel::class.java] }
     private lateinit var adapter: HomeAdapter
 
     private val postUpdatedReceiver = object : BroadcastReceiver() {
@@ -47,7 +49,6 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this)[HomeViewModel::class.java]
         adapter = HomeAdapter(GlideApp.with(this), this)
     }
 
@@ -65,7 +66,10 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
     }
 
     private fun registerPostUpdatedReceiver() {
-        val filter = IntentFilter(AppConstants.ACTION_GROUP_POSTS_UPDATED)
+        val filter = IntentFilter()
+        // Add actions for which to listen for updated post
+        filter.addAction(AppConstants.ACTION_GROUP_POST_UPDATED_POST_DETAILS)
+        filter.addAction(AppConstants.ACTION_GROUP_POST_UPDATED_GROUP_POSTS_LISTING)
         LocalBroadcastManager.getInstance(requireActivity())
                 .registerReceiver(postUpdatedReceiver, filter)
     }
@@ -76,15 +80,15 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         rvHome.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1) && viewModel.validForPaging() && isNetworkActive()) {
-                    viewModel.getHomeFeed(false)
+                if (!recyclerView.canScrollVertically(1) && homeViewModel.validForPaging() && isNetworkActive()) {
+                    homeViewModel.getHomeFeed(false)
                 }
             }
         })
     }
 
     private fun observeChanges() {
-        viewModel.homeFeed.observe(this, Observer { resource ->
+        homeViewModel.homeFeed.observe(this, Observer { resource ->
             resource ?: return@Observer
 
             when (resource.status) {
@@ -119,7 +123,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     private fun getHomeFeed(showLoading: Boolean = true) {
         if (isNetworkActiveWithMessage()) {
-            viewModel.getHomeFeed(showLoading = showLoading)
+            homeViewModel.getHomeFeed(showLoading = showLoading)
         } else {
             swipeRefreshLayout.isRefreshing = false
         }
@@ -131,7 +135,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onPostClicked(post: GroupPostDto, focusReplyEditText: Boolean) {
         Timber.i("Post clicked : $post\nFocus reply edit text : $focusReplyEditText")
-        val intent = PostDetailsActivity.getStartIntent(requireActivity(), post)
+        val intent = PostDetailsActivity.getStartIntent(requireActivity(), post, focusReplyEditText)
         startActivityForResult(intent, AppConstants.REQ_CODE_POST_DETAILS)
     }
 
@@ -153,6 +157,10 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onUsernameMentionClicked(username: String) {
         Timber.i("Username mention clicked : $username")
+    }
+
+    override fun onGroupPostLikeClicked(groupPost: GroupPostDto, isLiked: Boolean) {
+        postDetailsViewModel.likeUnlikePost(groupPost, isLiked)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

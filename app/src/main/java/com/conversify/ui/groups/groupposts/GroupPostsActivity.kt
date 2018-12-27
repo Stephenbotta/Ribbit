@@ -2,14 +2,17 @@ package com.conversify.ui.groups.groupposts
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SimpleItemAnimator
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
@@ -21,6 +24,7 @@ import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.groups.PostCallback
 import com.conversify.ui.post.details.PostDetailsActivity
+import com.conversify.ui.post.details.PostDetailsViewModel
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_group_posts.*
@@ -38,23 +42,42 @@ class GroupPostsActivity : BaseActivity(), PostCallback {
         }
     }
 
-    private val viewModel by lazy { ViewModelProviders.of(this)[GroupPostsViewModel::class.java] }
+    private val groupPostsViewModel by lazy { ViewModelProviders.of(this)[GroupPostsViewModel::class.java] }
+    private val postDetailsViewModel by lazy { ViewModelProviders.of(this)[PostDetailsViewModel::class.java] }
     private val group by lazy { intent.getParcelableExtra<GroupDto>(EXTRA_GROUP) }
     private lateinit var postsAdapter: GroupPostsAdapter
     private var groupPostsLoadedOnce = false
+
+    private val postUpdatedReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent != null && intent.hasExtra(AppConstants.EXTRA_GROUP_POST)) {
+                val updatedPost = intent.getParcelableExtra<GroupPostDto>(AppConstants.EXTRA_GROUP_POST)
+                postsAdapter.updatePost(updatedPost)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_posts)
 
-        viewModel.start(group)
+        groupPostsViewModel.start(group)
 
         btnBack.setOnClickListener { onBackPressed() }
         swipeRefreshLayout.setOnRefreshListener { getGroupPosts() }
+
+        registerPostUpdatedReceiver()
         setupPostsRecycler()
         displayGroupDetails(group)
         observeChanges()
         getGroupPosts()
+    }
+
+    private fun registerPostUpdatedReceiver() {
+        val filter = IntentFilter()
+        filter.addAction(AppConstants.ACTION_GROUP_POST_UPDATED_POST_DETAILS)
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(postUpdatedReceiver, filter)
     }
 
     private fun setupPostsRecycler() {
@@ -66,13 +89,13 @@ class GroupPostsActivity : BaseActivity(), PostCallback {
             dividerItemDecoration.setDrawable(dividerDrawable)
         }
         rvPosts.addItemDecoration(dividerItemDecoration)
-
+        (rvPosts.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         rvPosts.adapter = postsAdapter
         rvPosts.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1) && viewModel.validForPaging() && isNetworkActive()) {
-                    viewModel.getGroupPosts(false)
+                if (!recyclerView.canScrollVertically(1) && groupPostsViewModel.validForPaging() && isNetworkActive()) {
+                    groupPostsViewModel.getGroupPosts(false)
                 }
             }
         })
@@ -88,7 +111,7 @@ class GroupPostsActivity : BaseActivity(), PostCallback {
     }
 
     private fun observeChanges() {
-        viewModel.posts.observe(this, Observer { resource ->
+        groupPostsViewModel.posts.observe(this, Observer { resource ->
             resource ?: return@Observer
 
             when (resource.status) {
@@ -124,7 +147,7 @@ class GroupPostsActivity : BaseActivity(), PostCallback {
 
     private fun getGroupPosts(firstPage: Boolean = true) {
         if (isNetworkActiveWithMessage()) {
-            viewModel.getGroupPosts(firstPage)
+            groupPostsViewModel.getGroupPosts(firstPage)
         } else {
             swipeRefreshLayout.isRefreshing = false
         }
@@ -146,12 +169,19 @@ class GroupPostsActivity : BaseActivity(), PostCallback {
 
     override fun onPostClicked(post: GroupPostDto, focusReplyEditText: Boolean) {
         Timber.i("Post clicked : $post\nFocus reply edit text : $focusReplyEditText")
-        val intent = PostDetailsActivity.getStartIntent(this, post)
+        val intent = PostDetailsActivity.getStartIntent(this, post, focusReplyEditText)
         startActivity(intent)
     }
 
     override fun onLikesCountClicked(post: GroupPostDto) {
         Timber.i("Likes count clicked for post : $post")
+    }
+
+    override fun onGroupPostLikeClicked(groupPost: GroupPostDto, isLiked: Boolean) {
+        postDetailsViewModel.likeUnlikePost(groupPost, isLiked)
+        LocalBroadcastManager.getInstance(this)
+                .sendBroadcast(Intent(AppConstants.ACTION_GROUP_POST_UPDATED_GROUP_POSTS_LISTING)
+                        .putExtra(AppConstants.EXTRA_GROUP_POST, groupPost))
     }
 
     override fun onHashtagClicked(tag: String) {
@@ -160,5 +190,11 @@ class GroupPostsActivity : BaseActivity(), PostCallback {
 
     override fun onUsernameMentionClicked(username: String) {
         Timber.i("Username mention clicked : $username")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(this)
+                .unregisterReceiver(postUpdatedReceiver)
     }
 }

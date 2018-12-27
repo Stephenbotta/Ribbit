@@ -163,20 +163,11 @@ class PostDetailsViewModel : ViewModel() {
                 })
     }
 
-    fun likeUnlikePost(isLiked: Boolean) {
+    fun likeUnlikePost(post: GroupPostDto, isLiked: Boolean) {
         likeUnlikePost.value = Resource.loading()
 
-        // Update liked status and likes count for header
-        postDetailsHeader.groupPost.isLiked = isLiked
-        val currentLikesCount = postDetailsHeader.groupPost.likesCount ?: 0
-        postDetailsHeader.groupPost.likesCount = if (isLiked) {
-            currentLikesCount + 1
-        } else {
-            currentLikesCount - 1
-        }
-
-        val postId = postDetailsHeader.groupPost.id ?: ""
-        val postOwnerId = postDetailsHeader.groupPost.user?.id ?: ""
+        val postId = post.id ?: ""
+        val postOwnerId = post.user?.id ?: ""
         val action = if (isLiked) ApiConstants.LIKED_TRUE else ApiConstants.LIKED_FALSE
         likeUnlikePostCall?.cancel()    // Cancel any on-going api call for like unlike post
         val call = RetrofitClient.conversifyApi.likeUnlikePost(postId, postOwnerId, action)
@@ -196,6 +187,22 @@ class PostDetailsViewModel : ViewModel() {
                 }
             }
         })
+    }
+
+    /**
+     * Should be used only when group post is passed in the start()
+     * */
+    fun likeUnlikePost(isLiked: Boolean) {
+        // Update liked status and likes count for header
+        postDetailsHeader.groupPost.isLiked = isLiked
+        val currentLikesCount = postDetailsHeader.groupPost.likesCount ?: 0
+        postDetailsHeader.groupPost.likesCount = if (isLiked) {
+            currentLikesCount + 1
+        } else {
+            currentLikesCount - 1
+        }
+
+        likeUnlikePost(postDetailsHeader.groupPost, isLiked)
     }
 
     fun likeUnlikeReply(reply: PostReplyDto, isLiked: Boolean, topLevelReply: Boolean) {

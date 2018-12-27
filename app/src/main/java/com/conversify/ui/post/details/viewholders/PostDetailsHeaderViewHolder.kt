@@ -12,6 +12,7 @@ import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.clickSpannable
 import com.conversify.extensions.gone
 import com.conversify.extensions.visible
+import com.conversify.ui.images.ImagesActivity
 import com.conversify.utils.AppUtils
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.GlideRequests
@@ -46,6 +47,12 @@ class PostDetailsHeaderViewHolder(itemView: View,
         }
     }
 
+    init {
+        itemView.ivImage.setOnClickListener {
+            ImagesActivity.start(it.context, arrayListOf(post.imageUrl?.original ?: ""))
+        }
+    }
+
     private lateinit var post: GroupPostDto
 
     fun bind(post: GroupPostDto) {
@@ -59,7 +66,7 @@ class PostDetailsHeaderViewHolder(itemView: View,
         // Image is only visible when post type is image
         if (post.type == ApiConstants.GROUP_POST_TYPE_IMAGE) {
             itemView.ivImage.visible()
-            glide.load(post.imageUrl?.thumbnail)
+            glide.load(post.imageUrl?.original)
                     .into(itemView.ivImage)
         } else {
             itemView.ivImage.gone()

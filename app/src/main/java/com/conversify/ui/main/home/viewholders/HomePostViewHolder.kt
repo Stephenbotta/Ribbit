@@ -7,10 +7,7 @@ import android.widget.TextView
 import com.conversify.R
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.groups.GroupPostDto
-import com.conversify.extensions.clickSpannable
-import com.conversify.extensions.gone
-import com.conversify.extensions.isNonLinkClick
-import com.conversify.extensions.visible
+import com.conversify.extensions.*
 import com.conversify.ui.groups.GroupPostCallback
 import com.conversify.utils.AppUtils
 import com.conversify.utils.DateTimeUtils
@@ -65,7 +62,22 @@ class HomePostViewHolder(itemView: View,
             }
         }
 
-        itemView.ivLike.setOnClickListener { }
+        itemView.ivLike.setOnClickListener {
+            if (isValidPosition() && itemView.context.isNetworkActive()) {
+                val isLiked = !(post.isLiked ?: false)     // toggle liked state
+                post.isLiked = isLiked
+
+                val currentLikesCount = post.likesCount ?: 0
+                post.likesCount = if (isLiked) {
+                    currentLikesCount + 1
+                } else {
+                    currentLikesCount - 1
+                }
+                updateRepliesAndLikes()
+                updateLikeButtonState()
+                callback.onGroupPostLikeClicked(post, isLiked)
+            }
+        }
 
         itemView.ivReply.setOnClickListener {
             callback.onPostClicked(post, true)
@@ -86,11 +98,7 @@ class HomePostViewHolder(itemView: View,
         val message = post.postText ?: ""
         itemView.tvMessage.text = message
 
-        itemView.ivLike.setImageResource(if (post.isLiked == true) {
-            R.drawable.ic_heart_selected
-        } else {
-            R.drawable.ic_heart_normal
-        })
+        updateLikeButtonState()
 
         // Image is only visible when post type is image
         if (post.type == ApiConstants.GROUP_POST_TYPE_IMAGE) {
@@ -139,6 +147,10 @@ class HomePostViewHolder(itemView: View,
                 textColorRes = R.color.colorPrimary,
                 clickListener = usernameClickListener)
 
+        updateRepliesAndLikes()
+    }
+
+    private fun updateRepliesAndLikes() {
         // Show formatted replies and likes count
         val repliesCount = post.repliesCount ?: 0
         val formattedReplies = itemView.resources.getQuantityString(R.plurals.replies_with_count, repliesCount, repliesCount)
@@ -157,5 +169,14 @@ class HomePostViewHolder(itemView: View,
         itemView.tvRepliesLikes.clickSpannable(spannableText = formattedLikes,
                 textColorRes = R.color.textGrayMedium,
                 clickListener = likesCountClickListener)
+    }
+
+    private fun updateLikeButtonState() {
+        val isLiked = post.isLiked ?: false
+        itemView.ivLike.setImageResource(if (isLiked) {
+            R.drawable.ic_heart_selected
+        } else {
+            R.drawable.ic_heart_normal
+        })
     }
 }

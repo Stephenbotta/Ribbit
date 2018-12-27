@@ -7,10 +7,7 @@ import android.widget.TextView
 import com.conversify.R
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.groups.GroupPostDto
-import com.conversify.extensions.clickSpannable
-import com.conversify.extensions.gone
-import com.conversify.extensions.inflate
-import com.conversify.extensions.visible
+import com.conversify.extensions.*
 import com.conversify.ui.groups.PostCallback
 import com.conversify.utils.AppUtils
 import com.conversify.utils.DateTimeUtils
@@ -44,6 +41,14 @@ class GroupPostsAdapter(private val glide: GlideRequests,
         notifyItemRangeInserted(oldListSize, posts.size)
     }
 
+    fun updatePost(updatedPost: GroupPostDto) {
+        val postIndex = posts.indexOfFirst { it.id == updatedPost.id }
+        if (postIndex != -1) {
+            posts[postIndex] = updatedPost
+            notifyItemChanged(postIndex)
+        }
+    }
+
     class ViewHolder(itemView: View,
                      private val glide: GlideRequests,
                      private val callback: PostCallback) : RecyclerView.ViewHolder(itemView) {
@@ -72,7 +77,23 @@ class GroupPostsAdapter(private val glide: GlideRequests,
         init {
             itemView.setOnClickListener(postClickListener)
 
-            itemView.ivLike.setOnClickListener { }
+            itemView.ivLike.setOnClickListener {
+                if (isValidPosition() && itemView.context.isNetworkActive()) {
+                    val isLiked = !(post.isLiked ?: false)     // toggle liked state
+                    post.isLiked = isLiked
+
+                    val currentLikesCount = post.likesCount ?: 0
+                    post.likesCount = if (isLiked) {
+                        currentLikesCount + 1
+                    } else {
+                        currentLikesCount - 1
+                    }
+                    updateRepliesAndLikes()
+                    updateLikeButtonState()
+                    callback.onGroupPostLikeClicked(post, isLiked)
+                }
+            }
+
             itemView.ivReply.setOnClickListener {
                 callback.onPostClicked(post, true)
             }
@@ -92,10 +113,12 @@ class GroupPostsAdapter(private val glide: GlideRequests,
             itemView.tvTime.text = DateTimeUtils.formatChatListingTime(post.createdOnDateTime, itemView.context)
             itemView.tvMessage.text = post.postText
 
+            updateLikeButtonState()
+
             // Image is only visible when post type is image
             if (post.type == ApiConstants.GROUP_POST_TYPE_IMAGE) {
                 itemView.ivImage.visible()
-                glide.load(post.imageUrl?.thumbnail)
+                glide.load(post.imageUrl?.original)
                         .into(itemView.ivImage)
             } else {
                 itemView.ivImage.gone()
@@ -113,6 +136,19 @@ class GroupPostsAdapter(private val glide: GlideRequests,
                     textColorRes = R.color.colorPrimary,
                     clickListener = usernameClickListener)
 
+            updateRepliesAndLikes()
+        }
+
+        private fun updateLikeButtonState() {
+            val isLiked = post.isLiked ?: false
+            itemView.ivLike.setImageResource(if (isLiked) {
+                R.drawable.ic_heart_selected
+            } else {
+                R.drawable.ic_heart_normal
+            })
+        }
+
+        private fun updateRepliesAndLikes() {
             // Show formatted replies and likes count
             val repliesCount = post.repliesCount ?: 0
             val formattedReplies = itemView.resources.getQuantityString(R.plurals.replies_with_count, repliesCount, repliesCount)

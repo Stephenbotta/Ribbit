@@ -43,7 +43,7 @@ class PostDetailsReplyViewHolder(itemView: View,
 
         itemView.btnReply.setOnClickListener {
             if (isValidPosition()) {
-                callback.onReplyClicked(reply)
+                callback.onReplyClicked(reply, isTopLevelReply())
             }
         }
 
@@ -178,7 +178,7 @@ class PostDetailsReplyViewHolder(itemView: View,
 
     interface Callback {
         fun onLikesCountClicked(reply: PostReplyDto)
-        fun onReplyClicked(reply: PostReplyDto)
+        fun onReplyClicked(reply: PostReplyDto, isTopLevelReply: Boolean)
         fun onLoadRepliesClicked(parentReply: PostReplyDto)
         fun onShowAllRepliesClicked(parentReply: PostReplyDto)
         fun onHideAllRepliesClicked(parentReply: PostReplyDto)

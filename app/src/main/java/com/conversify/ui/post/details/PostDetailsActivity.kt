@@ -86,13 +86,14 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
                         postDetailsAdapter.notifyHeaderChanged()
                     }
 
-                    // By default both are not visible.
+                    // By default views related to reply edit text are not visible.
                     if (!etReply.isVisible()) {
+                        dividerReplyEditText.visible()
                         etReply.visible()
                         ivLikePost.visible()
 
                         if (focusReplyEditText) {
-                            etReply.requestFocus()
+                            etReply.showKeyboard()
                         }
                     }
                 }
@@ -209,7 +210,8 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
     override fun onUsernameMentionClicked(username: String) {
     }
 
-    override fun onReplyClicked(reply: PostReplyDto) {
+    override fun onReplyClicked(reply: PostReplyDto, isTopLevelReply: Boolean) {
+
     }
 
     override fun onLoadRepliesClicked(parentReply: PostReplyDto) {
@@ -233,7 +235,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(this)
-                .sendBroadcast(Intent(AppConstants.ACTION_GROUP_POSTS_UPDATED)
+                .sendBroadcast(Intent(AppConstants.ACTION_GROUP_POST_UPDATED_POST_DETAILS)
                         .putExtra(AppConstants.EXTRA_GROUP_POST, viewModel.getGroupPost()))
     }
 }
