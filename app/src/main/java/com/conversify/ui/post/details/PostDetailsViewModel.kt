@@ -2,6 +2,7 @@ package com.conversify.ui.post.details
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.support.v4.util.ArrayMap
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
@@ -27,6 +28,16 @@ class PostDetailsViewModel : ViewModel() {
     val subReplies by lazy { SingleLiveEvent<Resource<SubReplyDto>>() }
     val addPostReply by lazy { SingleLiveEvent<Resource<PostReplyDto>>() }
     val likeUnlikePost by lazy { SingleLiveEvent<Resource<Any>>() }
+    val likeUnlikeReply by lazy { SingleLiveEvent<Resource<Any>>() }
+
+    /*
+    * Contains replyId as key and its respective api call as value.
+    *
+    * Contains on-going api calls for like-unlike a reply (both top level and sub-replies).
+    * This is to avoid multiple on-going api calls for same reply which can cause de-synced state of like button.
+    * Previous call is first canceled before calling a new one for the same reply id.
+    * */
+    private val likeUnlikeReplyCalls by lazy { ArrayMap<String, Call<Any>>() }
 
     private lateinit var postDetailsHeader: PostDetailsHeader
 
@@ -154,6 +165,8 @@ class PostDetailsViewModel : ViewModel() {
 
     fun likeUnlikePost(isLiked: Boolean) {
         likeUnlikePost.value = Resource.loading()
+
+        // Update liked status and likes count for header
         postDetailsHeader.groupPost.isLiked = isLiked
         val currentLikesCount = postDetailsHeader.groupPost.likesCount ?: 0
         postDetailsHeader.groupPost.likesCount = if (isLiked) {
@@ -165,7 +178,7 @@ class PostDetailsViewModel : ViewModel() {
         val postId = postDetailsHeader.groupPost.id ?: ""
         val postOwnerId = postDetailsHeader.groupPost.user?.id ?: ""
         val action = if (isLiked) ApiConstants.LIKED_TRUE else ApiConstants.LIKED_FALSE
-        likeUnlikePostCall?.cancel()
+        likeUnlikePostCall?.cancel()    // Cancel any on-going api call for like unlike post
         val call = RetrofitClient.conversifyApi.likeUnlikePost(postId, postOwnerId, action)
         likeUnlikePostCall = call
         call.enqueue(object : Callback<Any> {
@@ -180,6 +193,52 @@ class PostDetailsViewModel : ViewModel() {
             override fun onFailure(call: Call<Any>, t: Throwable) {
                 if (!call.isCanceled) {
                     likeUnlikePost.value = Resource.error(t.failureAppError())
+                }
+            }
+        })
+    }
+
+    fun likeUnlikeReply(reply: PostReplyDto, isLiked: Boolean, topLevelReply: Boolean) {
+        likeUnlikeReply.value = Resource.loading()
+
+        val replyId = reply.id ?: ""
+        val replyOwnerId = if (topLevelReply) {
+            reply.commentBy?.id
+        } else {
+            reply.replyBy?.id
+        } ?: ""
+        val action = if (isLiked) ApiConstants.LIKED_TRUE else ApiConstants.LIKED_FALSE
+
+        val call = if (topLevelReply) {
+            RetrofitClient.conversifyApi.likeUnlikeReply(replyId, replyOwnerId, action)
+        } else {
+            RetrofitClient.conversifyApi.likeUnlikeSubReply(replyId, replyOwnerId, action)
+        }
+
+        // If any call already exist for the replyId, then first cancel it.
+        likeUnlikeReplyCalls[replyId]?.cancel()
+
+        // Add the new call for the replyId
+        likeUnlikeReplyCalls[replyId] = call
+
+        call.enqueue(object : Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                // Remove the call
+                likeUnlikeReplyCalls.remove(replyId)
+
+                if (response.isSuccessful) {
+                    likeUnlikeReply.value = Resource.success()
+                } else {
+                    likeUnlikeReply.value = Resource.error(response.getAppError())
+                }
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                // Remove the call
+                likeUnlikeReplyCalls.remove(replyId)
+
+                if (!call.isCanceled) {
+                    likeUnlikeReply.value = Resource.error(t.failureAppError())
                 }
             }
         })

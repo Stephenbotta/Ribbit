@@ -24,7 +24,7 @@ data class PostReplyDto(
         val reply: String? = null,
 
         @field:SerializedName("likeCount")
-        val likeCount: Int? = null,
+        var likesCount: Int? = null,
 
         @field:SerializedName("_id")
         val id: String? = null,
@@ -33,7 +33,7 @@ data class PostReplyDto(
         val createdOnDateTime: ZonedDateTime? = null,
 
         @field:SerializedName("liked")
-        val liked: Boolean? = null,
+        var liked: Boolean? = null,
 
         var parentReplyId: String? = null,
         var subRepliesLoading: Boolean = false,

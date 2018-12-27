@@ -226,6 +226,10 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
         postDetailsAdapter.hideAllSubReplies(parentReply)
     }
 
+    override fun onLikeReplyClicked(reply: PostReplyDto, isLiked: Boolean, topLevelReply: Boolean) {
+        viewModel.likeUnlikeReply(reply, isLiked, topLevelReply)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(this)

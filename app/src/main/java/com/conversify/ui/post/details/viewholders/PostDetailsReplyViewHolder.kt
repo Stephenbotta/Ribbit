@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.data.remote.models.post.PostReplyDto
-import com.conversify.extensions.clickSpannable
-import com.conversify.extensions.gone
-import com.conversify.extensions.pxFromDp
-import com.conversify.extensions.visible
+import com.conversify.extensions.*
 import com.conversify.utils.AppUtils
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.GlideRequests
@@ -23,8 +20,8 @@ class PostDetailsReplyViewHolder(itemView: View,
     private val topLevelReplyStartMargin by lazy { itemView.context.pxFromDp(16) }
     private val subLevelReplyStartMargin by lazy { itemView.context.pxFromDp(56) }
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.brandon_text_bold) }
-    private val userProfileClickListener = View.OnClickListener {
 
+    private val userProfileClickListener = View.OnClickListener {
     }
     private val hashtagClickListener = object : SpannableTextClickListener {
         override fun onSpannableTextClicked(text: String, view: View) {
@@ -39,29 +36,54 @@ class PostDetailsReplyViewHolder(itemView: View,
         itemView.ivProfile.setOnClickListener(userProfileClickListener)
 
         itemView.tvLikes.setOnClickListener {
-            callback.onLikesCountClicked(reply)
+            if (isValidPosition()) {
+                callback.onLikesCountClicked(reply)
+            }
         }
 
         itemView.btnReply.setOnClickListener {
-            callback.onReplyClicked(reply)
+            if (isValidPosition()) {
+                callback.onReplyClicked(reply)
+            }
         }
 
-        itemView.ivLike.setOnClickListener { }
+        itemView.ivLike.setOnClickListener {
+            if (isValidPosition() && it.context.isNetworkActive()) {
+                val isLiked = !(reply.liked ?: false)     // toggle liked state
+                reply.liked = isLiked
+
+                val currentLikesCount = reply.likesCount ?: 0
+                reply.likesCount = if (isLiked) {
+                    currentLikesCount + 1
+                } else {
+                    currentLikesCount - 1
+                }
+                updateLikesCount()
+                updateLikeButtonState()
+                callback.onLikeReplyClicked(reply, isLiked, isTopLevelReply())
+            }
+        }
 
         itemView.btnLoadReplies.setOnClickListener {
+            if (!isValidPosition()) return@setOnClickListener
+
+            // Ignore click if sub-replies are currently loading
             if (reply.subRepliesLoading) {
-                Timber.d("Load replies clicked. Sub-replies is already loading.")
+                Timber.d("Load replies clicked. Sub-replies are already loading.")
                 return@setOnClickListener
             }
 
+            // If pending reply count is 0, then we already have all replies available
             if (reply.pendingReplyCount == 0) {
+                // If total reply count is equal to the replies that are currently visible, then hide all replies
                 if ((reply.replyCount ?: 0) == reply.visibleReplyCount) {
-                    // All replies are loaded
                     callback.onHideAllRepliesClicked(reply)
                 } else if (reply.visibleReplyCount == 0) {
+                    // If non of the replies are visible, then clicking will show all replies.
                     callback.onShowAllRepliesClicked(reply)
                 }
             } else {
+                // If pending reply count is non-zero, then we have to get pending replies.
                 callback.onLoadRepliesClicked(reply)
             }
             Timber.i("Load replies clicked, pending replies : ${reply.pendingReplyCount}")
@@ -73,12 +95,9 @@ class PostDetailsReplyViewHolder(itemView: View,
     fun bind(reply: PostReplyDto) {
         this.reply = reply
 
-        // "commentBy" is available only for top-level replies. "replyBy" is available for sub-replies.
-        val isTopLevelReply = reply.commentBy != null
-
         // Set the start margin of profile image based on its level
         val profileImageParams = (itemView.ivProfile.layoutParams as ViewGroup.MarginLayoutParams)
-        profileImageParams.marginStart = if (isTopLevelReply) {
+        profileImageParams.marginStart = if (isTopLevelReply()) {
             topLevelReplyStartMargin
         } else {
             subLevelReplyStartMargin
@@ -89,9 +108,10 @@ class PostDetailsReplyViewHolder(itemView: View,
                 .into(itemView.ivProfile)
         itemView.tvTime.text = DateTimeUtils.formatChatListingTime(reply.createdOnDateTime, itemView.context)
 
-        val likesCount = reply.likeCount ?: 0
-        itemView.tvLikes.text = itemView.resources.getQuantityString(R.plurals.likes_with_count, likesCount, likesCount)
+        updateLikesCount()
+        updateLikeButtonState()
 
+        // Load replies is only visible when reply count is more than 0
         val replyCount = reply.replyCount ?: 0
         if (replyCount == 0) {
             itemView.btnLoadReplies.gone()
@@ -137,11 +157,31 @@ class PostDetailsReplyViewHolder(itemView: View,
                 clickListener = usernameClickListener)
     }
 
+    private fun updateLikesCount() {
+        val likesCount = reply.likesCount ?: 0
+        itemView.tvLikes.text = itemView.resources.getQuantityString(R.plurals.likes_with_count, likesCount, likesCount)
+    }
+
+    private fun updateLikeButtonState() {
+        val isLiked = reply.liked ?: false
+        itemView.ivLike.setImageResource(if (isLiked) {
+            R.drawable.ic_heart_selected
+        } else {
+            R.drawable.ic_heart_normal
+        })
+    }
+
+    /**
+     * "commentBy" is available only for top-level replies. "replyBy" is available for sub-replies.
+     * */
+    private fun isTopLevelReply() = reply.commentBy != null
+
     interface Callback {
         fun onLikesCountClicked(reply: PostReplyDto)
         fun onReplyClicked(reply: PostReplyDto)
         fun onLoadRepliesClicked(parentReply: PostReplyDto)
         fun onShowAllRepliesClicked(parentReply: PostReplyDto)
         fun onHideAllRepliesClicked(parentReply: PostReplyDto)
+        fun onLikeReplyClicked(reply: PostReplyDto, isLiked: Boolean, topLevelReply: Boolean)
     }
 }
