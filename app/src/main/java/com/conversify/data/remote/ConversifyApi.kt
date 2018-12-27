@@ -6,6 +6,7 @@ import com.conversify.data.remote.models.groups.*
 import com.conversify.data.remote.models.loginsignup.*
 import com.conversify.data.remote.models.notifications.NotificationDto
 import com.conversify.data.remote.models.post.AddPostReplyRequest
+import com.conversify.data.remote.models.post.AddPostSubReplyRequest
 import com.conversify.data.remote.models.post.CreatePostRequest
 import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.data.remote.models.venues.CreateEditVenueRequest
@@ -178,4 +179,7 @@ interface ConversifyApi {
     fun likeUnlikeSubReply(@Field("replyId") subReplyId: String,
                            @Field("replyBy") subReplyOwnerId: String,
                            @Field("action") action: Int): Call<Any>
+
+    @POST("user/addEditReplies")
+    fun addPostSubReply(@Body request: AddPostSubReplyRequest): Call<ApiResponse<PostReplyDto>>
 }

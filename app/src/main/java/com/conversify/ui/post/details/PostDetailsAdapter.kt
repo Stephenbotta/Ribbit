@@ -149,5 +149,18 @@ class PostDetailsAdapter(private val glide: GlideRequests,
         }
     }
 
+    fun addSubReply(newSubReply: PostReplyDto) {
+        val topLevelReplyIndex = items.indexOfFirst { it is PostReplyDto && it.id == newSubReply.parentReplyId }
+        if (topLevelReplyIndex != -1) {
+            val topLevelReply = items[topLevelReplyIndex] as PostReplyDto
+            if (topLevelReply.visibleReplyCount > 0) {
+                val newSubReplyIndex = topLevelReplyIndex + topLevelReply.visibleReplyCount
+                items.add(newSubReplyIndex, newSubReply)
+                notifyItemInserted(newSubReplyIndex)
+            }
+            notifyItemChanged(topLevelReplyIndex)
+        }
+    }
+
     interface Callback : PostDetailsHeaderViewHolder.Callback, PostDetailsReplyViewHolder.Callback
 }

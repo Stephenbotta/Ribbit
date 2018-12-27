@@ -95,8 +95,13 @@ class HomePostViewHolder(itemView: View,
                 .into(itemView.ivProfile)
         itemView.tvTime.text = DateTimeUtils.formatChatListingTime(post.createdOnDateTime, itemView.context)
 
-        val message = post.postText ?: ""
-        itemView.tvMessage.text = message
+        val message = post.postText
+        if (message.isNullOrBlank()) {
+            itemView.tvMessage.gone()
+        } else {
+            itemView.tvMessage.visible()
+            itemView.tvMessage.text = message
+        }
 
         updateLikeButtonState()
 

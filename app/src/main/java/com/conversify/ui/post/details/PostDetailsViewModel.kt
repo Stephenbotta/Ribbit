@@ -12,10 +12,7 @@ import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupPostDto
-import com.conversify.data.remote.models.post.AddPostReplyRequest
-import com.conversify.data.remote.models.post.PostDetailsHeader
-import com.conversify.data.remote.models.post.PostReplyDto
-import com.conversify.data.remote.models.post.SubReplyDto
+import com.conversify.data.remote.models.post.*
 import com.conversify.utils.AppUtils
 import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
@@ -27,6 +24,7 @@ class PostDetailsViewModel : ViewModel() {
     val replies by lazy { SingleLiveEvent<Resource<PagingResult<List<PostReplyDto>>>>() }
     val subReplies by lazy { SingleLiveEvent<Resource<SubReplyDto>>() }
     val addPostReply by lazy { SingleLiveEvent<Resource<PostReplyDto>>() }
+    val addPostSubReply by lazy { SingleLiveEvent<Resource<PostReplyDto>>() }
     val likeUnlikePost by lazy { SingleLiveEvent<Resource<Any>>() }
     val likeUnlikeReply by lazy { SingleLiveEvent<Resource<Any>>() }
 
@@ -136,7 +134,7 @@ class PostDetailsViewModel : ViewModel() {
     }
 
     fun addPostReply(replyText: String) {
-        val usernameMentions = AppUtils.getMentionsFromString(replyText)
+        val usernameMentions = AppUtils.getMentionsFromString(replyText, false)
         val request = AddPostReplyRequest(postId = postDetailsHeader.groupPost.id,
                 postOwnerId = postDetailsHeader.groupPost.user?.id,
                 replyText = replyText,
@@ -159,6 +157,51 @@ class PostDetailsViewModel : ViewModel() {
 
                     override fun onFailure(call: Call<ApiResponse<PostReplyDto>>, t: Throwable) {
                         addPostReply.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
+    fun addPostSubReply(replyText: String, topLevelReply: PostReplyDto) {
+        val usernameMentions = AppUtils.getMentionsFromString(replyText, false)
+        val request = AddPostSubReplyRequest(postId = postDetailsHeader.groupPost.id,
+                topLevelReplyId = topLevelReply.id,
+                topLevelReplyOwnerId = topLevelReply.commentBy?.id,
+                replyText = replyText,
+                usernameMentions = if (usernameMentions.isEmpty()) null else usernameMentions)
+
+        addPostSubReply.value = Resource.loading()
+        RetrofitClient.conversifyApi
+                .addPostSubReply(request)
+                .enqueue(object : Callback<ApiResponse<PostReplyDto>> {
+                    override fun onResponse(call: Call<ApiResponse<PostReplyDto>>,
+                                            response: Response<ApiResponse<PostReplyDto>>) {
+                        if (response.isSuccessful) {
+                            val addedSubReply = response.body()?.data
+                            if (addedSubReply != null) {
+                                // Update parent reply id
+                                addedSubReply.parentReplyId = topLevelReply.id
+
+                                // Add to existing sub-replies list
+                                topLevelReply.subReplies.add(addedSubReply)
+
+                                // Increment total reply count
+                                topLevelReply.replyCount = (topLevelReply.replyCount ?: 0) + 1
+
+                                // Increment visible reply count if it is non-zero
+                                if (topLevelReply.visibleReplyCount > 0) {
+                                    topLevelReply.visibleReplyCount += 1
+                                }
+
+                                // todo update total replies count for post
+                            }
+                            addPostSubReply.value = Resource.success(addedSubReply)
+                        } else {
+                            addPostSubReply.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<PostReplyDto>>, t: Throwable) {
+                        addPostSubReply.value = Resource.error(t.failureAppError())
                     }
                 })
     }
@@ -216,6 +259,7 @@ class PostDetailsViewModel : ViewModel() {
         } ?: ""
         val action = if (isLiked) ApiConstants.LIKED_TRUE else ApiConstants.LIKED_FALSE
 
+        // Use the api according to the reply level
         val call = if (topLevelReply) {
             RetrofitClient.conversifyApi.likeUnlikeReply(replyId, replyOwnerId, action)
         } else {

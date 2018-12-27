@@ -227,4 +227,5 @@
     <string name="post_details_btn_reply">Reply</string>
     <string name="post_details_btn_load_replies_with_count">Load replies (%d)</string>
     <string name="post_details_label_hide_all_replies">Hide all replies</string>
+    <string name="post_details_label_replying_to_with_username">Replying to @%s</string>
 </resources>

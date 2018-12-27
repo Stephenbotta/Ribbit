@@ -3,23 +3,37 @@ package com.conversify.utils
 import java.util.regex.Pattern
 
 object AppUtils {
-    private val hashTagsPattern by lazy { Pattern.compile("(#\\w+)\\b") }
-    private val usernameMentionsPattern by lazy { Pattern.compile("(@\\w+)\\b") }
+    private const val PREFIX_HASHTAG = "#"
+    private const val PREFIX_MENTION = "@"
+    private val PATTERN_HASHTAGS by lazy { Pattern.compile("(#\\w+)\\b") }
+    private val PATTERN_MENTIONS by lazy { Pattern.compile("(@\\w+)\\b") }
 
-    fun getHashTagsFromString(input: String): List<String> {
-        return getMatchedResultFromString(input, hashTagsPattern)
+    /**
+     * @param includePrefix - Whether to keep the prefix (#) in the result list
+     * */
+    fun getHashTagsFromString(input: String, includePrefix: Boolean = true): List<String> {
+        return getMatchedResultFromString(input, PATTERN_HASHTAGS, PREFIX_HASHTAG, includePrefix)
     }
 
-    fun getMentionsFromString(input: String): List<String> {
-        return getMatchedResultFromString(input, usernameMentionsPattern)
+    /**
+     * @param includePrefix - Whether to keep the prefix (@) in the result list
+     * */
+    fun getMentionsFromString(input: String, includePrefix: Boolean = true): List<String> {
+        return getMatchedResultFromString(input, PATTERN_MENTIONS, PREFIX_MENTION, includePrefix)
     }
 
-    private fun getMatchedResultFromString(input: String, pattern: Pattern, distinctResults: Boolean = true): List<String> {
+    private fun getMatchedResultFromString(input: String, pattern: Pattern, prefix: String,
+                                           includePrefix: Boolean = true, distinctResults: Boolean = true): List<String> {
         val results = mutableListOf<String>()
         val matcher = pattern.matcher(input)
 
         while (matcher.find()) {
-            results.add(matcher.group(1))
+            val result = if (includePrefix) {
+                matcher.group(1)
+            } else {
+                matcher.group(1).removePrefix(prefix)
+            }
+            results.add(result)
         }
 
         return if (distinctResults) {

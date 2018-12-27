@@ -9,7 +9,7 @@ import org.threeten.bp.ZonedDateTime
 @Parcelize
 data class PostReplyDto(
         @field:SerializedName("replyCount")
-        val replyCount: Int? = null,
+        var replyCount: Int? = null,
 
         @field:SerializedName("commentBy")
         val commentBy: ProfileDto? = null,
@@ -39,4 +39,4 @@ data class PostReplyDto(
         var subRepliesLoading: Boolean = false,
         var pendingReplyCount: Int = 0,
         var visibleReplyCount: Int = 0,
-        var subReplies: List<PostReplyDto> = emptyList()) : Parcelable
+        var subReplies: MutableList<PostReplyDto> = mutableListOf()) : Parcelable

@@ -35,10 +35,11 @@
 
     <ImageView
         android:id="@+id/ivLike"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_heart_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -77,6 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:background="?attr/selectableItemBackground"
         android:text="@string/post_details_btn_reply"
         android:textColor="@color/textGray"
         app:layout_constraintStart_toEndOf="@id/tvLikes"

@@ -71,6 +71,11 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
                 postDetailsAdapter.notifyHeaderChanged()
             }
         }
+
+        ivCloseReplyingTo.setOnClickListener {
+            llReplyingTo.gone()
+            etReply.setText("")
+        }
     }
 
     private fun observeChanges() {
@@ -147,6 +152,25 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
                 }
             }
         })
+
+        viewModel.addPostSubReply.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    resource.data?.let { newSubReply ->
+                        postDetailsAdapter.addSubReply(newSubReply)
+                    }
+                }
+
+                Status.ERROR -> {
+                    handleError(resource.error)
+                }
+
+                Status.LOADING -> {
+                }
+            }
+        })
     }
 
     private fun setupPostReplyEditText() {
@@ -211,7 +235,12 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
     }
 
     override fun onReplyClicked(reply: PostReplyDto, isTopLevelReply: Boolean) {
-
+        /*tvReplyingTo.text = getString(R.string.post_details_label_replying_to_with_username, reply.commentBy?.userName)
+        llReplyingTo.visible()
+        etReply.setText(String.format("@%s ", reply.commentBy?.userName))
+        etReply.setSelection(etReply.text.length)
+        etReply.showKeyboard()
+        viewModel.addPostSubReply("Test", reply)*/
     }
 
     override fun onLoadRepliesClicked(parentReply: PostReplyDto) {
