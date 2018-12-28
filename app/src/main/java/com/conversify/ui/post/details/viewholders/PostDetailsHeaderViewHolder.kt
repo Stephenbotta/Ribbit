@@ -61,7 +61,13 @@ class PostDetailsHeaderViewHolder(itemView: View,
         glide.load(post.user?.image?.thumbnail)
                 .into(itemView.ivProfile)
         itemView.tvTime.text = DateTimeUtils.formatChatListingTime(post.createdOnDateTime, itemView.context)
-        itemView.tvMessage.text = post.postText
+
+        if (post.postText.isNullOrBlank()) {
+            itemView.tvMessage.gone()
+        } else {
+            itemView.tvMessage.visible()
+            itemView.tvMessage.text = post.postText
+        }
 
         // Image is only visible when post type is image
         if (post.type == ApiConstants.GROUP_POST_TYPE_IMAGE) {

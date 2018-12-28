@@ -37,6 +37,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
     private val viewModel by lazy { ViewModelProviders.of(this)[PostDetailsViewModel::class.java] }
     private val focusReplyEditText by lazy { intent.getBooleanExtra(EXTRA_FOCUS_REPLY_EDIT_TEXT, false) }
     private lateinit var postDetailsAdapter: PostDetailsAdapter
+    private var replyingToTopLevelReply: PostReplyDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +76,23 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
         ivCloseReplyingTo.setOnClickListener {
             llReplyingTo.gone()
             etReply.setText("")
+            replyingToTopLevelReply = null
+        }
+
+        fabSendReply.setOnClickListener {
+            if (isNetworkActive()) {
+                val topLevelReply = replyingToTopLevelReply
+                if (topLevelReply == null) {
+                    viewModel.addPostReply(etReply.text.toString())
+                } else {
+                    viewModel.addPostSubReply(etReply.text.toString(), topLevelReply)
+                    replyingToTopLevelReply = null
+                }
+                etReply.setText("")
+                etReply.clearFocus()
+                etReply.hideKeyboard()
+                llReplyingTo.gone()
+            }
         }
     }
 
@@ -139,7 +157,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
             when (resource.status) {
                 Status.SUCCESS -> {
                     resource.data?.let { newReply ->
-                        postDetailsAdapter.addItem(newReply)
+                        postDetailsAdapter.addReply(newReply)
                         postDetailsAdapter.notifyHeaderChanged()
                     }
                 }
@@ -160,6 +178,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
                 Status.SUCCESS -> {
                     resource.data?.let { newSubReply ->
                         postDetailsAdapter.addSubReply(newSubReply)
+                        postDetailsAdapter.notifyHeaderChanged()
                     }
                 }
 
@@ -191,15 +210,6 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
                 }
             }
         })
-
-        fabSendReply.setOnClickListener {
-            if (isNetworkActive()) {
-                viewModel.addPostReply(etReply.text.toString())
-                etReply.setText("")
-                etReply.clearFocus()
-                etReply.hideKeyboard()
-            }
-        }
     }
 
     private fun getReplies() {
@@ -235,12 +245,23 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
     }
 
     override fun onReplyClicked(reply: PostReplyDto, isTopLevelReply: Boolean) {
-        /*tvReplyingTo.text = getString(R.string.post_details_label_replying_to_with_username, reply.commentBy?.userName)
+        val userName = if (isTopLevelReply) {
+            reply.commentBy?.userName
+        } else {
+            reply.replyBy?.userName
+        }
+
+        tvReplyingTo.text = getString(R.string.post_details_label_replying_to_with_username, userName)
         llReplyingTo.visible()
-        etReply.setText(String.format("@%s ", reply.commentBy?.userName))
+        etReply.setText(String.format("@%s ", userName))
         etReply.setSelection(etReply.text.length)
         etReply.showKeyboard()
-        viewModel.addPostSubReply("Test", reply)*/
+
+        replyingToTopLevelReply = if (isTopLevelReply) {
+            reply
+        } else {
+            postDetailsAdapter.getReply(reply.parentReplyId ?: "")
+        }
     }
 
     override fun onLoadRepliesClicked(parentReply: PostReplyDto) {

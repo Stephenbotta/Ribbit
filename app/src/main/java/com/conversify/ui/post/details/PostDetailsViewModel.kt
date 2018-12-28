@@ -18,6 +18,7 @@ import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 
 class PostDetailsViewModel : ViewModel() {
     val post by lazy { MutableLiveData<Resource<GroupPostDto>>() }
@@ -88,7 +89,11 @@ class PostDetailsViewModel : ViewModel() {
                 null)
         val parentReplyId = parentReply.id ?: ""
         val parentTotalSubRepliesCount = parentReply.replyCount ?: 0
-        val lastParentSubReplyId = parentReply.subReplies.firstOrNull()?.id
+        val lastParentSubReplyId = if (parentReply.visibleReplyCount > 0) {
+            parentReply.subReplies.firstOrNull()?.id
+        } else {
+            null
+        }
         RetrofitClient.conversifyApi
                 .getSubReplies(parentReplyId, parentTotalSubRepliesCount, lastParentSubReplyId)
                 .enqueue(object : Callback<ApiResponse<List<PostReplyDto>>> {
@@ -101,19 +106,17 @@ class PostDetailsViewModel : ViewModel() {
                             val receivedSubReplies = response.body()?.data ?: emptyList()
                             receivedSubReplies.forEach { receivedSubReply ->
                                 receivedSubReply.parentReplyId = parentReplyId
+                                receivedSubReply.parentReplyOwnerId = parentReply.commentBy?.id
                             }
 
-                            // Update sub-replies for the parent post
-                            val existingSubReplies = parentReply.subReplies
-                            val updatedSubReplies = mutableListOf<PostReplyDto>()
-                            updatedSubReplies.addAll(existingSubReplies)
-                            updatedSubReplies.addAll(0, receivedSubReplies)
-                            parentReply.subReplies = updatedSubReplies
+                            // Add received sub-replies to the parent post at the top
+                            parentReply.subReplies.addAll(0, receivedSubReplies)
 
                             // Update pending and visible reply count
                             val totalReplyCount = parentReply.replyCount ?: 0
-                            parentReply.pendingReplyCount = totalReplyCount - updatedSubReplies.size
-                            parentReply.visibleReplyCount = updatedSubReplies.size
+                            val subRepliesCount = parentReply.subReplies.size
+                            parentReply.visibleReplyCount = subRepliesCount
+                            parentReply.pendingReplyCount = totalReplyCount - subRepliesCount
 
                             val subReply = SubReplyDto(parentReply, receivedSubReplies)
                             subReplies.value = Resource.success(subReply)
@@ -147,8 +150,7 @@ class PostDetailsViewModel : ViewModel() {
                     override fun onResponse(call: Call<ApiResponse<PostReplyDto>>,
                                             response: Response<ApiResponse<PostReplyDto>>) {
                         if (response.isSuccessful) {
-                            postDetailsHeader.groupPost.repliesCount = (postDetailsHeader.groupPost.repliesCount
-                                    ?: 0) + 1
+                            incrementHeaderRepliesCount()
                             addPostReply.value = Resource.success(response.body()?.data)
                         } else {
                             addPostReply.value = Resource.error(response.getAppError())
@@ -159,6 +161,11 @@ class PostDetailsViewModel : ViewModel() {
                         addPostReply.value = Resource.error(t.failureAppError())
                     }
                 })
+    }
+
+    private fun incrementHeaderRepliesCount() {
+        val post = postDetailsHeader.groupPost
+        post.repliesCount = (post.repliesCount ?: 0) + 1
     }
 
     fun addPostSubReply(replyText: String, topLevelReply: PostReplyDto) {
@@ -180,19 +187,29 @@ class PostDetailsViewModel : ViewModel() {
                             if (addedSubReply != null) {
                                 // Update parent reply id
                                 addedSubReply.parentReplyId = topLevelReply.id
+                                addedSubReply.parentReplyOwnerId = topLevelReply.commentBy?.id
 
                                 // Add to existing sub-replies list
-                                topLevelReply.subReplies.add(addedSubReply)
+                                val topLevelTotalReplyCount = topLevelReply.replyCount ?: 0
 
-                                // Increment total reply count
-                                topLevelReply.replyCount = (topLevelReply.replyCount ?: 0) + 1
+                                if (topLevelTotalReplyCount == 0 || topLevelTotalReplyCount != topLevelReply.pendingReplyCount) {
+                                    Timber.i("Adding reply")
+                                    topLevelReply.subReplies.add(addedSubReply)
+                                }
+
+                                // Update total and pending reply count
+                                val newTotalReplyCount = topLevelTotalReplyCount + 1
+                                topLevelReply.replyCount = newTotalReplyCount
 
                                 // Increment visible reply count if it is non-zero
                                 if (topLevelReply.visibleReplyCount > 0) {
                                     topLevelReply.visibleReplyCount += 1
                                 }
 
-                                // todo update total replies count for post
+                                // Update pending reply count
+                                topLevelReply.pendingReplyCount = newTotalReplyCount - topLevelReply.subReplies.size
+
+                                incrementHeaderRepliesCount()
                             }
                             addPostSubReply.value = Resource.success(addedSubReply)
                         } else {

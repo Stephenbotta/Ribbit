@@ -70,9 +70,26 @@ class PostDetailsAdapter(private val glide: GlideRequests,
         notifyItemRangeInserted(oldListSize, items.size)
     }
 
-    fun addItem(newReply: PostReplyDto) {
+    fun addReply(newReply: PostReplyDto) {
         items.add(newReply)
         notifyItemInserted(items.size - 1)
+    }
+
+    fun addSubReply(newSubReply: PostReplyDto) {
+        val topLevelReplyIndex = items.indexOfFirst { it is PostReplyDto && it.id == newSubReply.parentReplyId }
+        if (topLevelReplyIndex != -1) {
+            val topLevelReply = items[topLevelReplyIndex] as PostReplyDto
+            if (topLevelReply.visibleReplyCount > 0) {
+                val newSubReplyIndex = topLevelReplyIndex + topLevelReply.visibleReplyCount
+                items.add(newSubReplyIndex, newSubReply)
+                notifyItemInserted(newSubReplyIndex)
+            }
+            notifyItemChanged(topLevelReplyIndex)
+        }
+    }
+
+    fun getReply(replyId: String): PostReplyDto? {
+        return items.firstOrNull { it is PostReplyDto && it.id == replyId } as? PostReplyDto
     }
 
     fun setLoading(visible: Boolean) {
@@ -146,19 +163,6 @@ class PostDetailsAdapter(private val glide: GlideRequests,
     fun notifyHeaderChanged() {
         if (items.firstOrNull() is PostDetailsHeader) {
             notifyItemChanged(0)
-        }
-    }
-
-    fun addSubReply(newSubReply: PostReplyDto) {
-        val topLevelReplyIndex = items.indexOfFirst { it is PostReplyDto && it.id == newSubReply.parentReplyId }
-        if (topLevelReplyIndex != -1) {
-            val topLevelReply = items[topLevelReplyIndex] as PostReplyDto
-            if (topLevelReply.visibleReplyCount > 0) {
-                val newSubReplyIndex = topLevelReplyIndex + topLevelReply.visibleReplyCount
-                items.add(newSubReplyIndex, newSubReply)
-                notifyItemInserted(newSubReplyIndex)
-            }
-            notifyItemChanged(topLevelReplyIndex)
         }
     }
 

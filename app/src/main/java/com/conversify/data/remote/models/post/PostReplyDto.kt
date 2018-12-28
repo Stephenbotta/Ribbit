@@ -36,6 +36,7 @@ data class PostReplyDto(
         var liked: Boolean? = null,
 
         var parentReplyId: String? = null,
+        var parentReplyOwnerId: String? = null,
         var subRepliesLoading: Boolean = false,
         var pendingReplyCount: Int = 0,
         var visibleReplyCount: Int = 0,
