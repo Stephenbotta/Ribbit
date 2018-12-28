@@ -4,11 +4,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
+    <android.support.v7.widget.AppCompatCheckedTextView
         android:id="@+id/btnPublic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
+        android:checkMark="@drawable/selector_venue_filter_category_checkmark"
+        android:gravity="center_vertical"
         android:paddingStart="20dp"
         android:paddingTop="16dp"
         android:paddingEnd="20dp"
@@ -16,11 +18,13 @@
         android:text="@string/venue_filters_btn_public"
         android:textColor="@color/textGray" />
 
-    <TextView
+    <android.support.v7.widget.AppCompatCheckedTextView
         android:id="@+id/btnPrivate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
+        android:checkMark="@drawable/selector_venue_filter_category_checkmark"
+        android:gravity="center_vertical"
         android:paddingStart="20dp"
         android:paddingTop="16dp"
         android:paddingEnd="20dp"

@@ -158,15 +158,17 @@
     <string name="chat_label_type_here">Type here</string>
     <string name="chat_message_invalid_video_path">Invalid video path</string>
 
-    <string name="venue_filter_label_category">Category</string>
+    <string name="venue_filters_label_category">Category</string>
     <string name="venue_filters_label_date">Date</string>
     <string name="venue_filters_label_privacy">Privacy</string>
     <string name="venue_filters_label_location">Location</string>
+    <string name="venue_filters_label_confirm_reset_filter">Confirm reset filters?</string>
     <string name="venue_filters_btn_reset">Reset</string>
     <string name="venue_filters_btn_select_date">Select date</string>
     <string name="venue_filters_btn_public">Public</string>
     <string name="venue_filters_btn_private">Private</string>
     <string name="venue_filters_btn_select_location">Select location</string>
+    <string name="venue_filters_btn_apply">Apply</string>
 
     <string name="venue_details_label_share">Share</string>
     <string name="venue_details_label_more">More</string>

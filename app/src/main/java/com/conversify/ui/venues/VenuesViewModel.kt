@@ -7,16 +7,13 @@ import android.support.annotation.StringRes
 import com.conversify.R
 import com.conversify.data.local.UserManager
 import com.conversify.data.local.models.VenueFilters
+import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.Resource
-import com.conversify.data.remote.models.venues.GetVenuesResponse
-import com.conversify.data.remote.models.venues.VenueDto
-import com.conversify.data.remote.models.venues.VenuesNearYouDto
-import com.conversify.data.remote.models.venues.YourVenuesDto
-import com.conversify.utils.AppConstants
+import com.conversify.data.remote.models.venues.*
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
@@ -77,23 +74,9 @@ class VenuesViewModel(application: Application) : AndroidViewModel(application) 
                         }
                     })
         } else {
-            val categoryId = filter.category?.id
-            val date = DateTimeUtils.formatVenueFiltersDateForServer(filter.date?.dateTimeMillisUtc)
-            val isPrivate = when {
-                filter.privacy?.isPrivate == null -> null
-
-                else -> if (filter.privacy.isPrivate == true) {
-                    AppConstants.PRIVATE_TRUE
-                } else {
-                    AppConstants.PRIVATE_FALSE
-                }
-            }
+            val request = getVenuesWithFilterRequest(filter)
             RetrofitClient.conversifyApi
-                    .getVenuesWithFilter(categoryId = categoryId,
-                            date = date,
-                            isPrivate = isPrivate,
-                            latitude = filter.location?.latitude,
-                            longitude = filter.location?.longitude)
+                    .getVenuesWithFilter(request)
                     .enqueue(object : Callback<ApiResponse<List<VenueDto>>> {
                         override fun onResponse(call: Call<ApiResponse<List<VenueDto>>>,
                                                 response: Response<ApiResponse<List<VenueDto>>>) {
@@ -122,6 +105,27 @@ class VenuesViewModel(application: Application) : AndroidViewModel(application) 
                         }
                     })
         }
+    }
+
+    private fun getVenuesWithFilterRequest(filter: VenueFilters): GetVenuesWithFilterRequest {
+        val date = DateTimeUtils.formatVenueFiltersDateForServer(filter.date?.dateTimeMillisUtc)
+        val privacy = when {
+            filter.privacy?.publicSelected == true && filter.privacy?.privateSelected == true ->
+                listOf(ApiConstants.PRIVACY_PUBLIC, ApiConstants.PRIVACY_PRIVATE)
+
+            filter.privacy?.publicSelected == true -> listOf(ApiConstants.PRIVACY_PUBLIC)
+
+            filter.privacy?.privateSelected == true -> listOf(ApiConstants.PRIVACY_PRIVATE)
+
+            else -> null
+        }
+
+        return GetVenuesWithFilterRequest(
+                categoryIds = filter.categories?.filter { it.selected }?.mapNotNull { it.id },
+                date = date,
+                privacy = privacy,
+                latitude = filter.location?.latitude,
+                longitude = filter.location?.longitude)
     }
 
     fun getMapVenues() {
@@ -163,23 +167,9 @@ class VenuesViewModel(application: Application) : AndroidViewModel(application) 
                         }
                     })
         } else {
-            val categoryId = filter.category?.id
-            val date = DateTimeUtils.formatVenueFiltersDateForServer(filter.date?.dateTimeMillisUtc)
-            val isPrivate = when {
-                filter.privacy?.isPrivate == null -> null
-
-                else -> if (filter.privacy.isPrivate == true) {
-                    AppConstants.PRIVATE_TRUE
-                } else {
-                    AppConstants.PRIVATE_FALSE
-                }
-            }
+            val request = getVenuesWithFilterRequest(filter)
             RetrofitClient.conversifyApi
-                    .getVenuesWithFilter(categoryId = categoryId,
-                            date = date,
-                            isPrivate = isPrivate,
-                            latitude = filter.location?.latitude,
-                            longitude = filter.location?.longitude)
+                    .getVenuesWithFilter(request)
                     .enqueue(object : Callback<ApiResponse<List<VenueDto>>> {
                         override fun onResponse(call: Call<ApiResponse<List<VenueDto>>>,
                                                 response: Response<ApiResponse<List<VenueDto>>>) {
@@ -294,16 +284,16 @@ class VenuesViewModel(application: Application) : AndroidViewModel(application) 
 
     private fun getAppliedFilterLabel(): String? {
         return when {
-            filters?.category?.name != null -> {
-                filters?.category?.name
+            filters?.categories != null -> {
+                filters?.categories?.filter { it.selected }?.mapNotNull { it.name }?.joinToString()
             }
 
             filters?.date?.dateTimeMillisUtc != null -> {
                 return DateTimeUtils.formatVenueFiltersDate(filters?.date?.dateTimeMillisUtc)
             }
 
-            filters?.privacy?.isPrivate != null -> {
-                if (filters?.privacy?.isPrivate == true) {
+            filters?.privacy != null -> {
+                if (filters?.privacy?.privateSelected == true) {
                     getString(R.string.venue_filters_btn_private)
                 } else {
                     getString(R.string.venue_filters_btn_public)

@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.item_venue_filter_date.view.*
 import kotlinx.android.synthetic.main.item_venue_filter_location.view.*
 import kotlinx.android.synthetic.main.item_venue_filter_privacy.view.*
 
-class FiltersCategoryAdapter(private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class VenueFiltersAdapter(private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val VIEW_TYPE_CATEGORY = 0
         private const val VIEW_TYPE_DATE = 1
@@ -25,11 +25,11 @@ class FiltersCategoryAdapter(private val callback: Callback) : RecyclerView.Adap
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            VIEW_TYPE_CATEGORY -> CategoryViewHolder(parent.inflate(R.layout.item_venue_filter_category), callback)
+            VIEW_TYPE_CATEGORY -> CategoryViewHolder(parent.inflate(R.layout.item_venue_filter_category))
 
             VIEW_TYPE_DATE -> DateViewHolder(parent.inflate(R.layout.item_venue_filter_date), callback)
 
-            VIEW_TYPE_PRIVACY -> PrivacyViewHolder(parent.inflate(R.layout.item_venue_filter_privacy), callback)
+            VIEW_TYPE_PRIVACY -> PrivacyViewHolder(parent.inflate(R.layout.item_venue_filter_privacy))
 
             VIEW_TYPE_LOCATION -> LocationViewHolder(parent.inflate(R.layout.item_venue_filter_location), callback)
 
@@ -50,6 +50,12 @@ class FiltersCategoryAdapter(private val callback: Callback) : RecyclerView.Adap
 
             is DateViewHolder -> {
                 if (item is VenueFilters.Date) {
+                    holder.bind(item)
+                }
+            }
+
+            is PrivacyViewHolder -> {
+                if (item is VenueFilters.Privacy) {
                     holder.bind(item)
                 }
             }
@@ -77,10 +83,13 @@ class FiltersCategoryAdapter(private val callback: Callback) : RecyclerView.Adap
         notifyDataSetChanged()
     }
 
-    class CategoryViewHolder(itemView: View,
-                             private val callback: CategoryViewHolder.Callback) : RecyclerView.ViewHolder(itemView) {
+    class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
-            itemView.setOnClickListener { callback.onVenueCategoryClicked(category) }
+            itemView.tvCategory.setOnClickListener {
+                val checked = !itemView.tvCategory.isChecked
+                category.selected = checked
+                itemView.tvCategory.isChecked = checked
+            }
         }
 
         private lateinit var category: InterestDto
@@ -88,10 +97,7 @@ class FiltersCategoryAdapter(private val callback: Callback) : RecyclerView.Adap
         fun bind(category: InterestDto) {
             this.category = category
             itemView.tvCategory.text = category.name
-        }
-
-        interface Callback {
-            fun onVenueCategoryClicked(category: InterestDto)
+            itemView.tvCategory.isChecked = category.selected
         }
     }
 
@@ -110,15 +116,26 @@ class FiltersCategoryAdapter(private val callback: Callback) : RecyclerView.Adap
         }
     }
 
-    class PrivacyViewHolder(itemView: View,
-                            private val callback: PrivacyViewHolder.Callback) : RecyclerView.ViewHolder(itemView) {
+    class PrivacyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
-            itemView.btnPublic.setOnClickListener { callback.onPrivacySelected(false) }
-            itemView.btnPrivate.setOnClickListener { callback.onPrivacySelected(true) }
+            itemView.btnPublic.setOnClickListener {
+                val checked = !itemView.btnPublic.isChecked
+                privacy.publicSelected = checked
+                itemView.btnPublic.isChecked = checked
+            }
+            itemView.btnPrivate.setOnClickListener {
+                val checked = !itemView.btnPrivate.isChecked
+                privacy.privateSelected = checked
+                itemView.btnPrivate.isChecked = checked
+            }
         }
 
-        interface Callback {
-            fun onPrivacySelected(isPrivate: Boolean)
+        private lateinit var privacy: VenueFilters.Privacy
+
+        fun bind(privacy: VenueFilters.Privacy) {
+            this.privacy = privacy
+            itemView.btnPublic.isChecked = privacy.publicSelected
+            itemView.btnPrivate.isChecked = privacy.privateSelected
         }
     }
 
@@ -137,6 +154,5 @@ class FiltersCategoryAdapter(private val callback: Callback) : RecyclerView.Adap
         }
     }
 
-    interface Callback : CategoryViewHolder.Callback, DateViewHolder.Callback,
-            PrivacyViewHolder.Callback, LocationViewHolder.Callback
+    interface Callback : DateViewHolder.Callback, LocationViewHolder.Callback
 }

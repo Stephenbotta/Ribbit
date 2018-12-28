@@ -42,7 +42,7 @@
             style="@style/VenueFiltersParent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/venue_filter_label_category" />
+            android:text="@string/venue_filters_label_category" />
 
         <RadioButton
             android:id="@+id/rbDate"
@@ -80,13 +80,26 @@
         app:layout_constraintEnd_toEndOf="@id/rgTypes"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <android.support.design.button.MaterialButton
+        android:id="@+id/btnApply"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/venue_filters_btn_apply"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/rvFilterItems" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvFilterItems"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnApply"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/rgTypes"
         app:layout_constraintTop_toBottomOf="@id/btnClose"

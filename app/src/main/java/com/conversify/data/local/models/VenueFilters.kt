@@ -5,20 +5,21 @@ import com.conversify.data.remote.models.loginsignup.InterestDto
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class VenueFilters(val category: InterestDto? = null,
-                        val date: Date? = null,
-                        val privacy: Privacy? = null,
-                        val location: Location? = null) : Parcelable {
+data class VenueFilters(var categories: List<InterestDto>? = null,
+                        var date: Date? = null,
+                        var privacy: Privacy? = null,
+                        var location: Location? = null) : Parcelable {
 
     @Parcelize
-    data class Date(val dateTimeMillisUtc: Long? = null) : Parcelable
+    data class Date(var dateTimeMillisUtc: Long? = null) : Parcelable
 
     @Parcelize
-    data class Privacy(val isPrivate: Boolean? = null) : Parcelable
+    data class Privacy(var publicSelected: Boolean = false,
+                       var privateSelected: Boolean = false) : Parcelable
 
     @Parcelize
     data class Location(
-            var name: String,
-            var latitude: Double,
-            var longitude: Double) : Parcelable
+            var name: String? = null,
+            var latitude: Double? = null,
+            var longitude: Double? = null) : Parcelable
 }

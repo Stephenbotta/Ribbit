@@ -10,6 +10,9 @@ object ApiConstants {
     const val TYPE_VENUE = "VENUE"
     const val TYPE_GROUP = "GROUP"
 
+    const val PRIVACY_PRIVATE = 1
+    const val PRIVACY_PUBLIC = 2
+
     // Sent and received for api use
     const val FLAG_REGISTER_FACEBOOK = 1
     const val FLAG_REGISTER_GOOGLE = 2

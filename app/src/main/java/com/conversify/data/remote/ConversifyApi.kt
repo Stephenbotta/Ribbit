@@ -11,6 +11,7 @@ import com.conversify.data.remote.models.post.CreatePostRequest
 import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.data.remote.models.venues.CreateEditVenueRequest
 import com.conversify.data.remote.models.venues.GetVenuesResponse
+import com.conversify.data.remote.models.venues.GetVenuesWithFilterRequest
 import com.conversify.data.remote.models.venues.VenueDto
 import retrofit2.Call
 import retrofit2.http.Body
@@ -59,12 +60,7 @@ interface ConversifyApi {
                   @Field("currentLong") longitude: Double? = null): Call<ApiResponse<GetVenuesResponse>>
 
     @POST("user/getVenueFilter")
-    @FormUrlEncoded
-    fun getVenuesWithFilter(@Field("categoryId") categoryId: String? = null,
-                            @Field("date") date: String? = null,
-                            @Field("private") isPrivate: Int? = null,
-                            @Field("locationLat") latitude: Double? = null,
-                            @Field("locationLong") longitude: Double? = null): Call<ApiResponse<List<VenueDto>>>
+    fun getVenuesWithFilter(@Body request: GetVenuesWithFilterRequest): Call<ApiResponse<List<VenueDto>>>
 
     @POST("user/updateUserCategories")
     @FormUrlEncoded

@@ -5,10 +5,12 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.app.AlertDialog
+import android.widget.TextView
 import com.conversify.R
 import com.conversify.data.MemoryCache
 import com.conversify.data.local.models.VenueFilters
-import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.ui.base.BaseActivity
 import com.conversify.utils.AppConstants
 import com.google.android.gms.location.places.ui.PlacePicker
@@ -17,7 +19,7 @@ import org.threeten.bp.LocalDate
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 
-class VenueFiltersActivity : BaseActivity(), FiltersCategoryAdapter.Callback {
+class VenueFiltersActivity : BaseActivity(), VenueFiltersAdapter.Callback {
     companion object {
         private const val EXTRA_FILTERS = "EXTRA_VENUE_FILTERS"
 
@@ -30,74 +32,81 @@ class VenueFiltersActivity : BaseActivity(), FiltersCategoryAdapter.Callback {
         }
     }
 
+    private lateinit var venueFiltersAdapter: VenueFiltersAdapter
+    private lateinit var filters: VenueFilters
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_venue_filters)
 
+        setListeners()
+        setupFilterRecycler()
+        setupVenueFilters()
+    }
+
+    private fun setListeners() {
         btnClose.setOnClickListener { onBackPressed() }
 
         btnReset.setOnClickListener {
-            setResult(Activity.RESULT_OK)
-            finish()
+            showResetFiltersConfirmationDialog()
         }
 
-        val filtersCategoryAdapter = FiltersCategoryAdapter(this)
-        rvFilterItems.adapter = filtersCategoryAdapter
+        btnApply.setOnClickListener {
+            setResult(Activity.RESULT_OK, Intent().putExtra(AppConstants.EXTRA_VENUE_FILTERS, filters))
+            finish()
+        }
+    }
 
+    private fun setupFilterRecycler() {
+        venueFiltersAdapter = VenueFiltersAdapter(this)
+        rvFilterItems.adapter = venueFiltersAdapter
+    }
+
+    private fun setupVenueFilters() {
         // Filter will be available in extra if user has already applied once, otherwise null.
-        val filters = intent.getParcelableExtra<VenueFilters?>(EXTRA_FILTERS)
+        filters = intent.getParcelableExtra<VenueFilters?>(EXTRA_FILTERS) ?: VenueFilters()
 
         // Form the filter items for each option
-        val categories = MemoryCache.getInterests()
-        val date = listOf(filters?.date ?: VenueFilters.Date())
-        val privacy = listOf(filters?.privacy ?: VenueFilters.Privacy())
-        val location = listOf(filters?.location ?: VenueFilters.Location("", 0.0, 0.0))
+        val categories = filters.categories ?: MemoryCache.getInterests()
+
+        val filterDate = filters.date ?: VenueFilters.Date()
+        val date = listOf(filterDate)
+
+        val filterPrivacy = filters.privacy ?: VenueFilters.Privacy()
+        val privacy = listOf(filterPrivacy)
+
+        val filterLocation = filters.location ?: VenueFilters.Location()
+        val location = listOf(filterLocation)
+
+        // Update filter types
+        filters.categories = categories
+        filters.date = filterDate
+        filters.privacy = filterPrivacy
+        filters.location = filterLocation
 
         // Display the filter items for the option that is selected
         rgTypes.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.rbCategory -> {
-                    filtersCategoryAdapter.displayItems(categories)
+                    venueFiltersAdapter.displayItems(categories)
                 }
 
                 R.id.rbDate -> {
-                    filtersCategoryAdapter.displayItems(date)
+                    venueFiltersAdapter.displayItems(date)
                 }
 
                 R.id.rbPrivacy -> {
-                    filtersCategoryAdapter.displayItems(privacy)
+                    venueFiltersAdapter.displayItems(privacy)
                 }
 
                 R.id.rbLocation -> {
-                    filtersCategoryAdapter.displayItems(location)
+                    venueFiltersAdapter.displayItems(location)
                 }
             }
         }
 
-        // Check the radio button whose value is available in the filter
-        rgTypes.check(when {
-            filters?.date != null -> {
-                rbDate.id
-            }
-
-            filters?.privacy != null -> {
-                rbPrivacy.id
-            }
-
-            filters?.location != null -> {
-                rbLocation.id
-            }
-
-            else -> {
-                rbCategory.id
-            }
-        })
-    }
-
-    override fun onVenueCategoryClicked(category: InterestDto) {
-        // Send the result with only category filter
-        val filters = VenueFilters(category = category)
-        sendFiltersResult(filters)
+        // Select category by default
+        rgTypes.check(rbCategory.id)
     }
 
     override fun onSelectDateClicked() {
@@ -107,18 +116,12 @@ class VenueFiltersActivity : BaseActivity(), FiltersCategoryAdapter.Callback {
                     0, 0, 0, 0, ZoneId.systemDefault())
             val selectedTimestamp: Long = zonedDateTime.toEpochSecond() * 1000
 
-            // Send the result with only date filter
-            val filters = VenueFilters(date = VenueFilters.Date(selectedTimestamp))
-            sendFiltersResult(filters)
+            // Update the date filter and notify adapter change
+            filters.date?.dateTimeMillisUtc = selectedTimestamp
+            venueFiltersAdapter.notifyDataSetChanged()
         }, date.year, date.monthValue - 1, date.dayOfMonth)
         dialog.datePicker.minDate = System.currentTimeMillis()
         dialog.show()
-    }
-
-    override fun onPrivacySelected(isPrivate: Boolean) {
-        // Send the result with only privacy filter
-        val filters = VenueFilters(privacy = VenueFilters.Privacy(isPrivate))
-        sendFiltersResult(filters)
     }
 
     override fun onSelectLocationClicked() {
@@ -126,9 +129,18 @@ class VenueFiltersActivity : BaseActivity(), FiltersCategoryAdapter.Callback {
         startActivityForResult(builder.build(this), AppConstants.REQ_CODE_PLACE_PICKER)
     }
 
-    private fun sendFiltersResult(filters: VenueFilters) {
-        setResult(Activity.RESULT_OK, Intent().putExtra(AppConstants.EXTRA_VENUE_FILTERS, filters))
-        finish()
+    private fun showResetFiltersConfirmationDialog() {
+        val dialog = AlertDialog.Builder(this)
+                .setMessage(R.string.venue_filters_label_confirm_reset_filter)
+                .setPositiveButton(R.string.venue_filters_btn_reset) { _, _ ->
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+        dialog.show()
+        val typeface = ResourcesCompat.getFont(this, R.font.brandon_text_regular)
+        dialog.findViewById<TextView>(android.R.id.message)?.typeface = typeface
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -145,13 +157,12 @@ class VenueFiltersActivity : BaseActivity(), FiltersCategoryAdapter.Callback {
             } else {
                 ""
             }
-            val locationFilter = VenueFilters.Location(name = locationName,
-                    latitude = place.latLng.latitude,
-                    longitude = place.latLng.longitude)
 
-            // Send the result with only location filter
-            val filters = VenueFilters(location = locationFilter)
-            sendFiltersResult(filters)
+            // Update the location filter and notify adapter change
+            filters.location?.name = locationName
+            filters.location?.latitude = place.latLng.latitude
+            filters.location?.longitude = place.latLng.longitude
+            venueFiltersAdapter.notifyDataSetChanged()
         }
     }
 }
