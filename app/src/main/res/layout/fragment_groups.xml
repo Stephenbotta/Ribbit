@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:queryBackground="@color/transparent"
-        app:queryHint="@string/groups_label_search_for_groups"
+        app:queryHint="@string/groups_label_search_for_channels"
         app:searchIcon="@drawable/ic_search" />
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/groups_label_no_groups_found"
+                android:text="@string/groups_label_no_channels_found"
                 android:textColor="@color/textGray" />
 
         </ViewSwitcher>

@@ -32,6 +32,6 @@
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/brandon_text_bold"
         android:orientation="vertical"
-        android:text="@string/new_post_label_choose_a_group_you_want_to_post_into"
+        android:text="@string/new_post_label_choose_a_channel_you_want_to_post_into"
         android:textColor="@color/colorPrimary" />
 </LinearLayout>

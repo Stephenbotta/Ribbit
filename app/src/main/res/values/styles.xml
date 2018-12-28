@@ -45,7 +45,7 @@
     </style>
 
     <style name="ExploreTabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:fontFamily">@font/brandon_text_bold</item>
         <item name="textAllCaps">true</item>

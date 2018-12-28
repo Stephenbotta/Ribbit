@@ -17,7 +17,7 @@
         android:gravity="center_vertical"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:text="@string/create_group_label_groups"
+        android:text="@string/create_group_label_channels"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp" />
 
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/groups_label_no_groups_found"
+                android:text="@string/groups_label_no_channels_found"
                 android:textColor="@color/textGray" />
         </ViewSwitcher>
     </android.support.v4.widget.SwipeRefreshLayout>

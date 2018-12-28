@@ -73,7 +73,7 @@
             android:id="@+id/etGroupTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/create_group_label_group_s_title"
+            android:hint="@string/create_group_label_channel_s_title"
             android:inputType="textCapSentences"
             android:maxLength="@integer/venue_title_max_length"
             android:singleLine="true"

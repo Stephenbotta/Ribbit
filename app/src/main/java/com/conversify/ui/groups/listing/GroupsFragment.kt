@@ -99,7 +99,7 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
         fabGroups.addActionItem(SpeedDialActionItem.Builder(R.id.fabAddGroup, R.drawable.ic_plus_white)
                 .setFabBackgroundColor(colorWhite)
                 .setFabImageTintColor(colorPrimary)
-                .setLabel(R.string.groups_label_add_new_group)
+                .setLabel(R.string.groups_label_add_new_channel)
                 .setLabelColor(colorPrimary)
                 .create())
 

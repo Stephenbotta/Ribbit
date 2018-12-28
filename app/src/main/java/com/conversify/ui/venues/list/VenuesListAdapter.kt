@@ -29,7 +29,7 @@ class VenuesListAdapter(private val glide: GlideRequests,
 
             VIEW_TYPE_MY_VENUE, VIEW_TYPE_NEARBY_VENUE -> VenueViewHolder(parent.inflate(R.layout.item_venue), glide, callback)
 
-            VIEW_TYPE_LABEL_VENUES_NEAR -> VenuesNearLabelViewHolder(parent.inflate(R.layout.item_venue_venues_near_you_label), callback)
+            VIEW_TYPE_LABEL_VENUES_NEAR -> VenuesNearLabelViewHolder(parent.inflate(R.layout.item_venue_venues_near_you_label))
 
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -100,5 +100,5 @@ class VenuesListAdapter(private val glide: GlideRequests,
         }
     }
 
-    interface Callback : VenueViewHolder.Callback, VenuesNearLabelViewHolder.Callback
+    interface Callback : VenueViewHolder.Callback
 }

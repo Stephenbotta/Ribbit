@@ -81,4 +81,7 @@ data class ProfileDto(
         @field:SerializedName("isProfileComplete")
         val isProfileComplete: Boolean? = null,
 
+        @field:SerializedName("groupCount")
+        var groupCount: Int? = null,
+
         var isSelected: Boolean = false) : Parcelable

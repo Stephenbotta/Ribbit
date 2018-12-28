@@ -34,6 +34,7 @@ object UserManager {
         PrefsManager.get().save(PrefsManager.PREF_ACCESS_TOKEN, profile.accessToken ?: "")
         PrefsManager.get().save(PrefsManager.PREF_USER_PROFILE, profile)
         PrefsManager.get().save(PrefsManager.PREF_USER_ID, profile.id ?: "")
+        PrefsManager.get().save(PrefsManager.PREF_GROUP_COUNT, profile.groupCount ?: 0)
     }
 
     fun updateLocation(location: Location) {
@@ -68,7 +69,7 @@ object UserManager {
         if (!isLastLocationUpdated()) {
             return null
         }
-        
+
         val longitude = PrefsManager.get().getFloat(PrefsManager.PREF_LONGITUDE, 0.0f)
         return if (longitude == 0.0f) {
             null
@@ -90,10 +91,15 @@ object UserManager {
         PrefsManager.get().remove(PrefsManager.PREF_ACCESS_TOKEN)
         PrefsManager.get().remove(PrefsManager.PREF_USER_PROFILE)
         PrefsManager.get().remove(PrefsManager.PREF_USER_ID)
+        PrefsManager.get().remove(PrefsManager.PREF_GROUP_COUNT)
     }
 
     fun getUserId(): String {
         return PrefsManager.get().getString(PrefsManager.PREF_USER_ID, "")
+    }
+
+    fun getGroupCount(): Int {
+        return PrefsManager.get().getInt(PrefsManager.PREF_GROUP_COUNT, 0)
     }
 
     fun getUniqueId(): String {

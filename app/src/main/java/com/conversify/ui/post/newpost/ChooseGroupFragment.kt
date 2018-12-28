@@ -54,14 +54,17 @@ class ChooseGroupFragment : BaseFragment() {
             when (resource.status) {
                 Status.SUCCESS -> {
                     val groups = resource.data ?: emptyList()
+                    adapter.setLoading(false)
                     adapter.displayGroups(groups)
                 }
 
                 Status.ERROR -> {
                     handleError(resource.error)
+                    adapter.setLoading(false)
                 }
 
                 Status.LOADING -> {
+                    adapter.setLoading(true)
                 }
             }
         })

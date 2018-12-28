@@ -275,7 +275,7 @@ class VenuesViewModel(application: Application) : AndroidViewModel(application) 
         }
 
         if (nearbyVenues.isNotEmpty()) {
-            venueItems.add(VenuesNearYouDto(getAppliedFilterLabel()))
+            venueItems.add(VenuesNearYouDto())
             venueItems.addAll(nearbyVenues)
         }
 

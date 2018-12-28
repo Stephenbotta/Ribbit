@@ -19,7 +19,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/brandon_text_bold"
-        android:text="@string/create_group_label_create_a_group"
+        android:text="@string/create_group_label_create_a_channel"
         android:textColor="@color/textGray"
         android:textSize="32sp" />
 

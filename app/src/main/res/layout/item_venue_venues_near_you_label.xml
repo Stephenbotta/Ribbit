@@ -8,30 +8,14 @@
     android:paddingBottom="8dp">
 
     <TextView
+        android:id="@+id/tvLabelSuggested"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_toStartOf="@id/tvLabelFilter"
         android:ellipsize="end"
         android:fontFamily="@font/brandon_text_bold"
         android:maxLines="1"
-        android:text="@string/venues_label_venues_near_you"
+        android:text="@string/venues_label_suggested"
         android:textColor="@color/textGray"
         android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/tvLabelFilter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:background="?attr/selectableItemBackground"
-        android:drawableEnd="@drawable/ic_arrow_down_blue"
-        android:drawablePadding="4dp"
-        android:fontFamily="@font/brandon_text_bold"
-        android:gravity="center_vertical"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
-        android:text="@string/venues_label_suggested"
-        android:textColor="@color/colorPrimary" />
 
 </RelativeLayout>

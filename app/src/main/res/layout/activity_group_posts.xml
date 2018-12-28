@@ -16,7 +16,7 @@
         android:gravity="center_vertical"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:text="@string/create_group_label_groups"
+        android:text="@string/create_group_label_channels"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"

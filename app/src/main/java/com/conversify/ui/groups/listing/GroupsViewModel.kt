@@ -2,6 +2,7 @@ package com.conversify.ui.groups.listing
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.conversify.data.local.UserManager
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
@@ -38,6 +39,11 @@ class GroupsViewModel : ViewModel() {
                             val suggestedGroups = response.body()?.data?.suggestedGroups
                                     ?: emptyList()
                             val yourGroups = response.body()?.data?.yourGroups ?: emptyList()
+
+                            // Update group count in user's profile
+                            val profile = UserManager.getProfile()
+                            profile.groupCount = yourGroups.size
+                            UserManager.saveProfile(profile)
 
                             this@GroupsViewModel.yourGroups.clear()
                             this@GroupsViewModel.yourGroups.addAll(yourGroups)

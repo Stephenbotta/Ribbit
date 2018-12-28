@@ -24,7 +24,7 @@
             android:drawablePadding="6dp"
             android:fontFamily="@font/brandon_text_bold"
             android:gravity="center_vertical"
-            android:text="@string/create_group_label_groups"
+            android:text="@string/create_group_label_channels"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
     </android.support.v7.widget.Toolbar>
