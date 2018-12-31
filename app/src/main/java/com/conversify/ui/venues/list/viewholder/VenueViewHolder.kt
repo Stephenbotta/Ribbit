@@ -1,8 +1,11 @@
 package com.conversify.ui.venues.list.viewholder
 
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.conversify.R
+import com.conversify.data.remote.ApiConstants
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.gone
 import com.conversify.extensions.visible
@@ -19,18 +22,30 @@ class VenueViewHolder(itemView: View,
         itemView.btnMore.setOnClickListener { }
     }
 
+    private val requestPendingColor by lazy { ContextCompat.getColor(itemView.context, R.color.colorPrimary) }
+    private val requestRejectedColor by lazy { ContextCompat.getColor(itemView.context, R.color.red) }
     private lateinit var venue: VenueDto
 
-    fun bind(venue: VenueDto) {
+    fun bind(venue: VenueDto, ownProfile: ProfileDto) {
         this.venue = venue
 
         if (venue.isMember == true) {
             itemView.btnMore.visible()
             itemView.tvDistance.gone()
+            itemView.ivStatus.visible()
+
+            // If status is admin, then show user's own image otherwise show a tick which denotes user is a member.
+            if (venue.participationRole == ApiConstants.PARTICIPATION_ROLE_ADMIN) {
+                glide.load(ownProfile.image?.thumbnail)
+                        .into(itemView.ivStatus)
+            } else {
+                itemView.ivStatus.setImageResource(R.drawable.ic_tick_circle_blue)
+            }
         } else {
             itemView.btnMore.gone()
+            itemView.ivStatus.gone()
 
-            // For nearby listVenues, if distance does not exist then hide the distance view.
+            // For nearby list venues, if distance does not exist then hide the distance view.
             if (venue.distance == null) {
                 itemView.tvDistance.gone()
             } else {
@@ -44,10 +59,26 @@ class VenueViewHolder(itemView: View,
             itemView.ivPrivate.gone()
         }
 
-        glide.load(venue.imageUrl?.original)
-                .thumbnail(glide.load(venue.imageUrl?.thumbnail))
-                .placeholder(R.color.greyImageBackground)
-                .error(R.color.greyImageBackground)
+        // Only visible when request is pending or rejected
+        when (venue.requestStatus) {
+            ApiConstants.REQUEST_STATUS_PENDING -> {
+                itemView.tvRequestStatus.visible()
+                itemView.tvRequestStatus.setText(R.string.venues_label_pending)
+                itemView.tvRequestStatus.setTextColor(requestPendingColor)
+            }
+
+            ApiConstants.REQUEST_STATUS_REJECTED -> {
+                itemView.tvRequestStatus.visible()
+                itemView.tvRequestStatus.setText(R.string.venues_label_rejected)
+                itemView.tvRequestStatus.setTextColor(requestRejectedColor)
+            }
+
+            else -> {
+                itemView.tvRequestStatus.gone()
+            }
+        }
+
+        glide.load(venue.imageUrl?.thumbnail)
                 .into(itemView.ivVenue)
 
         itemView.tvVenueName.text = venue.name

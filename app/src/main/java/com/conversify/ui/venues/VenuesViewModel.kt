@@ -13,6 +13,7 @@ import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.Resource
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.venues.*
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.SingleLiveEvent
@@ -28,10 +29,25 @@ class VenuesViewModel(application: Application) : AndroidViewModel(application) 
     private val myVenues by lazy { mutableListOf<VenueDto>() }
     private val nearbyVenues by lazy { mutableListOf<VenueDto>() }
 
+    private var ownProfile = UserManager.getProfile()
+
     private var filters: VenueFilters? = null
 
     private var searchListQuery = ""
     private var searchMapQuery = ""
+
+    /**
+     * @return Last updated profile of logged in user.
+     * */
+    fun getOwnProfile() = ownProfile
+
+    /**
+     * @return Updated own profile. Should be called once after profile is updated.
+     * */
+    fun updatedOwnProfile(): ProfileDto {
+        ownProfile = UserManager.getProfile()
+        return ownProfile
+    }
 
     fun getListVenues(showLoading: Boolean = true) {
         if (showLoading) {
@@ -210,9 +226,13 @@ class VenuesViewModel(application: Application) : AndroidViewModel(application) 
                 .enqueue(object : Callback<Any> {
                     override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         if (response.isSuccessful) {
-                            // If venue is public then set member flag to true
-                            if (venue.isPrivate == false) {
+                            if (venue.isPrivate == true) {
+                                // If venue is private then set request status to pending
+                                venue.requestStatus = ApiConstants.REQUEST_STATUS_PENDING
+                            } else {
+                                // If venue is public then set member flag to true and set role to member
                                 venue.isMember = true
+                                venue.participationRole = ApiConstants.PARTICIPATION_ROLE_MEMBER
                             }
                             joinVenue.value = Resource.success(venue)
                         } else {

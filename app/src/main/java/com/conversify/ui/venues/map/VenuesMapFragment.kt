@@ -19,22 +19,23 @@ import com.conversify.ui.main.explore.VenuesModeNavigator
 import com.conversify.ui.venues.VenuesViewModel
 import com.conversify.ui.venues.chat.ChatActivity
 import com.conversify.ui.venues.filters.VenueFiltersActivity
+import com.conversify.ui.venues.list.VenuesListAdapter
 import com.conversify.utils.AppConstants
-import com.conversify.utils.AppUtils
 import com.conversify.utils.GlideApp
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import kotlinx.android.synthetic.main.fragment_venues_map.*
 
-class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
+class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback, VenuesListAdapter.Callback {
     companion object {
         const val TAG = "VenuesMapFragment"
     }
 
     private lateinit var viewModel: VenuesViewModel
     private lateinit var loadingDialog: LoadingDialog
+    private lateinit var selectedVenuesAdapter: VenuesListAdapter
+
     private var mapHelper: VenuesMapHelper? = null
-    private var selectedVenue: VenueDto? = null
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_venues_map
 
@@ -43,7 +44,9 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
 
         viewModel = ViewModelProviders.of(this)[VenuesViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())
+        llListFilters.visible()
         setupMapFragment()
+        setupSelectedVenuesRecycler()
         setListeners()
         observeChanges()
         getVenues()
@@ -54,6 +57,11 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
         mapFragment.getMapAsync { googleMap ->
             mapHelper = VenuesMapHelper(requireActivity(), googleMap, this)
         }
+    }
+
+    private fun setupSelectedVenuesRecycler() {
+        selectedVenuesAdapter = VenuesListAdapter(GlideApp.with(this), this, viewModel.getOwnProfile())
+        rvVenues.adapter = selectedVenuesAdapter
     }
 
     private fun setListeners() {
@@ -76,22 +84,6 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
                 return false
             }
         })
-
-        clSelectedVenue.setOnClickListener {
-            selectedVenue?.let { venue ->
-                // Open own venues
-                if (venue.isMember == true) {
-                    val intent = ChatActivity.getStartIntent(requireActivity(), venue)
-                    startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
-                    return@setOnClickListener
-                }
-
-                // Join other venues
-                if (isNetworkActiveWithMessage()) {
-                    viewModel.joinVenue(venue)
-                }
-            }
-        }
 
         fabCreateVenue.setOnClickListener {
             val intent = Intent(requireActivity(), CreateVenueActivity::class.java)
@@ -129,6 +121,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
                     resource.data?.let { venue ->
                         if (venue.isPrivate == true) {
                             requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
+                            selectedVenuesAdapter.updateVenue(venue)
                         } else {
                             // Open the joined venue chat if venue is public
                             val intent = ChatActivity.getStartIntent(requireActivity(), venue)
@@ -154,29 +147,6 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
         }
     }
 
-    private fun displaySelectedVenueDetails(venue: VenueDto) {
-        if (venue.isPrivate == true) {
-            ivPrivate.visible()
-        } else {
-            ivPrivate.gone()
-        }
-
-        GlideApp.with(this)
-                .load(venue.imageUrl?.thumbnail)
-                .into(ivVenue)
-
-        tvVenueName.text = venue.name
-        tvVenueLocation.text = AppUtils.getFormattedAddress(venue.locationName, venue.locationAddress)
-
-        val memberCount = venue.memberCount ?: 0
-        tvActiveMembers.text = resources.getQuantityString(R.plurals.members_with_count, memberCount, memberCount)
-        tvDistance.text = if (venue.distance == null) {
-            ""
-        } else {
-            getString(R.string.distance_mile_with_value, venue.distance)
-        }
-    }
-
     private fun showListVenuesFragment() {
         val parentFragment = parentFragment
         if (parentFragment is VenuesModeNavigator) {
@@ -194,20 +164,32 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback {
     }
 
     override fun onMapVenueSelected(venue: VenueDto) {
-        selectedVenue = venue   // Update selected venue
-        displaySelectedVenueDetails(venue)
+        selectedVenuesAdapter.displayItems(listOf(venue))
         searchView.clearFocus()
         searchView.hideKeyboard()
-        clSelectedVenue.visible()
+        rvVenues.visible()
         fabCreateVenue.hide()
         llListFilters.gone()
     }
 
     override fun onMapVenueDeselected() {
-        selectedVenue = null    // Remove selected venue reference
-        clSelectedVenue.gone()
+        rvVenues.gone()
         fabCreateVenue.show()
         llListFilters.visible()
+    }
+
+    override fun onVenueClicked(venue: VenueDto) {
+        // Open own venue
+        if (venue.isMember == true) {
+            val intent = ChatActivity.getStartIntent(requireActivity(), venue)
+            startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
+            return
+        }
+
+        // Join other venue
+        if (isNetworkActiveWithMessage()) {
+            viewModel.joinVenue(venue)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

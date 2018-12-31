@@ -134,6 +134,8 @@
     <string name="venues_label_your_venues">YOUR VENUES</string>
     <string name="venues_label_suggested">SUGGESTED</string>
     <string name="venues_label_no_venues_found">No venues found</string>
+    <string name="venues_label_pending">PENDING</string>
+    <string name="venues_label_rejected">REJECTED</string>
     <string name="venues_message_notification_sent_to_admin">Notification sent to admin. Please wait for approval</string>
 
     <string name="create_venue_btn_create">CREATE</string>

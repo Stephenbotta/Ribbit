@@ -35,29 +35,6 @@
         app:queryHint="@string/venues_label_search_for_venues_by_name"
         app:searchIcon="@drawable/ic_search" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchView">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvVenues"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            android:overScrollMode="never"
-            android:paddingBottom="72dp"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_venue" />
-    </android.support.v4.widget.SwipeRefreshLayout>
-
     <LinearLayout
         android:id="@+id/llListFilters"
         android:layout_width="wrap_content"
@@ -121,101 +98,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/clSelectedVenue"
-        android:layout_width="0dp"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvVenues"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
-        android:background="@drawable/background_map_venue_details"
-        android:padding="16dp"
+        android:background="@color/white"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:overScrollMode="never"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:visibility="gone"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/ivVenue"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:riv_corner_radius="4dp"
-            tools:src="@tools:sample/backgrounds/scenic" />
-
-        <ImageView
-            android:id="@+id/ivPrivate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_lock_white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
-
-        <TextView
-            android:id="@+id/tvVenueName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/brandon_text_bold"
-            android:includeFontPadding="false"
-            android:maxLines="1"
-            android:textColor="@color/textGray"
-            android:textSize="16sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@id/ivVenue"
-            tools:text="Test Venue" />
-
-        <TextView
-            android:id="@+id/tvVenueLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:ellipsize="end"
-            android:includeFontPadding="false"
-            android:maxLines="1"
-            android:textColor="@color/textGray"
-            android:textSize="14sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@id/ivVenue"
-            app:layout_constraintTop_toBottomOf="@id/tvVenueName"
-            tools:text="@tools:sample/cities" />
-
-        <TextView
-            android:id="@+id/tvActiveMembers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            android:ellipsize="end"
-            android:includeFontPadding="false"
-            android:maxLines="1"
-            android:textColor="@color/textGray"
-            android:textSize="12sp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@id/ivVenue"
-            app:layout_constraintEnd_toStartOf="@id/tvDistance"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toEndOf="@id/ivVenue"
-            tools:text="24 Active Members" />
-
-        <TextView
-            android:id="@+id/tvDistance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:textColor="@color/textGray"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/ivVenue"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="1.2 Mi" />
-
-    </android.support.constraint.ConstraintLayout>
-
+        tools:listitem="@layout/item_venue" />
 </android.support.constraint.ConstraintLayout>

@@ -43,4 +43,7 @@ object ApiConstants {
     const val REQUEST_STATUS_NONE = "NONE"
     const val REQUEST_STATUS_PENDING = "PENDING"
     const val REQUEST_STATUS_REJECTED = "REJECTED"
+
+    const val PARTICIPATION_ROLE_MEMBER = "MEMBER"
+    const val PARTICIPATION_ROLE_ADMIN = "ADMIN"
 }

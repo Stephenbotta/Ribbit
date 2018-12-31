@@ -44,7 +44,9 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
 
         viewModel = ViewModelProviders.of(this)[VenuesViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())
-        venuesListAdapter = VenuesListAdapter(GlideApp.with(this), this)
+        venuesListAdapter = VenuesListAdapter(glide = GlideApp.with(this),
+                callback = this,
+                ownProfile = viewModel.getOwnProfile())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -119,6 +121,7 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
                     resource.data?.let { venue ->
                         if (venue.isPrivate == true) {
                             requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
+                            venuesListAdapter.updateVenue(venue)
                         } else {
                             // Open the joined venue chat if venue is public
                             val intent = ChatActivity.getStartIntent(requireActivity(), venue)
@@ -151,14 +154,14 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
     }
 
     override fun onVenueClicked(venue: VenueDto) {
-        // Open own venues
+        // Open own venue
         if (venue.isMember == true) {
             val intent = ChatActivity.getStartIntent(requireActivity(), venue)
             startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
             return
         }
 
-        // Join other venues
+        // Join other venue
         if (isNetworkActiveWithMessage()) {
             viewModel.joinVenue(venue)
         }

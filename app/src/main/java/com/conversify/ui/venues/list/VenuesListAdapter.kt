@@ -3,6 +3,7 @@ package com.conversify.ui.venues.list
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.conversify.R
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.data.remote.models.venues.VenuesNearYouDto
 import com.conversify.data.remote.models.venues.YourVenuesDto
@@ -13,7 +14,8 @@ import com.conversify.ui.venues.list.viewholder.YourVenuesLabelViewHolder
 import com.conversify.utils.GlideRequests
 
 class VenuesListAdapter(private val glide: GlideRequests,
-                        private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                        private val callback: Callback,
+                        private var ownProfile: ProfileDto) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val VIEW_TYPE_LABEL_YOUR_VENUES = 0
         private const val VIEW_TYPE_MY_VENUE = 1
@@ -43,7 +45,7 @@ class VenuesListAdapter(private val glide: GlideRequests,
         when (holder) {
             is VenueViewHolder -> {
                 if (item is VenueDto) {
-                    holder.bind(item)
+                    holder.bind(item, ownProfile)
                 }
             }
 
@@ -98,6 +100,21 @@ class VenuesListAdapter(private val glide: GlideRequests,
                 notifyItemRemoved(yourVenuesLabelIndex)
             }
         }
+    }
+
+    fun updateVenue(venue: VenueDto) {
+        val index = items.indexOfFirst { it is VenueDto && it.id == venue.id }
+        if (index != -1) {
+            notifyItemChanged(index)
+        }
+    }
+
+    /**
+     * This is called when user updates the profile and needs to reflect latest profile image to the recycler view items.
+     * */
+    fun updateOwnProfile(profile: ProfileDto) {
+        ownProfile = profile
+        notifyDataSetChanged()
     }
 
     interface Callback : VenueViewHolder.Callback
