@@ -4,12 +4,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.conversify.R
+import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.extensions.gone
 import com.conversify.extensions.inflate
 import com.conversify.extensions.visible
 import com.conversify.utils.GlideRequests
-import kotlinx.android.synthetic.main.item_suggested_groups_child.view.*
+import kotlinx.android.synthetic.main.item_topic_group.view.*
 
 class TopicGroupsAdapter(private val glide: GlideRequests,
                          private val callback: (GroupDto) -> Unit) : RecyclerView.Adapter<TopicGroupsAdapter.ViewHolder>() {
@@ -72,6 +73,23 @@ class TopicGroupsAdapter(private val glide: GlideRequests,
                 itemView.ivPrivate.visible()
             } else {
                 itemView.ivPrivate.gone()
+            }
+
+            // Only visible when request is pending or rejected
+            when (group.requestStatus) {
+                ApiConstants.REQUEST_STATUS_PENDING -> {
+                    itemView.tvRequestStatus.visible()
+                    itemView.tvRequestStatus.setText(R.string.venues_label_pending)
+                }
+
+                ApiConstants.REQUEST_STATUS_REJECTED -> {
+                    itemView.tvRequestStatus.visible()
+                    itemView.tvRequestStatus.setText(R.string.venues_label_rejected)
+                }
+
+                else -> {
+                    itemView.tvRequestStatus.gone()
+                }
             }
 
             itemView.ivFavourite.setImageResource(if (group.isMember == true) {

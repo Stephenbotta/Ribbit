@@ -13,6 +13,7 @@ import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.extensions.*
@@ -280,6 +281,12 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
 
     override fun onLikeReplyClicked(reply: PostReplyDto, isLiked: Boolean, topLevelReply: Boolean) {
         viewModel.likeUnlikeReply(reply, isLiked, topLevelReply)
+    }
+
+    override fun onGroupCategoryClicked(category: InterestDto) {
+        // todo - Open topic groups and handle post state changes
+        /*val intent = TopicGroupsActivity.getStartIntent(this, category)
+        startActivity(intent)*/
     }
 
     override fun onDestroy() {

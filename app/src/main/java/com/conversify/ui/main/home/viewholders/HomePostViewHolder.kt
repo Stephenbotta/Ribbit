@@ -35,6 +35,11 @@ class HomePostViewHolder(itemView: View,
             callback.onGroupClicked(group)
         }
     }
+    private val categoryNameClickListener = View.OnClickListener {
+        post.category?.let { category ->
+            callback.onGroupCategoryClicked(category)
+        }
+    }
     private val hashtagClickListener = object : SpannableTextClickListener {
         override fun onSpannableTextClicked(text: String, view: View) {
             callback.onHashtagClicked(text)
@@ -116,9 +121,10 @@ class HomePostViewHolder(itemView: View,
 
         val username = post.user?.userName ?: ""
         val groupName = post.group?.name ?: ""
+        val categoryName = String.format("(%s)", post.category?.name ?: "")
         val applyGroupNameSpannable = !groupName.isBlank()  // Only applied if group is available
         val completeUsername = if (applyGroupNameSpannable) {
-            itemView.context.getString(R.string.home_label_username_with_group_name, username, groupName)
+            itemView.context.getString(R.string.home_label_username_with_group_and_category_name, username, groupName, categoryName)
         } else {
             username
         }
@@ -138,6 +144,11 @@ class HomePostViewHolder(itemView: View,
                     textColorRes = R.color.colorPrimary,
                     textTypeface = boldTypeface,
                     clickListener = groupNameClickListener)
+
+            itemView.tvUserName.clickSpannable(spannableText = categoryName,
+                    textColorRes = R.color.colorPrimary,
+                    textTypeface = boldTypeface,
+                    clickListener = categoryNameClickListener)
         }
 
         // Add clickable span to all hash tags in the message

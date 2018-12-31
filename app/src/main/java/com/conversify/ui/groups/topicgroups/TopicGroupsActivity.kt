@@ -118,11 +118,11 @@ class TopicGroupsActivity : BaseActivity() {
                     loadingDialog.setLoading(false)
 
                     resource.data?.let { group ->
+                        groupsAdapter.updateGroup(group)
                         if (group.isPrivate == true) {
                             longToast(R.string.venues_message_notification_sent_to_admin)
                         } else {
                             GroupPostsActivity.start(this, group)
-                            groupsAdapter.updateGroup(group)
                             setResult(Activity.RESULT_OK)
                         }
                     }

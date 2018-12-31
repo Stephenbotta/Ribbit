@@ -218,7 +218,7 @@
 
     <string name="home_label_search">Search</string>
     <string name="home_label_no_posts_found">No posts found</string>
-    <string name="home_label_username_with_group_name">%s in %s</string>
+    <string name="home_label_username_with_group_and_category_name">%s in %s %s</string>
 
     <string name="new_post_label_new_post">New Post</string>
     <string name="new_post_label_choose_a_channel_you_want_to_post_into">Choose a channel you want to post into</string>

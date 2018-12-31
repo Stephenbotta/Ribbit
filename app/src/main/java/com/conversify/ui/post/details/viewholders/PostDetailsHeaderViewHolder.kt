@@ -8,6 +8,7 @@ import com.conversify.R
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.clickSpannable
 import com.conversify.extensions.gone
@@ -46,6 +47,11 @@ class PostDetailsHeaderViewHolder(itemView: View,
             callback.onUsernameMentionClicked(text)
         }
     }
+    private val categoryNameClickListener = View.OnClickListener {
+        post.category?.let { category ->
+            callback.onGroupCategoryClicked(category)
+        }
+    }
 
     init {
         itemView.ivImage.setOnClickListener {
@@ -80,9 +86,10 @@ class PostDetailsHeaderViewHolder(itemView: View,
 
         val username = post.user?.userName ?: ""
         val groupName = post.group?.name ?: ""
+        val categoryName = String.format("(%s)", post.category?.name ?: "")
         val applyGroupNameSpannable = !groupName.isBlank()  // Only applied if group is available
         val completeText = if (applyGroupNameSpannable) {
-            itemView.context.getString(R.string.home_label_username_with_group_name, username, groupName)
+            itemView.context.getString(R.string.home_label_username_with_group_and_category_name, username, groupName, categoryName)
         } else {
             username
         }
@@ -102,6 +109,11 @@ class PostDetailsHeaderViewHolder(itemView: View,
                     textColorRes = R.color.colorPrimary,
                     textTypeface = boldTypeface,
                     clickListener = groupNameClickListener)
+
+            itemView.tvUserName.clickSpannable(spannableText = categoryName,
+                    textColorRes = R.color.colorPrimary,
+                    textTypeface = boldTypeface,
+                    clickListener = categoryNameClickListener)
         }
 
         // Add clickable span to all hash tags in the message
@@ -138,5 +150,6 @@ class PostDetailsHeaderViewHolder(itemView: View,
         fun onUserProfileClicked(profile: ProfileDto)
         fun onHashtagClicked(tag: String)
         fun onUsernameMentionClicked(username: String)
+        fun onGroupCategoryClicked(category: InterestDto)
     }
 }

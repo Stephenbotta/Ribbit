@@ -2,6 +2,7 @@ package com.conversify.data.remote.models.groups
 
 import android.os.Parcelable
 import com.conversify.data.remote.models.loginsignup.ImageUrlDto
+import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.post.PostReplyDto
 import com.google.gson.annotations.SerializedName
@@ -36,6 +37,9 @@ data class GroupPostDto(
 
         @field:SerializedName("groupId")
         val group: GroupDto? = null,
+
+        @field:SerializedName("postCategoryId")
+        val category: InterestDto? = null,
 
         @field:SerializedName("comment")
         val replies: List<PostReplyDto>? = null,

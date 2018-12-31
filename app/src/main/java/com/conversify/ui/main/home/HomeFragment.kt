@@ -16,9 +16,11 @@ import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.groups.topicgroups.TopicGroupsActivity
 import com.conversify.ui.post.details.PostDetailsActivity
 import com.conversify.ui.post.details.PostDetailsViewModel
 import com.conversify.ui.post.newpost.NewPostActivity
@@ -161,6 +163,10 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onGroupPostLikeClicked(groupPost: GroupPostDto, isLiked: Boolean) {
         postDetailsViewModel.likeUnlikePost(groupPost, isLiked)
+    }
+
+    override fun onGroupCategoryClicked(category: InterestDto) {
+        startActivity(TopicGroupsActivity.getStartIntent(requireActivity(), category))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
