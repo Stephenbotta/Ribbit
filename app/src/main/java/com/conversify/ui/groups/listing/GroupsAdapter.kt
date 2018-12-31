@@ -6,6 +6,7 @@ import com.conversify.R
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.SuggestedGroupsDto
 import com.conversify.data.remote.models.groups.YourGroupsLabelDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.inflate
 import com.conversify.ui.groups.listing.viewholders.SuggestedGroupsParentViewHolder
 import com.conversify.ui.groups.listing.viewholders.YourGroupViewHolder
@@ -13,7 +14,8 @@ import com.conversify.ui.groups.listing.viewholders.YourGroupsLabelViewHolder
 import com.conversify.utils.GlideRequests
 
 class GroupsAdapter(private val glide: GlideRequests,
-                    private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                    private val callback: Callback,
+                    private var ownProfile: ProfileDto) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val VIEW_TYPE_SUGGESTED_GROUPS = 0
         private const val VIEW_TYPE_LABEL_YOUR_GROUPS = 1
@@ -48,7 +50,7 @@ class GroupsAdapter(private val glide: GlideRequests,
 
             is YourGroupViewHolder -> {
                 if (item is GroupDto) {
-                    holder.bind(item)
+                    holder.bind(item, ownProfile)
                 }
             }
         }
@@ -77,6 +79,14 @@ class GroupsAdapter(private val glide: GlideRequests,
             existingGroup.unreadCount = 0
             notifyItemChanged(index)
         }
+    }
+
+    /**
+     * This is called when user updates the profile and needs to reflect latest profile image to the recycler view items.
+     * */
+    fun updateOwnProfile(profile: ProfileDto) {
+        ownProfile = profile
+        notifyDataSetChanged()
     }
 
     interface Callback : SuggestedGroupsParentViewHolder.Callback, YourGroupViewHolder.Callback

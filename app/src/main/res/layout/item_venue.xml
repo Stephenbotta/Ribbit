@@ -31,7 +31,7 @@
         tools:ignore="ContentDescription" />
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/ivStatus"
+        android:id="@+id/ivParticipationRole"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="44dp"
@@ -106,7 +106,7 @@
         app:layout_constraintEnd_toStartOf="@id/barrierEnd"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/ivVenue"
-        tools:text="24 Active Members" />
+        tools:text="24 members" />
 
     <ImageView
         android:id="@+id/btnMore"

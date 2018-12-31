@@ -32,24 +32,25 @@ class VenueViewHolder(itemView: View,
         if (venue.isMember == true) {
             itemView.btnMore.visible()
             itemView.tvDistance.gone()
-            itemView.ivStatus.visible()
+            itemView.ivParticipationRole.visible()
 
             // If status is admin, then show user's own image otherwise show a tick which denotes user is a member.
             if (venue.participationRole == ApiConstants.PARTICIPATION_ROLE_ADMIN) {
                 glide.load(ownProfile.image?.thumbnail)
-                        .into(itemView.ivStatus)
+                        .into(itemView.ivParticipationRole)
             } else {
-                itemView.ivStatus.setImageResource(R.drawable.ic_tick_circle_blue)
+                itemView.ivParticipationRole.setImageResource(R.drawable.ic_tick_circle_blue)
             }
         } else {
             itemView.btnMore.gone()
-            itemView.ivStatus.gone()
+            itemView.ivParticipationRole.gone()
 
             // For nearby list venues, if distance does not exist then hide the distance view.
             if (venue.distance == null) {
                 itemView.tvDistance.gone()
             } else {
                 itemView.tvDistance.visible()
+                itemView.tvDistance.text = itemView.context.getString(R.string.distance_mile_with_value, venue.distance)
             }
         }
 
@@ -86,7 +87,6 @@ class VenueViewHolder(itemView: View,
 
         val memberCount = venue.memberCount ?: 0
         itemView.tvActiveMembers.text = itemView.context.resources.getQuantityString(R.plurals.members_with_count, memberCount, memberCount)
-        itemView.tvDistance.text = itemView.context.getString(R.string.distance_mile_with_value, venue.distance)
     }
 
     interface Callback {

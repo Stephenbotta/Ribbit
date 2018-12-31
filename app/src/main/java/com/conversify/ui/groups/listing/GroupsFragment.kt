@@ -59,7 +59,7 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this)[GroupsViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())
-        groupsAdapter = GroupsAdapter(GlideApp.with(this), this)
+        groupsAdapter = GroupsAdapter(GlideApp.with(this), this, viewModel.getOwnProfile())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

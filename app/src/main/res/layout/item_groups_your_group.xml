@@ -1,43 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:paddingStart="16dp"
-    android:paddingTop="12dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="12dp">
+    android:paddingEnd="16dp">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/ivGroup"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:riv_corner_radius="8dp"
         tools:src="@tools:sample/backgrounds/scenic" />
+
+    <ImageView
+        android:id="@+id/ivPrivate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_lock_white"
+        app:layout_constraintStart_toStartOf="@id/ivGroup"
+        app:layout_constraintTop_toTopOf="@id/ivGroup"
+        tools:ignore="ContentDescription" />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/ivParticipationRole"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="36dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="@id/ivGroup"
+        app:layout_constraintTop_toTopOf="@id/ivGroup"
+        app:riv_border_color="@color/white"
+        app:riv_border_width="2dp"
+        app:riv_oval="true"
+        tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tvGroupName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
-        android:layout_toStartOf="@id/tvUnreadCount"
-        android:layout_toEndOf="@id/ivGroup"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/textGray"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/tvMemberCount"
+        app:layout_constraintEnd_toStartOf="@id/tvUnreadCount"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/ivGroup"
+        app:layout_constraintTop_toTopOf="@id/ivGroup"
         tools:text="Test Group" />
+
+    <TextView
+        android:id="@+id/tvMemberCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textColor="@color/textGray"
+        android:textSize="12sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/ivGroup"
+        app:layout_constraintEnd_toStartOf="@id/tvUnreadCount"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/ivGroup"
+        app:layout_constraintTop_toBottomOf="@id/tvGroupName"
+        tools:text="24 members" />
 
     <TextView
         android:id="@+id/tvUnreadCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
         android:background="@drawable/shape_red_rounded_4dp"
         android:fontFamily="@font/brandon_text_bold"
@@ -47,7 +92,10 @@
         android:textColor="@color/white"
         android:textSize="12sp"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="1"
         tools:visibility="visible" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

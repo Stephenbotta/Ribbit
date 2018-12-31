@@ -12,6 +12,7 @@ import com.conversify.data.remote.models.groups.GetGroupsResponse
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.SuggestedGroupsDto
 import com.conversify.data.remote.models.groups.YourGroupsLabelDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,6 +25,20 @@ class GroupsViewModel : ViewModel() {
     private val suggestedGroups by lazy { mutableListOf<GroupDto>() }
     private val yourGroups by lazy { mutableListOf<GroupDto>() }
     private var searchQuery = ""
+    private var ownProfile = UserManager.getProfile()
+
+    /**
+     * @return Last updated profile of logged in user.
+     * */
+    fun getOwnProfile() = ownProfile
+
+    /**
+     * @return Updated own profile. Should be called once after profile is updated.
+     * */
+    fun updatedOwnProfile(): ProfileDto {
+        ownProfile = UserManager.getProfile()
+        return ownProfile
+    }
 
     fun getGroups(showLoading: Boolean = true) {
         if (showLoading) {

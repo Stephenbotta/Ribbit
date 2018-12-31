@@ -10,7 +10,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
-import android.view.Menu
 import android.view.MenuItem
 import com.conversify.R
 import com.conversify.data.local.models.AppError
@@ -253,11 +252,6 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         PermissionUtils.showAppSettingsDialog(this, R.string.permission_never_ask_camera_storage, AppConstants.REQ_CODE_APP_SETTINGS)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_venue_chat, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             android.R.id.home -> {
@@ -278,8 +272,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstants.REQ_CODE_VENUE_DETAILS &&
-                resultCode == Activity.RESULT_OK &&
-                data != null) {
+                resultCode == Activity.RESULT_OK && data != null) {
             val venue = data.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
             if (venue != null) {
                 if (venue.isMember == false) {
