@@ -56,7 +56,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_notification_join_venue_request" />
+                tools:listitem="@layout/item_notification_venue_group_invite_request" />
 
             <TextView
                 android:layout_width="wrap_content"

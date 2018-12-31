@@ -1,5 +1,6 @@
 package com.conversify.data.remote.models.notifications
 
+import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.google.gson.annotations.SerializedName
@@ -8,6 +9,9 @@ import org.threeten.bp.ZonedDateTime
 data class NotificationDto(
         @field:SerializedName("venueId")
         val venue: VenueDto? = null,
+
+        @field:SerializedName("groupId")
+        val group: GroupDto? = null,
 
         @field:SerializedName("isRead")
         val isRead: Boolean? = null,

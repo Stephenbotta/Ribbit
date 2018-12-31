@@ -74,6 +74,7 @@ class NotificationsActivity : BaseActivity(), NotificationsAdapter.Callback {
 
             when (resource.status) {
                 Status.SUCCESS -> {
+                    // todo refresh channels and venues for updated member count
                     loadingDialog.setLoading(false)
                     resource.data?.let { notification ->
                         notificationsAdapter.removeNotification(notification)
@@ -109,9 +110,9 @@ class NotificationsActivity : BaseActivity(), NotificationsAdapter.Callback {
         }
     }
 
-    override fun onJoinVenueRequestAction(acceptRequest: Boolean, notification: NotificationDto) {
+    override fun onInviteRequestAction(acceptRequest: Boolean, notification: NotificationDto) {
         if (isNetworkActiveWithMessage()) {
-            viewModel.acceptRejectJoinVenueRequest(acceptRequest, notification)
+            viewModel.acceptRejectInviteRequest(acceptRequest, notification)
         }
     }
 

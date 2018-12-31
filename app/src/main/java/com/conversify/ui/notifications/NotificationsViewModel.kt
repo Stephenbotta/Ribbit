@@ -10,6 +10,7 @@ import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.notifications.NotificationDto
+import com.conversify.utils.AppUtils
 import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -53,9 +54,15 @@ class NotificationsViewModel : ViewModel() {
                         page = 1
                     }
 
-                    // todo - currently only displaying the venue join requests. Use "receivedNotifications" list later and remove "venueJoinRequestNotifications".
+                    /*
+                    * todo - currently only displaying the venue and group join requests.
+                    * Use "receivedNotifications" list later and remove "venueJoinRequestNotifications".
+                    * */
                     val receivedNotifications = response.body()?.data ?: emptyList()
-                    val venueJoinRequestNotifications = receivedNotifications.filter { it.type == ApiConstants.NOTIFICATION_TYPE_REQUEST_JOIN_VENUE }
+                    val venueJoinRequestNotifications = receivedNotifications.filter {
+                        it.type == ApiConstants.NOTIFICATION_TYPE_REQUEST_JOIN_VENUE ||
+                                it.type == ApiConstants.NOTIFICATION_TYPE_REQUEST_JOIN_GROUP
+                    }
                     if (receivedNotifications.size < PAGE_LIMIT) {
                         Timber.i("Last notification is received")
                         isLastNotificationReceived = true
@@ -80,16 +87,20 @@ class NotificationsViewModel : ViewModel() {
         })
     }
 
-    fun acceptRejectJoinVenueRequest(acceptRequest: Boolean, notification: NotificationDto) {
+    fun acceptRejectInviteRequest(acceptRequest: Boolean, notification: NotificationDto) {
         joinVenueRequest.value = Resource.loading()
 
         val acceptType = getAcceptType(notification)
         val groupType = getGroupType(notification)
         val userId = notification.sender?.id ?: ""
-        val venueId = notification.venue?.id ?: ""
+        val groupId = if (AppUtils.isRequestForVenue(notification)) {
+            notification.venue?.id
+        } else {
+            notification.group?.id
+        } ?: ""
 
         RetrofitClient.conversifyApi
-                .acceptRejectVenueJoinRequest(acceptType, groupType, userId, venueId, acceptRequest)
+                .acceptRejectInviteRequest(acceptType, groupType, userId, groupId, acceptRequest)
                 .enqueue(object : Callback<Any> {
                     override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         if (response.isSuccessful) {

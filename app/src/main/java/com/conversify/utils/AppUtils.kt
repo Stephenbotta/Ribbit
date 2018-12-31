@@ -1,5 +1,7 @@
 package com.conversify.utils
 
+import com.conversify.data.remote.ApiConstants
+import com.conversify.data.remote.models.notifications.NotificationDto
 import java.util.regex.Pattern
 
 object AppUtils {
@@ -55,5 +57,10 @@ object AppUtils {
 
             else -> ""
         }
+    }
+
+    fun isRequestForVenue(notification: NotificationDto): Boolean {
+        return notification.type == ApiConstants.NOTIFICATION_TYPE_REQUEST_JOIN_VENUE
+                || notification.type == ApiConstants.NOTIFICATION_TYPE_INVITE_JOIN_VENUE
     }
 }

@@ -119,11 +119,11 @@ interface ConversifyApi {
 
     @POST("user/acceptInviteRequest")
     @FormUrlEncoded
-    fun acceptRejectVenueJoinRequest(@Field("acceptType") acceptType: String,
-                                     @Field("groupType") groupType: String,
-                                     @Field("userId") userId: String,
-                                     @Field("groupId") venueId: String,
-                                     @Field("accept") accept: Boolean): Call<Any>
+    fun acceptRejectInviteRequest(@Field("acceptType") acceptType: String,
+                                  @Field("groupType") groupType: String,
+                                  @Field("userId") userId: String,
+                                  @Field("groupId") groupId: String,
+                                  @Field("accept") accept: Boolean): Call<Any>
 
     @POST("user/logOut")
     fun logout(): Call<Any>
