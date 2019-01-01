@@ -2,6 +2,7 @@ package com.conversify.ui.main.home.viewholders
 
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.RecyclerView
+import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 import com.conversify.R
@@ -52,19 +53,28 @@ class HomePostViewHolder(itemView: View,
     }
 
     init {
-        itemView.tvUserName.setOnClickListener {
-            if (itemView.tvUserName.isNonLinkClick()) {
-                // Forward click to the post click listener.
-                postClickListener.onClick(it)
+        itemView.setOnClickListener(postClickListener)
+
+        itemView.tvUserName.setOnTouchListener { view, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (!itemView.tvUserName.clickableSpanUnderTouch(event)) {
+                    // Forward click to the post click listener if there is no clickable span under touch.
+                    postClickListener.onClick(view)
+                    return@setOnTouchListener true
+                }
             }
+            return@setOnTouchListener false
         }
 
-        itemView.setOnClickListener(postClickListener)
-        itemView.tvMessage.setOnClickListener {
-            if (itemView.tvMessage.isNonLinkClick()) {
-                // Forward click to the post click listener.
-                postClickListener.onClick(it)
+        itemView.tvMessage.setOnTouchListener { view, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (!itemView.tvMessage.clickableSpanUnderTouch(event)) {
+                    // Forward click to the post click listener if there is no clickable span under touch.
+                    postClickListener.onClick(view)
+                    return@setOnTouchListener true
+                }
             }
+            return@setOnTouchListener false
         }
 
         itemView.ivLike.setOnClickListener {

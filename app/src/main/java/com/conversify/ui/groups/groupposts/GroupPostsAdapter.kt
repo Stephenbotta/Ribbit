@@ -1,6 +1,7 @@
 package com.conversify.ui.groups.groupposts
 
 import android.support.v7.widget.RecyclerView
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -76,6 +77,17 @@ class GroupPostsAdapter(private val glide: GlideRequests,
 
         init {
             itemView.setOnClickListener(postClickListener)
+
+            itemView.tvMessage.setOnTouchListener { view, event ->
+                if (event.action == MotionEvent.ACTION_UP) {
+                    if (!itemView.tvMessage.clickableSpanUnderTouch(event)) {
+                        // Forward click to the post click listener if there is no clickable span under touch.
+                        postClickListener.onClick(view)
+                        return@setOnTouchListener true
+                    }
+                }
+                return@setOnTouchListener false
+            }
 
             itemView.ivLike.setOnClickListener {
                 if (isValidPosition() && itemView.context.isNetworkActive()) {
