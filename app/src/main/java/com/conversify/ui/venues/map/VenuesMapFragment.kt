@@ -49,7 +49,6 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback, VenuesListAd
         setupSelectedVenuesRecycler()
         setListeners()
         observeChanges()
-        getVenues()
     }
 
     private fun setupMapFragment() {
@@ -157,6 +156,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback, VenuesListAd
     override fun onMapLoaded(googleMap: GoogleMap) {
         // Start, top, end and bottom
         googleMap.setPadding(0, searchView.height + requireActivity().pxFromDp(20), 0, 0)
+        getVenues()
     }
 
     override fun onMapClicked() {

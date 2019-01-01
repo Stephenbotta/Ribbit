@@ -2,7 +2,6 @@ package com.conversify.ui.venues
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
 import android.support.annotation.StringRes
 import com.conversify.R
 import com.conversify.data.local.UserManager
@@ -22,8 +21,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class VenuesViewModel(application: Application) : AndroidViewModel(application) {
-    val listVenues by lazy { MutableLiveData<Resource<List<Any>>>() }
-    val mapVenues by lazy { MutableLiveData<Resource<List<VenueDto>>>() }
+    val listVenues by lazy { SingleLiveEvent<Resource<List<Any>>>() }
+    val mapVenues by lazy { SingleLiveEvent<Resource<List<VenueDto>>>() }
     val joinVenue by lazy { SingleLiveEvent<Resource<VenueDto>>() }
 
     private val myVenues by lazy { mutableListOf<VenueDto>() }

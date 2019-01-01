@@ -12,6 +12,7 @@ import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.post.*
 import com.conversify.utils.AppUtils
 import com.conversify.utils.SingleLiveEvent
@@ -28,6 +29,7 @@ class PostDetailsViewModel : ViewModel() {
     val addPostSubReply by lazy { SingleLiveEvent<Resource<PostReplyDto>>() }
     val likeUnlikePost by lazy { SingleLiveEvent<Resource<Any>>() }
     val likeUnlikeReply by lazy { SingleLiveEvent<Resource<Any>>() }
+    val mentionSuggestions by lazy { SingleLiveEvent<Resource<List<ProfileDto>>>() }
 
     /*
     * Contains replyId as key and its respective api call as value.
@@ -41,6 +43,7 @@ class PostDetailsViewModel : ViewModel() {
     private lateinit var postDetailsHeader: PostDetailsHeader
 
     private var likeUnlikePostCall: Call<Any>? = null
+    private var mentionSuggestionsCall: Call<*>? = null
 
     fun start(groupPost: GroupPostDto) {
         postDetailsHeader = PostDetailsHeader(groupPost)
@@ -310,5 +313,36 @@ class PostDetailsViewModel : ViewModel() {
                 }
             }
         })
+    }
+
+    fun getMentionSuggestions(mentionText: String) {
+        mentionSuggestions.value = Resource.loading()
+
+        val call = RetrofitClient.conversifyApi.getMentionSuggestions(mentionText)
+        mentionSuggestionsCall?.cancel()    // Cancel any on-going call first
+        mentionSuggestionsCall = call   // Update call with the latest one
+
+        call.enqueue(object : Callback<ApiResponse<List<ProfileDto>>> {
+            override fun onResponse(call: Call<ApiResponse<List<ProfileDto>>>,
+                                    response: Response<ApiResponse<List<ProfileDto>>>) {
+                mentionSuggestionsCall = null
+                if (response.isSuccessful) {
+                    mentionSuggestions.value = Resource.success(response.body()?.data)
+                } else {
+                    mentionSuggestions.value = Resource.error(response.getAppError())
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse<List<ProfileDto>>>, t: Throwable) {
+                mentionSuggestionsCall = null
+                if (!call.isCanceled) {
+                    mentionSuggestions.value = Resource.error(t.failureAppError())
+                }
+            }
+        })
+    }
+
+    fun cancelGetMentionSuggestions() {
+        mentionSuggestionsCall?.cancel()
     }
 }

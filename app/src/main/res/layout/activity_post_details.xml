@@ -35,11 +35,39 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/etReply"
+        app:layout_constraintBottom_toTopOf="@id/llReplyingTo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dividerToolbar"
         tools:listitem="@layout/item_post_details_reply" />
+
+    <ViewFlipper
+        android:id="@+id/viewFlipperUserMentions"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/llReplyingTo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvUserMentions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_user_mention" />
+
+        <ProgressBar
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center" />
+    </ViewFlipper>
 
     <LinearLayout
         android:id="@+id/llReplyingTo"
@@ -87,7 +115,7 @@
         app:layout_constraintBottom_toTopOf="@id/etReply"
         tools:visibility="visible" />
 
-    <EditText
+    <com.conversify.ui.custom.SocialEditText
         android:id="@+id/etReply"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -95,7 +123,7 @@
         android:background="@drawable/background_chat_input_edit_text"
         android:hint="@string/group_posts_label_leave_a_reply"
         android:importantForAutofill="no"
-        android:inputType="textCapSentences"
+        android:inputType="textNoSuggestions|textCapSentences"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
@@ -108,7 +136,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/barrierLike"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rvPostDetails"
         tools:targetApi="o"
         tools:visibility="visible" />
 

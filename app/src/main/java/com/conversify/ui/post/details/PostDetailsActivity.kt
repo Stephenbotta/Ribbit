@@ -7,8 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.SimpleItemAnimator
-import android.text.Editable
-import android.text.TextWatcher
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
@@ -18,14 +16,19 @@ import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseActivity
+import com.conversify.ui.custom.SocialEditText
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_post_details.*
+import timber.log.Timber
 
-class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
+class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMentionAdapter.Callback {
     companion object {
         private const val EXTRA_POST = "EXTRA_POST"
         private const val EXTRA_FOCUS_REPLY_EDIT_TEXT = "EXTRA_FOCUS_REPLY_EDIT_TEXT"
+
+        private const val CHILD_MENTIONS = 0
+        private const val CHILD_MENTIONS_LOADING = 1
 
         fun getStartIntent(context: Context, post: GroupPostDto, focusReplyEditText: Boolean = false): Intent {
             val intent = Intent(context, PostDetailsActivity::class.java)
@@ -38,6 +41,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
     private val viewModel by lazy { ViewModelProviders.of(this)[PostDetailsViewModel::class.java] }
     private val focusReplyEditText by lazy { intent.getBooleanExtra(EXTRA_FOCUS_REPLY_EDIT_TEXT, false) }
     private lateinit var postDetailsAdapter: PostDetailsAdapter
+    private lateinit var userMentionAdapter: UserMentionAdapter
     private var replyingToTopLevelReply: PostReplyDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +55,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
 
         updatePostLikedState(groupPost.isLiked ?: false)
         setupPostRecycler()
+        setupUserMentionRecycler()
         setListeners()
         observeChanges()
         setupPostReplyEditText()
@@ -62,6 +67,11 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
         rvPostDetails.adapter = postDetailsAdapter
         (rvPostDetails.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         postDetailsAdapter.displayItems(listOf(viewModel.getPostDetailsHeader()))
+    }
+
+    private fun setupUserMentionRecycler() {
+        userMentionAdapter = UserMentionAdapter(GlideApp.with(this), this)
+        rvUserMentions.adapter = userMentionAdapter
     }
 
     private fun setListeners() {
@@ -191,24 +201,65 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
                 }
             }
         })
+
+        viewModel.mentionSuggestions.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    val mentions = resource.data ?: emptyList()
+                    userMentionAdapter.displayMentions(mentions)
+                    viewFlipperUserMentions.visible()
+                    viewFlipperUserMentions.displayedChild = CHILD_MENTIONS
+                }
+
+                Status.ERROR -> {
+                    handleError(resource.error)
+                    viewFlipperUserMentions.gone()
+                }
+
+                Status.LOADING -> {
+                    viewFlipperUserMentions.visible()
+                    viewFlipperUserMentions.displayedChild = CHILD_MENTIONS_LOADING
+                }
+            }
+        })
     }
 
     private fun setupPostReplyEditText() {
-        etReply.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-                if (text.isNullOrBlank()) {
+        etReply.setTextChangedListener(object : SocialEditText.OnTextChangedListener {
+            override fun onTextChanged(text: String) {
+                if (text.isBlank()) {
                     ivLikePost.visible()
                     fabSendReply.hide()
                 } else {
                     ivLikePost.gone()
                     fabSendReply.show()
                 }
+            }
+        })
+
+        etReply.setSuggestionListener(object : SocialEditText.SuggestionListener {
+            override fun onMentionSuggestionReceived(mentionText: String) {
+                Timber.i("Mention suggestion received : $mentionText")
+                if (isNetworkActive()) {
+                    viewModel.getMentionSuggestions(mentionText)
+                } else {
+                    viewModel.cancelGetMentionSuggestions()
+                    viewFlipperUserMentions.gone()
+                }
+            }
+
+            override fun onHashtagSuggestionReceived(hashtagText: String) {
+                Timber.i("Hashtag suggestion received : $hashtagText")
+                viewModel.cancelGetMentionSuggestions()
+                viewFlipperUserMentions.gone()
+            }
+
+            override fun onSuggestionQueryCleared() {
+                Timber.i("Mention suggestion removed")
+                viewModel.cancelGetMentionSuggestions()
+                viewFlipperUserMentions.gone()
             }
         })
     }
@@ -255,7 +306,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
         tvReplyingTo.text = getString(R.string.post_details_label_replying_to_with_username, userName)
         llReplyingTo.visible()
         etReply.setText(String.format("@%s ", userName))
-        etReply.setSelection(etReply.text.length)
+        etReply.setSelection(etReply.text?.length ?: 0)
         etReply.showKeyboard()
 
         replyingToTopLevelReply = if (isTopLevelReply) {
@@ -287,6 +338,12 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback {
         // todo - Open topic groups and handle post state changes
         /*val intent = TopicGroupsActivity.getStartIntent(this, category)
         startActivity(intent)*/
+    }
+
+    override fun onUserMentionClicked(user: ProfileDto) {
+        etReply.setTextWithoutTextChangedTrigger("@" + user.userName)
+        etReply.setSelection(etReply.text?.length ?: 0)
+        viewFlipperUserMentions.gone()
     }
 
     override fun onDestroy() {

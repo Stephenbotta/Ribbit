@@ -178,4 +178,8 @@ interface ConversifyApi {
 
     @POST("user/addEditReplies")
     fun addPostSubReply(@Body request: AddPostSubReplyRequest): Call<ApiResponse<PostReplyDto>>
+
+    @POST("user/searchUser")
+    @FormUrlEncoded
+    fun getMentionSuggestions(@Field("search") username: String): Call<ApiResponse<List<ProfileDto>>>
 }
