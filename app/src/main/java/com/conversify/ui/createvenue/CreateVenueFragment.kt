@@ -137,12 +137,7 @@ class CreateVenueFragment : BaseFragment() {
         })
 
         clUploadDocument.setOnClickListener {
-            FileUtils.showFilePicker(this, AppConstants.REQ_CODE_FILE_PICKER,
-                    arrayOf(FileUtils.MIME_TYPE_JPG,
-                            FileUtils.MIME_TYPE_PNG,
-                            FileUtils.MIME_TYPE_DOC,
-                            FileUtils.MIME_TYPE_PDF,
-                            FileUtils.MIME_TYPE_TEXT))
+            showFilePickerWithPermissionCheck()
         }
     }
 
@@ -249,6 +244,31 @@ class CreateVenueFragment : BaseFragment() {
     @OnNeverAskAgain(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun cameraStorageNeverAsk() {
         PermissionUtils.showAppSettingsDialog(this, R.string.permission_never_ask_camera_storage, AppConstants.REQ_CODE_APP_SETTINGS)
+    }
+
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    fun showFilePicker() {
+        FileUtils.showFilePicker(this, AppConstants.REQ_CODE_FILE_PICKER,
+                arrayOf(FileUtils.MIME_TYPE_JPG,
+                        FileUtils.MIME_TYPE_PNG,
+                        FileUtils.MIME_TYPE_DOC,
+                        FileUtils.MIME_TYPE_PDF,
+                        FileUtils.MIME_TYPE_TEXT))
+    }
+
+    @OnShowRationale(Manifest.permission.READ_EXTERNAL_STORAGE)
+    fun readStorageRationale(request: PermissionRequest) {
+        PermissionUtils.showRationalDialog(requireActivity(), R.string.permission_rationale_storage, request)
+    }
+
+    @OnPermissionDenied(Manifest.permission.READ_EXTERNAL_STORAGE)
+    fun readStorageDenied() {
+        activity?.longToast(R.string.permission_denied_storage)
+    }
+
+    @OnNeverAskAgain(Manifest.permission.READ_EXTERNAL_STORAGE)
+    fun readStorageNeverAsk() {
+        PermissionUtils.showAppSettingsDialog(this, R.string.permission_never_ask_storage, AppConstants.REQ_CODE_APP_SETTINGS)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

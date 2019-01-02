@@ -98,6 +98,10 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.venues.join.JoinVenueActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
