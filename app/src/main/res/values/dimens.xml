@@ -11,4 +11,12 @@
     <dimen name="chat_item_margin">104dp</dimen>
     <dimen name="chat_image_height">160dp</dimen>
     <dimen name="chat_image_width">240dp</dimen>
+
+    <dimen name="people_label_crossed_paths_text_size">20sp</dimen>
+    <dimen name="people_label_crossed_paths_message_text_size">12sp</dimen>
+
+    <dimen name="item_people_parent_layout_margin">16dp</dimen>
+    <dimen name="item_people_tv_date_text_size">16sp</dimen>
+    <dimen name="item_people_tv_address_text_size">12sp</dimen>
+
 </resources>

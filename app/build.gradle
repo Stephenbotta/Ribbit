@@ -41,6 +41,10 @@ android {
         }
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -131,7 +135,7 @@ dependencies {
     }
 
     // https://github.com/socketio/socket.io-client-java
-    implementation ("io.socket:socket.io-client:$socketIoVersion") {
+    implementation("io.socket:socket.io-client:$socketIoVersion") {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
