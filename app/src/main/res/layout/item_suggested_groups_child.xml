@@ -83,19 +83,6 @@
             tools:text="24 members" />
 
         <ImageView
-            android:id="@+id/ivRemove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_close_white_24dp"
-            tools:ignore="ContentDescription" />
-
-        <ImageView
             android:id="@+id/ivPrivate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

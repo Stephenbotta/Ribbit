@@ -89,5 +89,17 @@ class GroupsAdapter(private val glide: GlideRequests,
         notifyDataSetChanged()
     }
 
+    fun updateSuggestedGroup(updatedGroup: GroupDto) {
+        val firstItem = items.firstOrNull()
+        if (firstItem is SuggestedGroupsDto) {
+            val suggestedGroups = firstItem.groups
+            val index = suggestedGroups.indexOfFirst { it.id == updatedGroup.id }
+            if (index != -1) {
+                suggestedGroups[index] = updatedGroup
+                notifyDataSetChanged()
+            }
+        }
+    }
+
     interface Callback : SuggestedGroupsParentViewHolder.Callback, YourGroupViewHolder.Callback
 }

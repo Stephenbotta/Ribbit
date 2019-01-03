@@ -249,7 +249,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
         oldMessages.value = Resource.loading()
         isChatLoading = true
         val firstPage = lastMessageId == null
-        val call = RetrofitClient.conversifyApi.getVenueDetails(venue.id, lastMessageId)
+        val call = RetrofitClient.conversifyApi.getVenueDetailsForChat(venue.id, lastMessageId)
         apiCalls.add(call)
         call.enqueue(object : Callback<ApiResponse<VenueDetailsResponse>> {
             override fun onResponse(call: Call<ApiResponse<VenueDetailsResponse>>,

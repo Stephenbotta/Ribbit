@@ -75,8 +75,8 @@ interface ConversifyApi {
 
     @POST("user/venueConversationDetails")
     @FormUrlEncoded
-    fun getVenueDetails(@Field("groupId") venueId: String?,
-                        @Field("chatId") lastMessageId: String?): Call<ApiResponse<VenueDetailsResponse>>
+    fun getVenueDetailsForChat(@Field("groupId") venueId: String?,
+                               @Field("chatId") lastMessageId: String?): Call<ApiResponse<VenueDetailsResponse>>
 
     @POST("user/configNotification")
     @FormUrlEncoded
@@ -182,4 +182,8 @@ interface ConversifyApi {
     @POST("user/searchUser")
     @FormUrlEncoded
     fun getMentionSuggestions(@Field("search") username: String): Call<ApiResponse<List<ProfileDto>>>
+
+    @POST("user/groupDetails")
+    @FormUrlEncoded
+    fun getVenueDetails(@Field("venueId") venueId: String): Call<ApiResponse<VenueDto>>
 }

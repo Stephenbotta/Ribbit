@@ -13,7 +13,6 @@ import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.createvenue.CreateVenueActivity
 import com.conversify.ui.custom.LoadingDialog
@@ -21,6 +20,7 @@ import com.conversify.ui.main.explore.VenuesModeNavigator
 import com.conversify.ui.venues.VenuesViewModel
 import com.conversify.ui.venues.chat.ChatActivity
 import com.conversify.ui.venues.filters.VenueFiltersActivity
+import com.conversify.ui.venues.join.JoinVenueActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_venues_list.*
@@ -110,35 +110,6 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
                 Status.LOADING -> swipeRefreshLayout.isRefreshing = true
             }
         })
-
-        viewModel.joinVenue.observe(this, Observer { resource ->
-            resource ?: return@Observer
-
-            when (resource.status) {
-                Status.SUCCESS -> {
-                    loadingDialog.setLoading(false)
-
-                    resource.data?.let { venue ->
-                        if (venue.isPrivate == true) {
-                            requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
-                            venuesListAdapter.updateVenue(venue)
-                        } else {
-                            // Open the joined venue chat if venue is public
-                            val intent = ChatActivity.getStartIntent(requireActivity(), venue)
-                            startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
-                            getVenues(false)
-                        }
-                    }
-                }
-
-                Status.ERROR -> {
-                    loadingDialog.setLoading(false)
-                    handleError(resource.error)
-                }
-
-                Status.LOADING -> loadingDialog.setLoading(true)
-            }
-        })
     }
 
     private fun setupVenuesRecycler() {
@@ -162,9 +133,8 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
         }
 
         // Join other venue
-        if (isNetworkActiveWithMessage()) {
-            viewModel.joinVenue(venue)
-        }
+        val intent = JoinVenueActivity.getStartIntent(requireActivity(), venue)
+        startActivityForResult(intent, AppConstants.REQ_CODE_JOIN_VENUE)
     }
 
     private fun showMapVenuesFragment() {
@@ -204,6 +174,23 @@ class VenuesListFragment : BaseFragment(), VenuesListAdapter.Callback {
                     val filters = data?.getParcelableExtra<VenueFilters>(AppConstants.EXTRA_VENUE_FILTERS)
                     viewModel.updateFilters(filters)
                     viewModel.getListVenues(true)
+                }
+            }
+
+            AppConstants.REQ_CODE_JOIN_VENUE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val venue = data?.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
+                    if (venue != null) {
+                        if (venue.isPrivate == true) {
+                            // Update venue if joined venue was private
+                            venuesListAdapter.updateVenueJoinedStatus(venue)
+                        } else {
+                            // Open the joined venue chat if venue is public
+                            val intent = ChatActivity.getStartIntent(requireActivity(), venue)
+                            startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
+                            getVenues(false)
+                        }
+                    }
                 }
             }
         }

@@ -16,7 +16,7 @@ data class VenueDto(
         val locationAddress: String? = null,
 
         @field:SerializedName("distance")
-        val distance: Double? = null,
+        var distance: Double? = null,
 
         @field:SerializedName("adminId")
         val adminId: String? = null,
