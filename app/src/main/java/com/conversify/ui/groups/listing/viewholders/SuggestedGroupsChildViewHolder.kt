@@ -19,12 +19,6 @@ class SuggestedGroupsChildViewHolder(itemView: View,
                 callback.onSuggestedGroupClicked(group)
             }
         }
-
-        itemView.ivRemove.setOnClickListener {
-            if (adapterPosition != RecyclerView.NO_POSITION) {
-                callback.onRemoveSuggestedGroupClicked(group)
-            }
-        }
     }
 
     private lateinit var group: GroupDto
@@ -72,6 +66,5 @@ class SuggestedGroupsChildViewHolder(itemView: View,
 
     interface Callback {
         fun onSuggestedGroupClicked(group: GroupDto)
-        fun onRemoveSuggestedGroupClicked(group: GroupDto)
     }
 }

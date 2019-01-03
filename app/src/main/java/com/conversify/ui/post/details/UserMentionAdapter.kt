@@ -36,7 +36,7 @@ class UserMentionAdapter(private val glide: GlideRequests,
         init {
             itemView.setOnClickListener {
                 if (isValidPosition()) {
-                    callback.onUserMentionClicked(user)
+                    callback.onUserMentionSuggestionClicked(user)
                 }
             }
         }
@@ -53,6 +53,6 @@ class UserMentionAdapter(private val glide: GlideRequests,
     }
 
     interface Callback {
-        fun onUserMentionClicked(user: ProfileDto)
+        fun onUserMentionSuggestionClicked(user: ProfileDto)
     }
 }

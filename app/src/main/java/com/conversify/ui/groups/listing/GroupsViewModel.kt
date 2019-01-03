@@ -3,6 +3,7 @@ package com.conversify.ui.groups.listing
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.conversify.data.local.UserManager
+import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
@@ -116,7 +117,7 @@ class GroupsViewModel : ViewModel() {
         val groupItems = mutableListOf<Any>()
 
         if (suggestedGroups.isNotEmpty()) {
-            groupItems.add(SuggestedGroupsDto(suggestedGroups))
+            groupItems.add(SuggestedGroupsDto(suggestedGroups.toMutableList()))
         }
 
         if (yourGroups.isNotEmpty()) {
@@ -137,9 +138,14 @@ class GroupsViewModel : ViewModel() {
                 .enqueue(object : Callback<Any> {
                     override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         if (response.isSuccessful) {
-                            // Set member flag to true and increment member count for public group
-                            if (group.isPrivate == false) {
+                            if (group.isPrivate == true) {
+                                // If group is private then set request status to pending
+                                group.requestStatus = ApiConstants.REQUEST_STATUS_PENDING
+                            } else {
+                                // If group is public then set member flag to true,
+                                // set role to member and increment member count.
                                 group.isMember = true
+                                group.participationRole = ApiConstants.PARTICIPATION_ROLE_MEMBER
                                 val updatedCount = (group.memberCount ?: 0) + 1
                                 group.memberCount = updatedCount
                             }

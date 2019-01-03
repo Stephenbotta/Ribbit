@@ -51,6 +51,10 @@ class PostDetailsViewModel : ViewModel() {
 
     fun getPostDetailsHeader() = postDetailsHeader
 
+    fun updateHeaderPost(post: GroupPostDto) {
+        postDetailsHeader.groupPost = post
+    }
+
     fun getGroupPost() = postDetailsHeader.groupPost
 
     fun isPostLiked() = postDetailsHeader.groupPost.isLiked ?: false
@@ -325,7 +329,6 @@ class PostDetailsViewModel : ViewModel() {
         call.enqueue(object : Callback<ApiResponse<List<ProfileDto>>> {
             override fun onResponse(call: Call<ApiResponse<List<ProfileDto>>>,
                                     response: Response<ApiResponse<List<ProfileDto>>>) {
-                mentionSuggestionsCall = null
                 if (response.isSuccessful) {
                     mentionSuggestions.value = Resource.success(response.body()?.data)
                 } else {
@@ -334,7 +337,6 @@ class PostDetailsViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<ApiResponse<List<ProfileDto>>>, t: Throwable) {
-                mentionSuggestionsCall = null
                 if (!call.isCanceled) {
                     mentionSuggestions.value = Resource.error(t.failureAppError())
                 }

@@ -20,7 +20,6 @@ import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
-import com.conversify.ui.groups.topicgroups.TopicGroupsActivity
 import com.conversify.ui.post.details.PostDetailsActivity
 import com.conversify.ui.post.details.PostDetailsViewModel
 import com.conversify.ui.post.newpost.NewPostActivity
@@ -147,6 +146,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onGroupClicked(group: GroupDto) {
         Timber.i("Group name clicked : $group")
+        //GroupPostsActivity.start(requireActivity(), group)
     }
 
     override fun onUserProfileClicked(profile: ProfileDto) {
@@ -166,7 +166,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
     }
 
     override fun onGroupCategoryClicked(category: InterestDto) {
-        startActivity(TopicGroupsActivity.getStartIntent(requireActivity(), category))
+        //startActivity(TopicGroupsActivity.getStartIntent(requireActivity(), category))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

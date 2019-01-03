@@ -303,10 +303,13 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
             reply.replyBy?.userName
         }
 
+        // Show replying to view and update the text with the username
         tvReplyingTo.text = getString(R.string.post_details_label_replying_to_with_username, userName)
         llReplyingTo.visible()
-        etReply.setText(String.format("@%s ", userName))
-        etReply.setSelection(etReply.text?.length ?: 0)
+
+        // Set selection to the end and show keyboard
+        etReply.setTextWithoutTextChangedTrigger(String.format("@%s ", userName))
+        etReply.setSelectionAtEnd()
         etReply.showKeyboard()
 
         replyingToTopLevelReply = if (isTopLevelReply) {
@@ -335,15 +338,22 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     }
 
     override fun onGroupCategoryClicked(category: InterestDto) {
-        // todo - Open topic groups and handle post state changes
         /*val intent = TopicGroupsActivity.getStartIntent(this, category)
         startActivity(intent)*/
     }
 
-    override fun onUserMentionClicked(user: ProfileDto) {
-        etReply.setTextWithoutTextChangedTrigger("@" + user.userName)
-        etReply.setSelection(etReply.text?.length ?: 0)
+    override fun onUserMentionSuggestionClicked(user: ProfileDto) {
+        etReply.updateMentionBeforeCursor(user.userName ?: "")
         viewFlipperUserMentions.gone()
+    }
+
+    override fun onBackPressed() {
+        if (viewFlipperUserMentions.isVisible()) {
+            viewModel.cancelGetMentionSuggestions()
+            viewFlipperUserMentions.gone()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onDestroy() {

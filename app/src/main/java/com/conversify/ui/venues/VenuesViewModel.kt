@@ -230,9 +230,12 @@ class VenuesViewModel(application: Application) : AndroidViewModel(application) 
                                 // If venue is private then set request status to pending
                                 venue.requestStatus = ApiConstants.REQUEST_STATUS_PENDING
                             } else {
-                                // If venue is public then set member flag to true and set role to member
+                                // If venue is public then set member flag to true,
+                                // set role to member and increment member count.
                                 venue.isMember = true
                                 venue.participationRole = ApiConstants.PARTICIPATION_ROLE_MEMBER
+                                val updatedCount = (venue.memberCount ?: 0) + 1
+                                venue.memberCount = updatedCount
                             }
                             joinVenue.value = Resource.success(venue)
                         } else {

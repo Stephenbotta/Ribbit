@@ -166,6 +166,7 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
                     resource.data?.let { group ->
                         if (group.isPrivate == true) {
                             requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
+                            groupsAdapter.updateSuggestedGroup(group)
                         } else {
                             GroupPostsActivity.start(requireActivity(), group)
                             getGroups(false)
@@ -195,9 +196,6 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
         if (isNetworkActiveWithMessage()) {
             viewModel.joinGroup(group)
         }
-    }
-
-    override fun onRemoveSuggestedGroupClicked(group: GroupDto) {
     }
 
     override fun onYourGroupClicked(group: GroupDto) {

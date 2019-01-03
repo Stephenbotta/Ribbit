@@ -8,8 +8,8 @@ import android.util.AttributeSet
 
 class SocialEditText : AppCompatEditText, TextWatcher {
     companion object {
-        private const val PREFIX_MENTION = "@"
-        private const val PREFIX_HASHTAG = "#"
+        private const val PREFIX_MENTION = '@'
+        private const val PREFIX_HASHTAG = '#'
     }
 
     private var textChangedListener: OnTextChangedListener? = null
@@ -110,10 +110,40 @@ class SocialEditText : AppCompatEditText, TextWatcher {
         suggestionListener = listener
     }
 
-    fun setTextWithoutTextChangedTrigger(text: String) {
+    fun setTextWithoutTextChangedTrigger(text: CharSequence) {
         removeTextChangedListener(this)
         setText(text)
         addTextChangedListener(this)
+    }
+
+    /**
+     * Updates the mention before the current cursor index
+     *
+     * Here "|" is used to denote the cursor
+     * e.g. for a sample string "Hello @world| test"
+     * if we have "user" as mentionText and our current index is after "world" then,
+     * updated text will be "Hello @user| test"
+     *
+     * @param mentionText Text that needs to be used after the replace
+     * */
+    fun updateMentionBeforeCursor(mentionText: String) {
+        val cursorEndIndex = selectionEnd
+        if (cursorEndIndex != -1) {
+            val completeText = text ?: ""
+            val textEndIndex = cursorEndIndex - 1
+            for (index in textEndIndex downTo 0) {
+                if (completeText[index] == PREFIX_MENTION) {
+                    // Replace after the @ until the end index of cursor
+                    val updatedText = completeText.replaceRange(index + 1, cursorEndIndex, mentionText)
+                    setTextWithoutTextChangedTrigger(updatedText)
+
+                    // Updated cursor index will be after mention text
+                    val updatedCursorIndex = index + mentionText.length + 1
+                    setSelection(updatedCursorIndex)    // Set selection at the end of mention
+                    break
+                }
+            }
+        }
     }
 
     interface OnTextChangedListener {

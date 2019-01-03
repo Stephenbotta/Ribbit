@@ -1,3 +1,3 @@
 package com.conversify.data.remote.models.groups
 
-data class SuggestedGroupsDto(val groups: List<GroupDto>)
+data class SuggestedGroupsDto(val groups: MutableList<GroupDto>)
