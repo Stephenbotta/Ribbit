@@ -24,6 +24,7 @@ class VenuesViewModel(application: Application) : AndroidViewModel(application) 
     val listVenues by lazy { SingleLiveEvent<Resource<List<Any>>>() }
     val mapVenues by lazy { SingleLiveEvent<Resource<List<VenueDto>>>() }
     val joinVenue by lazy { SingleLiveEvent<Resource<VenueDto>>() }
+    val venueDetails by lazy { SingleLiveEvent<Resource<VenueDto>>() }
 
     private val myVenues by lazy { mutableListOf<VenueDto>() }
     private val nearbyVenues by lazy { mutableListOf<VenueDto>() }
@@ -241,6 +242,26 @@ class VenuesViewModel(application: Application) : AndroidViewModel(application) 
 
                     override fun onFailure(call: Call<Any>, t: Throwable) {
                         joinVenue.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
+    fun getVenueDetails(venueId: String) {
+        venueDetails.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .getVenueDetails(venueId)
+                .enqueue(object : Callback<ApiResponse<VenueDto>> {
+                    override fun onResponse(call: Call<ApiResponse<VenueDto>>, response: Response<ApiResponse<VenueDto>>) {
+                        if (response.isSuccessful) {
+                            venueDetails.value = Resource.success(response.body()?.data)
+                        } else {
+                            venueDetails.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<VenueDto>>, t: Throwable) {
+                        venueDetails.value = Resource.error(t.failureAppError())
                     }
                 })
     }

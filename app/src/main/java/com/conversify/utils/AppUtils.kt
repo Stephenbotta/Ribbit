@@ -63,4 +63,24 @@ object AppUtils {
         return notification.type == ApiConstants.NOTIFICATION_TYPE_REQUEST_JOIN_VENUE
                 || notification.type == ApiConstants.NOTIFICATION_TYPE_INVITE_JOIN_VENUE
     }
+
+    fun fixHashTags(hashTags: List<String>): List<String> {
+        return hashTags.map { hashTag ->
+            if (hashTag.startsWith(PREFIX_HASHTAG)) {
+                hashTag
+            } else {
+                PREFIX_HASHTAG.plus(hashTag)
+            }
+        }
+    }
+
+    fun fixUsernameMentions(mentions: List<String>): List<String> {
+        return mentions.map { mention ->
+            if (mention.startsWith(PREFIX_MENTION)) {
+                mention
+            } else {
+                PREFIX_MENTION.plus(mention)
+            }
+        }
+    }
 }

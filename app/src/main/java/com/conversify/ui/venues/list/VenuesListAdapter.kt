@@ -102,9 +102,16 @@ class VenuesListAdapter(private val glide: GlideRequests,
         }
     }
 
-    fun updateVenue(venue: VenueDto) {
-        val index = items.indexOfFirst { it is VenueDto && it.id == venue.id }
+    fun updateVenueJoinedStatus(updatedVenue: VenueDto) {
+        val index = items.indexOfFirst { it is VenueDto && it.id == updatedVenue.id }
         if (index != -1) {
+            val existingVenue = items[index] as VenueDto
+
+            existingVenue.requestStatus = updatedVenue.requestStatus
+            existingVenue.isMember = updatedVenue.isMember
+            existingVenue.participationRole = updatedVenue.participationRole
+
+            items[index] = updatedVenue
             notifyItemChanged(index)
         }
     }

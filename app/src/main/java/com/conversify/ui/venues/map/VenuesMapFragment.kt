@@ -19,6 +19,7 @@ import com.conversify.ui.main.explore.VenuesModeNavigator
 import com.conversify.ui.venues.VenuesViewModel
 import com.conversify.ui.venues.chat.ChatActivity
 import com.conversify.ui.venues.filters.VenueFiltersActivity
+import com.conversify.ui.venues.join.JoinVenueActivity
 import com.conversify.ui.venues.list.VenuesListAdapter
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
@@ -109,35 +110,6 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback, VenuesListAd
                 }
             }
         })
-
-        viewModel.joinVenue.observe(this, Observer { resource ->
-            resource ?: return@Observer
-
-            when (resource.status) {
-                Status.SUCCESS -> {
-                    loadingDialog.setLoading(false)
-
-                    resource.data?.let { venue ->
-                        if (venue.isPrivate == true) {
-                            requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
-                            selectedVenuesAdapter.updateVenue(venue)
-                        } else {
-                            // Open the joined venue chat if venue is public
-                            val intent = ChatActivity.getStartIntent(requireActivity(), venue)
-                            startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
-                            getVenues()
-                        }
-                    }
-                }
-
-                Status.ERROR -> {
-                    loadingDialog.setLoading(false)
-                    handleError(resource.error)
-                }
-
-                Status.LOADING -> loadingDialog.setLoading(true)
-            }
-        })
     }
 
     private fun getVenues() {
@@ -187,9 +159,8 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback, VenuesListAd
         }
 
         // Join other venue
-        if (isNetworkActiveWithMessage()) {
-            viewModel.joinVenue(venue)
-        }
+        val intent = JoinVenueActivity.getStartIntent(requireActivity(), venue)
+        startActivityForResult(intent, AppConstants.REQ_CODE_JOIN_VENUE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -207,6 +178,23 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback, VenuesListAd
                     val filters = data?.getParcelableExtra<VenueFilters>(AppConstants.EXTRA_VENUE_FILTERS)
                     viewModel.updateFilters(filters)
                     viewModel.getMapVenues()
+                }
+            }
+
+            AppConstants.REQ_CODE_JOIN_VENUE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val venue = data?.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
+                    if (venue != null) {
+                        if (venue.isPrivate == true) {
+                            // Update venue if joined venue was private
+                            selectedVenuesAdapter.updateVenueJoinedStatus(venue)
+                        } else {
+                            // Open the joined venue chat if venue is public
+                            val intent = ChatActivity.getStartIntent(requireActivity(), venue)
+                            startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
+                            getVenues()
+                        }
+                    }
                 }
             }
         }
