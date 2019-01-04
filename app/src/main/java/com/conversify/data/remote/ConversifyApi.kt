@@ -5,6 +5,7 @@ import com.conversify.data.remote.models.chat.VenueDetailsResponse
 import com.conversify.data.remote.models.groups.*
 import com.conversify.data.remote.models.loginsignup.*
 import com.conversify.data.remote.models.notifications.NotificationDto
+import com.conversify.data.remote.models.people.GetPeopleResponse
 import com.conversify.data.remote.models.post.AddPostReplyRequest
 import com.conversify.data.remote.models.post.AddPostSubReplyRequest
 import com.conversify.data.remote.models.post.CreatePostRequest
@@ -186,4 +187,7 @@ interface ConversifyApi {
     @POST("user/groupDetails")
     @FormUrlEncoded
     fun getVenueDetails(@Field("venueId") venueId: String): Call<ApiResponse<VenueDto>>
+
+    @POST("user/crossedPeople")
+    fun getCrossedPeople(): Call<ApiResponse<List<GetPeopleResponse>>>
 }
