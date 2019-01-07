@@ -14,13 +14,26 @@
         android:background="@color/greyImageBackground" />
 
     <android.support.design.button.MaterialButton
-        android:id="@+id/btnExitGroup"
+        android:id="@+id/btnExitVenue"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/venue_details_btn_exit_group"
+        android:minWidth="0dp"
+        android:text="@string/venue_details_btn_exit_venue"
+        android:textAllCaps="false"
+        android:textColor="@color/red" />
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/btnArchiveVenue"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:minWidth="0dp"
+        android:text="@string/venue_details_btn_archive_venue"
         android:textAllCaps="false"
         android:textColor="@color/red" />
 

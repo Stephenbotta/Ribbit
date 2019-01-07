@@ -123,7 +123,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
         launch {
             val thumbnailImage = withContext(Dispatchers.IO) {
                 MediaUtils.getThumbnailFromVideo(video.absolutePath,
-                        cacheDirectoryPath, MediaStore.Video.Thumbnails.MICRO_KIND)
+                        cacheDirectoryPath, MediaStore.Video.Thumbnails.MINI_KIND)
             }
             if (thumbnailImage != null) {
                 val message = chatMessageBuilder.buildVideoMessage(video, thumbnailImage)

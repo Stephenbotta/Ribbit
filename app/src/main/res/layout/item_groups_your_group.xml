@@ -84,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:background="@drawable/shape_red_rounded_4dp"
+        android:background="@drawable/shape_red_rounded_8dp"
         android:fontFamily="@font/brandon_text_bold"
         android:includeFontPadding="false"
         android:paddingStart="6dp"
@@ -95,7 +95,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="1"
+        tools:text="6"
         tools:visibility="visible" />
 
 </android.support.constraint.ConstraintLayout>

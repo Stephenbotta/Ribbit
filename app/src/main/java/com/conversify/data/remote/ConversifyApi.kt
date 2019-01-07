@@ -9,10 +9,7 @@ import com.conversify.data.remote.models.post.AddPostReplyRequest
 import com.conversify.data.remote.models.post.AddPostSubReplyRequest
 import com.conversify.data.remote.models.post.CreatePostRequest
 import com.conversify.data.remote.models.post.PostReplyDto
-import com.conversify.data.remote.models.venues.CreateEditVenueRequest
-import com.conversify.data.remote.models.venues.GetVenuesResponse
-import com.conversify.data.remote.models.venues.GetVenuesWithFilterRequest
-import com.conversify.data.remote.models.venues.VenueDto
+import com.conversify.data.remote.models.venues.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -86,6 +83,11 @@ interface ConversifyApi {
     @POST("user/exitGroup")
     @FormUrlEncoded
     fun exitVenue(@Field("venueId") venueId: String): Call<Any>
+
+    @POST("user/archiveGroup")
+    @FormUrlEncoded
+    fun archiveVenue(@Field("groupId") venueId: String,
+                     @Field("groupType") type: String = ApiConstants.TYPE_VENUE): Call<Any>
 
     @POST("user/getData")
     @FormUrlEncoded
@@ -186,4 +188,11 @@ interface ConversifyApi {
     @POST("user/groupDetails")
     @FormUrlEncoded
     fun getVenueDetails(@Field("venueId") venueId: String): Call<ApiResponse<VenueDto>>
+
+    @POST("user/addParticipantsList")
+    @FormUrlEncoded
+    fun getVenueAddParticipants(@Field("venueId") venueId: String): Call<ApiResponse<List<ProfileDto>>>
+
+    @POST("user/addParticipants")
+    fun addVenueParticipants(@Body request: AddVenueParticipantsRequest): Call<Any>
 }

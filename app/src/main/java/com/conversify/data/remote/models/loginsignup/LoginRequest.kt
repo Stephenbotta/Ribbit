@@ -14,4 +14,7 @@ data class LoginRequest(
         val googleId: String? = null,
 
         @field:SerializedName("password")
-        val password: String? = null)
+        val password: String? = null,
+
+        @field:SerializedName("email")
+        val email: String? = null)

@@ -20,7 +20,11 @@ import retrofit2.Response
 class ChooseInterestsViewModel : ViewModel() {
     val interests by lazy { MutableLiveData<Resource<List<InterestDto>>>() }
     val updateInterests by lazy { SingleLiveEvent<Resource<Any>>() }
-    val myInterests by lazy { UserManager.getProfile().interests ?: emptyList() }
+    val myInterestIds by lazy {
+        (UserManager.getProfile().interests ?: emptyList())
+                .mapNotNull { it.id }
+                .toSet()
+    }
 
     private val interestsRepository by lazy { InterestsRepository.getInstance() }
 
@@ -47,13 +51,11 @@ class ChooseInterestsViewModel : ViewModel() {
         })
     }
 
-    fun updateInterests(selectedInterests: List<InterestDto>) {
-        val interests = selectedInterests.mapNotNull { it.id }
-
+    fun updateInterests(selectedInterestIds: List<String>) {
         updateInterests.value = Resource.loading()
 
         RetrofitClient.conversifyApi
-                .updateInterests(interests)
+                .updateInterests(selectedInterestIds)
                 .enqueue(object : Callback<ApiResponse<ProfileDto>> {
                     override fun onResponse(call: Call<ApiResponse<ProfileDto>>,
                                             response: Response<ApiResponse<ProfileDto>>) {

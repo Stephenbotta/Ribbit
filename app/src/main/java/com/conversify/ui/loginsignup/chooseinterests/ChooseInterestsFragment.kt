@@ -10,9 +10,10 @@ import android.support.v4.app.Fragment
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
+import com.conversify.data.remote.models.loginsignup.InterestDto
+import com.conversify.extensions.gone
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.shortToast
 import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
@@ -21,7 +22,7 @@ import com.conversify.ui.main.MainActivity
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_choose_interests.*
 
-class ChooseInterestsFragment : BaseFragment() {
+class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback {
     companion object {
         private const val ARGUMENT_STARTED_FOR_RESULT = "ARGUMENT_STARTED_FOR_RESULT"
         const val TAG = "ChooseInterestsFragment"
@@ -44,6 +45,7 @@ class ChooseInterestsFragment : BaseFragment() {
     private val startedForResult: Boolean by lazy {
         arguments?.getBoolean(ARGUMENT_STARTED_FOR_RESULT) ?: false
     }
+    private val selectedInterestIds by lazy { mutableSetOf<String>() }
     private lateinit var viewModel: ChooseInterestsViewModel
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var interestsAdapter: ChooseInterestsAdapter
@@ -65,7 +67,7 @@ class ChooseInterestsFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this)[ChooseInterestsViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())
 
-        interestsAdapter = ChooseInterestsAdapter(GlideApp.with(this))
+        interestsAdapter = ChooseInterestsAdapter(GlideApp.with(this), this)
         rvInterests.adapter = interestsAdapter
 
         setListeners()
@@ -79,11 +81,8 @@ class ChooseInterestsFragment : BaseFragment() {
         }
 
         btnContinue.setOnClickListener {
-            val selectedInterests = interestsAdapter.getSelectedInterests()
-            if (selectedInterests.size < MINIMUM_INTEREST_COUNT) {
-                requireActivity().shortToast(R.string.choose_interests_message_choose_at_least_3_interests)
-            } else if (isNetworkActiveWithMessage()) {
-                viewModel.updateInterests(selectedInterests)
+            if (isNetworkActiveWithMessage()) {
+                viewModel.updateInterests(selectedInterestIds.toList())
             }
         }
     }
@@ -99,20 +98,24 @@ class ChooseInterestsFragment : BaseFragment() {
 
                     // If started for result then set my interests as selected
                     if (startedForResult) {
-                        // Form a set of my interest ids
-                        val myInterestIds = viewModel.myInterests.mapNotNull { it.id }.toSet()
+                        val myInterestIds = viewModel.myInterestIds
 
                         // Set all matched interests to selected
                         interests.forEach { interest ->
                             if (myInterestIds.contains(interest.id)) {
                                 interest.selected = true
+                                selectedInterestIds.add(interest.id ?: "")  // Add interest to selected set
                             }
+                        }
+
+                        // Update the continue button state
+                        if (selectedInterestIds.size < MINIMUM_INTEREST_COUNT) {
+                            btnContinue.gone()
+                        } else {
+                            btnContinue.visible()
                         }
                     }
                     interestsAdapter.displayInterests(interests)
-                    if (interests.isNotEmpty()) {
-                        btnContinue.visible()
-                    }
                 }
 
                 Status.ERROR -> {
@@ -153,6 +156,23 @@ class ChooseInterestsFragment : BaseFragment() {
         val shouldFetchInterests = viewModel.hasInterests() || isNetworkActiveWithMessage()
         if (shouldFetchInterests) {
             viewModel.getInterests()
+        }
+    }
+
+    override fun onInterestClicked(interest: InterestDto) {
+        val interestId = interest.id
+        if (interestId != null) {
+            if (interest.selected) {
+                selectedInterestIds.add(interestId)
+            } else {
+                selectedInterestIds.remove(interestId)
+            }
+        }
+
+        if (selectedInterestIds.size < MINIMUM_INTEREST_COUNT) {
+            btnContinue.gone()
+        } else {
+            btnContinue.visible()
         }
     }
 

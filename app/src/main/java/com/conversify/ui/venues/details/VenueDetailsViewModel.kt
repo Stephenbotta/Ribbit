@@ -13,6 +13,7 @@ import retrofit2.Response
 class VenueDetailsViewModel : ViewModel() {
     val changeVenueNotifications by lazy { SingleLiveEvent<Resource<Boolean>>() }
     val exitVenue by lazy { SingleLiveEvent<Resource<Any>>() }
+    val archiveVenue by lazy { SingleLiveEvent<Resource<Any>>() }
 
     fun changeVenueNotifications(venueId: String, isEnabled: Boolean) {
         changeVenueNotifications.value = Resource.loading()
@@ -50,6 +51,26 @@ class VenueDetailsViewModel : ViewModel() {
 
                     override fun onFailure(call: Call<Any>, t: Throwable) {
                         exitVenue.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
+    fun archiveVenue(venueId: String) {
+        archiveVenue.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .archiveVenue(venueId)
+                .enqueue(object : Callback<Any> {
+                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                        if (response.isSuccessful) {
+                            archiveVenue.value = Resource.success()
+                        } else {
+                            archiveVenue.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Any>, t: Throwable) {
+                        archiveVenue.value = Resource.error(t.failureAppError())
                     }
                 })
     }

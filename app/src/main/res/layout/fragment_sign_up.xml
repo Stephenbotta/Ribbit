@@ -22,26 +22,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvLabelYourRegistered"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="36dp"
-        android:text="@string/login_label_your_registered"
-        android:textColor="@color/textGray"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelTitle" />
-
-    <TextView
         android:id="@+id/btnPhoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:layout_marginTop="36dp"
+        android:layout_marginStart="24dp"
         android:fontFamily="@font/brandon_text_bold"
         android:text="@string/login_btn_phone_number"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintStart_toEndOf="@id/tvLabelYourRegistered"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelTitle" />
 
     <TextView
@@ -83,7 +72,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelYourRegistered">
+        app:layout_constraintTop_toBottomOf="@id/btnPhoneNumber">
 
         <com.hbb20.CountryCodePicker
             android:id="@+id/countryCodePicker"
@@ -97,7 +86,7 @@
             app:ccp_showNameCode="false"
             app:ccp_textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLabelYourRegistered" />
+            app:layout_constraintTop_toBottomOf="@id/btnPhoneNumber" />
 
         <EditText
             android:id="@+id/etPhoneNumber"

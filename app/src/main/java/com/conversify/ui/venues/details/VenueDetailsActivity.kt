@@ -11,13 +11,16 @@ import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
 import com.conversify.R
+import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.VenueMemberDto
+import com.conversify.data.remote.models.groups.AddParticipantsDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.venues.addparticipants.AddVenueParticipantsActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_venue_details.*
@@ -38,7 +41,6 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
     private val members by lazy { intent.getParcelableArrayListExtra<VenueMemberDto>(EXTRA_VENUE_MEMBERS) }
     private lateinit var viewModel: VenueDetailsViewModel
     private lateinit var loadingDialog: LoadingDialog
-    private lateinit var venueDetailsAdapter: VenueDetailsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +92,7 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
             }
         })
 
-        viewModel.exitVenue.observe(this, Observer { resource ->
+        val exitOrArchiveVenueObserver = Observer<Resource<Any>> { resource ->
             resource ?: return@Observer
             when (resource.status) {
                 Status.SUCCESS -> {
@@ -111,15 +113,19 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
                     loadingDialog.setLoading(true)
                 }
             }
-        })
+        }
+
+        viewModel.exitVenue.observe(this, exitOrArchiveVenueObserver)
+        viewModel.archiveVenue.observe(this, exitOrArchiveVenueObserver)
     }
 
     private fun setupVenueDetailsRecycler() {
-        venueDetailsAdapter = VenueDetailsAdapter(GlideApp.with(this), this)
+        val venueDetailsAdapter = VenueDetailsAdapter(GlideApp.with(this), this)
         rvVenueDetails.adapter = venueDetailsAdapter
 
         val items = mutableListOf<Any>()
         items.add(venue)    // Header
+        items.add(AddParticipantsDto)    // Add participants
         items.addAll(members)   // Members
         items.add(Any())    // Exit group
 
@@ -130,15 +136,32 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         viewModel.changeVenueNotifications(venue.id ?: "", isEnabled)
     }
 
+    override fun onAddParticipantsClicked() {
+        AddVenueParticipantsActivity.start(this, venue.id ?: "")
+    }
+
     override fun onMemberClicked(member: VenueMemberDto) {
     }
 
     override fun onExitVenueClicked() {
         AlertDialog.Builder(this)
-                .setMessage(R.string.venue_details_label_exit_group)
+                .setMessage(R.string.venue_details_label_exit_venue_question)
                 .setPositiveButton(R.string.venue_details_btn_exit) { _, _ ->
                     if (isNetworkActiveWithMessage()) {
                         viewModel.exitVenue(venue.id ?: "")
+                    }
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+                .show()
+    }
+
+    override fun onArchiveVenueClicked() {
+        AlertDialog.Builder(this)
+                .setMessage(R.string.venue_details_label_archive_venue_question)
+                .setPositiveButton(R.string.venue_details_btn_archive) { _, _ ->
+                    if (isNetworkActiveWithMessage()) {
+                        viewModel.archiveVenue(venue.id ?: "")
                     }
                 }
                 .setNegativeButton(R.string.cancel, null)

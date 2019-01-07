@@ -10,12 +10,14 @@ import kotlinx.android.synthetic.main.item_group_participant.view.*
 
 class ParticipantViewHolder(itemView: View,
                             private val glide: GlideRequests,
-                            clickableParticipants: Boolean) : RecyclerView.ViewHolder(itemView) {
+                            clickableParticipants: Boolean,
+                            callback: Callback?=null) : RecyclerView.ViewHolder(itemView) {
     init {
         if (clickableParticipants) {
             itemView.setOnClickListener {
                 profile.isSelected = !profile.isSelected
                 changeSelectedState(profile.isSelected)
+                callback?.onParticipantClicked(profile)
             }
         }
     }
@@ -38,5 +40,9 @@ class ParticipantViewHolder(itemView: View,
         } else {
             itemView.ivSelected.gone()
         }
+    }
+
+    interface Callback {
+        fun onParticipantClicked(profile: ProfileDto)
     }
 }

@@ -231,10 +231,18 @@ class LoginFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginLi
     private fun handleSocialProfileSuccess(socialProfile: SocialProfile) {
         if (!isNetworkActiveWithMessage()) return
 
-        val request = if (socialProfile.source == ApiConstants.FLAG_REGISTER_FACEBOOK) {
-            LoginRequest(facebookId = socialProfile.socialId)
+        // Only sent if it exists
+        val email = if (socialProfile.email.isBlank()) {
+            null
         } else {
-            LoginRequest(googleId = socialProfile.socialId)
+            socialProfile.email
+        }
+        val request = if (socialProfile.source == ApiConstants.FLAG_REGISTER_FACEBOOK) {
+            LoginRequest(facebookId = socialProfile.socialId,
+                    email = email)
+        } else {
+            LoginRequest(googleId = socialProfile.socialId,
+                    email = email)
         }
         viewModel.login(request)
     }

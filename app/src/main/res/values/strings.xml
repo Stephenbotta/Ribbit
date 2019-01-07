@@ -88,7 +88,6 @@
     <string name="login_label_enter_email_id">Enter Email ID</string>
     <string name="login_label_phone_username_or_email">Phone number, username or email</string>
     <string name="login_label_slash">/</string>
-    <string name="login_label_your_registered">Your registered</string>
     <string name="login_label_welcome">Welcome</string>
     <string name="login_label_password">Password</string>
     <string name="login_label_forgot_password_reset_password">Forgot password? Reset Password</string>
@@ -181,9 +180,12 @@
     <string name="venue_details_label_location">Location</string>
     <string name="venue_details_label_admin">ADMIN</string>
     <string name="venue_details_label_members_with_count">Members · %d</string>
-    <string name="venue_details_label_exit_group">Exit group?</string>
-    <string name="venue_details_btn_exit_group">Exit group</string>
+    <string name="venue_details_btn_exit_venue">Exit venue</string>
+    <string name="venue_details_label_exit_venue_question">Exit venue?</string>
+    <string name="venue_details_btn_archive_venue">Archive venue</string>
+    <string name="venue_details_label_archive_venue_question">Archive venue?</string>
     <string name="venue_details_btn_exit">Exit</string>
+    <string name="venue_details_btn_archive">Archive</string>
 
     <string name="groups_label_search_for_channels">Search for channels</string>
     <string name="groups_label_add_new_channel">Add New Channel</string>
@@ -239,7 +241,8 @@
     <string name="people_label_crossed_paths">You crossed paths with</string>
     <string name="people_label_crossed_paths_message">Find people who crossed paths with you at places you went</string>
 
-
     <string name="join_venue_btn_join">JOIN</string>
     <string name="join_venue_label_participants">Participants</string>
+
+    <string name="add_venue_participants_message_request_sent">Request has been sent to the participants. They will get added once they accept.</string>
 </resources>

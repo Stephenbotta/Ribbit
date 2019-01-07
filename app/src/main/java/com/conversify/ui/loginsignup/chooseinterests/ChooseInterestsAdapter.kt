@@ -9,11 +9,12 @@ import com.conversify.extensions.inflate
 import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_interest.view.*
 
-class ChooseInterestsAdapter(private val glide: GlideRequests) : RecyclerView.Adapter<ChooseInterestsAdapter.ViewHolder>() {
+class ChooseInterestsAdapter(private val glide: GlideRequests,
+                             private val callback: Callback) : RecyclerView.Adapter<ChooseInterestsAdapter.ViewHolder>() {
     private val interests = mutableListOf<InterestDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(parent.inflate(R.layout.item_interest), glide)
+        return ViewHolder(parent.inflate(R.layout.item_interest), glide, callback)
     }
 
     override fun getItemCount(): Int = interests.size
@@ -28,16 +29,14 @@ class ChooseInterestsAdapter(private val glide: GlideRequests) : RecyclerView.Ad
         notifyDataSetChanged()
     }
 
-    fun getSelectedInterests(): List<InterestDto> {
-        return interests.filter { it.selected }
-    }
-
     class ViewHolder(itemView: View,
-                     private val glide: GlideRequests) : RecyclerView.ViewHolder(itemView) {
+                     private val glide: GlideRequests,
+                     callback: Callback) : RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener {
                 interest.selected = !interest.selected
                 changeSelectedState(interest.selected)
+                callback.onInterestClicked(interest)
             }
         }
 
@@ -64,5 +63,9 @@ class ChooseInterestsAdapter(private val glide: GlideRequests) : RecyclerView.Ad
             }
             itemView.ivSelected.setImageResource(selectedResId)
         }
+    }
+
+    interface Callback {
+        fun onInterestClicked(interest: InterestDto)
     }
 }
