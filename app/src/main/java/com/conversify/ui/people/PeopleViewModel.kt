@@ -19,7 +19,7 @@ import retrofit2.Response
 class PeopleViewModel(application: Application) : BaseViewModel(application) {
 
 
-    val crossedPeople by lazy { SingleLiveEvent<Resource<List<GetPeopleResponse>>>() }
+    val crossedPeople by lazy { SingleLiveEvent<Resource<List<Any>>>() }
 
     fun getCrossedPeople() {
         crossedPeople.value = Resource.loading()
@@ -30,7 +30,15 @@ class PeopleViewModel(application: Application) : BaseViewModel(application) {
                     override fun onResponse(call: Call<ApiResponse<List<GetPeopleResponse>>>,
                                             response: Response<ApiResponse<List<GetPeopleResponse>>>) {
                         if (response.isSuccessful) {
-                            crossedPeople.value = Resource.success(response.body()?.data)
+                            val crossedPeoplePlaces = response.body()?.data ?: emptyList()
+                            val items = mutableListOf<Any>()
+                            crossedPeoplePlaces.forEach { place ->
+                                items.add(place)
+                                place.userCrossed?.let { users ->
+                                    items.addAll(users)
+                                }
+                            }
+                            crossedPeople.value = Resource.success(items)
                         } else {
                             crossedPeople.value = Resource.error(response.getAppError())
                         }

@@ -3,83 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
-
-    <View
-        android:id="@+id/lineSpace"
-        android:layout_width="2dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="11dp"
-        android:background="@color/greyImageBackground"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="@id/ivPin"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvDate"
+    <android.support.constraint.Guideline
+        android:id="@+id/lineGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="@color/textGray"
-        android:textSize="@dimen/item_people_tv_date_text_size"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="@+id/lineSpace"
-        app:layout_constraintEnd_toStartOf="@id/ivPin"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="Wed, 03 2018" />
-
-    <ImageView
-        android:id="@+id/ivPin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_pin"
-        app:layout_constraintBottom_toBottomOf="@+id/lineSpace"
-        app:layout_constraintEnd_toEndOf="@id/line"
-        app:layout_constraintStart_toStartOf="@id/line"
-        tools:ignore="ContentDescription" />
-
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvLocationName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textGray"
-        android:textSize="@dimen/item_people_tv_date_text_size"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="@+id/lineSpace"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@id/userCard"
-        tools:text="Jubilee Building" />
-
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvLocationAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textGray"
-        android:textSize="@dimen/item_people_tv_address_text_size"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@id/userCard"
-        app:layout_constraintTop_toBottomOf="@+id/tvLocationName"
-        tools:text="14, Hahn Garden Street. 917, NY" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35" />
 
     <android.support.design.card.MaterialCardView
         android:id="@+id/userCard"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         app:cardCornerRadius="4dp"
         app:cardElevation="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/line"
-        app:layout_constraintTop_toBottomOf="@+id/tvLocationAddress"
+        app:layout_constraintStart_toEndOf="@id/lineGuideline"
+        app:layout_constraintTop_toTopOf="parent"
         app:strokeColor="@color/greyImageBackground"
         app:strokeWidth="1dp">
 
@@ -100,7 +46,6 @@
                 app:riv_corner_radius_top_right="4dp"
                 tools:src="@tools:sample/avatars" />
 
-            <!-- todo update constraints -->
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvTime"
                 android:layout_width="wrap_content"
@@ -158,22 +103,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tvUserName"
                 app:layout_constraintTop_toBottomOf="@+id/tvUserName"
-                tools:text="Progect Manager at Apex Group. " />
+                tools:text="Project Manager at Apex Group. " />
 
 
         </android.support.constraint.ConstraintLayout>
 
     </android.support.design.card.MaterialCardView>
 
+    <!--android:background="@color/peopleLine"-->
+    <!--android:background="@drawable/shape_dotted_line"-->
     <View
         android:id="@+id/line"
-        android:layout_width="2dp"
+        android:layout_width="1dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/greyImageBackground"
+        android:layout_marginEnd="11.5dp"
+        android:background="@color/peopleLine"
         app:layout_constraintBottom_toBottomOf="@id/userCard"
         app:layout_constraintEnd_toStartOf="@id/userCard"
-        app:layout_constraintTop_creator="10"
-        app:layout_constraintTop_toBottomOf="@+id/tvLocationName" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

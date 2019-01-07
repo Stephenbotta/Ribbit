@@ -12,15 +12,14 @@ import com.conversify.data.remote.models.Status
 import com.conversify.databinding.FragmentPeopleBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.shortToast
 import com.conversify.ui.base.BaseFragment
-import com.conversify.ui.custom.LoadingDialog
+import com.conversify.utils.GlideApp
 
 class PeopleFragment : BaseFragment() {
 
     private lateinit var viewModel: PeopleViewModel
     private lateinit var binding: FragmentPeopleBinding
-    private lateinit var loadingDialog: LoadingDialog
+    private lateinit var adapter: PeopleAdapter
 
     companion object {
         const val TAG = "PeopleFragment"
@@ -36,46 +35,58 @@ class PeopleFragment : BaseFragment() {
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        inItClasses()
+        observeChanges()
+        getCrossedPeople()
+    }
 
+    private fun inItClasses() {
         viewModel = ViewModelProviders.of(this).get(PeopleViewModel::class.java)
         binding.setLifecycleOwner(this)
         binding.viewModel = viewModel
-        loadingDialog = LoadingDialog(requireContext())
-        observeChanges()
-        callApi()
-
-    }
-
-    private fun callApi() {
-        if (isNetworkActiveWithMessage()) {
-            loadingDialog.setLoading(true)
-            viewModel.getCrossedPeople()
-        }
+        adapter = PeopleAdapter(GlideApp.with(this))
+        binding.rvPeople.adapter = adapter
+        binding.rvPeople.visibility = View.GONE
+        binding.swipeRefreshLayout.setOnRefreshListener { getCrossedPeople() }
     }
 
     private fun observeChanges() {
 
         viewModel.crossedPeople.observe(this, Observer { resource ->
-            loadingDialog.setLoading(false)
             resource ?: return@Observer
 
             when (resource.status) {
+
                 Status.SUCCESS -> {
-                    val data = resource.data
-                    activity?.shortToast(data?.firstOrNull()?.locationName.toString())
+                    binding.swipeRefreshLayout.isRefreshing = false
+                    val data = resource.data ?: emptyList()
+                    binding.rvPeople.visibility = View.VISIBLE
+                    adapter.displayCategories(data)
+
                 }
 
                 Status.ERROR -> {
+                    binding.swipeRefreshLayout.isRefreshing = false
                     handleError(resource.error)
                 }
 
                 Status.LOADING -> {
-
+                    binding.swipeRefreshLayout.isRefreshing = true
                 }
             }
 
         })
     }
+
+
+    private fun getCrossedPeople() {
+        if (isNetworkActiveWithMessage()) {
+            viewModel.getCrossedPeople()
+        } else {
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+    }
+
 }

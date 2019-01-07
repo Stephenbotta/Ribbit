@@ -2,6 +2,7 @@ package com.conversify.data.remote.models.people
 
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.google.gson.annotations.SerializedName
+import org.threeten.bp.ZonedDateTime
 
 /**
  * Created by Manish Bhargav on 3/1/19.
@@ -17,7 +18,7 @@ data class UserCrossedDto(
         val crossedUser: ProfileDto? = null,
 
         @field:SerializedName("time")
-        val time: String? = null,
+        val time: ZonedDateTime? = null,
 
         @field:SerializedName("locationName")
         val locationName: String? = null,

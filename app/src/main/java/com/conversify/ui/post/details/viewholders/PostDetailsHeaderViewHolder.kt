@@ -39,7 +39,7 @@ class PostDetailsHeaderViewHolder(itemView: View,
     }
     private val hashtagClickListener = object : SpannableTextClickListener {
         override fun onSpannableTextClicked(text: String, view: View) {
-            callback.onHashtagClicked(text)
+            callback.onHashTagClicked(text)
         }
     }
     private val usernameClickListener = object : SpannableTextClickListener {
@@ -148,7 +148,7 @@ class PostDetailsHeaderViewHolder(itemView: View,
         fun onLikesCountClicked(post: GroupPostDto)
         fun onGroupClicked(group: GroupDto)
         fun onUserProfileClicked(profile: ProfileDto)
-        fun onHashtagClicked(tag: String)
+        fun onHashTagClicked(tag: String)
         fun onUsernameMentionClicked(username: String)
         fun onGroupCategoryClicked(category: InterestDto)
     }
