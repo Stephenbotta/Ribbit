@@ -18,6 +18,6 @@ data class GetPeopleResponse(
         val timestamp: ZonedDateTime? = null,
 
         @field:SerializedName("userCrossed")
-        val userCrossed: UserCrossedDto? = null
+        val userCrossed: List<UserCrossedDto>? = null
 
 )

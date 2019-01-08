@@ -290,7 +290,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     override fun onUserProfileClicked(profile: ProfileDto) {
     }
 
-    override fun onHashtagClicked(tag: String) {
+    override fun onHashTagClicked(tag: String) {
     }
 
     override fun onUsernameMentionClicked(username: String) {

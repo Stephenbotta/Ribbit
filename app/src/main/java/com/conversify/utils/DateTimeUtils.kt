@@ -100,4 +100,9 @@ object DateTimeUtils {
     fun formatVenueFiltersDateForServer(dateTimeMillis: Long?): String? {
         return formatServerToLocalTimeZone(dateTimeMillis, VENUE_FILTERS_DATE_SERVER)
     }
+
+    fun formatPeopleLocation(zonedDateTime: ZonedDateTime?): String {
+        return zonedDateTime?.format(VENUE_FILTERS_DATE_LOCAL) ?: ""
+    }
+
 }
