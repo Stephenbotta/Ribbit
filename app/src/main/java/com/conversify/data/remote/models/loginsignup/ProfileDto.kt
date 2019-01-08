@@ -84,4 +84,16 @@ data class ProfileDto(
         @field:SerializedName("groupCount")
         var groupCount: Int? = null,
 
+        @field:SerializedName("IsOnline")
+        val IsOnline: Boolean? = null,
+
+        @field:SerializedName("isPrivate")
+        val isPrivate: Boolean? = null,
+
+        @field:SerializedName("isFollowing")
+        val isFollowing: Boolean? = null,
+
+        @field:SerializedName("conversationId")
+        var conversationId: String? = null,
+
         var isSelected: Boolean = false) : Parcelable

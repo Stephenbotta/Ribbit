@@ -240,8 +240,11 @@
 
     <string name="people_label_crossed_paths">You crossed paths with</string>
     <string name="people_label_crossed_paths_message">Find people who crossed paths with you at places you went</string>
+    <string name="people_label_mutual_interest">Mutual Interests</string>
 
-<string name="people_label_mutual_interest">Mutual Interests</string>
+    <string name="people_detail_button_follow">Follow</string>
+    <string name="people_detail_button_un_follow">UnFollow</string>
+
     <string name="join_venue_btn_join">JOIN</string>
     <string name="join_venue_label_participants">Participants</string>
 

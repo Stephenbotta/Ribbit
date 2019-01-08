@@ -1,7 +1,13 @@
 package com.conversify.ui.people
 
 /**
- * Created by cbl1154 on 8/1/19
+ * Created by Manish Bhargav on 8/1/19
  */
 interface PeopleCallback {
+
+    fun onClickItem()
+
+    fun onClickItem(position: Int)
+
+    fun onClickItem(position: Int, isDetailShow: Boolean)
 }

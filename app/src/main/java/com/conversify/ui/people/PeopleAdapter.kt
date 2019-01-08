@@ -8,16 +8,17 @@ import com.conversify.data.remote.models.people.GetPeopleResponse
 import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.data.remote.models.venues.VenueCategoriesHeader
 import com.conversify.extensions.inflate
+import com.conversify.extensions.invisible
+import com.conversify.extensions.visible
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_people.view.*
 import kotlinx.android.synthetic.main.item_people_location.view.*
 
-
 /**
  * Created by Manish Bhargav on 3/1/19.
  */
-class PeopleAdapter(private val glide: GlideRequests) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PeopleAdapter(private val glide: GlideRequests, private val callback: PeopleCallback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val TYPE_PLACES = 0
         private const val TYPE_PEOPLES = 1
@@ -27,9 +28,9 @@ class PeopleAdapter(private val glide: GlideRequests) : RecyclerView.Adapter<Rec
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TYPE_PLACES) {
-            ViewHolderPlaces(parent.inflate(R.layout.item_people_location))
+            ViewHolderPlaces(parent.inflate(R.layout.item_people_location), callback)
         } else {
-            ViewHolderPeoples(parent.inflate(R.layout.item_people), glide)
+            ViewHolderPeoples(parent.inflate(R.layout.item_people), glide, callback)
         }
     }
 
@@ -60,13 +61,13 @@ class PeopleAdapter(private val glide: GlideRequests) : RecyclerView.Adapter<Rec
         }
     }
 
-    fun displayCategories(interests: List<Any>) {
+    fun displayCategories(peoples: List<Any>) {
         items.clear()
-        items.addAll(interests)
+        items.addAll(peoples)
         notifyDataSetChanged()
     }
 
-    class ViewHolderPlaces(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolderPlaces(itemView: View, private val callback: PeopleCallback) : RecyclerView.ViewHolder(itemView) {
 
         private lateinit var places: GetPeopleResponse
 
@@ -84,12 +85,12 @@ class PeopleAdapter(private val glide: GlideRequests) : RecyclerView.Adapter<Rec
     }
 
     class ViewHolderPeoples(itemView: View,
-                            private val glide: GlideRequests) : RecyclerView.ViewHolder(itemView) {
+                            private val glide: GlideRequests, private val callback: PeopleCallback) : RecyclerView.ViewHolder(itemView) {
         private lateinit var peoples: UserCrossedDto
 
         init {
-            itemView.setOnClickListener { }
-            itemView.fabChat.setOnClickListener { }
+            itemView.setOnClickListener { callback.onClickItem(adapterPosition, true) }
+            itemView.fabChat.setOnClickListener { callback.onClickItem(adapterPosition, false) }
         }
 
         fun bind(category: UserCrossedDto) {
@@ -99,8 +100,22 @@ class PeopleAdapter(private val glide: GlideRequests) : RecyclerView.Adapter<Rec
                     .error(R.color.greyImageBackground)
                     .placeholder(R.color.greyImageBackground)
                     .into(itemView.ivProfilePic)
-            itemView.tvUserName.text = category.crossedUser?.userName
             itemView.tvTime.text = DateTimeUtils.formatChatMessageTime(category.time)
+
+            itemView.tvUserName.text = if (category.crossedUser?.age == null) {
+                category.crossedUser?.fullName
+            } else {
+                itemView.context.getString(R.string.profile_label_name_with_age, category.crossedUser.fullName, category.crossedUser.age)
+            }
+            if (category.crossedUser?.designation.isNullOrBlank() || category.crossedUser?.company.isNullOrBlank()) {
+                itemView.tvUserDesignation.invisible()
+            } else {
+                itemView.tvUserDesignation.visible()
+                itemView.tvUserDesignation.text = itemView.context.getString(R.string.profile_label_designation_at_company, category.crossedUser?.designation, category.crossedUser?.company)
+            }
+
+
+            itemView.tvUserName.text = category.crossedUser?.userName
             itemView.tvUserDesignation.text = category.crossedUser?.designation
         }
     }

@@ -199,4 +199,13 @@ interface ConversifyApi {
 
     @POST("user/crossedPeople")
     fun getCrossedPeople(): Call<ApiResponse<List<GetPeopleResponse>>>
+
+    @POST("user/getProfileData")
+    @FormUrlEncoded
+    fun getOtherUserProfileDetails(@Field("userId") userId: String): Call<ApiResponse<ProfileDto>>
+
+    @POST("user/followUnfollow")
+    @FormUrlEncoded
+    fun postFollowUnFollow(@Field("userId") userId: String,
+                           @Field("action") action: Double): Call<ApiResponse<Any>>
 }
