@@ -243,7 +243,7 @@
     <string name="people_label_mutual_interest">Mutual Interests</string>
 
     <string name="people_detail_button_follow">Follow</string>
-    <string name="people_detail_button_un_follow">UnFollow</string>
+    <string name="people_detail_button_un_follow">Unfollow</string>
 
     <string name="join_venue_btn_join">JOIN</string>
     <string name="join_venue_label_participants">Participants</string>

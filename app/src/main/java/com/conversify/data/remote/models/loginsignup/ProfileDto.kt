@@ -22,10 +22,10 @@ data class ProfileDto(
         val fullName: String? = null,
 
         @field:SerializedName("followingCount")
-        val followingCount: Long? = null,
+        var followingCount: Long? = null,
 
         @field:SerializedName("followerCount")
-        val followersCount: Long? = null,
+        var followersCount: Long? = null,
 
         @field:SerializedName("userName")
         val userName: String? = null,
@@ -91,7 +91,7 @@ data class ProfileDto(
         val isPrivate: Boolean? = null,
 
         @field:SerializedName("isFollowing")
-        val isFollowing: Boolean? = null,
+        var isFollowing: Boolean? = null,
 
         @field:SerializedName("conversationId")
         var conversationId: String? = null,

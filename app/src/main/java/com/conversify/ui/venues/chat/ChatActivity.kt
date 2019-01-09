@@ -18,6 +18,7 @@ import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.MessageStatus
+import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
@@ -38,17 +39,31 @@ import permissions.dispatcher.*
 @RuntimePermissions
 class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     companion object {
-        private const val EXTRA_VENUE = "EXTRA_VENUE"
+        private const val FLAG_VALUE = "FLAG_VALUE"
 
-        fun getStartIntent(context: Context, venue: VenueDto): Intent {
+        private const val EXTRA_VENUE = "EXTRA_VENUE"
+        private const val EXTRA_INDIVIDUAL_CHAT = "EXTRA_INDIVIDUAL_CHAT"
+
+
+        fun getStartIntent(context: Context, venue: VenueDto, flag: Int): Intent {
             return Intent(context, ChatActivity::class.java)
+                    .putExtra(FLAG_VALUE, flag)
                     .putExtra(EXTRA_VENUE, venue)
         }
+
+        fun getStartIntentForIndividualChat(context: Context, userCrossed: UserCrossedDto, flag: Int): Intent {
+            return Intent(context, ChatActivity::class.java)
+                    .putExtra(FLAG_VALUE, flag)
+                    .putExtra(EXTRA_INDIVIDUAL_CHAT, userCrossed)
+        }
+
+
     }
 
     private lateinit var viewModel: ChatViewModel
     private lateinit var adapter: ChatAdapter
     private lateinit var mediaPicker: MediaPicker
+    private var flag = 0
 
     private val newMessageObserver = Observer<ChatMessageDto> {
         it ?: return@Observer
@@ -117,17 +132,25 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
-        val venue = intent.getParcelableExtra<VenueDto>(EXTRA_VENUE)
-        viewModel = ViewModelProviders.of(this)[ChatViewModel::class.java]
-        viewModel.start(venue)
+        flag = intent.getIntExtra(FLAG_VALUE, 0)
+        if (flag == AppConstants.REQ_CODE_VENUE_CHAT) {
+            val venue = intent.getParcelableExtra<VenueDto>(EXTRA_VENUE)
+            viewModel = ViewModelProviders.of(this)[ChatViewModel::class.java]
+            viewModel.start(venue)
 
-        mediaPicker = MediaPicker(this)
-        mediaPicker.setAllowVideo(true)
-        setListeners()
-        observeChanges()
-        setupChatRecycler()
-        setupToolbar(venue)
-        getOldMessages()
+            mediaPicker = MediaPicker(this)
+            mediaPicker.setAllowVideo(true)
+            setListeners()
+            observeChanges()
+            setupChatRecycler()
+            setupToolbar(venue)
+            getOldMessages()
+        } else if (flag == AppConstants.REQ_CODE_INDIVIDUAL_CHAT){
+            val userCrossed = intent.getParcelableExtra<UserCrossedDto>(EXTRA_INDIVIDUAL_CHAT)
+            setupToolbar(userCrossed)
+
+        }
+
     }
 
     private fun setListeners() {
@@ -188,6 +211,23 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
 
         tvVenueName.text = venue.name
     }
+
+
+    private fun setupToolbar(userCrossed: UserCrossedDto) {
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_back)
+            setDisplayShowTitleEnabled(false)
+        }
+
+        GlideApp.with(this)
+                .load(userCrossed.crossedUser?.image?.thumbnail)
+                .into(ivVenue)
+
+        tvVenueName.text = userCrossed.crossedUser?.fullName
+    }
+
 
     private fun getOldMessages() {
         if (isNetworkActiveWithMessage()) {
@@ -291,10 +331,13 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.newMessage.removeObserver(newMessageObserver)
-        viewModel.oldMessages.removeObserver(oldMessagesObserver)
-        viewModel.sendMessage.removeObserver(sendMessageObserver)
-        viewModel.uploadFile.removeObserver(uploadFileObserver)
-        mediaPicker.clear()
+        if (flag == AppConstants.REQ_CODE_VENUE_CHAT) {
+            viewModel.newMessage.removeObserver(newMessageObserver)
+            viewModel.oldMessages.removeObserver(oldMessagesObserver)
+            viewModel.sendMessage.removeObserver(sendMessageObserver)
+            viewModel.uploadFile.removeObserver(uploadFileObserver)
+            mediaPicker.clear()
+        }
+
     }
 }

@@ -7,11 +7,13 @@ import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.extensions.gone
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseActivity
+import com.conversify.ui.venues.chat.ChatActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import com.google.android.flexbox.FlexWrap
@@ -22,8 +24,10 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var viewModel: PeopleDetailsViewModel
     private lateinit var interestsAdapter: PeopleMutualInterestsAdapter
-    private var isFollow = 0
     private lateinit var userId: String
+    private lateinit var userCrossed: UserCrossedDto
+    private var profile: ProfileDto? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +37,8 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener {
 
     private fun inItClasses() {
         viewModel = ViewModelProviders.of(this).get(PeopleDetailsViewModel::class.java)
-        userId = intent.getStringExtra(AppConstants.INTENT_PEOPLE_DETAILS_USER_ID)
+        userCrossed = intent.getParcelableExtra<UserCrossedDto>(AppConstants.INTENT_CROSSED_PEOPLE_DETAILS)
+        userId = userCrossed.crossedUser?.id!!
         swipeRefreshLayout.setOnRefreshListener { getPeopleDetails(userId) }
         observeChanges()
         listener()
@@ -61,8 +66,8 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener {
                 Status.SUCCESS -> {
                     visible()
                     swipeRefreshLayout.isRefreshing = false
-                    val data = resource.data
-                    setData(data)
+                    profile = resource.data
+                    setData(profile)
                 }
 
                 Status.ERROR -> {
@@ -88,6 +93,7 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener {
                 Status.ERROR -> {
                     // Ignored
 //                    handleError(resource.error)
+//                    toggleFollow()
                 }
 
                 Status.LOADING -> {
@@ -98,41 +104,58 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setData(profile: ProfileDto?) {
-        if (profile?.isFollowing!!) {
+        val isCount = profile?.isFollowing ?: false
+        if (isCount) {
             tvFollowedStatus.setText(R.string.people_detail_button_un_follow)
         } else {
             tvFollowedStatus.setText(R.string.people_detail_button_follow)
         }
 
         GlideApp.with(this)
-                .load(profile.image?.original)
+                .load(profile?.image?.original)
                 .into(ivProfile)
 
-        tvNameAndAge.text = if (profile.age == null) {
-            profile.fullName
+        tvNameAndAge.text = if (profile?.age == null) {
+            profile?.fullName
         } else {
             getString(R.string.profile_label_name_with_age, profile.fullName, profile.age)
         }
-        if (profile.designation.isNullOrBlank() || profile.company.isNullOrBlank()) {
+        if (profile?.designation.isNullOrBlank() || profile?.company.isNullOrBlank()) {
             tvDesignation.gone()
         } else {
             tvDesignation.visible()
-            tvDesignation.text = getString(R.string.profile_label_designation_at_company, profile.designation, profile.company)
+            tvDesignation.text = getString(R.string.profile_label_designation_at_company, profile?.designation, profile?.company)
         }
 
-        tvFollowersCount.text = (profile.followersCount ?: 0).toString()
-        tvFollowingCount.text = (profile.followingCount ?: 0).toString()
+        tvFollowersCount.text = (profile?.followersCount ?: 0).toString()
+        tvFollowingCount.text = (profile?.followingCount ?: 0).toString()
 
-        if (profile.bio.isNullOrBlank()) {
+        if (profile?.bio.isNullOrBlank()) {
             tvLabelBio.gone()
             tvBio.gone()
         } else {
             tvLabelBio.visible()
             tvBio.visible()
-            tvBio.text = profile.bio
+            tvBio.text = profile?.bio
         }
 
-        interestsAdapter.displayMutualInterests(profile.interests ?: emptyList())
+        interestsAdapter.displayMutualInterests(profile?.interests ?: emptyList())
+    }
+
+    private fun toggleFollow(): Double {
+
+        profile?.isFollowing = profile?.isFollowing?.not()
+        val action = if (profile?.isFollowing == true) {
+            tvFollowedStatus.setText(R.string.people_detail_button_un_follow)
+            profile?.followersCount = profile?.followersCount?.inc()
+            1.0
+        } else {
+            tvFollowedStatus.setText(R.string.people_detail_button_follow)
+            profile?.followersCount = profile?.followersCount?.dec()
+            2.0
+        }
+        tvFollowersCount?.text = profile?.followersCount?.toString()
+        return action
     }
 
     private fun setupInterestsRecycler() {
@@ -199,15 +222,12 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.tvFollowedStatus -> {
+                viewModel.postFollowUnFollow(userId, toggleFollow())
+            }
 
-                if (tvFollowedStatus.text.equals(getString(R.string.people_detail_button_follow))) {
-                    isFollow = 1
-                    tvFollowedStatus.setText(R.string.people_detail_button_un_follow)
-                } else {
-                    isFollow = 2
-                    tvFollowedStatus.setText(R.string.people_detail_button_follow)
-                }
-                viewModel.postFollowUnFollow(userId, isFollow.toDouble())
+            R.id.fabChat -> {
+                val intent = ChatActivity.getStartIntentForIndividualChat(this, userCrossed, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
+                startActivityForResult(intent, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
             }
         }
     }

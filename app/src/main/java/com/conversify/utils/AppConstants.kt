@@ -36,6 +36,7 @@ object AppConstants {
     const val REQ_CODE_NEW_POST = 118
     const val REQ_CODE_POST_DETAILS = 119
     const val REQ_CODE_JOIN_VENUE = 120
+    const val REQ_CODE_INDIVIDUAL_CHAT = 121
 
     const val EXTRA_VENUE_FILTERS = "EXTRA_VENUE_FILTERS"
     const val EXTRA_VENUE = "EXTRA_VENUE"
@@ -48,6 +49,6 @@ object AppConstants {
     const val ACTION_GROUP_POST_UPDATED_POST_DETAILS = "ACTION_GROUP_POST_UPDATED_POST_DETAILS"
     const val ACTION_GROUP_POST_UPDATED_GROUP_POSTS_LISTING = "ACTION_GROUP_POST_UPDATED_GROUP_POSTS_LISTING"
 
-    const val INTENT_PEOPLE_DETAILS_USER_ID = "peopleUserId"
+    const val INTENT_CROSSED_PEOPLE_DETAILS = "crossedPeopleDetails"
 
 }

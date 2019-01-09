@@ -14,9 +14,9 @@ import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.databinding.FragmentPeopleBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.shortToast
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.people.details.PeopleDetailsActivity
+import com.conversify.ui.venues.chat.ChatActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 
@@ -99,13 +99,14 @@ class PeopleFragment : BaseFragment(), PeopleCallback {
         if (isDetailShow) {
             if (item is UserCrossedDto) {
                 val intent = Intent(activity, PeopleDetailsActivity::class.java)
-                intent.putExtra(AppConstants.INTENT_PEOPLE_DETAILS_USER_ID, item.crossedUser?.id)
+                intent.putExtra(AppConstants.INTENT_CROSSED_PEOPLE_DETAILS, item)
                 activity?.startActivity(intent)
             }
         } else {
-            if (item is UserCrossedDto)
-                if (!item.conversationId.isNullOrEmpty())
-                    requireActivity().shortToast(item.conversationId)
+            if (item is UserCrossedDto) {
+                val intent = ChatActivity.getStartIntentForIndividualChat(requireActivity(), item, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
+                startActivityForResult(intent, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
+            }
         }
 
     }

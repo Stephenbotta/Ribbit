@@ -153,7 +153,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback, VenuesListAd
     override fun onVenueClicked(venue: VenueDto) {
         // Open own venue
         if (venue.isMember == true) {
-            val intent = ChatActivity.getStartIntent(requireActivity(), venue)
+            val intent = ChatActivity.getStartIntent(requireActivity(), venue, AppConstants.REQ_CODE_VENUE_CHAT)
             startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
             return
         }
@@ -190,7 +190,7 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback, VenuesListAd
                             selectedVenuesAdapter.updateVenueJoinedStatus(venue)
                         } else {
                             // Open the joined venue chat if venue is public
-                            val intent = ChatActivity.getStartIntent(requireActivity(), venue)
+                            val intent = ChatActivity.getStartIntent(requireActivity(), venue, AppConstants.REQ_CODE_VENUE_CHAT)
                             startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
                             getVenues()
                         }
