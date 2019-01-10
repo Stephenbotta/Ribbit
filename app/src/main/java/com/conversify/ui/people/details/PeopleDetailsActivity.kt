@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.people.UserCrossedDto
@@ -13,7 +14,7 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseActivity
-import com.conversify.ui.venues.chat.ChatActivity
+import com.conversify.ui.chat.ChatActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import com.google.android.flexbox.FlexWrap
@@ -38,7 +39,7 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener {
     private fun inItClasses() {
         viewModel = ViewModelProviders.of(this).get(PeopleDetailsViewModel::class.java)
         userCrossed = intent.getParcelableExtra<UserCrossedDto>(AppConstants.INTENT_CROSSED_PEOPLE_DETAILS)
-        userId = userCrossed.crossedUser?.id!!
+        userId = PrefsManager.get().getString(PrefsManager.PREF_PEOPLE_USER_ID, "")
         swipeRefreshLayout.setOnRefreshListener { getPeopleDetails(userId) }
         observeChanges()
         listener()
@@ -104,6 +105,7 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setData(profile: ProfileDto?) {
+        userCrossed.conversationId = profile?.conversationId
         val isCount = profile?.isFollowing ?: false
         if (isCount) {
             tvFollowedStatus.setText(R.string.people_detail_button_un_follow)

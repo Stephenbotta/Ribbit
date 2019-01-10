@@ -9,14 +9,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.databinding.FragmentPeopleBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.people.details.PeopleDetailsActivity
-import com.conversify.ui.venues.chat.ChatActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 
@@ -98,6 +99,7 @@ class PeopleFragment : BaseFragment(), PeopleCallback {
         val item = items[position]
         if (isDetailShow) {
             if (item is UserCrossedDto) {
+                PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, item.crossedUser?.id!!)
                 val intent = Intent(activity, PeopleDetailsActivity::class.java)
                 intent.putExtra(AppConstants.INTENT_CROSSED_PEOPLE_DETAILS, item)
                 activity?.startActivity(intent)

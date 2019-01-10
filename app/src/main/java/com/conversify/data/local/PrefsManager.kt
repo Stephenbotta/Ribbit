@@ -20,6 +20,7 @@ class PrefsManager private constructor(context: Context) {
         const val PREF_LATITUDE = "PREF_LATITUDE"
         const val PREF_LONGITUDE = "PREF_LONGITUDE"
         const val PREF_LOCATION_UPDATE_MILLIS = "PREF_LOCATION_UPDATE_MILLIS"
+        const val PREF_PEOPLE_USER_ID = "PREF_PEOPLE_USER_ID"
 
         private lateinit var instance: PrefsManager
         private val isInitialized = AtomicBoolean()     // To check if instance was previously initialized or not

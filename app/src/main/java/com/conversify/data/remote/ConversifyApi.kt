@@ -11,6 +11,7 @@ import com.conversify.data.remote.models.post.AddPostSubReplyRequest
 import com.conversify.data.remote.models.post.CreatePostRequest
 import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.data.remote.models.venues.*
+import com.conversify.ui.chat.individual.ChatIndividualResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -208,4 +209,11 @@ interface ConversifyApi {
     @FormUrlEncoded
     fun postFollowUnFollow(@Field("userId") userId: String,
                            @Field("action") action: Double): Call<ApiResponse<Any>>
+
+    @POST("user/chatConversation")
+    @FormUrlEncoded
+    fun getIndividualChat(@Field("conversationId") conversationId: String?,
+                               @Field("chatId") chatId: String?): Call<ApiResponse<ChatIndividualResponse>>
+
+
 }

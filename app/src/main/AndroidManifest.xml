@@ -47,7 +47,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.conversify.ui.venues.chat.ChatActivity"
+            android:name="com.conversify.ui.chat.ChatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 

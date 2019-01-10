@@ -15,7 +15,7 @@ data class UserCrossedDto(
         val id: String? = null,
 
         @field:SerializedName("conversationId")
-        val conversationId: String? = null,
+        var conversationId: String? = null,
 
         @field:SerializedName("crossedUserId")
         val crossedUser: ProfileDto? = null,
