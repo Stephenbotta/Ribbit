@@ -1,6 +1,7 @@
 package com.conversify.utils
 
 import android.content.Context
+import android.text.format.DateUtils
 import com.conversify.R
 import com.conversify.extensions.isSameDay
 import com.conversify.extensions.isSameWeek
@@ -103,6 +104,12 @@ object DateTimeUtils {
 
     fun formatPeopleLocation(zonedDateTime: ZonedDateTime?): String {
         return zonedDateTime?.format(VENUE_FILTERS_DATE_LOCAL) ?: ""
+    }
+
+    fun formatPeopleRecentTime(zonedDateTime: String?): String {
+        DateUtils.getRelativeTimeSpanString(zonedDateTime!!.toLong())
+        return DateUtils.getRelativeTimeSpanString(zonedDateTime!!.toLong(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString()
+                ?: ""
     }
 
 }

@@ -21,7 +21,7 @@ data class UserCrossedDto(
         val crossedUser: ProfileDto? = null,
 
         @field:SerializedName("time")
-        val time: ZonedDateTime? = null,
+        val time: String? = null,
 
         @field:SerializedName("locationName")
         val locationName: String? = null,

@@ -100,7 +100,7 @@ class PeopleAdapter(private val glide: GlideRequests, private val callback: Peop
                     .error(R.color.greyImageBackground)
                     .placeholder(R.color.greyImageBackground)
                     .into(itemView.ivProfilePic)
-            itemView.tvTime.text = DateTimeUtils.formatChatMessageTime(category.time)
+            itemView.tvTime.text = DateTimeUtils.formatPeopleRecentTime(category.time)
 
             itemView.tvUserName.text = if (category.crossedUser?.age == null) {
                 category.crossedUser?.fullName

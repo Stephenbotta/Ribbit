@@ -222,11 +222,11 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     }
 
     private fun setupChatRecycler(flag: Int) {
-        swipeRefreshLayout.isEnabled = false
-        adapter = ChatAdapter(this, this)
-        rvChat.adapter = adapter
-        (rvChat.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         if (flag == AppConstants.REQ_CODE_VENUE_CHAT) {
+            swipeRefreshLayout.isEnabled = false
+            adapter = ChatAdapter(this, this)
+            rvChat.adapter = adapter
+            (rvChat.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             rvChat.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -236,6 +236,10 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                 }
             })
         } else if (flag == AppConstants.REQ_CODE_INDIVIDUAL_CHAT) {
+            swipeRefreshLayout.isEnabled = false
+            adapter = ChatAdapter(this, this)
+            rvChat.adapter = adapter
+            (rvChat.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             rvChat.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)

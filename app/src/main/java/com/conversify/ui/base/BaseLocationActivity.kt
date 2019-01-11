@@ -28,7 +28,7 @@ abstract class BaseLocationActivity : BaseActivity() {
         private const val ACTION_LOCATION_PROVIDERS_CHANGED = "android.location.PROVIDERS_CHANGED"
     }
 
-    private val updateInterval: Long = TimeUnit.SECONDS.toMillis(25)
+    private val updateInterval: Long = TimeUnit.SECONDS.toMillis(5)
 
     private val gpsChangedReceiver = GpsSettingsChangedReceiver { isEnabled ->
         if (isEnabled) {

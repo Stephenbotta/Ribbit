@@ -325,7 +325,7 @@ class ChatIndividualViewModel(application: Application) : AndroidViewModel(appli
         val jsonObject = JSONObject()
         jsonObject.putOpt("senderId", ownUserId)
         jsonObject.putOpt("receiverId", venue.crossedUser?.id)
-//        jsonObject.putOpt("groupType", ApiConstants.TYPE_VENUE)
+        jsonObject.putOpt("conversationId", venue.conversationId)
         jsonObject.putOpt("type", message.details?.type)
         jsonObject.putOpt("message", message.details?.message)
 
