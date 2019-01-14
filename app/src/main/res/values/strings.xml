@@ -161,6 +161,7 @@
 
     <string name="chat_label_type_here">Type here</string>
     <string name="chat_message_invalid_video_path">Invalid video path</string>
+    <string name="chat_label_empty_chat">Start a conversation</string>
 
     <string name="venue_filters_label_category">Category</string>
     <string name="venue_filters_label_date">Date</string>
@@ -249,4 +250,15 @@
     <string name="join_venue_label_participants">Participants</string>
 
     <string name="add_venue_participants_message_request_sent">Request has been sent to the participants. They will get added once they accept.</string>
+
+    <string name="chat_listing_label_individual">Individual</string>
+    <string name="chat_listing_label_group">Group</string>
+    <string name="chat_listing_label_empty">No Chat Found</string>
+    <string name="chat_listing_hint_search_for_chat">Search</string>
+    <string name="chat_listing_photo_last_message_for_chat">Photo</string>
+    <string name="chat_listing_video_last_message_for_chat">Video</string>
+
+
+
+
 </resources>

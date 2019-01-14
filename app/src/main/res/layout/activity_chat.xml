@@ -134,16 +134,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvChat"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:itemCount="8"
-            tools:listitem="@layout/item_chat_text_right" />
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvChat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:itemCount="8"
+                tools:listitem="@layout/item_chat_text_right" />
+
+            <TextView
+                android:id="@+id/tvLabelEmptyChat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/brandon_text_bold"
+                android:maxLines="1"
+                android:paddingStart="8dp"
+                android:visibility="gone"
+                android:paddingEnd="8dp"
+                android:text="@string/chat_label_empty_chat"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/chat_label_empty_chat" />
+
+        </android.support.constraint.ConstraintLayout>
+
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.constraint.ConstraintLayout>
