@@ -18,7 +18,6 @@ import retrofit2.Response
  */
 class PeopleViewModel(application: Application) : BaseViewModel(application) {
 
-
     val crossedPeople by lazy { SingleLiveEvent<Resource<List<Any>>>() }
 
     fun getCrossedPeople() {
@@ -49,6 +48,5 @@ class PeopleViewModel(application: Application) : BaseViewModel(application) {
                     }
                 })
     }
-
 
 }

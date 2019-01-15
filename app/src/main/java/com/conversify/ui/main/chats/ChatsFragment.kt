@@ -2,12 +2,15 @@ package com.conversify.ui.main.chats
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v7.widget.SearchView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.databinding.FragmentChatsBinding
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.main.chats.group.GroupChatFragment
+import com.conversify.ui.main.chats.individual.IndividualChatFragment
 
 class ChatsFragment : BaseFragment() {
     companion object {
@@ -31,9 +34,29 @@ class ChatsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewPagerAdapter = ChatViewPagerAdapter(requireFragmentManager())
+        viewPagerAdapter.addFragments(IndividualChatFragment())
+        viewPagerAdapter.addFragments(GroupChatFragment())
         binding.viewPager.adapter = viewPagerAdapter
         binding.tabLayout.setupWithViewPager(binding.viewPager)
+        inItClasses()
     }
 
+    private fun inItClasses() {
+        binding.searchChatView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(query: String?): Boolean {
+                if (binding.viewPager.currentItem == 0) {
+                    (viewPagerAdapter.fragments[0] as IndividualChatFragment).search(query ?: "")
+                } else if (binding.viewPager.currentItem == 1) {
+                    (viewPagerAdapter.fragments[1] as GroupChatFragment).search(query ?: "")
+                }
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+        })
+
+    }
 
 }

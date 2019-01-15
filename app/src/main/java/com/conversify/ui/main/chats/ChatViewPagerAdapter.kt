@@ -3,24 +3,27 @@ package com.conversify.ui.main.chats
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import com.conversify.ui.main.chats.group.GroupChatFragment
+import com.conversify.ui.main.chats.individual.IndividualChatFragment
 
 /**
  * Created by Manish Bhargav on 14/1/19
  */
 class ChatViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
 
-    override fun getItem(p0: Int): Fragment {
-        var fragment: Fragment? = null
-        if (p0 == 0) {
-            fragment = IndividualChatFragment()
-        } else if (p0 == 1) {
-            fragment = GroupChatFragment()
-        }
-        return fragment!!
+    val fragments = ArrayList<Fragment>()
+
+    override fun getItem(position: Int): Fragment {
+        return fragments[position]
     }
 
     override fun getCount(): Int {
-        return 2
+        return fragments.size
+    }
+
+    // Our custom method that populates this Adapter with Fragments
+    fun addFragments(fragment: Fragment) {
+        fragments.add(fragment)
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

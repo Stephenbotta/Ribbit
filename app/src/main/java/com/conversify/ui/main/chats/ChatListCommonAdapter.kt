@@ -7,7 +7,6 @@ import com.conversify.R
 import com.conversify.data.remote.models.chat.ChatListingDto
 import com.conversify.data.remote.models.venues.VenueCategoriesHeader
 import com.conversify.extensions.inflate
-import com.conversify.ui.people.PeopleCallback
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_chat_listing.view.*
@@ -16,7 +15,7 @@ import kotlinx.android.synthetic.main.item_chat_listing.view.*
 /**
  * Created by Manish Bhargav on 14/1/19
  */
-class ChatListCommonAdapter(private val glide: GlideRequests, private val callback: PeopleCallback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatListCommonAdapter(private val glide: GlideRequests, private val callback: ChatListCallback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val items = mutableListOf<Any>(VenueCategoriesHeader)
 
@@ -44,12 +43,11 @@ class ChatListCommonAdapter(private val glide: GlideRequests, private val callba
     }
 
     class ViewHolderPeoples(itemView: View,
-                            private val glide: GlideRequests, private val callback: PeopleCallback) : RecyclerView.ViewHolder(itemView) {
+                            private val glide: GlideRequests, private val callback: ChatListCallback) : RecyclerView.ViewHolder(itemView) {
         private lateinit var peoples: ChatListingDto
 
         init {
-            itemView.setOnClickListener { callback.onClickItem(adapterPosition, true) }
-
+            itemView.setOnClickListener { callback.onClickItem(adapterPosition) }
         }
 
         fun bind(category: ChatListingDto) {
@@ -65,10 +63,14 @@ class ChatListCommonAdapter(private val glide: GlideRequests, private val callba
 
             if (category.lastChatDetails?.type.equals("TEXT"))
                 itemView.tvChat.text = category.lastChatDetails?.message
-            else if (category.lastChatDetails?.type.equals("PHOTO")) {
+            else if (category.lastChatDetails?.type.equals("IMAGE")) {
                 itemView.tvChat.text = itemView.context.getString(R.string.chat_listing_photo_last_message_for_chat)
+                itemView.tvChat.compoundDrawablePadding = 8
+                itemView.tvChat.setCompoundDrawablesWithIntrinsicBounds(itemView.context.getDrawable(R.drawable.ic_photo_camera), null, null, null)
             } else if (category.lastChatDetails?.type.equals("VIDEO")) {
                 itemView.tvChat.text = itemView.context.getString(R.string.chat_listing_video_last_message_for_chat)
+                itemView.tvChat.setCompoundDrawablesWithIntrinsicBounds(itemView.context.getDrawable(R.drawable.ic_video), null, null, null)
+                itemView.tvChat.compoundDrawablePadding = 8
             }
         }
     }

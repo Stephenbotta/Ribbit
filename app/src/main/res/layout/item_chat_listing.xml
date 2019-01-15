@@ -24,6 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:fontFamily="@font/brandon_text_bold"
+        android:maxLines="1"
+        android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@id/ivProfilePic"
@@ -35,6 +37,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:maxLines="1"
+        android:singleLine="true"
         android:textColor="@color/textGray"
         android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@id/ivProfilePic"
@@ -46,10 +51,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:maxLines="1"
+        android:singleLine="true"
         android:textColor="@color/textGray"
         android:textSize="13sp"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="1 day ago" />
 
 </android.support.constraint.ConstraintLayout>

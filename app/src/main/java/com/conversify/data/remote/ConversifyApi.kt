@@ -1,6 +1,7 @@
 package com.conversify.data.remote
 
 import com.conversify.data.remote.models.ApiResponse
+import com.conversify.data.remote.models.chat.ChatListingDto
 import com.conversify.data.remote.models.chat.VenueDetailsResponse
 import com.conversify.data.remote.models.groups.*
 import com.conversify.data.remote.models.loginsignup.*
@@ -215,5 +216,8 @@ interface ConversifyApi {
     fun getIndividualChat(@Field("conversationId") conversationId: String?,
                                @Field("chatId") chatId: String?): Call<ApiResponse<ChatIndividualResponse>>
 
+    @POST("user/chatSummary")
+    @FormUrlEncoded
+    fun getChatSummary(@Field("flag") flag: Double?): Call<ApiResponse<List<ChatListingDto>>>
 
 }
