@@ -52,7 +52,7 @@ object AppToast {
             val view = View.inflate(applicationContext, R.layout.layout_toast, null)
 
             // Get toast text view from newly inflated toast layout and set the text
-            val typeface = ResourcesCompat.getFont(applicationContext, R.font.brandon_text_regular)
+            val typeface = ResourcesCompat.getFont(applicationContext, R.font.roboto_text_regular)
             val toastMessage = view.findViewById<TextView>(R.id.tvMessage)
             toastMessage.text = message
             toastMessage.typeface = typeface

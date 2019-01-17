@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:drawableStart="@drawable/ic_back"
             android:drawablePadding="6dp"
-            android:fontFamily="@font/brandon_text_bold"
+            android:fontFamily="@font/roboto_text_bold"
             android:gravity="center_vertical"
             android:text="@string/create_group_label_channels"
             android:textColor="@color/colorPrimary"

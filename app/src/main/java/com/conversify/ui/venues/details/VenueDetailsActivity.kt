@@ -60,7 +60,7 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
             setHomeAsUpIndicator(R.drawable.ic_back_white)
         }
 
-        val boldTypeface = ResourcesCompat.getFont(this, R.font.brandon_text_bold)
+        val boldTypeface = ResourcesCompat.getFont(this, R.font.roboto_text_bold)
         collapsingToolbar.setExpandedTitleTypeface(boldTypeface)
         collapsingToolbar.setCollapsedTitleTypeface(boldTypeface)
         collapsingToolbar.title = venue.name

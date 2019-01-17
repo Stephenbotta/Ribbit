@@ -96,7 +96,7 @@ class VerificationFragment : BaseFragment() {
         })
 
         val spannableText = getString(R.string.verification_label_resend_code)
-        val typeface = ResourcesCompat.getFont(requireActivity(), R.font.brandon_text_bold)
+        val typeface = ResourcesCompat.getFont(requireActivity(), R.font.roboto_text_bold)
         tvLabelDidNotReceiveCode.clickSpannable(spannableText, R.color.colorPrimary, typeface,
                 View.OnClickListener {
                     if (requireActivity().isNetworkActiveWithMessage()) {

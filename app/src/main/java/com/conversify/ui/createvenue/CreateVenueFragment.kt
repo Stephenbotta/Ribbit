@@ -17,9 +17,11 @@ import com.conversify.R
 import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.InterestDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.venues.CreateEditVenueRequest
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.creategroup.addparticipants.AddParticipantsActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.utils.*
 import com.conversify.utils.PermissionUtils
@@ -49,6 +51,7 @@ class CreateVenueFragment : BaseFragment() {
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var mediaPicker: MediaPicker
     private lateinit var createVenueMenuItem: MenuItem
+    private var memberCount = 0
 
     private var getSampledImage: GetSampledImage? = null
     private var selectedVenueImageFile: File? = null
@@ -74,8 +77,8 @@ class CreateVenueFragment : BaseFragment() {
 
         setListeners()
         observeChanges()
-
         tvCategory.text = category?.name
+        tvLabelMembers.text = context?.getString(R.string.venue_details_label_members_with_count, memberCount)
     }
 
     private fun setListeners() {
@@ -138,6 +141,12 @@ class CreateVenueFragment : BaseFragment() {
 
         clUploadDocument.setOnClickListener {
             showFilePickerWithPermissionCheck()
+        }
+
+        addParticipants.setOnClickListener {
+            val participantIds = ArrayList(request.participantIds ?: emptyList())
+            val intent = AddParticipantsActivity.getStartIntent(requireActivity(), participantIds)
+            startActivityForResult(intent, AppConstants.REQ_CODE_ADD_PARTICIPANTS)
         }
     }
 
@@ -304,6 +313,28 @@ class CreateVenueFragment : BaseFragment() {
                         }
                     }
                 }
+            }
+
+            AppConstants.REQ_CODE_ADD_PARTICIPANTS -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val participants = data.getParcelableArrayListExtra<ProfileDto>(AppConstants.EXTRA_PARTICIPANTS)
+
+                    // Update member ids in the create group request
+                    if (participants.isEmpty()) {
+                        request.participantIds = null
+                    } else {
+                        request.participantIds = participants.asSequence()
+                                .onEach { it.isSelected = false }   // Set selected to false for all
+                                .mapNotNull { it.id }   // Map to non-null ids
+                                .toList()
+                    }
+                    // Display the selected participants and update the member count
+                    memberCount = request.participantIds?.size!!
+                    tvLabelMembers.text = context?.getString(R.string.venue_details_label_members_with_count, memberCount)
+
+                }
+
+
             }
 
             else -> {

@@ -12,7 +12,7 @@ data class ChatListingDto(
         val id: String? = null,
 
         @field:SerializedName("conversationId")
-        val conversationId: String? = null,
+        var conversationId: String? = null,
 
         @field:SerializedName("createdDate")
         val createdDate: String? = null,
@@ -24,7 +24,7 @@ data class ChatListingDto(
         val lastChatDetails: ChatMessageDetailsDto? = null,
 
         @field:SerializedName(value = "senderId", alternate = ["groupId"])
-        val profile: ProfileDto?=null
+        val profile: ProfileDto? = null
 
 
 )

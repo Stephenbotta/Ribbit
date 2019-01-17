@@ -16,7 +16,7 @@ import timber.log.Timber
 class VenueGroupInviteRequestViewHolder(itemView: View,
                                         private val glide: GlideRequests,
                                         private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
-    private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.brandon_text_bold) }
+    private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
 
     private val userProfileClickListener = View.OnClickListener {
         Timber.i("User profile clicked : ${notification.sender?.userName}")

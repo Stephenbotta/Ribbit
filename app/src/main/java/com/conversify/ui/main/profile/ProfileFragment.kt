@@ -122,7 +122,7 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
                 .setNegativeButton(R.string.cancel, null)
                 .create()
         dialog.show()
-        val typeface = ResourcesCompat.getFont(requireActivity(), R.font.brandon_text_regular)
+        val typeface = ResourcesCompat.getFont(requireActivity(), R.font.roboto_text_regular)
         dialog.findViewById<TextView>(android.R.id.message)?.typeface = typeface
     }
 

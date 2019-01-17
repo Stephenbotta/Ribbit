@@ -30,7 +30,7 @@ class VenueViewHolder(itemView: View,
         this.venue = venue
 
         if (venue.isMember == true) {
-            itemView.btnMore.visible()
+            itemView.btnMore.gone()
             itemView.tvDistance.gone()
             itemView.ivParticipationRole.visible()
 

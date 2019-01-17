@@ -19,7 +19,7 @@ data class ProfileDto(
         val isBlocked: Boolean? = null,
 
         @field:SerializedName(value = "fullName", alternate = ["adminId"])
-        val fullName: String? = null,
+        var fullName: String? = null,
 
         @field:SerializedName("followingCount")
         var followingCount: Long? = null,
@@ -28,7 +28,7 @@ data class ProfileDto(
         var followersCount: Long? = null,
 
         @field:SerializedName(value = "userName", alternate = ["groupName"])
-        val userName: String? = null,
+        var userName: String? = null,
 
         @field:SerializedName("bio")
         val bio: String? = null,
@@ -61,10 +61,10 @@ data class ProfileDto(
         val countryCode: String? = null,
 
         @field:SerializedName("imageUrl")
-        val image: ImageUrlDto? = null,
+        var image: ImageUrlDto? = null,
 
         @field:SerializedName("_id")
-        val id: String? = null,
+        var id: String? = null,
 
         @field:SerializedName("email")
         val email: String? = null,

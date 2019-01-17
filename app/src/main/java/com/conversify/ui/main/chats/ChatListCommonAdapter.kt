@@ -61,9 +61,10 @@ class ChatListCommonAdapter(private val glide: GlideRequests, private val callba
 
             itemView.tvTitle.text = category.profile?.userName
 
-            if (category.lastChatDetails?.type.equals("TEXT"))
+            if (category.lastChatDetails?.type.equals("TEXT")) {
                 itemView.tvChat.text = category.lastChatDetails?.message
-            else if (category.lastChatDetails?.type.equals("IMAGE")) {
+                itemView.tvChat.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null)
+            } else if (category.lastChatDetails?.type.equals("IMAGE")) {
                 itemView.tvChat.text = itemView.context.getString(R.string.chat_listing_photo_last_message_for_chat)
                 itemView.tvChat.compoundDrawablePadding = 8
                 itemView.tvChat.setCompoundDrawablesWithIntrinsicBounds(itemView.context.getDrawable(R.drawable.ic_photo_camera), null, null, null)

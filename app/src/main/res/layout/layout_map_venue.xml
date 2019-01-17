@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="6dp"
-        android:fontFamily="@font/brandon_text_bold"
+        android:fontFamily="@font/roboto_text_bold"
         android:includeFontPadding="false"
         android:textColor="@color/colorPrimary"
         android:textSize="14sp"

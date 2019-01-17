@@ -10,7 +10,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
-        android:fontFamily="@font/brandon_text_bold"
+        android:fontFamily="@font/roboto_text_bold"
         android:includeFontPadding="false"
         android:maxLines="1"
         android:text="@string/new_post_label_new_post"
@@ -30,7 +30,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:fontFamily="@font/brandon_text_bold"
+        android:fontFamily="@font/roboto_text_bold"
         android:orientation="vertical"
         android:text="@string/new_post_label_choose_a_channel_you_want_to_post_into"
         android:textColor="@color/colorPrimary" />

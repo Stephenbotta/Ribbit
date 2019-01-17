@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:ellipsize="end"
-        android:fontFamily="@font/brandon_text_bold"
+        android:fontFamily="@font/roboto_text_bold"
         android:includeFontPadding="false"
         android:maxLines="1"
         android:textColor="@color/textGray"

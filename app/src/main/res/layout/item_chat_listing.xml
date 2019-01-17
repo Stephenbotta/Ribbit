@@ -8,13 +8,13 @@
     android:layout_marginTop="16dp"
     android:layout_marginRight="16dp">
 
-
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/ivProfilePic"
         android:layout_width="50dp"
         android:layout_height="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
         app:riv_oval="true"
         tools:src="@tools:sample/avatars" />
 
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:fontFamily="@font/brandon_text_bold"
+        android:fontFamily="@font/roboto_text_bold"
         android:maxLines="1"
         android:singleLine="true"
         android:textColor="@color/black"

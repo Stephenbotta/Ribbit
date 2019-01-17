@@ -71,7 +71,7 @@ class WelcomeFragment : BaseFragment() {
 
     private fun setupViews() {
         fabProceed.isEnabled = false
-        countryCodePicker.setTypeFace(ResourcesCompat.getFont(requireActivity(), R.font.brandon_text_medium))
+        countryCodePicker.setTypeFace(ResourcesCompat.getFont(requireActivity(), R.font.roboto_text_medium))
         etFullName.setText(profile.fullName)
 
         // Hide email fields if email exists in profile

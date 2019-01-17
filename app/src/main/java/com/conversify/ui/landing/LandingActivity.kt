@@ -59,7 +59,7 @@ class LandingActivity : BaseActivity() {
             LoginSignUpActivity.start(this, AppConstants.MODE_SIGN_UP)
         }
 
-        val boldTypeface = ResourcesCompat.getFont(this, R.font.brandon_text_bold)
+        val boldTypeface = ResourcesCompat.getFont(this, R.font.roboto_text_bold)
         val clickableTextColor = R.color.white
 
         val textSignIn = getString(R.string.login_sign_up_btn_sign_in)

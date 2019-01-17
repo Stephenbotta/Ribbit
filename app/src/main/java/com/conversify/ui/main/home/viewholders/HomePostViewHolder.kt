@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.item_home_feed_post.view.*
 class HomePostViewHolder(itemView: View,
                          private val glide: GlideRequests,
                          callback: GroupPostCallback) : RecyclerView.ViewHolder(itemView) {
-    private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.brandon_text_bold) }
+    private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
     private val postClickListener = View.OnClickListener {
         callback.onPostClicked(post, false)
     }

@@ -19,7 +19,7 @@ class PostDetailsReplyViewHolder(itemView: View,
                                  private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
     private val topLevelReplyStartMargin by lazy { itemView.context.pxFromDp(16) }
     private val subLevelReplyStartMargin by lazy { itemView.context.pxFromDp(56) }
-    private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.brandon_text_bold) }
+    private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
 
     private val userProfileClickListener = View.OnClickListener {
     }

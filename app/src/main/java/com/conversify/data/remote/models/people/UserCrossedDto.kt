@@ -20,6 +20,9 @@ data class UserCrossedDto(
         @field:SerializedName("crossedUserId")
         val crossedUser: ProfileDto? = null,
 
+        @field:SerializedName(value = "senderId", alternate = ["groupId"])
+        var profile: ProfileDto? = null,
+
         @field:SerializedName("time")
         val time: String? = null,
 

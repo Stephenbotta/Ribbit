@@ -25,7 +25,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
-        android:fontFamily="@font/brandon_text_bold"
+        android:fontFamily="@font/roboto_text_bold"
         android:maxLines="1"
         android:textColor="@color/textGray"
         app:layout_constrainedWidth="true"

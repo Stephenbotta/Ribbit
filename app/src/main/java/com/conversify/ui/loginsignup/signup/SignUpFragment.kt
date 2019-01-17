@@ -83,7 +83,7 @@ class SignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginL
 
     private fun setupViews() {
         fabProceed.isEnabled = false
-        countryCodePicker.setTypeFace(ResourcesCompat.getFont(requireActivity(), R.font.brandon_text_medium))
+        countryCodePicker.setTypeFace(ResourcesCompat.getFont(requireActivity(), R.font.roboto_text_medium))
         countryCodePicker.registerCarrierNumberEditText(etPhoneNumber)
     }
 

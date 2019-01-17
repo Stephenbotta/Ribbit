@@ -4,15 +4,17 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.ChatListingDto
+import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.main.chats.ChatListCallback
 import com.conversify.ui.main.chats.ChatListCommonAdapter
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_individual_chat.*
 
@@ -52,8 +54,10 @@ class IndividualChatFragment : BaseFragment(), ChatListCallback {
                 Status.SUCCESS -> {
                     swipeRefreshLayout.isRefreshing = false
                     items = resource.data ?: emptyList()
-                    tvLabelEmptyChat.visibility = View.GONE
-                    rvIndividualChat.visibility = View.VISIBLE
+                    if (items.size != 0) {
+                        tvLabelEmptyChat.visibility = View.GONE
+                        rvIndividualChat.visibility = View.VISIBLE
+                    }
                     adapter.displayCategories(items)
                 }
 
@@ -89,7 +93,12 @@ class IndividualChatFragment : BaseFragment(), ChatListCallback {
 
     override fun onClickItem(position: Int) {
         val item = items[position]
-        if (item is ChatListingDto)
-            Toast.makeText(context, item.profile?.userName, Toast.LENGTH_LONG).show()
+        if (item is ChatListingDto) {
+            val userCrossed = UserCrossedDto()
+            userCrossed.conversationId = item.conversationId
+            userCrossed.profile = item.profile
+            val intent = ChatActivity.getStartIntentForIndividualChat(requireContext(), userCrossed, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
+            startActivityForResult(intent, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
+        }
     }
 }

@@ -11,7 +11,7 @@
     android:layout_marginBottom="16dp"
     android:background="@drawable/background_toast"
     android:elevation="2dp"
-    android:fontFamily="@font/brandon_text_regular"
+    android:fontFamily="@font/roboto_text_regular"
     android:paddingStart="16dp"
     android:paddingTop="8dp"
     android:paddingEnd="16dp"

@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/brandon_text_bold"
+        android:fontFamily="@font/roboto_text_bold"
         android:letterSpacing="0"
         android:text="@string/app_name"
         android:textColor="@color/white"
@@ -32,7 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
-        android:fontFamily="@font/brandon_text_bold"
+        android:fontFamily="@font/roboto_text_bold"
         android:letterSpacing="0"
         android:paddingBottom="20dp"
         android:paddingTop="20dp"

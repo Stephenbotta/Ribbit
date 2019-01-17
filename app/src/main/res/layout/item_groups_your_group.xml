@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:background="@drawable/shape_red_rounded_8dp"
-        android:fontFamily="@font/brandon_text_bold"
+        android:fontFamily="@font/roboto_text_bold"
         android:includeFontPadding="false"
         android:paddingStart="6dp"
         android:paddingEnd="6dp"

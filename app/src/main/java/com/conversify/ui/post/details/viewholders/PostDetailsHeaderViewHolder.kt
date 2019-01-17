@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.item_post_details_header.view.*
 class PostDetailsHeaderViewHolder(itemView: View,
                                   private val glide: GlideRequests,
                                   private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
-    private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.brandon_text_bold) }
+    private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
     private val likesCountClickListener = View.OnClickListener {
         callback.onLikesCountClicked(post)
     }
@@ -77,7 +77,7 @@ class PostDetailsHeaderViewHolder(itemView: View,
 
         // Image is only visible when post type is image
         if (post.type == ApiConstants.GROUP_POST_TYPE_IMAGE) {
-            itemView.ivImage.visible()
+            itemView.ivImage.gone()
             glide.load(post.imageUrl?.original)
                     .into(itemView.ivImage)
         } else {

@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:fontFamily="@font/brandon_text_bold"
+        android:fontFamily="@font/roboto_text_bold"
         android:includeFontPadding="false"
         android:text="@string/verification_label_verification"
         android:textColor="@color/textGray"

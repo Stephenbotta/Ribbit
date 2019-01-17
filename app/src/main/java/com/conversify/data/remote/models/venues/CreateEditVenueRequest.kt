@@ -3,6 +3,10 @@ package com.conversify.data.remote.models.venues
 import com.google.gson.annotations.SerializedName
 
 data class CreateEditVenueRequest(
+
+        @field:SerializedName("participantIds")
+        var participantIds: List<String>?=null,
+
         @field:SerializedName("venueGroupId")
         var id: String? = null,
 

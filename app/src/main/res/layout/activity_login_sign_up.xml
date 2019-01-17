@@ -13,7 +13,7 @@
         android:layout_marginStart="12dp"
         android:drawablePadding="6dp"
         android:drawableStart="@drawable/ic_back"
-        android:fontFamily="@font/brandon_text_bold"
+        android:fontFamily="@font/roboto_text_bold"
         android:gravity="center_vertical"
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
