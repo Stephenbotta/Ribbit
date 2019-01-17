@@ -8,7 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.conversify.R
 import com.conversify.data.remote.models.Status
-import com.conversify.data.remote.models.chat.VenueMemberDto
+import com.conversify.data.remote.models.chat.MemberDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
@@ -130,7 +130,7 @@ class JoinVenueActivity : BaseActivity(), JoinVenueDetailsAdapter.Callback {
         }
     }
 
-    override fun onMemberClicked(member: VenueMemberDto) {
+    override fun onMemberClicked(member: MemberDto) {
     }
 
     override fun onDestroy() {

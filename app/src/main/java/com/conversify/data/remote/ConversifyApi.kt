@@ -220,4 +220,7 @@ interface ConversifyApi {
     @FormUrlEncoded
     fun getChatSummary(@Field("flag") flag: Double?): Call<ApiResponse<List<ChatListingDto>>>
 
+    @POST("user/groupDetails")
+    @FormUrlEncoded
+    fun getGroupDetails(@Field("groupId") groupId: String): Call<ApiResponse<GroupDto>>
 }

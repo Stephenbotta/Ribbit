@@ -7,7 +7,7 @@ import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.extensions.gone
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.visible
-import com.conversify.ui.venues.chat.ResendMessageCallback
+import com.conversify.ui.chat.ResendMessageCallback
 import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_chat_video_left.view.*
 

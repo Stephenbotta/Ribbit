@@ -1,19 +1,20 @@
-package com.conversify.ui.venues.details
+package com.conversify.ui.groups.details
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.data.remote.models.chat.MemberDto
 import com.conversify.data.remote.models.groups.AddParticipantsDto
+import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.inflate
 import com.conversify.ui.creategroup.create.viewholders.AddParticipantsViewHolder
-import com.conversify.ui.venues.details.viewholder.VenueDetailsExitGroupViewHolder
-import com.conversify.ui.venues.details.viewholder.VenueDetailsHeaderViewHolder
-import com.conversify.ui.venues.details.viewholder.VenueDetailsMemberViewHolder
+import com.conversify.ui.groups.details.viewholder.GroupDetailsExitGroupViewHolder
+import com.conversify.ui.groups.details.viewholder.GroupDetailsMemberViewHolder
+import com.conversify.ui.groups.details.viewholder.GroupDetailsHeaderViewHolder
 import com.conversify.utils.GlideRequests
 
-class VenueDetailsAdapter(val glide: GlideRequests,
+class GroupDetailsAdapter(val glide: GlideRequests,
                           private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val VIEW_TYPE_HEADER = 0
@@ -26,13 +27,13 @@ class VenueDetailsAdapter(val glide: GlideRequests,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            VIEW_TYPE_HEADER -> VenueDetailsHeaderViewHolder(parent.inflate(R.layout.item_venue_details_header), callback)
+            VIEW_TYPE_HEADER -> GroupDetailsHeaderViewHolder(parent.inflate(R.layout.item_group_details_header), callback)
 
             VIEW_TYPE_ADD_PARTICIPANTS -> AddParticipantsViewHolder(parent.inflate(R.layout.item_group_add_participants), callback)
 
-            VIEW_TYPE_MEMBER -> VenueDetailsMemberViewHolder(parent.inflate(R.layout.item_venue_details_member), glide, callback)
+            VIEW_TYPE_MEMBER -> GroupDetailsMemberViewHolder(parent.inflate(R.layout.item_venue_details_member), glide, callback)
 
-            VIEW_TYPE_EXIT_GROUP -> VenueDetailsExitGroupViewHolder(parent.inflate(R.layout.item_venue_details_exit_group), callback)
+            VIEW_TYPE_EXIT_GROUP -> GroupDetailsExitGroupViewHolder(parent.inflate(R.layout.item_venue_details_exit_group), callback)
 
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -44,13 +45,13 @@ class VenueDetailsAdapter(val glide: GlideRequests,
         val item = items[position]
 
         when (holder) {
-            is VenueDetailsHeaderViewHolder -> {
-                if (item is VenueDto) {
+            is GroupDetailsHeaderViewHolder -> {
+                if (item is GroupDto) {
                     holder.bind(item)
                 }
             }
 
-            is VenueDetailsMemberViewHolder -> {
+            is GroupDetailsMemberViewHolder -> {
                 if (item is MemberDto) {
                     holder.bind(item)
                 }
@@ -62,7 +63,7 @@ class VenueDetailsAdapter(val glide: GlideRequests,
         val item = items[position]
 
         return when (item) {
-            is VenueDto -> VIEW_TYPE_HEADER
+            is GroupDto -> VIEW_TYPE_HEADER
             is AddParticipantsDto -> VIEW_TYPE_ADD_PARTICIPANTS
             is MemberDto -> VIEW_TYPE_MEMBER
             else -> VIEW_TYPE_EXIT_GROUP
@@ -76,13 +77,13 @@ class VenueDetailsAdapter(val glide: GlideRequests,
     }
 
     fun updateHeader() {
-        if (items.firstOrNull() is VenueDto) {
+        if (items.firstOrNull() is GroupDto) {
             notifyItemChanged(0)
         }
     }
 
-    interface Callback : VenueDetailsHeaderViewHolder.Callback,
+    interface Callback : GroupDetailsHeaderViewHolder.Callback,
             AddParticipantsViewHolder.Callback,
-            VenueDetailsMemberViewHolder.Callback,
-            VenueDetailsExitGroupViewHolder.Callback
+            GroupDetailsMemberViewHolder.Callback,
+            GroupDetailsExitGroupViewHolder.Callback
 }

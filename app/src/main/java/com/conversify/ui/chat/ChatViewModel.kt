@@ -17,7 +17,7 @@ import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.data.remote.models.chat.VenueDetailsResponse
-import com.conversify.data.remote.models.chat.VenueMemberDto
+import com.conversify.data.remote.models.chat.MemberDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.data.remote.socket.SocketManager
 import com.conversify.utils.FileUtils
@@ -53,7 +53,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
     private val cacheDirectoryPath by lazy { cacheDirectory.absolutePath }
     private val mediaController by lazy { MediaController.getInstance() }
 
-    private val venueMembers by lazy { arrayListOf<VenueMemberDto>() }
+    private val venueMembers by lazy { arrayListOf<MemberDto>() }
 
     private lateinit var venue: VenueDto
 
@@ -90,7 +90,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
 
     fun isVenueDetailsLoaded() = venueDetailsLoaded
 
-    fun getMembers(): ArrayList<VenueMemberDto> = venueMembers
+    fun getMembers(): ArrayList<MemberDto> = venueMembers
 
     fun getVenue(): VenueDto = venue
 

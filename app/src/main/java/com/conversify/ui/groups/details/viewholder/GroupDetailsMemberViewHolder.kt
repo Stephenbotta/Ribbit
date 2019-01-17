@@ -1,4 +1,4 @@
-package com.conversify.ui.venues.details.viewholder
+package com.conversify.ui.groups.details.viewholder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -8,10 +8,11 @@ import com.conversify.extensions.visible
 import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_venue_details_member.view.*
 
-class VenueDetailsMemberViewHolder(itemView: View,
+class GroupDetailsMemberViewHolder(itemView: View,
                                    private val glide: GlideRequests,
                                    private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
     init {
+
         itemView.setOnClickListener { callback.onMemberClicked(member) }
     }
 

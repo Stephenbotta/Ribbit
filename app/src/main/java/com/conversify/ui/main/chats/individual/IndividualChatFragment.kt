@@ -23,17 +23,15 @@ class IndividualChatFragment : BaseFragment(), ChatListCallback {
         const val TAG = "IndividualChatFragment"
     }
 
+    private val viewModel by lazy { ViewModelProviders.of(this)[IndividualChatViewModel::class.java] }
     private lateinit var adapter: ChatListCommonAdapter
-    private lateinit var viewModel: IndividualChatViewModel
     private lateinit var items: List<Any>
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_individual_chat
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = ChatListCommonAdapter(GlideApp.with(this), this)
-        viewModel = ViewModelProviders.of(this).get(IndividualChatViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.conversify.R
-import com.conversify.data.remote.models.chat.VenueMemberDto
+import com.conversify.data.remote.models.chat.MemberDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.gone
 import com.conversify.extensions.inflate
@@ -49,7 +49,7 @@ class JoinVenueDetailsAdapter(val glide: GlideRequests,
             }
 
             is VenueDetailsMemberViewHolder -> {
-                if (item is VenueMemberDto) {
+                if (item is MemberDto) {
                     holder.bind(item)
                 }
             }

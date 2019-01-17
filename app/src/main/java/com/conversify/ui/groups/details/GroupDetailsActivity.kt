@@ -1,4 +1,4 @@
-package com.conversify.ui.venues.details
+package com.conversify.ui.groups.details
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -15,6 +15,7 @@ import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.MemberDto
 import com.conversify.data.remote.models.groups.AddParticipantsDto
+import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
@@ -23,34 +24,39 @@ import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.venues.addparticipants.AddVenueParticipantsActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
-import kotlinx.android.synthetic.main.activity_venue_details.*
+import kotlinx.android.synthetic.main.activity_group_details.*
 
-class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
+class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
     companion object {
-        private const val EXTRA_VENUE = "EXTRA_VENUE"
-        private const val EXTRA_VENUE_MEMBERS = "EXTRA_VENUE_MEMBERS"
+        private const val EXTRA_FLAG = "EXTRA_FLAG"
+        private const val EXTRA_GROUP_ID = "EXTRA_GROUP_ID"
 
-        fun getStartIntent(context: Context, venue: VenueDto, members: ArrayList<MemberDto>): Intent {
-            return Intent(context, VenueDetailsActivity::class.java)
-                    .putExtra(EXTRA_VENUE, venue)
-                    .putExtra(EXTRA_VENUE_MEMBERS, members)
+        fun getStartIntent(context: Context, groupId: String, flag: Int): Intent {
+            return Intent(context, GroupDetailsActivity::class.java)
+                    .putExtra(EXTRA_GROUP_ID, groupId)
+                    .putExtra(EXTRA_FLAG, flag)
         }
     }
 
-    private val venue by lazy { intent.getParcelableExtra<VenueDto>(EXTRA_VENUE) }
-    private val members by lazy { intent.getParcelableArrayListExtra<MemberDto>(EXTRA_VENUE_MEMBERS) }
-    private lateinit var viewModel: VenueDetailsViewModel
+    private lateinit var viewModel: GroupDetailsViewModel
     private lateinit var loadingDialog: LoadingDialog
+    private lateinit var group: GroupDto
+    private lateinit var adapter: GroupDetailsAdapter
+    private var flag = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_venue_details)
+        setContentView(R.layout.activity_group_details)
 
-        viewModel = ViewModelProviders.of(this)[VenueDetailsViewModel::class.java]
+        flag = intent.getIntExtra(EXTRA_FLAG, 0)
+
+        viewModel = ViewModelProviders.of(this)[GroupDetailsViewModel::class.java]
         loadingDialog = LoadingDialog(this)
-        setupToolbar()
+
+        val groupId = intent.getStringExtra(EXTRA_GROUP_ID)
+        callApi(groupId)
         observeChanges()
-        setupVenueDetailsRecycler()
+        setupGroupDetailsRecycler()
     }
 
     private fun setupToolbar() {
@@ -63,23 +69,54 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         val boldTypeface = ResourcesCompat.getFont(this, R.font.roboto_text_bold)
         collapsingToolbar.setExpandedTitleTypeface(boldTypeface)
         collapsingToolbar.setCollapsedTitleTypeface(boldTypeface)
-        collapsingToolbar.title = venue.name
+        collapsingToolbar.title = group.name
 
-        val thumbnail = GlideApp.with(this).load(venue.imageUrl?.thumbnail)
+        val thumbnail = GlideApp.with(this).load(group.imageUrl?.thumbnail)
         GlideApp.with(this)
-                .load(venue.imageUrl?.original)
+                .load(group.imageUrl?.original)
                 .thumbnail(thumbnail)
                 .into(ivVenue)
     }
 
     private fun observeChanges() {
+
+        viewModel.groupDetails.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    resource.data?.let { group ->
+                        //                        this.venue = venue
+                        this.group = group
+                        // Display items in correct order
+                        val members = group.members ?: listOf()
+                        val items = mutableListOf<Any>()
+                        items.add(group)   // Header
+                        items.add(AddParticipantsDto)    // Add participants
+                        items.addAll(members)   // Members
+                        items.add(Any())    // Exit group
+                        setupToolbar()
+                        adapter.displayItems(items)
+                    }
+                }
+
+                Status.ERROR -> {
+                    handleError(resource.error)
+                }
+
+                Status.LOADING -> {
+                    // Ignored
+                }
+            }
+        })
+
         viewModel.changeVenueNotifications.observe(this, Observer { resource ->
             resource ?: return@Observer
             when (resource.status) {
                 Status.SUCCESS -> {
-                    venue.notification = resource.data
+                    group.notification = resource.data
                     val data = Intent()
-                    data.putExtra(AppConstants.EXTRA_VENUE, venue)
+                    data.putExtra(AppConstants.EXTRA_GROUP, group)
                     setResult(Activity.RESULT_OK, data)
                 }
 
@@ -97,9 +134,9 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
             when (resource.status) {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
-                    venue.isMember = false
+                    group.isMember = false
                     val data = Intent()
-                    data.putExtra(AppConstants.EXTRA_VENUE, venue)
+                    data.putExtra(AppConstants.EXTRA_GROUP, group)
                     setResult(Activity.RESULT_OK, data)
                     finish()
                 }
@@ -119,25 +156,23 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         viewModel.archiveVenue.observe(this, exitOrArchiveVenueObserver)
     }
 
-    private fun setupVenueDetailsRecycler() {
-        val venueDetailsAdapter = VenueDetailsAdapter(GlideApp.with(this), this)
-        rvVenueDetails.adapter = venueDetailsAdapter
+    private fun setupGroupDetailsRecycler() {
+        adapter = GroupDetailsAdapter(GlideApp.with(this), this)
+        rvVenueDetails.adapter = adapter
+    }
 
-        val items = mutableListOf<Any>()
-        items.add(venue)    // Header
-        items.add(AddParticipantsDto)    // Add participants
-        items.addAll(members)   // Members
-        items.add(Any())    // Exit group
+    private fun callApi(groupId: String) {
+        if (isNetworkActiveWithMessage())
+            viewModel.getGroupDetails(groupId)
 
-        venueDetailsAdapter.displayItems(items)
     }
 
     override fun onNotificationsChanged(isEnabled: Boolean) {
-        viewModel.changeVenueNotifications(venue.id ?: "", isEnabled)
+        viewModel.changeVenueNotifications(group.id ?: "", isEnabled)
     }
 
     override fun onAddParticipantsClicked() {
-        AddVenueParticipantsActivity.start(this, venue.id ?: "")
+        AddVenueParticipantsActivity.start(this, group.id ?: "")
     }
 
     override fun onMemberClicked(member: MemberDto) {
@@ -148,7 +183,7 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
                 .setMessage(R.string.venue_details_label_exit_venue_question)
                 .setPositiveButton(R.string.venue_details_btn_exit) { _, _ ->
                     if (isNetworkActiveWithMessage()) {
-                        viewModel.exitVenue(venue.id ?: "")
+                        viewModel.exitVenue(group.id ?: "")
                     }
                 }
                 .setNegativeButton(R.string.cancel, null)
@@ -161,7 +196,7 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
                 .setMessage(R.string.venue_details_label_archive_venue_question)
                 .setPositiveButton(R.string.venue_details_btn_archive) { _, _ ->
                     if (isNetworkActiveWithMessage()) {
-                        viewModel.archiveVenue(venue.id ?: "")
+                        viewModel.archiveVenue(group.id ?: "")
                     }
                 }
                 .setNegativeButton(R.string.cancel, null)

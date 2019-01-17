@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class VenueMemberDto(
+data class MemberDto(
         @field:SerializedName("isAdmin")
         val isAdmin: Boolean? = null,
 

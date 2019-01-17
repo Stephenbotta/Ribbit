@@ -7,7 +7,7 @@ data class VenueDetailsResponse(
         val chatMessages: List<ChatMessageDto>? = null,
 
         @field:SerializedName("groupData")
-        val venueMembers: List<VenueMemberDto>? = null,
+        val venueMembers: List<MemberDto>? = null,
 
         @field:SerializedName("notification")
         val notification: Boolean? = null)

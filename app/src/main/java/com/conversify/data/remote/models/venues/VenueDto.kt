@@ -1,7 +1,7 @@
 package com.conversify.data.remote.models.venues
 
 import android.os.Parcelable
-import com.conversify.data.remote.models.chat.VenueMemberDto
+import com.conversify.data.remote.models.chat.MemberDto
 import com.conversify.data.remote.models.loginsignup.ImageUrlDto
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -64,4 +64,4 @@ data class VenueDto(
         var isMember: Boolean? = null,
 
         @field:SerializedName("membersList")
-        var members: List<VenueMemberDto>? = null) : Parcelable
+        var members: List<MemberDto>? = null) : Parcelable

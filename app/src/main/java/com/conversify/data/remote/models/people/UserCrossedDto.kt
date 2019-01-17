@@ -32,5 +32,8 @@ data class UserCrossedDto(
         @field:SerializedName("locationAddress")
         val locationAddress: String? = null,
 
+        @field:SerializedName("isMember")
+        var isMember: Boolean? = null,
+
         @field:SerializedName("location")
         val location: List<Double>? = null) : Parcelable

@@ -8,9 +8,9 @@ import com.conversify.R
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.MessageStatus
-import com.conversify.ui.venues.chat.viewholders.ViewHolderChatImage
-import com.conversify.ui.venues.chat.viewholders.ViewHolderChatText
-import com.conversify.ui.venues.chat.viewholders.ViewHolderChatVideo
+import com.conversify.ui.chat.viewholders.ViewHolderChatImage
+import com.conversify.ui.chat.viewholders.ViewHolderChatText
+import com.conversify.ui.chat.viewholders.ViewHolderChatVideo
 import com.conversify.utils.GlideApp
 
 class ChatAdapter(context: Context,

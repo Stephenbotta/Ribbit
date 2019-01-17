@@ -16,7 +16,6 @@ import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.Status
-import com.conversify.data.remote.models.chat.ChatListingDto
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.data.remote.models.people.UserCrossedDto
@@ -30,6 +29,7 @@ import com.conversify.ui.chat.group.ChatListGroupViewModel
 import com.conversify.ui.chat.individual.ChatIndividualViewModel
 import com.conversify.ui.chat.individual.ChatListIndividualViewModel
 import com.conversify.ui.custom.AppToast
+import com.conversify.ui.groups.details.GroupDetailsActivity
 import com.conversify.ui.images.ImagesActivity
 import com.conversify.ui.venues.details.VenueDetailsActivity
 import com.conversify.ui.videoplayer.VideoPlayerActivity
@@ -43,7 +43,7 @@ import permissions.dispatcher.*
 @RuntimePermissions
 class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     companion object {
-        private const val FLAG_VALUE = "FLAG_VALUE"
+        private const val EXTRA_FLAG = "EXTRA_FLAG"
 
         private const val EXTRA_VENUE = "EXTRA_VENUE"
         private const val EXTRA_INDIVIDUAL_CHAT = "EXTRA_INDIVIDUAL_CHAT"
@@ -51,13 +51,13 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
 
         fun getStartIntent(context: Context, venue: VenueDto, flag: Int): Intent {
             return Intent(context, ChatActivity::class.java)
-                    .putExtra(FLAG_VALUE, flag)
+                    .putExtra(EXTRA_FLAG, flag)
                     .putExtra(EXTRA_VENUE, venue)
         }
 
         fun getStartIntentForIndividualChat(context: Context, userCrossed: UserCrossedDto, flag: Int): Intent {
             return Intent(context, ChatActivity::class.java)
-                    .putExtra(FLAG_VALUE, flag)
+                    .putExtra(EXTRA_FLAG, flag)
                     .putExtra(EXTRA_INDIVIDUAL_CHAT, userCrossed)
         }
 
@@ -138,7 +138,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
-        flag = intent.getIntExtra(FLAG_VALUE, 0)
+        flag = intent.getIntExtra(EXTRA_FLAG, 0)
         inItClasses(flag)
     }
 
@@ -177,7 +177,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
             setListeners(flag)
             observeChanges(flag)
             setupChatRecycler(flag)
-            setupToolbar(userCrossed,flag)
+            setupToolbar(userCrossed, flag)
             getOldMessages(flag)
 
         } else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
@@ -190,7 +190,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
             setListeners(flag)
             observeChanges(flag)
             setupChatRecycler(flag)
-            setupToolbar(userCrossed,flag)
+            setupToolbar(userCrossed, flag)
             getOldMessages(flag)
 
         }
@@ -268,8 +268,8 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                 }
             }
 
-            ivVenue.setOnClickListener { }
-            tvVenueName.setOnClickListener { }
+            ivVenue.setOnClickListener { showGroupDetails(AppConstants.REQ_CODE_LISTING_GROUP_DETAILS)}
+            tvVenueName.setOnClickListener { showGroupDetails(AppConstants.REQ_CODE_LISTING_GROUP_DETAILS)}
 
             btnAttachment.setOnClickListener { showImagePickerWithPermissionCheck() }
 
@@ -288,12 +288,12 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
             viewModelIndividual.oldMessages.observeForever(oldMessagesObserver)
             viewModelIndividual.sendMessage.observeForever(sendMessageObserver)
             viewModelIndividual.uploadFile.observeForever(uploadFileObserver)
-        }else if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
+        } else if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
             viewModelChatIndividual.newMessage.observeForever(newMessageObserver)
             viewModelChatIndividual.oldMessages.observeForever(oldMessagesObserver)
             viewModelChatIndividual.sendMessage.observeForever(sendMessageObserver)
             viewModelChatIndividual.uploadFile.observeForever(uploadFileObserver)
-        }else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
+        } else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
             viewModelChatGroup.newMessage.observeForever(newMessageObserver)
             viewModelChatGroup.oldMessages.observeForever(oldMessagesObserver)
             viewModelChatGroup.sendMessage.observeForever(sendMessageObserver)
@@ -328,7 +328,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                     }
                 }
             })
-        }else if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
+        } else if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
             swipeRefreshLayout.isEnabled = false
             adapter = ChatAdapter(this, this)
             rvChat.adapter = adapter
@@ -341,7 +341,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                     }
                 }
             })
-        }else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
+        } else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
             swipeRefreshLayout.isEnabled = false
             adapter = ChatAdapter(this, this)
             rvChat.adapter = adapter
@@ -387,7 +387,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         tvVenueName.text = userCrossed.crossedUser?.fullName
     }
 
-    private fun setupToolbar(userCrossed: UserCrossedDto,flag: Int) {
+    private fun setupToolbar(userCrossed: UserCrossedDto, flag: Int) {
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
@@ -400,7 +400,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                 .into(ivVenue)
         if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
             tvVenueName.text = userCrossed.profile?.fullName
-        }else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
+        } else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
             tvVenueName.text = userCrossed.profile?.userName
         }
     }
@@ -411,9 +411,9 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                 viewModel.getOldMessages()
             } else if (flag == AppConstants.REQ_CODE_INDIVIDUAL_CHAT) {
                 viewModelIndividual.getOldMessages()
-            }else if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
+            } else if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
                 viewModelChatIndividual.getOldMessages()
-            }else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
+            } else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
                 viewModelChatGroup.getOldMessages()
             }
         }
@@ -427,9 +427,9 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                 viewModel.sendTextMessage(message)
             } else if (flag == AppConstants.REQ_CODE_INDIVIDUAL_CHAT) {
                 viewModelIndividual.sendTextMessage(message)
-            }else if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
+            } else if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
                 viewModelChatIndividual.sendTextMessage(message)
-            }else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
+            } else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
                 viewModelChatGroup.sendTextMessage(message)
             }
         }
@@ -440,6 +440,11 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
             val intent = VenueDetailsActivity.getStartIntent(this, viewModel.getVenue(), viewModel.getMembers())
             startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_DETAILS)
         }
+    }
+
+    private fun showGroupDetails(flag: Int) {
+        val intent = GroupDetailsActivity.getStartIntent(this, viewModelChatGroup.getVenue().profile?.id!!,flag)
+        startActivityForResult(intent, flag)
     }
 
     override fun onImageMessageClicked(chatMessage: ChatMessageDto) {
@@ -465,9 +470,9 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
             viewModel.resendMessage(chatMessage)
         } else if (flag == AppConstants.REQ_CODE_INDIVIDUAL_CHAT) {
             viewModelIndividual.resendMessage(chatMessage)
-        }else if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
+        } else if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
             viewModelChatIndividual.resendMessage(chatMessage)
-        }else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
+        } else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
             viewModelChatGroup.resendMessage(chatMessage)
         }
     }
@@ -511,22 +516,61 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == AppConstants.REQ_CODE_VENUE_DETAILS &&
-                resultCode == Activity.RESULT_OK && data != null) {
-            val venue = data.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
-            if (venue != null) {
-                if (venue.isMember == false) {
-                    // Will be false if user has exit the venue
-                    setResult(Activity.RESULT_OK, data)
-                    finish()
-                } else {
-                    // Otherwise update the venue
-                    viewModel.updateVenue(venue)
+        when (requestCode) {
+
+            AppConstants.REQ_CODE_VENUE_DETAILS -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val venue = data.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
+                    if (venue != null) {
+                        if (venue.isMember == false) {
+                            // Will be false if user has exit the venue
+                            setResult(Activity.RESULT_OK, data)
+                            finish()
+                        } else {
+                            // Otherwise update the venue
+                            viewModel.updateVenue(venue)
+                        }
+                    }
                 }
             }
-        } else {
-            mediaPicker.onActivityResult(requestCode, resultCode, data)
+
+            AppConstants.REQ_CODE_LISTING_GROUP_DETAILS -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val venue = data.getParcelableExtra<UserCrossedDto>(AppConstants.EXTRA_GROUP)
+                    if (venue != null) {
+                        if (venue.isMember == false) {
+                            // Will be false if user has exit the venue
+                            setResult(Activity.RESULT_OK, data)
+                            finish()
+                        } else {
+                            // Otherwise update the venue
+                            viewModelChatGroup.updateVenue(venue)
+                        }
+                    }
+                }
+            }
+
+            else -> {
+                mediaPicker.onActivityResult(requestCode, resultCode, data)
+            }
         }
+
+//        if (requestCode == AppConstants.REQ_CODE_VENUE_DETAILS &&
+//                resultCode == Activity.RESULT_OK && data != null) {
+//            val venue = data.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
+//            if (venue != null) {
+//                if (venue.isMember == false) {
+//                    // Will be false if user has exit the venue
+//                    setResult(Activity.RESULT_OK, data)
+//                    finish()
+//                } else {
+//                    // Otherwise update the venue
+//                    viewModel.updateVenue(venue)
+//                }
+//            }
+//        } else {
+//            mediaPicker.onActivityResult(requestCode, resultCode, data)
+//        }
     }
 
     private fun removeObserver(flag: Int) {
