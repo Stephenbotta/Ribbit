@@ -261,5 +261,11 @@
     <string name="group_details_label_exit_group">Delete Group</string>
     <string name="group_details_label_archive_group">Archive Group</string>
 
+    <string name="search_title_top">TOP</string>
+    <string name="search_title_tags">TAGS</string>
+    <string name="search_title_posts">POSTS</string>
+    <string name="search_title_groups">GROUPS</string>
+    <string name="search_title_venues">VENUES</string>
+
 
 </resources>

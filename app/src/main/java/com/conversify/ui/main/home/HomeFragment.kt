@@ -23,6 +23,7 @@ import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.post.details.PostDetailsActivity
 import com.conversify.ui.post.details.PostDetailsViewModel
 import com.conversify.ui.post.newpost.NewPostActivity
+import com.conversify.ui.search.SearchActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -132,6 +133,8 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onHomeSearchClicked() {
         Timber.i("Home search clicked")
+//        val intent = SearchActivity.getStartIntent(requireContext(), AppConstants.REQ_CODE_HOME_SEARCH)
+//        startActivityForResult(intent, AppConstants.REQ_CODE_HOME_SEARCH)
     }
 
     override fun onPostClicked(post: GroupPostDto, focusReplyEditText: Boolean) {

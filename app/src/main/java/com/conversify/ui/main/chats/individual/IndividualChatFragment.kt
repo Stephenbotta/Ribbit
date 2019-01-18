@@ -74,8 +74,8 @@ class IndividualChatFragment : BaseFragment(), ChatListCallback {
         })
     }
 
-    fun search(query: String) {
-        viewModel.searchGroups(query)
+    fun search(query: String?) {
+        viewModel.searchGroups(query ?: "")
     }
 
     private fun getChatSummary() {

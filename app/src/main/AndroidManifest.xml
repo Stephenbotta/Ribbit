@@ -28,91 +28,73 @@
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.main.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
-
         <activity
             android:name=".ui.loginsignup.LoginSignUpActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".ui.createvenue.CreateVenueActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.conversify.ui.chat.ChatActivity"
+            android:name=".ui.chat.ChatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".ui.venues.filters.VenueFiltersActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.venues.details.VenueDetailsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.groups.details.GroupDetailsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.images.ImagesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Images" />
-
         <activity
             android:name=".ui.videoplayer.VideoPlayerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Images" />
-
         <activity
             android:name=".ui.creategroup.create.CreateGroupActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.groups.topicgroups.TopicGroupsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.groups.groupposts.GroupPostsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.notifications.NotificationsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.creategroup.addparticipants.AddParticipantsActivity"
             android:screenOrientation="portrait" />
-
         <activity
-            android:name="com.conversify.ui.post.newpost.NewPostActivity"
+            android:name=".ui.post.newpost.NewPostActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.post.details.PostDetailsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.venues.join.JoinVenueActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".ui.venues.addparticipants.AddVenueParticipantsActivity"
-            android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".ui.venues.addparticipants.AddVenueParticipantsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -125,9 +107,11 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.people.details.PeopleDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profile.ProfileActivity"
             android:screenOrientation="portrait" />
         <!-- https://developers.google.com/maps/documentation/android-sdk/config#specify_requirement_for_apache_http_legacy_library -->
         <uses-library
@@ -151,13 +135,14 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/app_google_api_key" />
+
+        <activity android:name=".ui.search.SearchActivity"></activity>
     </application>
+
 </manifest>

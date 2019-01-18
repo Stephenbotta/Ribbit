@@ -22,10 +22,10 @@ class ChatsFragment : BaseFragment() {
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_chats
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater, getFragmentLayoutResId(), container, false)
+        binding.setLifecycleOwner(this)
         binding.view = this
         return binding.root
 
@@ -33,7 +33,7 @@ class ChatsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewPagerAdapter = ChatViewPagerAdapter(requireFragmentManager())
+        viewPagerAdapter = ChatViewPagerAdapter(requireContext(), requireFragmentManager())
         viewPagerAdapter.addFragments(IndividualChatFragment())
         viewPagerAdapter.addFragments(GroupChatFragment())
         binding.viewPager.adapter = viewPagerAdapter

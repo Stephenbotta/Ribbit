@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.ChatListingDto
@@ -77,8 +76,8 @@ class GroupChatFragment : BaseFragment(), ChatListCallback {
         })
     }
 
-    fun search(query: String) {
-        viewModel.searchGroups(query)
+    fun search(query: String?) {
+        viewModel.searchGroups(query ?: "")
     }
 
     private fun getChatSummary() {

@@ -72,6 +72,13 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="HomeSearchEditText" parent="AppTheme.EditText">
+        <item name="android:fontFamily">@font/roboto_text_medium</item>
+        <item name="android:textColor">@color/editTextContent</item>
+        <item name="android:textColorHint">@color/editTextHint</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="AppTheme.EditTextCreateVenue">
         <item name="colorControlNormal">@color/greyImageBackground</item>
         <item name="android:fontFamily">@font/roboto_text_regular</item>
