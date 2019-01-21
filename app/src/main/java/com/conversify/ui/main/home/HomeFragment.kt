@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import timber.log.Timber
 
 class HomeFragment : BaseFragment(), HomeAdapter.Callback {
+
     companion object {
         const val TAG = "HomeFragment"
     }
@@ -133,8 +134,8 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onHomeSearchClicked() {
         Timber.i("Home search clicked")
-//        val intent = SearchActivity.getStartIntent(requireContext(), AppConstants.REQ_CODE_HOME_SEARCH)
-//        startActivityForResult(intent, AppConstants.REQ_CODE_HOME_SEARCH)
+        val intent = SearchActivity.getStartIntent(requireContext(), AppConstants.REQ_CODE_HOME_SEARCH)
+        startActivityForResult(intent, AppConstants.REQ_CODE_HOME_SEARCH)
     }
 
     override fun onPostClicked(post: GroupPostDto, focusReplyEditText: Boolean) {

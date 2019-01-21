@@ -47,13 +47,13 @@
                 app:layout_constraintTop_toTopOf="@id/tvBack"
                 tools:ignore="ContentDescription" />
 
+            <!--android:foreground="@drawable/foreground_for_images"-->
             <ImageView
                 android:id="@+id/ivProfile"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="8dp"
                 android:scaleType="centerCrop"
-                android:foreground="@drawable/foreground_for_images"
                 app:layout_constraintDimensionRatio="1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

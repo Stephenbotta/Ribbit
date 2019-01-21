@@ -1,4 +1,4 @@
-package com.conversify.ui.main.profile
+package com.conversify.ui.profile
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -14,7 +14,6 @@ import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
-import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
@@ -31,22 +30,19 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
 
     private val viewModel by lazy { ViewModelProviders.of(this)[ProfileViewModel::class.java] }
     private lateinit var interestsAdapter: ProfileInterestsAdapter
-    private lateinit var loadingDialog: LoadingDialog
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        loadingDialog = LoadingDialog(requireActivity())
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupInterestsRecycler()
-        displayProfile(viewModel.getProfile())
+        swipeRefreshLayout.setOnRefreshListener { getUserProfile() }
         btnLogout.setOnClickListener {
             showLogoutConfirmationDialog()
         }
         observeChanges()
+        listener()
+        gone()
+        getUserProfile()
     }
 
     private fun setupInterestsRecycler() {
@@ -90,25 +86,59 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     }
 
     private fun observeChanges() {
+        viewModel.peopleDetails.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    visible()
+                    swipeRefreshLayout.isRefreshing = false
+                    displayProfile(viewModel.getProfile())
+                }
+
+                Status.ERROR -> {
+                    swipeRefreshLayout.isRefreshing = false
+                    handleError(resource.error)
+                }
+
+                Status.LOADING -> {
+                    swipeRefreshLayout.isRefreshing = true
+                    // Ignored
+                }
+            }
+        })
+
         viewModel.logout.observe(this, Observer { resource ->
             resource ?: return@Observer
 
             when (resource.status) {
                 Status.SUCCESS -> {
-                    loadingDialog.setLoading(false)
+                    swipeRefreshLayout.isRefreshing = false
                     requireActivity().startLandingWithClear()
                 }
 
                 Status.ERROR -> {
-                    loadingDialog.setLoading(false)
+                    swipeRefreshLayout.isRefreshing = false
                     handleError(resource.error)
                 }
 
                 Status.LOADING -> {
-                    loadingDialog.setLoading(true)
+                    swipeRefreshLayout.isRefreshing = true
                 }
             }
         })
+    }
+
+    private fun listener() {
+        tvTitle.setOnClickListener { activity?.onBackPressed() }
+    }
+
+    private fun getUserProfile() {
+        if (isNetworkActiveWithMessage()) {
+            viewModel.getUserProfileDetails()
+        } else {
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun showLogoutConfirmationDialog() {
@@ -142,13 +172,45 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == AppConstants.REQ_CODE_CHOOSE_INTERESTS && resultCode == Activity.RESULT_OK) {
-            viewModel.profileUpdated()
-            displayProfile(viewModel.getProfile())
+//            displayProfile(viewModel.getProfile())
+            getUserProfile()
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        loadingDialog.setLoading(false)
+    private fun visible() {
+        ivProfile.visibility = View.VISIBLE
+        fabEdit.visible()
+        tvNameAndAge.visibility = View.VISIBLE
+        tvDesignation.visibility = View.VISIBLE
+        viewDividerFollowersTop.visibility = View.VISIBLE
+        viewDividerFollowersCenter.visibility = View.VISIBLE
+        tvFollowersCount.visibility = View.VISIBLE
+        tvLabelFollowers.visibility = View.VISIBLE
+        tvFollowingCount.visibility = View.VISIBLE
+        tvLabelFollowing.visibility = View.VISIBLE
+        viewDividerFollowersBottom.visibility = View.VISIBLE
+        tvLabelBio.visibility = View.VISIBLE
+        tvBio.visibility = View.VISIBLE
+        tvLabelMyInterests.visibility = View.VISIBLE
+        rvInterests.visibility = View.VISIBLE
     }
+
+    private fun gone() {
+        ivProfile.visibility = View.GONE
+        fabEdit.gone()
+        tvNameAndAge.visibility = View.GONE
+        tvDesignation.visibility = View.GONE
+        viewDividerFollowersTop.visibility = View.GONE
+        viewDividerFollowersCenter.visibility = View.GONE
+        tvFollowersCount.visibility = View.GONE
+        tvLabelFollowers.visibility = View.GONE
+        tvFollowingCount.visibility = View.GONE
+        tvLabelFollowing.visibility = View.GONE
+        viewDividerFollowersBottom.visibility = View.GONE
+        tvLabelBio.visibility = View.GONE
+        tvBio.visibility = View.GONE
+        tvLabelMyInterests.visibility = View.GONE
+        rvInterests.visibility = View.GONE
+    }
+
 }

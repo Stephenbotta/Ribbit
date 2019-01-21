@@ -7,6 +7,7 @@ import android.location.Location
 import com.conversify.data.local.UserManager
 import com.conversify.data.remote.socket.SocketManager
 import com.conversify.data.repository.InterestsRepository
+import com.conversify.ui.base.BaseViewModel
 import io.socket.client.Ack
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,7 @@ import timber.log.Timber
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 
-class MainViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
+class MainViewModel(application: Application) : BaseViewModel(application), CoroutineScope {
     private val socketManager by lazy { SocketManager.getInstance() }
     private val ownUserId by lazy { UserManager.getUserId() }
     private val parentJob by lazy { Job() }

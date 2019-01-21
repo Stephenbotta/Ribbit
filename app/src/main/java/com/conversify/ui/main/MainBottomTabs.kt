@@ -29,7 +29,7 @@ class MainBottomTabs : TabLayout {
         addTab(exploreTab)
 
         val profileTab = newTab()
-        profileTab.setIcon(R.drawable.selector_tab_profile)
+        profileTab.setIcon(R.drawable.selector_tab_notification)
         addTab(profileTab)
     }
 }

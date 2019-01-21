@@ -15,9 +15,9 @@ import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.chat.ChatMessageDto
+import com.conversify.data.remote.models.chat.MemberDto
 import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.data.remote.models.chat.VenueDetailsResponse
-import com.conversify.data.remote.models.chat.MemberDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.data.remote.socket.SocketManager
 import com.conversify.utils.FileUtils

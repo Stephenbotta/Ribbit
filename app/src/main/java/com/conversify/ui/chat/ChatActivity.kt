@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
 import android.view.MenuItem
+import android.view.View
 import com.conversify.R
 import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.PagingResult
@@ -74,6 +75,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     private val newMessageObserver = Observer<ChatMessageDto> {
         it ?: return@Observer
         setResult(Activity.RESULT_OK)
+        tvLabelEmptyChat.visibility = View.GONE
         adapter.addNewMessage(it)
         rvChat.scrollToPosition(adapter.itemCount - 1)
     }
@@ -83,7 +85,10 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         when (it.status) {
             Status.SUCCESS -> {
                 swipeRefreshLayout.isRefreshing = false
-                adapter.addOldMessages(it.data?.result ?: emptyList())
+                val items = it.data?.result ?: emptyList()
+                if (items.size > 0)
+                    tvLabelEmptyChat.visibility = View.GONE
+                adapter.addOldMessages(items)
                 // Scroll to bottom for first page
                 if (it.data?.isFirstPage == true) {
                     rvChat.scrollToPosition(adapter.itemCount - 1)
@@ -105,6 +110,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         it ?: return@Observer
         when (it.status) {
             Status.SUCCESS -> {
+                tvLabelEmptyChat.visibility = View.GONE
                 adapter.updateMessageStatus(it.data?.localId ?: "", MessageStatus.SENT)
             }
 
@@ -121,6 +127,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         it ?: return@Observer
         when (it.status) {
             Status.SUCCESS -> {
+                tvLabelEmptyChat.visibility = View.GONE
             }
 
             Status.ERROR -> {
@@ -268,8 +275,8 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                 }
             }
 
-            ivVenue.setOnClickListener { showGroupDetails(AppConstants.REQ_CODE_LISTING_GROUP_DETAILS)}
-            tvVenueName.setOnClickListener { showGroupDetails(AppConstants.REQ_CODE_LISTING_GROUP_DETAILS)}
+            ivVenue.setOnClickListener { showGroupDetails(AppConstants.REQ_CODE_LISTING_GROUP_DETAILS) }
+            tvVenueName.setOnClickListener { showGroupDetails(AppConstants.REQ_CODE_LISTING_GROUP_DETAILS) }
 
             btnAttachment.setOnClickListener { showImagePickerWithPermissionCheck() }
 
@@ -443,7 +450,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     }
 
     private fun showGroupDetails(flag: Int) {
-        val intent = GroupDetailsActivity.getStartIntent(this, viewModelChatGroup.getVenue().profile?.id!!,flag)
+        val intent = GroupDetailsActivity.getStartIntent(this, viewModelChatGroup.getVenue().profile?.id!!, flag)
         startActivityForResult(intent, flag)
     }
 

@@ -21,8 +21,10 @@ class PeopleDetailsViewModel(application: Application) : BaseViewModel(applicati
     fun getOtherUserProfileDetails(userId: String) {
         peopleDetails.value = Resource.loading()
 
+        val hashMap = hashMapOf<String, String>()
+        hashMap.put("userId", userId)
         RetrofitClient.conversifyApi
-                .getOtherUserProfileDetails(userId)
+                .getUserProfileDetails(hashMap)
                 .enqueue(object : Callback<ApiResponse<ProfileDto>> {
                     override fun onResponse(call: Call<ApiResponse<ProfileDto>>, response: Response<ApiResponse<ProfileDto>>) {
                         if (response.isSuccessful) {

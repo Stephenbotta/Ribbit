@@ -157,7 +157,7 @@
                 android:fontFamily="@font/roboto_text_bold"
                 android:maxLines="1"
                 android:paddingStart="8dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:paddingEnd="8dp"
                 android:text="@string/chat_label_empty_chat"
                 android:textColor="@color/colorPrimary"

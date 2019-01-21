@@ -9,7 +9,7 @@ import com.conversify.ui.base.BaseLocationActivity
 import com.conversify.ui.main.chats.ChatsFragment
 import com.conversify.ui.main.explore.ExploreFragment
 import com.conversify.ui.main.home.HomeFragment
-import com.conversify.ui.main.profile.ProfileFragment
+import com.conversify.ui.main.notifications.NotificationsFragment
 import com.conversify.ui.main.searchusers.SearchUsersFragment
 import com.conversify.utils.FragmentSwitcher
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,7 +21,8 @@ class MainActivity : BaseLocationActivity() {
         private const val TAB_INDEX_CHATS = 1
         private const val TAB_INDEX_SEARCH_USERS = 2
         private const val TAB_INDEX_EXPLORE = 3
-        private const val TAB_INDEX_PROFILE = 4
+        //        private const val TAB_INDEX_PROFILE = 4
+        private const val TAB_INDEX_NOTIFICATIONS = 4
 
         private const val EXTRA_SELECTED_TAB_INDEX = "EXTRA_SELECTED_TAB_INDEX"
         private const val EXTRA_SELECTED_FRAGMENT_TAG = "EXTRA_SELECTED_FRAGMENT_TAG"
@@ -88,9 +89,9 @@ class MainActivity : BaseLocationActivity() {
                         }
                     }
 
-                    TAB_INDEX_PROFILE -> {
-                        if (!fragmentSwitcher.fragmentExist(ProfileFragment.TAG)) {
-                            fragmentSwitcher.addFragment(ProfileFragment(), ProfileFragment.TAG)
+                    TAB_INDEX_NOTIFICATIONS -> {
+                        if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG)) {
+                            fragmentSwitcher.addFragment(NotificationsFragment(), NotificationsFragment.TAG)
                         }
                     }
                 }

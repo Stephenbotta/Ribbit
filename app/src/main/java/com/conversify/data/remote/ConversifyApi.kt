@@ -14,10 +14,7 @@ import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.data.remote.models.venues.*
 import com.conversify.ui.chat.individual.ChatIndividualResponse
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ConversifyApi {
     @POST("user/regEmailOrPhone")
@@ -204,7 +201,7 @@ interface ConversifyApi {
 
     @POST("user/getProfileData")
     @FormUrlEncoded
-    fun getOtherUserProfileDetails(@Field("userId") userId: String): Call<ApiResponse<ProfileDto>>
+    fun getUserProfileDetails(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<ProfileDto>>
 
     @POST("user/followUnfollow")
     @FormUrlEncoded
