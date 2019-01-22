@@ -1,9 +1,12 @@
 package com.conversify.ui.main.chats.group
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.ChatListingDto
@@ -99,6 +102,15 @@ class GroupChatFragment : BaseFragment(), ChatListCallback {
             userCrossed.profile = item.profile
             val intent = ChatActivity.getStartIntentForIndividualChat(requireContext(), userCrossed, AppConstants.REQ_CODE_LISTING_GROUP_CHAT)
             startActivityForResult(intent, AppConstants.REQ_CODE_LISTING_GROUP_CHAT)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
+            if (resultCode == Activity.RESULT_OK) {
+                getChatSummary()
+            }
         }
     }
 }

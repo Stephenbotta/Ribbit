@@ -1,6 +1,7 @@
 package com.conversify.ui.groups.details
 
 import android.arch.lifecycle.ViewModel
+import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
@@ -19,7 +20,6 @@ class GroupDetailsViewModel : ViewModel() {
     val changeVenueNotifications by lazy { SingleLiveEvent<Resource<Boolean>>() }
     val exitVenue by lazy { SingleLiveEvent<Resource<Any>>() }
     val archiveVenue by lazy { SingleLiveEvent<Resource<Any>>() }
-
 
     fun getGroupDetails(groupId: String) {
         groupDetails.value = Resource.loading()
@@ -62,11 +62,11 @@ class GroupDetailsViewModel : ViewModel() {
                 })
     }
 
-    fun exitVenue(venueId: String) {
+    fun exitVenue(groupId: String) {
         exitVenue.value = Resource.loading()
 
         RetrofitClient.conversifyApi
-                .exitVenue(venueId)
+                .exitGroup(groupId)
                 .enqueue(object : Callback<Any> {
                     override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         if (response.isSuccessful) {
@@ -82,11 +82,11 @@ class GroupDetailsViewModel : ViewModel() {
                 })
     }
 
-    fun archiveVenue(venueId: String) {
+    fun archiveVenue(groupId: String) {
         archiveVenue.value = Resource.loading()
 
         RetrofitClient.conversifyApi
-                .archiveVenue(venueId)
+                .archiveVenue(groupId, ApiConstants.TYPE_GROUP)
                 .enqueue(object : Callback<Any> {
                     override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         if (response.isSuccessful) {

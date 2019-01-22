@@ -1,6 +1,7 @@
 package com.conversify.ui.venues.details
 
 import android.arch.lifecycle.ViewModel
+import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
@@ -59,7 +60,7 @@ class VenueDetailsViewModel : ViewModel() {
         archiveVenue.value = Resource.loading()
 
         RetrofitClient.conversifyApi
-                .archiveVenue(venueId)
+                .archiveVenue(venueId, ApiConstants.TYPE_VENUE)
                 .enqueue(object : Callback<Any> {
                     override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         if (response.isSuccessful) {

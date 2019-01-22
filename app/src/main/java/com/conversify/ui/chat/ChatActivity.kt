@@ -542,18 +542,20 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
             }
 
             AppConstants.REQ_CODE_LISTING_GROUP_DETAILS -> {
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    val venue = data.getParcelableExtra<UserCrossedDto>(AppConstants.EXTRA_GROUP)
-                    if (venue != null) {
-                        if (venue.isMember == false) {
-                            // Will be false if user has exit the venue
-                            setResult(Activity.RESULT_OK, data)
+                if (resultCode == Activity.RESULT_OK /*&& data != null*/) {
+//                    val venue = data.getParcelableExtra<UserCrossedDto>(AppConstants.EXTRA_GROUP)
+//                    if (venue != null) {
+//                        if (venue.isMember == false) {
+//                            // Will be false if user has exit the venue
+//                            setResult(Activity.RESULT_OK, data)
+//                            finish()
+//                        } else {
+//                            // Otherwise update the venue
+//                            viewModelChatGroup.updateVenue(venue)
+//                        }
+//                    }
+                    setResult(Activity.RESULT_OK, data)
                             finish()
-                        } else {
-                            // Otherwise update the venue
-                            viewModelChatGroup.updateVenue(venue)
-                        }
-                    }
                 }
             }
 

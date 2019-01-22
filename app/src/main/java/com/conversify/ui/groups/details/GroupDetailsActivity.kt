@@ -135,9 +135,10 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
                     group.isMember = false
-                    val data = Intent()
-                    data.putExtra(AppConstants.EXTRA_GROUP, group)
-                    setResult(Activity.RESULT_OK, data)
+//                    val data = Intent()
+//                    data.putExtra(AppConstants.EXTRA_GROUP, group)
+//                    finishActivity(AppConstants.REQ_CODE_LISTING_GROUP_CHAT)
+                    setResult(Activity.RESULT_OK, null)
                     finish()
                 }
 
@@ -180,7 +181,7 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
 
     override fun onExitVenueClicked() {
         AlertDialog.Builder(this)
-                .setMessage(R.string.venue_details_label_exit_venue_question)
+                .setMessage(R.string.group_details_label_exit_group_question)
                 .setPositiveButton(R.string.venue_details_btn_exit) { _, _ ->
                     if (isNetworkActiveWithMessage()) {
                         viewModel.exitVenue(group.id ?: "")
@@ -193,7 +194,7 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
 
     override fun onArchiveVenueClicked() {
         AlertDialog.Builder(this)
-                .setMessage(R.string.venue_details_label_archive_venue_question)
+                .setMessage(R.string.group_details_label_archive_group_question)
                 .setPositiveButton(R.string.venue_details_btn_archive) { _, _ ->
                     if (isNetworkActiveWithMessage()) {
                         viewModel.archiveVenue(group.id ?: "")

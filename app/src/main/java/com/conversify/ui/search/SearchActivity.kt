@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import com.conversify.R
 import com.conversify.databinding.ActivitySearchBinding
@@ -50,6 +52,32 @@ class SearchActivity : BaseActivity() {
         viewPagerAdapter.addFragments(SearchVenueFragment())
         binding.viewPagerSearch.adapter = viewPagerAdapter
         binding.tabLayoutSearch.setupWithViewPager(binding.viewPagerSearch)
+        listener()
+    }
+
+    private fun listener() {
+        binding.etCredentials.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(search: CharSequence?, start: Int, before: Int, count: Int) {
+                if (binding.viewPagerSearch.currentItem == 0) {
+                    (viewPagerAdapter.fragments[0] as SearchTopFragment).search(search.toString())
+                } else if (binding.viewPagerSearch.currentItem == 1) {
+                    (viewPagerAdapter.fragments[1] as SearchTagFragment).search(search.toString())
+                } else if (binding.viewPagerSearch.currentItem == 2) {
+                    (viewPagerAdapter.fragments[2] as SearchPostsFragment).search(search.toString())
+                } else if (binding.viewPagerSearch.currentItem == 3) {
+                    (viewPagerAdapter.fragments[3] as SearchGroupFragment).search(search.toString())
+                } else if (binding.viewPagerSearch.currentItem == 4) {
+                    (viewPagerAdapter.fragments[4] as SearchVenueFragment).search(search.toString())
+                }
+            }
+        })
 
     }
 

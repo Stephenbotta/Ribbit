@@ -84,10 +84,14 @@ interface ConversifyApi {
     @FormUrlEncoded
     fun exitVenue(@Field("venueId") venueId: String): Call<Any>
 
+    @POST("user/exitGroup")
+    @FormUrlEncoded
+    fun exitGroup(@Field("groupId") groupId: String): Call<Any>
+
     @POST("user/archiveGroup")
     @FormUrlEncoded
     fun archiveVenue(@Field("groupId") venueId: String,
-                     @Field("groupType") type: String = ApiConstants.TYPE_VENUE): Call<Any>
+                     @Field("groupType") type: String): Call<Any>
 
     @POST("user/getData")
     @FormUrlEncoded
@@ -211,7 +215,7 @@ interface ConversifyApi {
     @POST("user/chatConversation")
     @FormUrlEncoded
     fun getIndividualChat(@Field("conversationId") conversationId: String?,
-                               @Field("chatId") chatId: String?): Call<ApiResponse<ChatIndividualResponse>>
+                          @Field("chatId") chatId: String?): Call<ApiResponse<ChatIndividualResponse>>
 
     @POST("user/chatSummary")
     @FormUrlEncoded
@@ -220,4 +224,10 @@ interface ConversifyApi {
     @POST("user/groupDetails")
     @FormUrlEncoded
     fun getGroupDetails(@Field("groupId") groupId: String): Call<ApiResponse<GroupDto>>
+
+    @POST("user/homeSearchTop")
+    @FormUrlEncoded
+    fun getTopSearch(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<List<ProfileDto>>>
+
+
 }

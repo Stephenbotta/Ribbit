@@ -258,14 +258,18 @@
     <string name="chat_listing_photo_last_message_for_chat">Photo</string>
     <string name="chat_listing_video_last_message_for_chat">Video</string>
 
-    <string name="group_details_label_exit_group">Delete Group</string>
-    <string name="group_details_label_archive_group">Archive Group</string>
+    <string name="group_details_label_exit_group">Delete group</string>
+    <string name="group_details_label_archive_group">Archive group</string>
+    <string name="group_details_label_exit_group_question">Exit group?</string>
+    <string name="group_details_label_archive_group_question">Archive group?</string>
 
     <string name="search_title_top">TOP</string>
     <string name="search_title_tags">TAGS</string>
     <string name="search_title_posts">POSTS</string>
     <string name="search_title_groups">GROUPS</string>
     <string name="search_title_venues">VENUES</string>
+    <string name="search_top_label_recent">Recent</string>
+    <string name="search_top_label_suggested">Suggested</string>
 
 
 </resources>

@@ -12,5 +12,4 @@ class SearchViewModel(application: Application) : BaseViewModel(application) {
     val search = MutableLiveData<String>()
 
 
-
 }
