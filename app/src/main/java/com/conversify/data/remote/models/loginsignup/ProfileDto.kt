@@ -96,4 +96,7 @@ data class ProfileDto(
         @field:SerializedName("conversationId")
         var conversationId: String? = null,
 
+        @field:SerializedName("tagName")
+        var tagName: String? = null,
+
         var isSelected: Boolean = false) : Parcelable

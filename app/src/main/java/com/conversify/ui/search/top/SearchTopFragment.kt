@@ -48,7 +48,7 @@ class SearchTopFragment : BaseFragment(), SearchTopAdapter.Callback {
     }
 
     private fun observeChanges() {
-        viewModel.groups.observe(this, Observer { resource ->
+        viewModel.topSearch.observe(this, Observer { resource ->
             resource ?: return@Observer
 
             when (resource.status) {
@@ -64,12 +64,6 @@ class SearchTopFragment : BaseFragment(), SearchTopAdapter.Callback {
                     } else {
                         adapter.addMoreItems(items)
                     }
-//
-//                    viewSwitcher.displayedChild = if (groupsAdapter.itemCount == 0) {
-//                        TopicGroupsActivity.CHILD_NO_GROUPS
-//                    } else {
-//                        TopicGroupsActivity.CHILD_GROUPS
-//                    }
                 }
 
                 Status.ERROR -> {

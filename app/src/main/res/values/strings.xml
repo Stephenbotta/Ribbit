@@ -270,6 +270,6 @@
     <string name="search_title_venues">VENUES</string>
     <string name="search_top_label_recent">Recent</string>
     <string name="search_top_label_suggested">Suggested</string>
-
+    <string name="search_label_tags">#</string>
 
 </resources>

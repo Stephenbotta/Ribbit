@@ -212,6 +212,11 @@ interface ConversifyApi {
     fun postFollowUnFollow(@Field("userId") userId: String,
                            @Field("action") action: Double): Call<ApiResponse<Any>>
 
+    @POST("user/followUnfollowTag")
+    @FormUrlEncoded
+    fun postFollowUnFollowTag(@Field("tagId") tagId: String,
+                           @Field("follow") follow: Boolean): Call<ApiResponse<Any>>
+
     @POST("user/chatConversation")
     @FormUrlEncoded
     fun getIndividualChat(@Field("conversationId") conversationId: String?,
@@ -228,6 +233,10 @@ interface ConversifyApi {
     @POST("user/homeSearchTop")
     @FormUrlEncoded
     fun getTopSearch(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<List<ProfileDto>>>
+
+    @POST("user/homeSearchTag")
+    @FormUrlEncoded
+    fun getTagSearch(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<List<ProfileDto>>>
 
 
 }
