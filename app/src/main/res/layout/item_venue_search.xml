@@ -4,33 +4,139 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginRight="16dp">
+    android:background="?attr/selectableItemBackground"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/ivProfilePic"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:id="@+id/ivVenue"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:riv_corner_radius="4dp"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <ImageView
+        android:id="@+id/ivPrivate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_lock_white"
+        app:layout_constraintStart_toStartOf="@id/ivVenue"
+        app:layout_constraintTop_toTopOf="@id/ivVenue"
+        tools:ignore="ContentDescription" />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/ivParticipationRole"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="44dp"
         android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="@id/ivVenue"
+        app:layout_constraintTop_toTopOf="@id/ivVenue"
+        app:riv_border_color="@color/white"
+        app:riv_border_width="2dp"
         app:riv_oval="true"
         tools:src="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/tvUserName"
+        android:id="@+id/tvVenueName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:fontFamily="@font/roboto_text_regular"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_text_bold"
+        android:includeFontPadding="false"
         android:maxLines="1"
-        android:singleLine="true"
-        android:textColor="@color/black"
+        android:textColor="@color/textGray"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@id/ivProfilePic"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="Name" />
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@id/tvRequestStatus"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/ivVenue"
+        app:layout_constraintTop_toTopOf="@id/ivVenue"
+        tools:text="Test Venue" />
+
+    <TextView
+        android:id="@+id/tvRequestStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="@string/venues_label_pending"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivVenue" />
+
+    <TextView
+        android:id="@+id/tvVenueLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textColor="@color/textGray"
+        android:textSize="14sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@id/barrierEnd"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/ivVenue"
+        app:layout_constraintTop_toBottomOf="@id/tvVenueName"
+        tools:text="@tools:sample/cities" />
+
+    <TextView
+        android:id="@+id/tvActiveMembers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:textColor="@color/textGray"
+        android:textSize="12sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/ivVenue"
+        app:layout_constraintEnd_toStartOf="@id/barrierEnd"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/ivVenue"
+        tools:text="24 members" />
+
+    <ImageView
+        android:id="@+id/btnMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="2dp"
+        android:src="@drawable/ic_more"
+        app:layout_constraintBottom_toBottomOf="@id/ivVenue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivVenue"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tvDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:textColor="@color/textGray"
+        android:textSize="12sp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/ivVenue"
+        app:layout_constraintEnd_toEndOf="@id/barrierEnd"
+        tools:text="1.2 Mi" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrierEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="tvDistance" />
 
 </android.support.constraint.ConstraintLayout>

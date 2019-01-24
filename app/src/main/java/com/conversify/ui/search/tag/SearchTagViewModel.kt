@@ -18,7 +18,7 @@ import retrofit2.Response
 import timber.log.Timber
 
 /**
- * Created by Manish Bhargav on 22/1/19
+ * Created by Manish Bhargav
  */
 class SearchTagViewModel(application: Application) : BaseViewModel(application) {
     companion object {

@@ -30,6 +30,7 @@ buildscript {
         mp4ParserVersion = '1.0.6'
         crashlyticsVersion = '2.9.8'
         flexboxVersion = '1.0.0'    // (1.1.0 and above is based on AndroidX)
+        asymmetricGridView = '2.0.1'
     }
 
     repositories {

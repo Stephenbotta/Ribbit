@@ -1,26 +1,27 @@
-package com.conversify.ui.search.top
+package com.conversify.ui.search.posts
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.conversify.R
+import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.venues.VenueDto
+import com.conversify.data.remote.models.venues.YourVenuesDto
 import com.conversify.extensions.inflate
 import com.conversify.utils.GlideRequests
 
-class SearchTopAdapter(private val glide: GlideRequests,
-                       private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SearchPostAdapter(private val glide: GlideRequests,
+                        private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
-        private const val VIEW_TYPE_LABEL_YOUR_VENUES = 0
-        private const val VIEW_TYPE_MY_VENUE = 1
+        private const val VIEW_TYPE_MY_VENUE = 0
     }
 
     private val items = mutableListOf<Any>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            VIEW_TYPE_LABEL_YOUR_VENUES -> SearchTopLabelViewHolder(parent.inflate(R.layout.item_venue_your_venues_label))
 
-            VIEW_TYPE_MY_VENUE -> SearchTopViewHolder(parent.inflate(R.layout.item_top_search), glide, callback)
+            VIEW_TYPE_MY_VENUE -> SearchPostViewHolder(parent.inflate(R.layout.item_post_search), glide, callback)
 
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -32,8 +33,8 @@ class SearchTopAdapter(private val glide: GlideRequests,
         val item = items[position]
 
         when (holder) {
-            is SearchTopViewHolder -> {
-                if (item is ProfileDto) {
+            is SearchPostViewHolder -> {
+                if (item is GroupPostDto) {
                     holder.bind(item)
                 }
             }
@@ -42,12 +43,10 @@ class SearchTopAdapter(private val glide: GlideRequests,
 
     override fun getItemViewType(position: Int): Int {
         val item = items[position]
-
-        return when (item) {
-
-            is ProfileDto -> VIEW_TYPE_MY_VENUE
-            else -> VIEW_TYPE_LABEL_YOUR_VENUES
+        if (item is GroupPostDto) {
+            return VIEW_TYPE_MY_VENUE
         }
+        return VIEW_TYPE_MY_VENUE
     }
 
     fun displayItems(items: List<Any>) {
@@ -62,5 +61,5 @@ class SearchTopAdapter(private val glide: GlideRequests,
         notifyItemRangeInserted(oldListSize, item.size)
     }
 
-    interface Callback : SearchTopViewHolder.Callback
+    interface Callback : SearchPostViewHolder.Callback
 }

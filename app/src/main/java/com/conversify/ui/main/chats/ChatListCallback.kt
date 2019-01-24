@@ -1,7 +1,7 @@
 package com.conversify.ui.main.chats
 
 /**
- * Created by Manish Bhargav on 15/1/19
+ * Created by Manish Bhargav
  */
 interface ChatListCallback {
 

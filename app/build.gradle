@@ -150,6 +150,9 @@ dependencies {
 
     // https://github.com/sannies/mp4parser
     implementation "com.googlecode.mp4parser:isoparser:$mp4ParserVersion"
+
+    // https://github.com/felipecsl/AsymmetricGridView
+    implementation "com.felipecsl.asymmetricgridview:library:$asymmetricGridView"
 }
 
 apply plugin: 'com.google.gms.google-services'

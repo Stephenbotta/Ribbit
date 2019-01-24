@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import com.conversify.R
 
 /**
- * Created by Manish Bhargav on 14/1/19
+ * Created by Manish Bhargav
  */
 class ChatViewPagerAdapter(context: Context, manager: FragmentManager) : FragmentPagerAdapter(manager) {
 

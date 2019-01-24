@@ -57,7 +57,6 @@ class SearchTagFragment : BaseFragment(), SearchTagAdapter.Callback {
                     val profile = resource.data?.result ?: emptyList()
                     val firstPage = resource.data?.isFirstPage ?: true
                     items = mutableListOf()
-//                    items.add(YourVenuesDto)
                     items.addAll(profile)
                     if (firstPage) {
                         adapter.displayItems(items)
@@ -121,24 +120,6 @@ class SearchTagFragment : BaseFragment(), SearchTagAdapter.Callback {
         this.search = query
         getTagSearch()
     }
-
-
-    private fun toggleFollow(profile: ProfileDto?): Boolean {
-
-        profile?.isFollowing = profile?.isFollowing?.not()
-        val action = if (profile?.isFollowing == true) {
-            tvFollowedStatus.setText(R.string.people_detail_button_un_follow)
-            profile?.followersCount = profile?.followersCount?.inc()
-            true
-        } else {
-            tvFollowedStatus.setText(R.string.people_detail_button_follow)
-            profile?.followersCount = profile?.followersCount?.dec()
-            false
-        }
-        tvFollowersCount?.text = profile?.followersCount?.toString()
-        return action
-    }
-
 
     override fun onClick(position: Int, profile: ProfileDto) {
         val item = items[position]

@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import com.conversify.R
 
 /**
- * Created by Manish Bhargav on 21/1/19
+ * Created by Manish Bhargav
  */
 class SearchPagerAdapter(context: Context, manager: FragmentManager) : FragmentPagerAdapter(manager) {
 

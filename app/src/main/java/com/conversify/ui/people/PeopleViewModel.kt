@@ -14,7 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 /**
- * Created by Manish Bhargav on 3/1/19.
+ * Created by Manish Bhargav
  */
 class PeopleViewModel(application: Application) : BaseViewModel(application) {
 

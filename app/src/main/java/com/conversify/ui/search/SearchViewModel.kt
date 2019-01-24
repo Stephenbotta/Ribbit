@@ -5,7 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import com.conversify.ui.base.BaseViewModel
 
 /**
- * Created by Manish Bhargav on 21/1/19
+ * Created by Manish Bhargav
  */
 class SearchViewModel(application: Application) : BaseViewModel(application) {
 

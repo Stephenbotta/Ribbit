@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import org.threeten.bp.ZonedDateTime
 
 /**
- * Created by Manish Bhargav on 3/1/19.
+ * Created by Manish Bhargav
  */
 data class GetPeopleResponse(
 

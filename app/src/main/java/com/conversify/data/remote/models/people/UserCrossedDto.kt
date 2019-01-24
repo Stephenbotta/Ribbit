@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.ZonedDateTime
 
 /**
- * Created by Manish Bhargav on 3/1/19.
+ * Created by Manish Bhargav
  */
 @Parcelize
 data class UserCrossedDto(

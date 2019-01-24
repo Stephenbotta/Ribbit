@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.item_chat_listing.view.*
 
 
 /**
- * Created by Manish Bhargav on 14/1/19
+ * Created by Manish Bhargav
  */
 class ChatListCommonAdapter(private val glide: GlideRequests, private val callback: ChatListCallback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

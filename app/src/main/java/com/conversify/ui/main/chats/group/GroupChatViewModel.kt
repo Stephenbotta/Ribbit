@@ -14,7 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 /**
- * Created by Manish Bhargav on 15/1/19
+ * Created by Manish Bhargav
  */
 class GroupChatViewModel(application: Application) : BaseViewModel(application) {
 

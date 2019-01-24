@@ -1,7 +1,7 @@
 package com.conversify.ui.people
 
 /**
- * Created by Manish Bhargav on 8/1/19
+ * Created by Manish Bhargav
  */
 interface PeopleCallback {
 

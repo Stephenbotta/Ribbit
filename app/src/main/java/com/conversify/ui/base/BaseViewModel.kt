@@ -4,6 +4,6 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 
 /**
- * Created by Manish Bhargav on 3/1/19.
+ * Created by Manish Bhargav
  */
 open class BaseViewModel(application: Application) : AndroidViewModel(application)

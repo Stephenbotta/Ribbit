@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.item_people.view.*
 import kotlinx.android.synthetic.main.item_people_location.view.*
 
 /**
- * Created by Manish Bhargav on 3/1/19.
+ * Created by Manish Bhargav
  */
 class PeopleAdapter(private val glide: GlideRequests, private val callback: PeopleCallback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {

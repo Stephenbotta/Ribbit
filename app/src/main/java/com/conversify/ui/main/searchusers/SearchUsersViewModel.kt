@@ -5,7 +5,7 @@ import com.conversify.data.local.UserManager
 import com.conversify.ui.base.BaseViewModel
 
 /**
- * Created by Manish Bhargav on 18/1/19
+ * Created by Manish Bhargav
  */
 class SearchUsersViewModel(application: Application):BaseViewModel(application) {
 

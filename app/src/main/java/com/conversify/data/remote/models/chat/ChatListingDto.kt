@@ -4,7 +4,7 @@ import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.google.gson.annotations.SerializedName
 
 /**
- * Created by Manish Bhargav on 14/1/19
+ * Created by Manish Bhargav
  */
 data class ChatListingDto(
 

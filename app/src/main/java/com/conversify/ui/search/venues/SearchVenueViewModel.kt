@@ -1,0 +1,88 @@
+package com.conversify.ui.search.venues
+
+import android.app.Application
+import android.arch.lifecycle.MutableLiveData
+import com.conversify.data.local.UserManager
+import com.conversify.data.remote.RetrofitClient
+import com.conversify.data.remote.failureAppError
+import com.conversify.data.remote.getAppError
+import com.conversify.data.remote.models.ApiResponse
+import com.conversify.data.remote.models.PagingResult
+import com.conversify.data.remote.models.Resource
+import com.conversify.data.remote.models.venues.VenueDto
+import com.conversify.ui.base.BaseViewModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import timber.log.Timber
+
+/**
+ * Created by Manish Bhargav
+ */
+class SearchVenueViewModel(application: Application) : BaseViewModel(application) {
+    companion object {
+        private const val PAGE_LIMIT = 10
+    }
+
+    val venueSearch by lazy { MutableLiveData<Resource<PagingResult<List<VenueDto>>>>() }
+
+    private var page = 1
+    private var isGetVenueLoading = false
+    private var isLastVenueReceived = false
+
+    fun validForPaging(): Boolean = !isGetVenueLoading && !isLastVenueReceived
+
+    fun getVenueSearch(firstPage: Boolean, search: String) {
+        isGetVenueLoading = true
+        venueSearch.value = Resource.loading()
+
+        val hashMap = hashMapOf<String, String>()
+        if (firstPage)
+            hashMap.put("pageNo", 1.toString())
+        else
+            hashMap.put("pageNo", page.toString())
+
+        if (!search.isNullOrEmpty()) {
+            hashMap.put("search", search)
+        }
+        val currentLat = UserManager.getLastLatitude()
+        val currentLong = UserManager.getLastLongitude()
+        if (currentLat != null)
+            hashMap.put("currentLat", currentLat.toString())
+        if (currentLong != null)
+            hashMap.put("currentLong", currentLong.toString())
+        RetrofitClient.conversifyApi
+                .getVenueSearch(hashMap)
+                .enqueue(object : Callback<ApiResponse<List<VenueDto>>> {
+                    override fun onResponse(call: Call<ApiResponse<List<VenueDto>>>,
+                                            response: Response<ApiResponse<List<VenueDto>>>) {
+                        if (response.isSuccessful) {
+                            if (firstPage) {
+                                // Reset for first page
+                                isLastVenueReceived = false
+                                page = 1
+                            }
+
+                            val receivedGroups = response.body()?.data ?: emptyList()
+                            if (receivedGroups.size < PAGE_LIMIT) {
+                                Timber.i("Last group is received")
+                                isLastVenueReceived = true
+                            } else {
+                                Timber.i("Next page for topic groups is available")
+                                ++page
+                            }
+
+                            venueSearch.value = Resource.success(PagingResult(firstPage, receivedGroups))
+                        } else {
+                            venueSearch.value = Resource.error(response.getAppError())
+                        }
+                        isGetVenueLoading = false
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<List<VenueDto>>>, t: Throwable) {
+                        isGetVenueLoading = false
+                        venueSearch.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+}

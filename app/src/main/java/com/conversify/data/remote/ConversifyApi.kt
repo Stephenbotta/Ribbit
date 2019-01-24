@@ -238,5 +238,17 @@ interface ConversifyApi {
     @FormUrlEncoded
     fun getTagSearch(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<List<ProfileDto>>>
 
+    @POST("user/homeSearchGroup")
+    @FormUrlEncoded
+    fun getGroupSearch(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<List<GroupDto>>>
+
+    @POST("user/homeSearchVenue")
+    @FormUrlEncoded
+    fun getVenueSearch(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<List<VenueDto>>>
+
+    @POST("user/homeSearchPost")
+    @FormUrlEncoded
+    fun getPostSearch(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<List<GroupPostDto>>>
+
 
 }
