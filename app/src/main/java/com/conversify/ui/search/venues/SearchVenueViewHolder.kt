@@ -15,7 +15,7 @@ class SearchVenueViewHolder(itemView: View,
                             private val glide: GlideRequests,
                             private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
     init {
-        itemView.setOnClickListener { callback.onClick(venue) }
+        itemView.setOnClickListener { callback.onClick(adapterPosition,venue) }
     }
 
     private lateinit var venue: VenueDto
@@ -51,6 +51,6 @@ class SearchVenueViewHolder(itemView: View,
     }
 
     interface Callback {
-        fun onClick(venue: VenueDto)
+        fun onClick(position:Int,venue: VenueDto)
     }
 }

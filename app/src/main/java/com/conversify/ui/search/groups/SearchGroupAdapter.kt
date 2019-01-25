@@ -63,5 +63,9 @@ class SearchGroupAdapter(private val glide: GlideRequests,
         notifyItemRangeInserted(oldListSize, item.size)
     }
 
+    fun getUpdatedList():MutableList<Any>{
+        return items
+    }
+
     interface Callback : SearchGroupViewHolder.Callback
 }

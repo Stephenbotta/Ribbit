@@ -12,7 +12,7 @@ class SearchPostViewHolder(itemView: View,
                            private val glide: GlideRequests,
                            private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
     init {
-        itemView.setOnClickListener { callback.onClick(post) }
+        itemView.setOnClickListener { callback.onClick(adapterPosition, post) }
     }
 
     private lateinit var post: GroupPostDto
@@ -26,7 +26,8 @@ class SearchPostViewHolder(itemView: View,
         }
     }
 
+
     interface Callback {
-        fun onClick(post: GroupPostDto)
+        fun onClick(position: Int, post: GroupPostDto)
     }
 }

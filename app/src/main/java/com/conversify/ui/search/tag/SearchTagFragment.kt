@@ -13,9 +13,7 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
-import com.conversify.ui.custom.LoadingDialog
 import com.conversify.utils.GlideApp
-import kotlinx.android.synthetic.main.activity_people_details.*
 import kotlinx.android.synthetic.main.fragment_search_tags.*
 
 class SearchTagFragment : BaseFragment(), SearchTagAdapter.Callback {
@@ -28,15 +26,14 @@ class SearchTagFragment : BaseFragment(), SearchTagAdapter.Callback {
 
     private lateinit var viewModel: SearchTagViewModel
     private lateinit var adapter: SearchTagAdapter
-    private lateinit var loadingDialog: LoadingDialog
-    private lateinit var items: MutableList<Any>
+    //    private lateinit var loadingDialog: LoadingDialog
     private var search = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SearchTagViewModel::class.java)
         adapter = SearchTagAdapter(GlideApp.with(this), this)
-        loadingDialog = LoadingDialog(requireContext())
+//        loadingDialog = LoadingDialog(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,11 +50,11 @@ class SearchTagFragment : BaseFragment(), SearchTagAdapter.Callback {
 
             when (resource.status) {
                 Status.SUCCESS -> {
-                    loadingDialog.setLoading(false)
-                    val profile = resource.data?.result ?: emptyList()
+//                    loadingDialog.setLoading(false)
+                    val data = resource.data?.result ?: emptyList()
                     val firstPage = resource.data?.isFirstPage ?: true
-                    items = mutableListOf()
-                    items.addAll(profile)
+                    val items = mutableListOf<Any>()
+                    items.addAll(data)
                     if (firstPage) {
                         adapter.displayItems(items)
                     } else {
@@ -66,12 +63,12 @@ class SearchTagFragment : BaseFragment(), SearchTagAdapter.Callback {
                 }
 
                 Status.ERROR -> {
-                    loadingDialog.setLoading(false)
+//                    loadingDialog.setLoading(false)
                     handleError(resource.error)
                 }
 
                 Status.LOADING -> {
-                    loadingDialog.setLoading(true)
+//                    loadingDialog.setLoading(true)
                 }
             }
         })
@@ -122,6 +119,7 @@ class SearchTagFragment : BaseFragment(), SearchTagAdapter.Callback {
     }
 
     override fun onClick(position: Int, profile: ProfileDto) {
+        val items = adapter.getUpdatedList()
         val item = items[position]
         if (item is ProfileDto) {
             profile.isFollowing = profile.isFollowing?.not()

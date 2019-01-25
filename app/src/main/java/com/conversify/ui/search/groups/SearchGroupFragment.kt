@@ -30,14 +30,14 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
 
     private lateinit var viewModel: SearchGroupViewModel
     private lateinit var adapter: SearchGroupAdapter
-    private lateinit var loadingDialog: LoadingDialog
+//    private lateinit var loadingDialog: LoadingDialog
     private var search = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SearchGroupViewModel::class.java)
         adapter = SearchGroupAdapter(GlideApp.with(this), this)
-        loadingDialog = LoadingDialog(requireContext())
+//        loadingDialog = LoadingDialog(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,12 +54,12 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
 
             when (resource.status) {
                 Status.SUCCESS -> {
-                    loadingDialog.setLoading(false)
-                    val group = resource.data?.result ?: emptyList()
+//                    loadingDialog.setLoading(false)
+                    val data = resource.data?.result ?: emptyList()
                     val firstPage = resource.data?.isFirstPage ?: true
                     val items = mutableListOf<Any>()
                     items.add(YourVenuesDto)
-                    items.addAll(group)
+                    items.addAll(data)
                     if (firstPage) {
                         adapter.displayItems(items)
                     } else {
@@ -68,12 +68,12 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
                 }
 
                 Status.ERROR -> {
-                    loadingDialog.setLoading(false)
+//                    loadingDialog.setLoading(false)
                     handleError(resource.error)
                 }
 
                 Status.LOADING -> {
-                    loadingDialog.setLoading(true)
+//                    loadingDialog.setLoading(true)
                 }
             }
         })
@@ -104,7 +104,7 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
         getGroupSearch()
     }
 
-    override fun onClick(group: GroupDto) {
+    override fun onClick(position:Int,group: GroupDto) {
 
     }
 }

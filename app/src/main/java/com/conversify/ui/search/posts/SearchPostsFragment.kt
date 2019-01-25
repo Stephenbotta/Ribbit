@@ -7,17 +7,17 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
 import android.support.v7.widget.StaggeredGridLayoutManager
-import android.support.v7.widget.StaggeredGridLayoutManager.GAP_HANDLING_NONE
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.data.remote.models.venues.YourVenuesDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
-import com.conversify.ui.custom.LoadingDialog
 import com.conversify.utils.GlideApp
+import com.conversify.utils.SpacesItemDecoration
 import kotlinx.android.synthetic.main.fragment_search_posts.*
 
 
@@ -31,14 +31,14 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
 
     private lateinit var viewModel: SearchPostViewModel
     private lateinit var adapter: SearchPostAdapter
-    private lateinit var loadingDialog: LoadingDialog
+    //    private lateinit var loadingDialog: LoadingDialog
     private var search = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SearchPostViewModel::class.java)
         adapter = SearchPostAdapter(GlideApp.with(this), this)
-        loadingDialog = LoadingDialog(requireContext())
+//        loadingDialog = LoadingDialog(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,7 +55,7 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
 
             when (resource.status) {
                 Status.SUCCESS -> {
-                    loadingDialog.setLoading(false)
+//                    loadingDialog.setLoading(false)
                     val data = resource.data?.result ?: emptyList()
                     val firstPage = resource.data?.isFirstPage ?: true
                     val items = mutableListOf<Any>()
@@ -69,12 +69,12 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
                 }
 
                 Status.ERROR -> {
-                    loadingDialog.setLoading(false)
+//                    loadingDialog.setLoading(false)
                     handleError(resource.error)
                 }
 
                 Status.LOADING -> {
-                    loadingDialog.setLoading(true)
+//                    loadingDialog.setLoading(true)
                 }
             }
         })
@@ -92,6 +92,8 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
 //        staggeredGridLayoutManager.gapStrategy=GAP_HANDLING_NONE
         rvPostSearch.layoutManager = staggeredGridLayoutManager
         rvPostSearch.adapter = adapter
+        val decoration = SpacesItemDecoration(16)
+        rvPostSearch.addItemDecoration(decoration)
         (rvPostSearch.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         rvPostSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -108,6 +110,6 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
         getPostSearch()
     }
 
-    override fun onClick(post: GroupPostDto) {
+    override fun onClick(position:Int,post: GroupPostDto) {
     }
 }

@@ -29,14 +29,14 @@ class SearchVenueFragment : BaseFragment(), SearchVenueAdapter.Callback {
 
     private lateinit var viewModel: SearchVenueViewModel
     private lateinit var adapter: SearchVenueAdapter
-    private lateinit var loadingDialog: LoadingDialog
+//    private lateinit var loadingDialog: LoadingDialog
     private var search = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SearchVenueViewModel::class.java)
         adapter = SearchVenueAdapter(GlideApp.with(this), this)
-        loadingDialog = LoadingDialog(requireContext())
+//        loadingDialog = LoadingDialog(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,12 +53,12 @@ class SearchVenueFragment : BaseFragment(), SearchVenueAdapter.Callback {
 
             when (resource.status) {
                 Status.SUCCESS -> {
-                    loadingDialog.setLoading(false)
-                    val group = resource.data?.result ?: emptyList()
+//                    loadingDialog.setLoading(false)
+                    val data = resource.data?.result ?: emptyList()
                     val firstPage = resource.data?.isFirstPage ?: true
                     val items = mutableListOf<Any>()
                     items.add(YourVenuesDto)
-                    items.addAll(group)
+                    items.addAll(data)
                     if (firstPage) {
                         adapter.displayItems(items)
                     } else {
@@ -67,12 +67,12 @@ class SearchVenueFragment : BaseFragment(), SearchVenueAdapter.Callback {
                 }
 
                 Status.ERROR -> {
-                    loadingDialog.setLoading(false)
+//                    loadingDialog.setLoading(false)
                     handleError(resource.error)
                 }
 
                 Status.LOADING -> {
-                    loadingDialog.setLoading(true)
+//                    loadingDialog.setLoading(true)
                 }
             }
         })
@@ -103,7 +103,7 @@ class SearchVenueFragment : BaseFragment(), SearchVenueAdapter.Callback {
         getVenueSearch()
     }
 
-    override fun onClick(venue: VenueDto) {
+    override fun onClick(position:Int,venue: VenueDto) {
 
     }
 }

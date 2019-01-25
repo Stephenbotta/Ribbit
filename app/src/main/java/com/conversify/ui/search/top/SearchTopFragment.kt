@@ -29,14 +29,14 @@ class SearchTopFragment : BaseFragment(), SearchTopAdapter.Callback {
 
     private lateinit var viewModel: SearchTopViewModel
     private lateinit var adapter: SearchTopAdapter
-    private lateinit var loadingDialog: LoadingDialog
+//    private lateinit var loadingDialog: LoadingDialog
     private var search = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SearchTopViewModel::class.java)
         adapter = SearchTopAdapter(GlideApp.with(this), this)
-        loadingDialog = LoadingDialog(requireContext())
+//        loadingDialog = LoadingDialog(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,12 +53,12 @@ class SearchTopFragment : BaseFragment(), SearchTopAdapter.Callback {
 
             when (resource.status) {
                 Status.SUCCESS -> {
-                    loadingDialog.setLoading(false)
-                    val profile = resource.data?.result ?: emptyList()
+//                    loadingDialog.setLoading(false)
+                    val data = resource.data?.result ?: emptyList()
                     val firstPage = resource.data?.isFirstPage ?: true
                     val items = mutableListOf<Any>()
                     items.add(YourVenuesDto)
-                    items.addAll(profile)
+                    items.addAll(data)
                     if (firstPage) {
                         adapter.displayItems(items)
                     } else {
@@ -67,12 +67,12 @@ class SearchTopFragment : BaseFragment(), SearchTopAdapter.Callback {
                 }
 
                 Status.ERROR -> {
-                    loadingDialog.setLoading(false)
+//                    loadingDialog.setLoading(false)
                     handleError(resource.error)
                 }
 
                 Status.LOADING -> {
-                    loadingDialog.setLoading(true)
+//                    loadingDialog.setLoading(true)
                 }
             }
         })
@@ -103,7 +103,7 @@ class SearchTopFragment : BaseFragment(), SearchTopAdapter.Callback {
         getTopSearch()
     }
 
-    override fun onClick(profile: ProfileDto) {
+    override fun onClick(position:Int,profile: ProfileDto) {
 
     }
 }

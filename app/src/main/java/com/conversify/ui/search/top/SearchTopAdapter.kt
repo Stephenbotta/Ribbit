@@ -62,5 +62,9 @@ class SearchTopAdapter(private val glide: GlideRequests,
         notifyItemRangeInserted(oldListSize, item.size)
     }
 
+    fun getUpdatedList():MutableList<Any>{
+        return items
+    }
+
     interface Callback : SearchTopViewHolder.Callback
 }

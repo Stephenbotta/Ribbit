@@ -60,5 +60,9 @@ class SearchTagAdapter(private val glide: GlideRequests,
         notifyItemRangeInserted(oldListSize, item.size)
     }
 
+    fun getUpdatedList():MutableList<Any>{
+        return items
+    }
+
     interface Callback : SearchTagViewHolder.Callback
 }

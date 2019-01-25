@@ -10,7 +10,7 @@ class SearchTopViewHolder(itemView: View,
                           private val glide: GlideRequests,
                           private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
     init {
-        itemView.setOnClickListener { callback.onClick(profile) }
+        itemView.setOnClickListener { callback.onClick(adapterPosition,profile) }
     }
 
     private lateinit var profile: ProfileDto
@@ -23,6 +23,6 @@ class SearchTopViewHolder(itemView: View,
     }
 
     interface Callback {
-        fun onClick(profile: ProfileDto)
+        fun onClick(position:Int,profile: ProfileDto)
     }
 }

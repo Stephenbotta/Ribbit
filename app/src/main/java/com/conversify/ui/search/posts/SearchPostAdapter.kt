@@ -39,6 +39,7 @@ class SearchPostAdapter(private val glide: GlideRequests,
                 }
             }
         }
+
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -59,6 +60,10 @@ class SearchPostAdapter(private val glide: GlideRequests,
         val oldListSize = this.items.size
         this.items.addAll(item)
         notifyItemRangeInserted(oldListSize, item.size)
+    }
+
+    fun getUpdatedList():MutableList<Any>{
+        return items
     }
 
     interface Callback : SearchPostViewHolder.Callback
