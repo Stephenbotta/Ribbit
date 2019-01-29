@@ -3,15 +3,16 @@ package com.conversify.ui.search.posts
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
+import com.arasthel.spannedgridlayoutmanager.SpanSize
+import com.arasthel.spannedgridlayoutmanager.SpannedGridLayoutManager
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupPostDto
-import com.conversify.data.remote.models.venues.YourVenuesDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
@@ -88,8 +89,19 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
     }
 
     private fun setupHomeRecycler() {
-        val staggeredGridLayoutManager = StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL)
+//        val spannedGridLayoutManager = SpannedGridLayoutManager(
+//                orientation = SpannedGridLayoutManager.Orientation.VERTICAL,
+//                spans = 4)
+//        spannedGridLayoutManager.spanSizeLookup = SpannedGridLayoutManager.SpanSizeLookup { position ->
+//            SpanSize(2, 2)
+//        }
+//
+//        rvPostSearch.layoutManager = spannedGridLayoutManager
+
+        val staggeredGridLayoutManager = GridLayoutManager(requireContext(), 3)
 //        staggeredGridLayoutManager.gapStrategy=GAP_HANDLING_NONE
+        staggeredGridLayoutManager.orientation = LinearLayoutManager.VERTICAL
+
         rvPostSearch.layoutManager = staggeredGridLayoutManager
         rvPostSearch.adapter = adapter
         val decoration = SpacesItemDecoration(16)
@@ -102,7 +114,7 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
                     viewModel.getPostSearch(false, search)
                 }
             }
-        })
+                                                           })
     }
 
     fun search(query: String) {
@@ -110,6 +122,6 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
         getPostSearch()
     }
 
-    override fun onClick(position:Int,post: GroupPostDto) {
+    override fun onClick(position: Int, post: GroupPostDto) {
     }
 }

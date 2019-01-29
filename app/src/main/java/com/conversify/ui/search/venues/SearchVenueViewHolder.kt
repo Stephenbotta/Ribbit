@@ -23,10 +23,6 @@ class SearchVenueViewHolder(itemView: View,
     fun bind(venue: VenueDto) {
         this.venue = venue
 
-        itemView.btnMore.invisible()
-        itemView.tvRequestStatus.invisible()
-        itemView.ivParticipationRole.gone()
-
         if (venue.distance == null) {
             itemView.tvDistance.gone()
         } else {
