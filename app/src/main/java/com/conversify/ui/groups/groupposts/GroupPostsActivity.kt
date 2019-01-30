@@ -1,5 +1,6 @@
 package com.conversify.ui.groups.groupposts
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
@@ -9,10 +10,12 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SimpleItemAnimator
+import android.support.v7.view.menu.MenuBuilder
+import android.support.v7.view.menu.MenuPopupHelper
+import android.support.v7.widget.*
+import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
@@ -30,7 +33,8 @@ import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_group_posts.*
 import timber.log.Timber
 
-class GroupPostsActivity : BaseActivity(), PostCallback {
+
+class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemClickListener {
     companion object {
         private const val EXTRA_GROUP = "EXTRA_GROUP"
         private const val CHILD_POSTS = 0
@@ -63,14 +67,18 @@ class GroupPostsActivity : BaseActivity(), PostCallback {
 
         groupPostsViewModel.start(group)
 
-        btnBack.setOnClickListener { onBackPressed() }
         swipeRefreshLayout.setOnRefreshListener { getGroupPosts() }
-
         registerPostUpdatedReceiver()
         setupPostsRecycler()
         displayGroupDetails(group)
         observeChanges()
         getGroupPosts()
+        listener()
+    }
+
+    private fun listener() {
+        btnBack.setOnClickListener { onBackPressed() }
+        btnMore.setOnClickListener { optionMenu(it) }
     }
 
     private fun registerPostUpdatedReceiver() {
@@ -143,6 +151,28 @@ class GroupPostsActivity : BaseActivity(), PostCallback {
                 }
             }
         })
+
+        groupPostsViewModel.exitGroup.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    swipeRefreshLayout.isRefreshing = false
+                    group.isMember = false
+                    finish()
+                }
+
+                Status.ERROR -> {
+                    swipeRefreshLayout.isRefreshing = false
+                    handleError(resource.error)
+                }
+
+                Status.LOADING -> {
+                    swipeRefreshLayout.isRefreshing = true
+                }
+            }
+        })
+
     }
 
     private fun getGroupPosts(firstPage: Boolean = true) {
@@ -160,6 +190,50 @@ class GroupPostsActivity : BaseActivity(), PostCallback {
             intent.putExtra(AppConstants.EXTRA_GROUP, group)
             LocalBroadcastManager.getInstance(this)
                     .sendBroadcast(intent)
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun optionMenu(v: View) {
+        val popup = PopupMenu(this, v)
+        val menuBuilder = MenuBuilder(this)
+        val menuPopupHelper = MenuPopupHelper(this, menuBuilder)
+        popup.inflate(R.menu.menu_group_more_options)
+        popup.setOnMenuItemClickListener(this)
+        menuPopupHelper.setForceShowIcon(true)
+        popup.show()
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+
+            R.id.menuGroupExit -> {
+                if (isNetworkActiveWithMessage())
+                    groupPostsViewModel.exitGroup()
+                return true
+            }
+
+            R.id.menuGroupShare -> {
+                Toast.makeText(applicationContext, item.title, Toast.LENGTH_LONG).show()
+                return true
+            }
+
+            R.id.menuGroupChat -> {
+                Toast.makeText(applicationContext, item.title, Toast.LENGTH_LONG).show()
+                return true
+            }
+
+            R.id.menuCreateNewPost -> {
+                Toast.makeText(applicationContext, item.title, Toast.LENGTH_LONG).show()
+                return true
+            }
+
+            R.id.menuGroupDetail -> {
+                Toast.makeText(applicationContext, item.title, Toast.LENGTH_LONG).show()
+                return true
+            }
+
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 

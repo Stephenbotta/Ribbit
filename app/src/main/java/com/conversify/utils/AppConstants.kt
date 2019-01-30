@@ -57,4 +57,6 @@ object AppConstants {
 
     const val INTENT_CROSSED_PEOPLE_DETAILS = "crossedPeopleDetails"
 
+    const val PLAY_STORE_URL="play store url"
+
 }

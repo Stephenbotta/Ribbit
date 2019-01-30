@@ -11,6 +11,7 @@ import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.groups.GetGroupPostsResponse
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,6 +23,7 @@ class GroupPostsViewModel : ViewModel() {
     }
 
     val posts by lazy { MutableLiveData<Resource<PagingResult<List<GroupPostDto>>>>() }
+    val exitGroup by lazy { SingleLiveEvent<Resource<Any>>() }
 
     private lateinit var groupId: String
     private var page = 1
@@ -80,6 +82,26 @@ class GroupPostsViewModel : ViewModel() {
                 }
             }
         })
+    }
+
+    fun exitGroup() {
+        exitGroup.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .exitGroup(groupId)
+                .enqueue(object : Callback<Any> {
+                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                        if (response.isSuccessful) {
+                            exitGroup.value = Resource.success()
+                        } else {
+                            exitGroup.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Any>, t: Throwable) {
+                        exitGroup.value = Resource.error(t.failureAppError())
+                    }
+                })
     }
 
     override fun onCleared() {

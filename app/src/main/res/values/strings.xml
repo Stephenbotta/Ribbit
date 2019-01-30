@@ -272,4 +272,11 @@
     <string name="search_top_label_suggested">Suggested</string>
     <string name="search_label_tags">#</string>
 
+    <string name="group_more_options_label_exit">Exit</string>
+    <string name="group_more_options_label_share">Share</string>
+    <string name="group_more_options_label_channel_chat">Channel Chat</string>
+    <string name="group_more_options_label_create_post">Create a new post</string>
+    <string name="group_more_options_label_channel_detail">Channel Detail</string>
+
+
 </resources>

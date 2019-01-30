@@ -18,7 +18,7 @@ class GroupDetailsViewModel : ViewModel() {
 
     val groupDetails by lazy { SingleLiveEvent<Resource<GroupDto>>() }
     val changeVenueNotifications by lazy { SingleLiveEvent<Resource<Boolean>>() }
-    val exitVenue by lazy { SingleLiveEvent<Resource<Any>>() }
+    val exitGroup by lazy { SingleLiveEvent<Resource<Any>>() }
     val archiveVenue by lazy { SingleLiveEvent<Resource<Any>>() }
 
     fun getGroupDetails(groupId: String) {
@@ -62,22 +62,22 @@ class GroupDetailsViewModel : ViewModel() {
                 })
     }
 
-    fun exitVenue(groupId: String) {
-        exitVenue.value = Resource.loading()
+    fun exitGroup(groupId: String) {
+        exitGroup.value = Resource.loading()
 
         RetrofitClient.conversifyApi
                 .exitGroup(groupId)
                 .enqueue(object : Callback<Any> {
                     override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         if (response.isSuccessful) {
-                            exitVenue.value = Resource.success()
+                            exitGroup.value = Resource.success()
                         } else {
-                            exitVenue.value = Resource.error(response.getAppError())
+                            exitGroup.value = Resource.error(response.getAppError())
                         }
                     }
 
                     override fun onFailure(call: Call<Any>, t: Throwable) {
-                        exitVenue.value = Resource.error(t.failureAppError())
+                        exitGroup.value = Resource.error(t.failureAppError())
                     }
                 })
     }

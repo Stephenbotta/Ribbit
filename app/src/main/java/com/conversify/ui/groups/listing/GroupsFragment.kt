@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.SearchView
 import android.view.View
+import android.widget.Toast
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
@@ -72,7 +73,6 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
         setupGroupsRecycler()
         setupGroupsFab()
         observeChanges()
-        getGroups()
     }
 
     private fun setupGroupsRecycler() {
@@ -190,6 +190,11 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
         } else {
             swipeRefreshLayout.isRefreshing = false
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getGroups()
     }
 
     override fun onSuggestedGroupClicked(group: GroupDto) {

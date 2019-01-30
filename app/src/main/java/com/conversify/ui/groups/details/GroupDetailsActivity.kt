@@ -153,7 +153,7 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
             }
         }
 
-        viewModel.exitVenue.observe(this, exitOrArchiveVenueObserver)
+        viewModel.exitGroup.observe(this, exitOrArchiveVenueObserver)
         viewModel.archiveVenue.observe(this, exitOrArchiveVenueObserver)
     }
 
@@ -165,7 +165,6 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
     private fun callApi(groupId: String) {
         if (isNetworkActiveWithMessage())
             viewModel.getGroupDetails(groupId)
-
     }
 
     override fun onNotificationsChanged(isEnabled: Boolean) {
@@ -184,7 +183,7 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
                 .setMessage(R.string.group_details_label_exit_group_question)
                 .setPositiveButton(R.string.venue_details_btn_exit) { _, _ ->
                     if (isNetworkActiveWithMessage()) {
-                        viewModel.exitVenue(group.id ?: "")
+                        viewModel.exitGroup(group.id ?: "")
                     }
                 }
                 .setNegativeButton(R.string.cancel, null)
