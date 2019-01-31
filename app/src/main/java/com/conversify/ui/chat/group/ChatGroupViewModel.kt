@@ -16,6 +16,7 @@ import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.MessageStatus
+import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.data.remote.socket.SocketManager
 import com.conversify.ui.chat.ChatMessageBuilder
@@ -36,7 +37,7 @@ import timber.log.Timber
 import java.io.File
 import kotlin.coroutines.CoroutineContext
 
-class ChatListGroupViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
+class ChatGroupViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
     val newMessage by lazy { SingleLiveEvent<ChatMessageDto>() }
     val oldMessages by lazy { SingleLiveEvent<Resource<PagingResult<List<ChatMessageDto>>>>() }
     val uploadFile by lazy { SingleLiveEvent<Resource<String>>() }
@@ -53,7 +54,7 @@ class ChatListGroupViewModel(application: Application) : AndroidViewModel(applic
     private val cacheDirectoryPath by lazy { cacheDirectory.absolutePath }
     private val mediaController by lazy { MediaController.getInstance() }
 
-    private lateinit var venue: UserCrossedDto
+    private lateinit var venue: GroupDto
 
     private var lastMessageId: String? = null
     private var isChatLoading = false
@@ -72,7 +73,7 @@ class ChatListGroupViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
-    fun start(venue: UserCrossedDto) {
+    fun start(venue: GroupDto) {
         updateGroup(venue)
         venueDetailsLoaded = false
         lastMessageId = null
@@ -80,13 +81,13 @@ class ChatListGroupViewModel(application: Application) : AndroidViewModel(applic
         socketManager.connect()
     }
 
-    fun updateGroup(venue: UserCrossedDto) {
+    fun updateGroup(venue: GroupDto) {
         this.venue = venue
     }
 
     fun isValidForPaging() = !isChatLoading && !isLastChatMessageReceived
 
-    fun getGroup(): UserCrossedDto = venue
+    fun getGroup(): GroupDto = venue
 
     fun sendTextMessage(textMessage: String) {
         val message = chatMessageBuilder.buildTextMessage(textMessage)
@@ -308,7 +309,7 @@ class ChatListGroupViewModel(application: Application) : AndroidViewModel(applic
     private fun getMessageJsonObject(message: ChatMessageDto): JSONObject {
         val jsonObject = JSONObject()
         jsonObject.putOpt("senderId", ownUserId)
-        jsonObject.putOpt("groupId", venue.profile?.id)
+        jsonObject.putOpt("groupId", venue.id)
         jsonObject.putOpt("groupType", ApiConstants.TYPE_GROUP)
         jsonObject.putOpt("conversationId", venue.conversationId)
         jsonObject.putOpt("type", message.details?.type)

@@ -3,13 +3,9 @@ package com.conversify.ui.search.posts
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
-import com.arasthel.spannedgridlayoutmanager.SpanSize
-import com.arasthel.spannedgridlayoutmanager.SpannedGridLayoutManager
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupPostDto
@@ -18,7 +14,7 @@ import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
 import com.conversify.utils.GlideApp
-import com.conversify.utils.SpacesItemDecoration
+import com.conversify.utils.SpannedGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_search_posts.*
 
 
@@ -32,6 +28,7 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
 
     private lateinit var viewModel: SearchPostViewModel
     private lateinit var adapter: SearchPostAdapter
+    private var manager: SpannedGridLayoutManager? = null
     //    private lateinit var loadingDialog: LoadingDialog
     private var search = ""
 
@@ -89,23 +86,19 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
     }
 
     private fun setupHomeRecycler() {
-//        val spannedGridLayoutManager = SpannedGridLayoutManager(
-//                orientation = SpannedGridLayoutManager.Orientation.VERTICAL,
-//                spans = 4)
-//        spannedGridLayoutManager.spanSizeLookup = SpannedGridLayoutManager.SpanSizeLookup { position ->
-//            SpanSize(2, 2)
-//        }
-//
-//        rvPostSearch.layoutManager = spannedGridLayoutManager
+        manager = SpannedGridLayoutManager(
+                SpannedGridLayoutManager.GridSpanLookup { position ->
+                    return@GridSpanLookup when (position % 12) {
+                        10, 3 -> SpannedGridLayoutManager.SpanInfo(2, 2)
+                        else -> SpannedGridLayoutManager.SpanInfo(1, 1)
+                    }
+                },
+                3,
+                1f
+        )
 
-        val staggeredGridLayoutManager = GridLayoutManager(requireContext(), 3)
-//        staggeredGridLayoutManager.gapStrategy=GAP_HANDLING_NONE
-        staggeredGridLayoutManager.orientation = LinearLayoutManager.VERTICAL
-
-        rvPostSearch.layoutManager = staggeredGridLayoutManager
+        rvPostSearch.layoutManager = manager
         rvPostSearch.adapter = adapter
-        val decoration = SpacesItemDecoration(16)
-        rvPostSearch.addItemDecoration(decoration)
         (rvPostSearch.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         rvPostSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

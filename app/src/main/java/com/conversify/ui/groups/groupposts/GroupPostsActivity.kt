@@ -1,6 +1,7 @@
 package com.conversify.ui.groups.groupposts
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
@@ -25,6 +26,7 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseActivity
+import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.groups.PostCallback
 import com.conversify.ui.post.details.PostDetailsActivity
 import com.conversify.ui.post.details.PostDetailsViewModel
@@ -193,6 +195,16 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         }
     }
 
+    private fun shareApp() {
+        val intent = Intent()
+        intent.action = Intent.ACTION_SEND
+//        # change the type of data you need to share,
+//        # for image use "image/*"
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, AppConstants.PLAY_STORE_URL)
+        startActivity(Intent.createChooser(intent, "Share via"))
+    }
+
     @SuppressLint("RestrictedApi")
     private fun optionMenu(v: View) {
         val popup = PopupMenu(this, v)
@@ -214,7 +226,7 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
             }
 
             R.id.menuGroupShare -> {
-                Toast.makeText(applicationContext, item.title, Toast.LENGTH_LONG).show()
+                shareApp()
                 return true
             }
 
@@ -234,6 +246,18 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
             }
 
             else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            AppConstants.REQ_CODE_GROUP_CHAT->{
+                if (resultCode == Activity.RESULT_OK /*&& data != null*/) {
+                    setResult(Activity.RESULT_OK, data)
+                    finish()
+                }
+            }
         }
     }
 

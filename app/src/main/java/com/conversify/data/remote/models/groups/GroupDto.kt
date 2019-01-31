@@ -36,7 +36,7 @@ data class GroupDto(
         val createdBy: String? = null,
 
         @field:SerializedName("conversationId")
-        val conversationId: String? = null,
+        var conversationId: String? = null,
 
         @field:SerializedName("isPrivate")
         val isPrivate: Boolean? = null,

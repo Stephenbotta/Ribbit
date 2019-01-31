@@ -2,13 +2,8 @@ package com.conversify.ui.search.posts
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import com.arasthel.spannedgridlayoutmanager.SpanSize
-import com.arasthel.spannedgridlayoutmanager.SpannedGridLayoutManager
 import com.conversify.R
 import com.conversify.data.remote.models.groups.GroupPostDto
-import com.conversify.data.remote.models.loginsignup.ProfileDto
-import com.conversify.data.remote.models.venues.VenueDto
-import com.conversify.data.remote.models.venues.YourVenuesDto
 import com.conversify.extensions.inflate
 import com.conversify.utils.GlideRequests
 
@@ -30,7 +25,6 @@ class SearchPostAdapter(private val glide: GlideRequests,
     }
 
 
-
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -39,7 +33,6 @@ class SearchPostAdapter(private val glide: GlideRequests,
         when (holder) {
             is SearchPostViewHolder -> {
                 if (item is GroupPostDto) {
-//                    holder.itemView.layoutParams=SpanLayoutParams(SpanSize(width, height))
                     holder.bind(item)
                 }
             }
@@ -67,7 +60,7 @@ class SearchPostAdapter(private val glide: GlideRequests,
         notifyItemRangeInserted(oldListSize, item.size)
     }
 
-    fun getUpdatedList():MutableList<Any>{
+    fun getUpdatedList(): MutableList<Any> {
         return items
     }
 

@@ -151,8 +151,6 @@ dependencies {
     // https://github.com/sannies/mp4parser
     implementation "com.googlecode.mp4parser:isoparser:$mp4ParserVersion"
 
-    // https://github.com/Arasthel/SpannedGridLayoutManager
-    implementation 'com.arasthel:spannedgridlayoutmanager:3.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
