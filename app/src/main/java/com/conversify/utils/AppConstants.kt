@@ -43,7 +43,7 @@ object AppConstants {
     const val REQ_CODE_GROUP_CHAT = 125
     const val REQ_CODE_GROUP_DETAILS = 126
     const val REQ_CODE_HOME_SEARCH = 127
-
+    const val REQ_CODE_CREATE_NEW_POST = 128
 
     const val EXTRA_VENUE_FILTERS = "EXTRA_VENUE_FILTERS"
     const val EXTRA_VENUE = "EXTRA_VENUE"

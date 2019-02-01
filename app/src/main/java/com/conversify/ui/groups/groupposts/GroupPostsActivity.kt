@@ -30,6 +30,7 @@ import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.groups.PostCallback
 import com.conversify.ui.post.details.PostDetailsActivity
 import com.conversify.ui.post.details.PostDetailsViewModel
+import com.conversify.ui.post.newpost.NewPostActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_group_posts.*
@@ -74,7 +75,6 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         setupPostsRecycler()
         displayGroupDetails(group)
         observeChanges()
-        getGroupPosts()
         listener()
     }
 
@@ -216,6 +216,11 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         popup.show()
     }
 
+    override fun onStart() {
+        super.onStart()
+        getGroupPosts()
+    }
+
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item?.itemId) {
 
@@ -231,7 +236,8 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
             }
 
             R.id.menuGroupChat -> {
-                Toast.makeText(applicationContext, item.title, Toast.LENGTH_LONG).show()
+                val intent = ChatActivity.getStartIntentForGroupChat(this, group, AppConstants.REQ_CODE_GROUP_CHAT)
+                startActivityForResult(intent, AppConstants.REQ_CODE_GROUP_CHAT)
                 return true
             }
 
@@ -252,7 +258,7 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            AppConstants.REQ_CODE_GROUP_CHAT->{
+            AppConstants.REQ_CODE_GROUP_CHAT -> {
                 if (resultCode == Activity.RESULT_OK /*&& data != null*/) {
                     setResult(Activity.RESULT_OK, data)
                     finish()
