@@ -15,6 +15,7 @@ import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
+import com.conversify.ui.profile.edit.EditProfileActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import com.google.android.flexbox.FlexWrap
@@ -131,6 +132,7 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
 
     private fun listener() {
         tvTitle.setOnClickListener { activity?.onBackPressed() }
+        fabEdit.setOnClickListener { editProfile() }
     }
 
     private fun getUserProfile() {
@@ -139,6 +141,11 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         } else {
             swipeRefreshLayout.isRefreshing = false
         }
+    }
+
+    private fun editProfile() {
+        val intent = Intent(requireContext(), EditProfileActivity::class.java)
+        startActivityForResult(intent, 1)
     }
 
     private fun showLogoutConfirmationDialog() {

@@ -44,6 +44,7 @@ object AppConstants {
     const val REQ_CODE_GROUP_DETAILS = 126
     const val REQ_CODE_HOME_SEARCH = 127
     const val REQ_CODE_CREATE_NEW_POST = 128
+    const val REQ_CODE_GROUP_DETAILS_MORE_OPTIONS = 129
 
     const val EXTRA_VENUE_FILTERS = "EXTRA_VENUE_FILTERS"
     const val EXTRA_VENUE = "EXTRA_VENUE"
@@ -58,6 +59,6 @@ object AppConstants {
 
     const val INTENT_CROSSED_PEOPLE_DETAILS = "crossedPeopleDetails"
 
-    const val PLAY_STORE_URL="play store url"
+    const val PLAY_STORE_URL = "PLAY_STORE_URL"
 
 }

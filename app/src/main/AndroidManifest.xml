@@ -114,6 +114,13 @@
             android:name=".ui.profile.ProfileActivity"
             android:screenOrientation="portrait" />
         <!-- https://developers.google.com/maps/documentation/android-sdk/config#specify_requirement_for_apache_http_legacy_library -->
+
+        <activity android:name=".ui.search.SearchActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.profile.edit.EditProfileActivity"
+            android:screenOrientation="portrait"/>
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -142,7 +149,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/app_google_api_key" />
 
-        <activity android:name=".ui.search.SearchActivity"></activity>
+
     </application>
 
 </manifest>

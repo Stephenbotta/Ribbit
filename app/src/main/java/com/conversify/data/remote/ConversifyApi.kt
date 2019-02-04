@@ -28,7 +28,7 @@ interface ConversifyApi {
 
     @POST("user/forgotPassword")
     @FormUrlEncoded
-    fun resetPassword(@Field("email") email: String): Call<Any>
+    fun resetPassword(@Field("email") email: String): Call<ApiResponse<Any>>
 
     @POST("user/verifyOTP")
     fun verifyOtp(@Body request: VerifyOtpRequest): Call<ApiResponse<ProfileDto>>

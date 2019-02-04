@@ -48,16 +48,16 @@ class LoginPasswordViewModel : ViewModel() {
 
         RetrofitClient.conversifyApi
                 .resetPassword(email)
-                .enqueue(object : Callback<Any> {
-                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                .enqueue(object : Callback<ApiResponse<Any>> {
+                    override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
                         if (response.isSuccessful) {
-                            resetPassword.value = Resource.success()
+                            resetPassword.value = Resource.success(response.message())
                         } else {
                             resetPassword.value = Resource.error(response.getAppError())
                         }
                     }
 
-                    override fun onFailure(call: Call<Any>, t: Throwable) {
+                    override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
                         resetPassword.value = Resource.error(t.failureAppError())
                     }
                 })

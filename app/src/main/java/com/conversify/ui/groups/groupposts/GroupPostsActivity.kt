@@ -16,7 +16,6 @@ import android.support.v7.view.menu.MenuPopupHelper
 import android.support.v7.widget.*
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
@@ -28,6 +27,7 @@ import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.groups.PostCallback
+import com.conversify.ui.groups.details.GroupDetailsActivity
 import com.conversify.ui.post.details.PostDetailsActivity
 import com.conversify.ui.post.details.PostDetailsViewModel
 import com.conversify.ui.post.newpost.NewPostActivity
@@ -242,12 +242,15 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
             }
 
             R.id.menuCreateNewPost -> {
-                Toast.makeText(applicationContext, item.title, Toast.LENGTH_LONG).show()
+                val intent = NewPostActivity.getStartIntent(this, group, AppConstants.REQ_CODE_CREATE_NEW_POST)
+                startActivityForResult(intent, AppConstants.REQ_CODE_CREATE_NEW_POST)
                 return true
             }
 
             R.id.menuGroupDetail -> {
-                Toast.makeText(applicationContext, item.title, Toast.LENGTH_LONG).show()
+                val intent = GroupDetailsActivity.getStartIntent(this, group.id!!, AppConstants.REQ_CODE_GROUP_DETAILS_MORE_OPTIONS)
+                startActivityForResult(intent, AppConstants.REQ_CODE_GROUP_DETAILS_MORE_OPTIONS)
+                //Toast.makeText(applicationContext, item.title, Toast.LENGTH_LONG).show()
                 return true
             }
 
@@ -260,8 +263,8 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         when (requestCode) {
             AppConstants.REQ_CODE_GROUP_CHAT -> {
                 if (resultCode == Activity.RESULT_OK /*&& data != null*/) {
-                    setResult(Activity.RESULT_OK, data)
-                    finish()
+//                    setResult(Activity.RESULT_OK, data)
+//                    finish()
                 }
             }
         }

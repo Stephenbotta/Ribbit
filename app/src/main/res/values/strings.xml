@@ -278,5 +278,27 @@
     <string name="group_more_options_label_create_post">Create a new post</string>
     <string name="group_more_options_label_channel_detail">Channel Detail</string>
 
+    <string name="edit_profile_label_save">Save</string>
+    <string name="edit_profile_label_change_profile">Change Profile Photo</string>
+    <string name="edit_profile_label_name">Name</string>
+    <string name="edit_profile_label_website">Website</string>
+    <string name="edit_profile_label_website_hint">www.example.com</string>
+    <string name="edit_profile_label_professional_info">Professional Information</string>
+    <string name="edit_profile_label_designation">Designation</string>
+    <string name="edit_profile_label_company_workplace">Company/\nWorkPlace</string>
+    <string name="edit_profile_label_company_workplace_hint">Company/WorkPlace</string>
+    <string name="edit_profile_label_private_info">Private Information</string>
+    <string name="edit_profile_label_email">Email</string>
+    <string name="edit_profile_label_phone">Phone</string>
+    <string name="edit_profile_label_gender">Gender</string>
+
+    <string name="settings_profile_label_invite_people">Invite People</string>
+    <string name="settings_profile_label_share_contact_details">Contact Details</string>
+    <string name="settings_profile_label_about">About</string>
+    <string name="settings_profile_label_hide_personal_info">Hide Personal Information from other users</string>
+    <string name="settings_profile_label_block_user">Block User</string>
+    <string name="settings_profile_label_access_location">Access Location</string>
+    <string name="settings_profile_label_contact_us">Contact Us</string>
+
 
 </resources>

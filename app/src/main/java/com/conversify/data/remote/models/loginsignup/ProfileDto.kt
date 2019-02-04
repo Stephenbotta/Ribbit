@@ -99,4 +99,10 @@ data class ProfileDto(
         @field:SerializedName("tagName")
         var tagName: String? = null,
 
+        @field:SerializedName("website")
+        var website: String? = null,
+
+        @field:SerializedName("gender")
+        var gender: String? = null,
+
         var isSelected: Boolean = false) : Parcelable
