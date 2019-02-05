@@ -11,6 +11,7 @@ import com.conversify.data.remote.models.post.AddPostReplyRequest
 import com.conversify.data.remote.models.post.AddPostSubReplyRequest
 import com.conversify.data.remote.models.post.CreatePostRequest
 import com.conversify.data.remote.models.post.PostReplyDto
+import com.conversify.data.remote.models.profile.CreateEditProfileRequest
 import com.conversify.data.remote.models.venues.*
 import com.conversify.ui.chat.individual.ChatIndividualResponse
 import retrofit2.Call
@@ -249,6 +250,9 @@ interface ConversifyApi {
     @POST("user/homeSearchPost")
     @FormUrlEncoded
     fun getPostSearch(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<List<GroupPostDto>>>
+
+    @POST("user/editProfile")
+    fun editProfile(@Body request: CreateEditProfileRequest): Call<ApiResponse<ProfileDto>>
 
 
 }

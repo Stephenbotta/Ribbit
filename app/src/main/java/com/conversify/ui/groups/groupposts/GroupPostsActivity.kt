@@ -208,11 +208,10 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
     @SuppressLint("RestrictedApi")
     private fun optionMenu(v: View) {
         val popup = PopupMenu(this, v)
-        val menuBuilder = MenuBuilder(this)
-        val menuPopupHelper = MenuPopupHelper(this, menuBuilder)
         popup.inflate(R.menu.menu_group_more_options)
+        val m = popup.menu as MenuBuilder
+        m.setOptionalIconsVisible(true)
         popup.setOnMenuItemClickListener(this)
-        menuPopupHelper.setForceShowIcon(true)
         popup.show()
     }
 
@@ -250,7 +249,6 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
             R.id.menuGroupDetail -> {
                 val intent = GroupDetailsActivity.getStartIntent(this, group.id!!, AppConstants.REQ_CODE_GROUP_DETAILS_MORE_OPTIONS)
                 startActivityForResult(intent, AppConstants.REQ_CODE_GROUP_DETAILS_MORE_OPTIONS)
-                //Toast.makeText(applicationContext, item.title, Toast.LENGTH_LONG).show()
                 return true
             }
 

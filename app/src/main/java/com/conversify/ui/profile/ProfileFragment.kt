@@ -43,6 +43,10 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         observeChanges()
         listener()
         gone()
+    }
+
+    override fun onStart() {
+        super.onStart()
         getUserProfile()
     }
 
