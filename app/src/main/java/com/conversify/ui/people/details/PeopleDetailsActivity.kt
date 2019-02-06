@@ -1,8 +1,11 @@
 package com.conversify.ui.people.details
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v7.widget.PopupMenu
+import android.view.MenuItem
 import android.view.View
 import com.conversify.R
 import com.conversify.data.local.PrefsManager
@@ -21,7 +24,7 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.activity_people_details.*
 
-class PeopleDetailsActivity : BaseActivity(), View.OnClickListener {
+class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
     private lateinit var viewModel: PeopleDetailsViewModel
     private lateinit var interestsAdapter: PeopleMutualInterestsAdapter
@@ -102,6 +105,25 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         })
+
+        viewModel.block.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    // Ignored
+                }
+
+                Status.ERROR -> {
+                    // Ignored
+//                    handleError(resource.error)
+                }
+
+                Status.LOADING -> {
+                    // Ignored
+                }
+            }
+        })
     }
 
     private fun setData(profile: ProfileDto?) {
@@ -160,6 +182,16 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener {
         return action
     }
 
+    private fun toggleBlock(): Double {
+        profile?.isBlocked = profile?.isBlocked?.not()
+        val action = if (profile?.isBlocked == true) {
+            1.0
+        } else {
+            2.0
+        }
+        return action
+    }
+
     private fun setupInterestsRecycler() {
         interestsAdapter = PeopleMutualInterestsAdapter()
         val layoutManager = FlexboxLayoutManager(this)
@@ -215,6 +247,21 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener {
         rvMutualInterests.visibility = View.GONE
     }
 
+    @SuppressLint("RestrictedApi")
+    private fun optionMenu(v: View) {
+        val popup = PopupMenu(this, v)
+        popup.inflate(R.menu.menu_block_user)
+        if (profile?.isBlocked!!) {
+            popup.menu.getItem(0).title = getString(R.string.people_detail_more_label_unblock)
+        } else {
+            popup.menu.getItem(0).title = getString(R.string.people_detail_more_label_block)
+        }
+//        val m = popup.menu as MenuBuilder     //  visible the icon for menu
+//        m.setOptionalIconsVisible(true)
+        popup.setOnMenuItemClickListener(this)
+        popup.show()
+    }
+
     override fun onClick(v: View?) {
 
         when (v?.id) {
@@ -231,6 +278,19 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener {
                 val intent = ChatActivity.getStartIntentForIndividualChat(this, userCrossed, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
                 startActivityForResult(intent, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
             }
+
+            R.id.btnMore -> optionMenu(v)
+        }
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+
+            R.id.menuBlock -> {
+                viewModel.postBlock(profile?.id!!, toggleBlock())
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 

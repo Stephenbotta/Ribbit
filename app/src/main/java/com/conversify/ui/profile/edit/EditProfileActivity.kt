@@ -40,7 +40,7 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
 
         mediaPicker = MediaPicker(this)
         loadingDialog = LoadingDialog(this)
-        setData(viewModel.getProfile())
+//        setData(viewModel.getProfile())
         setListener()
         observeChanges()
     }

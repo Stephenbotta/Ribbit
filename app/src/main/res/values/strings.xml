@@ -245,6 +245,8 @@
 
     <string name="people_detail_button_follow">Follow</string>
     <string name="people_detail_button_un_follow">Unfollow</string>
+    <string name="people_detail_more_label_block">Block</string>
+    <string name="people_detail_more_label_unblock">Unblock</string>
 
     <string name="join_venue_btn_join">JOIN</string>
     <string name="join_venue_label_participants">Participants</string>

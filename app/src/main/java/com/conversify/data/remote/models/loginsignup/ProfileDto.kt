@@ -16,7 +16,7 @@ data class ProfileDto(
         val isPasswordReset: Boolean? = null,
 
         @field:SerializedName("isBlocked")
-        val isBlocked: Boolean? = null,
+        var isBlocked: Boolean? = null,
 
         @field:SerializedName(value = "fullName", alternate = ["adminId"])
         var fullName: String? = null,

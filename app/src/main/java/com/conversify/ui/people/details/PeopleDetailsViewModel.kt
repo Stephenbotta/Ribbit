@@ -17,6 +17,7 @@ class PeopleDetailsViewModel(application: Application) : BaseViewModel(applicati
 
     val peopleDetails by lazy { SingleLiveEvent<Resource<ProfileDto>>() }
     val followUnFollow by lazy { SingleLiveEvent<Resource<Any>>() }
+    val block by lazy { SingleLiveEvent<Resource<Any>>() }
 
     fun getOtherUserProfileDetails(userId: String) {
         peopleDetails.value = Resource.loading()
@@ -56,6 +57,26 @@ class PeopleDetailsViewModel(application: Application) : BaseViewModel(applicati
 
                     override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
                         followUnFollow.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
+    fun postBlock(userId: String, action: Double) {
+        block.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .postBlock(userId, action)
+                .enqueue(object : Callback<ApiResponse<Any>> {
+                    override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
+                        if (response.isSuccessful) {
+                            block.value = Resource.success(response.body()?.data)
+                        } else {
+                            block.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                        block.value = Resource.error(t.failureAppError())
                     }
                 })
     }

@@ -213,6 +213,11 @@ interface ConversifyApi {
     fun postFollowUnFollow(@Field("userId") userId: String,
                            @Field("action") action: Double): Call<ApiResponse<Any>>
 
+    @POST("user/blockUser")
+    @FormUrlEncoded
+    fun postBlock(@Field("userId") userId: String,
+                           @Field("action") action: Double): Call<ApiResponse<Any>>
+
     @POST("user/followUnfollowTag")
     @FormUrlEncoded
     fun postFollowUnFollowTag(@Field("tagId") tagId: String,
