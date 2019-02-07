@@ -34,18 +34,18 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toStartOf="@id/btnLogout"
+                app:layout_constraintEnd_toStartOf="@id/btnSettings"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/btnLogout"
+                android:id="@+id/btnSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:padding="16dp"
-                android:src="@drawable/ic_logout"
+                android:src="@drawable/ic_settings"
                 app:layout_constraintBottom_toBottomOf="@id/tvTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tvTitle"

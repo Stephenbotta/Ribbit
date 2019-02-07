@@ -27,8 +27,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_margin="16dp"
         android:text="@string/home_label_no_posts_found"
-        android:textColor="@color/textGray"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
         android:visibility="gone" />
 
     <android.support.design.widget.FloatingActionButton
@@ -37,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_post"
+        android:src="@drawable/ic_plus_white"
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal" />
 

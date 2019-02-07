@@ -18,27 +18,6 @@ class ProfileViewModel : ViewModel() {
     private var profile = UserManager.getProfile()
     val peopleDetails by lazy { SingleLiveEvent<Resource<ProfileDto>>() }
 
-    val logout by lazy { SingleLiveEvent<Resource<Any>>() }
-
-    fun logout() {
-        logout.value = Resource.loading()
-        RetrofitClient.conversifyApi
-                .logout()
-                .enqueue(object : Callback<Any> {
-                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
-                        if (response.isSuccessful) {
-                            logout.value = Resource.success()
-                        } else {
-                            logout.value = Resource.error(response.getAppError())
-                        }
-                    }
-
-                    override fun onFailure(call: Call<Any>, t: Throwable) {
-                        logout.value = Resource.error(t.failureAppError())
-                    }
-                })
-    }
-
     fun getUserProfileDetails() {
         peopleDetails.value = Resource.loading()
 

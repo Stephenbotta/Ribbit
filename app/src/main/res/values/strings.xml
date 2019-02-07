@@ -193,7 +193,7 @@
     <string name="groups_label_topics">Topics</string>
     <string name="groups_label_suggested_channels">SUGGESTED CHANNELS</string>
     <string name="groups_label_your_channels">YOUR CHANNELS</string>
-    <string name="groups_label_no_channels_found">No channels found</string>
+    <string name="groups_label_no_channels_found">No channel yet!!</string><!--No channels found-->
 
     <string name="create_group_label_channels">Channels</string>
     <string name="create_group_label_create_a_channel">Create a Channel</string>
@@ -224,7 +224,7 @@
     <string name="add_group_label_no_followers_found">No followers found</string>
 
     <string name="home_label_search">Search</string>
-    <string name="home_label_no_posts_found">No posts found</string>
+    <string name="home_label_no_posts_found">No post yet!! Please create your one by tapping + icon</string><!--No post found-->
     <string name="home_label_username_with_group_and_category_name">%s in %s %s</string>
 
     <string name="new_post_label_new_post">New Post</string>
@@ -295,12 +295,14 @@
     <string name="edit_profile_label_gender">Gender</string>
 
     <string name="settings_profile_label_invite_people">Invite People</string>
-    <string name="settings_profile_label_share_contact_details">Contact Details</string>
+    <string name="settings_profile_label_share_contact_details">Share your Contact Details</string>
     <string name="settings_profile_label_about">About</string>
-    <string name="settings_profile_label_hide_personal_info">Hide Personal Information from other users</string>
-    <string name="settings_profile_label_block_user">Block User</string>
+    <string name="settings_profile_label_hide_personal_info">Hide Personal Info. from other users</string>
+    <string name="settings_profile_label_block_users">Block Users</string>
     <string name="settings_profile_label_access_location">Access Location</string>
     <string name="settings_profile_label_contact_us">Contact Us</string>
-
+    <string name="settings_profile_label_terms_and_conditions">Terms and conditions</string>
+    <string name="settings_profile_label_push_notifications">Push Notifications</string>
+    <string name="settings_profile_label_alert_notifications">Alert Notifications</string>
 
 </resources>

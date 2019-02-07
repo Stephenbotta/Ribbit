@@ -5,17 +5,18 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.app.AlertDialog
 import android.view.View
-import android.widget.TextView
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
-import com.conversify.extensions.*
+import com.conversify.extensions.gone
+import com.conversify.extensions.handleError
+import com.conversify.extensions.isNetworkActiveWithMessage
+import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
 import com.conversify.ui.profile.edit.EditProfileActivity
+import com.conversify.ui.profile.settings.SettingsActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import com.google.android.flexbox.FlexWrap
@@ -37,9 +38,6 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
 
         setupInterestsRecycler()
         swipeRefreshLayout.setOnRefreshListener { getUserProfile() }
-        btnLogout.setOnClickListener {
-            showLogoutConfirmationDialog()
-        }
         observeChanges()
         listener()
         gone()
@@ -112,31 +110,12 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
                 }
             }
         })
-
-        viewModel.logout.observe(this, Observer { resource ->
-            resource ?: return@Observer
-
-            when (resource.status) {
-                Status.SUCCESS -> {
-                    swipeRefreshLayout.isRefreshing = false
-                    requireActivity().startLandingWithClear()
-                }
-
-                Status.ERROR -> {
-                    swipeRefreshLayout.isRefreshing = false
-                    handleError(resource.error)
-                }
-
-                Status.LOADING -> {
-                    swipeRefreshLayout.isRefreshing = true
-                }
-            }
-        })
     }
 
     private fun listener() {
         tvTitle.setOnClickListener { activity?.onBackPressed() }
         fabEdit.setOnClickListener { editProfile() }
+        btnSettings.setOnClickListener { settings() }
     }
 
     private fun getUserProfile() {
@@ -149,22 +128,12 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
 
     private fun editProfile() {
         val intent = Intent(requireContext(), EditProfileActivity::class.java)
-        startActivityForResult(intent, 1)
+        startActivity(intent)
     }
 
-    private fun showLogoutConfirmationDialog() {
-        val dialog = AlertDialog.Builder(requireActivity())
-                .setMessage(R.string.profile_message_confirm_logout)
-                .setPositiveButton(R.string.profile_btn_logout) { _, _ ->
-                    if (isNetworkActiveWithMessage()) {
-                        viewModel.logout()
-                    }
-                }
-                .setNegativeButton(R.string.cancel, null)
-                .create()
-        dialog.show()
-        val typeface = ResourcesCompat.getFont(requireActivity(), R.font.roboto_text_regular)
-        dialog.findViewById<TextView>(android.R.id.message)?.typeface = typeface
+    private fun settings() {
+        val intent = Intent(requireContext(), SettingsActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onEditInterestsClicked() {

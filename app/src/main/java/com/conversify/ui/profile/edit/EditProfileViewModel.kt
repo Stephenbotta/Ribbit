@@ -11,6 +11,7 @@ import com.conversify.data.remote.getAppError
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.loginsignup.UsernameAvailabilityResponse
 import com.conversify.data.remote.models.profile.CreateEditProfileRequest
 import com.conversify.ui.base.BaseViewModel
 import com.conversify.utils.SingleLiveEvent
@@ -26,6 +27,9 @@ class EditProfileViewModel(application: Application) : BaseViewModel(application
 
     private var profile = UserManager.getProfile()
     private val s3Uploader by lazy { S3Uploader(S3Utils.TRANSFER_UTILITY) }
+    val usernameAvailability by lazy { SingleLiveEvent<Resource<Boolean>>() }
+    private var usernameAvailabilityCall: Call<ApiResponse<UsernameAvailabilityResponse>>? = null
+
     val editProfile by lazy { SingleLiveEvent<Resource<ApiResponse<ProfileDto>>>() }
 
     fun editProfile(request: CreateEditProfileRequest, postImage: File?) {
@@ -69,11 +73,42 @@ class EditProfileViewModel(application: Application) : BaseViewModel(application
                 })
     }
 
+    fun checkUsernameAvailability(username: String) {
+        usernameAvailability.value = Resource.loading()
+
+        usernameAvailabilityCall?.cancel()
+        val call = RetrofitClient.conversifyApi.usernameAvailability(username)
+        usernameAvailabilityCall = call
+        call.enqueue(object : Callback<ApiResponse<UsernameAvailabilityResponse>> {
+            override fun onResponse(call: Call<ApiResponse<UsernameAvailabilityResponse>>,
+                                    response: Response<ApiResponse<UsernameAvailabilityResponse>>) {
+                if (response.isSuccessful) {
+                    val isAvailable = response.body()?.data?.isAvailable ?: false
+                    usernameAvailability.value = Resource.success(isAvailable)
+                } else {
+                    usernameAvailability.value = Resource.error(response.getAppError())
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse<UsernameAvailabilityResponse>>, t: Throwable) {
+                if (!call.isCanceled) {
+                    usernameAvailability.value = Resource.error(t.failureAppError())
+                }
+            }
+        })
+    }
+
+    fun updateUsernameAvailability(isAvailable: Boolean) {
+        if (!isAvailable)
+            usernameAvailabilityCall?.cancel()
+    }
+
     fun getProfile() = profile
 
     override fun onCleared() {
         super.onCleared()
         s3Uploader.clear()
+        usernameAvailabilityCall?.cancel()
     }
 
 }

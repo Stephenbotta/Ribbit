@@ -6,7 +6,8 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.util.Patterns
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import com.conversify.R
 import com.conversify.data.local.models.AppError
@@ -40,7 +41,7 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
 
         mediaPicker = MediaPicker(this)
         loadingDialog = LoadingDialog(this)
-//        setData(viewModel.getProfile())
+        setData(viewModel.getProfile())
         setListener()
         observeChanges()
     }
@@ -91,32 +92,77 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
             getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
         }
 
+        editUserName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+                val username = text?.toString() ?: ""
+                if (isUsernameValid(username)) {
+                    if (username.toLowerCase().equals(viewModel.getProfile().userName?.toLowerCase()))
+                        editUserName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_success, 0)
+                    else
+                        viewModel.checkUsernameAvailability(username)
+                } else {
+                    viewModel.updateUsernameAvailability(false)
+                    editUserName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_failed, 0)
+                }
+            }
+        })
+    }
+
+    private fun isUsernameValid(username: String): Boolean {
+        return when {
+            username.isBlank() -> false
+            !ValidationUtils.isUsernameLengthValid(username) -> false
+            username.contains(" ") -> false
+            !ValidationUtils.isUsernameCharactersValid(username) -> false
+            else -> true
+        }
     }
 
     private fun checkProfileData() {
+        if (!validation())
+            return
+
         val data = CreateEditProfileRequest()
         data.imageOriginal = viewModel.getProfile().image?.original
         data.imageThumbnail = viewModel.getProfile().image?.thumbnail
-        if (!editName.text.toString().isNullOrEmpty())
-            data.fullName = editName.text.toString()
-        if (!editUserName.text.toString().isNullOrEmpty())
-            data.userName = editUserName.text.toString()
-        if (!editWebsite.text.toString().isNullOrEmpty())
-            data.website = editWebsite.text.toString()
-        if (!editBio.text.toString().isNullOrEmpty())
-            data.bio = editBio.text.toString()
-        if (!editDesignation.text.toString().isNullOrEmpty())
-            data.designation = editDesignation.text.toString()
-        if (!editCompany.text.toString().isNullOrEmpty())
-            data.company = editCompany.text.toString()
-        if (!editGender.text.toString().isNullOrEmpty())
-            data.gender = editGender.text.toString()
-        if (editEmail.text.toString().isNullOrEmpty() || !Patterns.EMAIL_ADDRESS.matcher(editEmail.text.toString()).matches()) {
-            editEmail.error = getString(R.string.error_invalid_email)
-        } else {
-            data.email = editEmail.text.toString()
-            if (isNetworkActiveWithMessage())
-                viewModel.editProfile(data, selectedImage)
+        data.fullName = editName.text.toString()
+        data.userName = editUserName.text.toString()
+        data.website = editWebsite.text.toString()
+        if (editBio.text.toString().isNullOrEmpty())
+            editBio.setText(" ")
+        data.bio = editBio.text.toString()
+        data.designation = editDesignation.text.toString()
+        data.company = editCompany.text.toString()
+        data.gender = editGender.text.toString()
+        data.email = editEmail.text.toString()
+        if (isNetworkActiveWithMessage())
+            viewModel.editProfile(data, selectedImage)
+    }
+
+    private fun validation(): Boolean {
+        val fullName = editName.text.toString()
+        val email = editEmail.text.toString()
+
+        return when {
+            fullName.isNullOrEmpty() -> {
+                editName.error = getString(R.string.error_empty_full_name)
+                false
+            }
+            email.isNullOrEmpty() -> {
+                editEmail.error = getString(R.string.error_empty_email)
+                false
+            }
+            !ValidationUtils.isEmailValid(email) -> {
+                editEmail.error = getString(R.string.error_invalid_email)
+                false
+            }
+            else -> true
         }
     }
 
@@ -140,6 +186,28 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
 
                 Status.LOADING -> {
                     loadingDialog.setLoading(true)
+                }
+            }
+        })
+
+        viewModel.usernameAvailability.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    if (resource.data == true) {
+                        editUserName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_success, 0)
+                    } else {
+                        editUserName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_failed, 0)
+                    }
+                }
+
+                Status.ERROR -> {
+                    editUserName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_failed, 0)
+                }
+
+                Status.LOADING -> {
+
                 }
             }
         })
@@ -177,19 +245,15 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-
             R.id.btnBack -> onBackPressed()
-
-            R.id.tvSave -> {
-                checkProfileData()
-            }
-
-            R.id.tvChangeProfilePhoto -> {
-                tvChangeProfilePhoto.hideKeyboard()
-                showMediaPickerWithPermissionCheck()
-            }
-
+            R.id.tvSave -> checkProfileData()
+            R.id.tvChangeProfilePhoto -> changeProfilePic()
         }
+    }
+
+    private fun changeProfilePic() {
+        tvChangeProfilePhoto.hideKeyboard()
+        showMediaPickerWithPermissionCheck()
     }
 
     override fun onDestroy() {

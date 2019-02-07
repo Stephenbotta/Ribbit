@@ -50,11 +50,12 @@
                 tools:listitem="@layout/item_suggested_groups_parent" />
 
             <TextView
+                android:id="@+id/tvNoGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/groups_label_no_channels_found"
-                android:textColor="@color/textGray" />
+                android:textColor="@color/colorPrimary" />
 
         </ViewSwitcher>
     </android.support.v4.widget.SwipeRefreshLayout>
