@@ -5,7 +5,9 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.BottomSheetDialog
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -14,6 +16,7 @@ import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.profile.CreateEditProfileRequest
+import com.conversify.databinding.BottomSheetDialogGenderBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.hideKeyboard
 import com.conversify.extensions.isNetworkActiveWithMessage
@@ -66,9 +69,13 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
             editEmail.setText(profile.email)
         if (!profile.fullPhoneNumber.isNullOrEmpty())
             editPhone.setText(profile.fullPhoneNumber)
-        if (!profile.gender.isNullOrEmpty())
-            editGender.setText(profile.gender)
-
+        if (!profile.gender.isNullOrEmpty()) {
+            when (profile.gender?.toLowerCase()) {
+                "male" -> editGender.setText(getString(R.string.dialog_gender_label_male))
+                "female" -> editGender.setText(getString(R.string.dialog_gender_label_female))
+                "others" -> editGender.setText(getString(R.string.dialog_gender_label_others))
+            }
+        }
     }
 
     private fun setListener() {
@@ -112,6 +119,8 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         })
+
+        tvGender.setOnClickListener { getGender() }
     }
 
     private fun isUsernameValid(username: String): Boolean {
@@ -139,7 +148,7 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
         data.bio = editBio.text.toString()
         data.designation = editDesignation.text.toString()
         data.company = editCompany.text.toString()
-        data.gender = editGender.text.toString()
+        data.gender = editGender.text.toString().toUpperCase()
         data.email = editEmail.text.toString()
         if (isNetworkActiveWithMessage())
             viewModel.editProfile(data, selectedImage)
@@ -211,6 +220,27 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         })
+    }
+
+    private fun getGender() {
+        val inflater = layoutInflater
+        val binding = DataBindingUtil.inflate<BottomSheetDialogGenderBinding>(inflater, R.layout.bottom_sheet_dialog_gender, null, false)
+        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.setContentView(binding.root)
+        bottomSheetDialog.show()
+        binding.tvMale.setOnClickListener {
+            editGender.setText(binding.tvMale.text.toString())
+            bottomSheetDialog.dismiss()
+        }
+        binding.tvFemale.setOnClickListener {
+            editGender.setText(binding.tvFemale.text.toString())
+            bottomSheetDialog.dismiss()
+        }
+        binding.tvOthers.setOnClickListener {
+            editGender.setText(binding.tvOthers.text.toString())
+            bottomSheetDialog.dismiss()
+        }
+        binding.tvCancel.setOnClickListener { bottomSheetDialog.dismiss() }
     }
 
     @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)

@@ -111,15 +111,18 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
 
             when (resource.status) {
                 Status.SUCCESS -> {
+                    swipeRefreshLayout.isRefreshing = false
                     // Ignored
                 }
 
                 Status.ERROR -> {
                     // Ignored
 //                    handleError(resource.error)
+                    swipeRefreshLayout.isRefreshing = false
                 }
 
                 Status.LOADING -> {
+                    swipeRefreshLayout.isRefreshing = true
                     // Ignored
                 }
             }

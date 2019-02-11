@@ -413,6 +413,9 @@
                 android:backgroundTint="@color/black"
                 android:hint="@string/edit_profile_label_gender"
                 android:textAllCaps="true"
+                android:enabled="false"
+                android:editable="false"
+                android:focusable="true"
                 android:inputType="textCapCharacters"
                 android:textColor="@color/black"
                 android:textCursorDrawable="@null"
@@ -420,6 +423,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tvLabelUserName"
                 app:layout_constraintTop_toBottomOf="@+id/editPhone" />
+
+            <TextView
+                android:id="@+id/tvGender"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvLabelUserName"
+                app:layout_constraintTop_toBottomOf="@+id/editPhone"
+                android:layout_height="?attr/actionBarSize"/>
 
         </android.support.constraint.ConstraintLayout>
 

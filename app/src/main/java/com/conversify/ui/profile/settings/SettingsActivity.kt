@@ -3,7 +3,9 @@ package com.conversify.ui.profile.settings
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
 import android.view.View
@@ -12,8 +14,10 @@ import com.conversify.R
 import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.databinding.BottomSheetDialogInvitePeopleBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
+import com.conversify.extensions.shortToast
 import com.conversify.extensions.startLandingWithClear
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
@@ -29,7 +33,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_settings)
 
         loadingDialog = LoadingDialog(this)
-//        setData(viewModel.getProfile())
+        setData(viewModel.getProfile())
         setListener()
         observeChanges()
     }
@@ -99,6 +103,27 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         })
     }
 
+    private fun invitePeople() {
+        val inflater = layoutInflater
+        val binding = DataBindingUtil.inflate<BottomSheetDialogInvitePeopleBinding>(inflater, R.layout.bottom_sheet_dialog_invite_people, null, false)
+        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.setContentView(binding.root)
+        bottomSheetDialog.show()
+        binding.tvMail.setOnClickListener {
+            shortToast("work in process")
+            bottomSheetDialog.dismiss()
+        }
+        binding.tvMessage.setOnClickListener {
+            shortToast("work in process")
+            bottomSheetDialog.dismiss()
+        }
+        binding.tvMore.setOnClickListener {
+            shortToast("work in process")
+            bottomSheetDialog.dismiss()
+        }
+        binding.tvCancel.setOnClickListener { bottomSheetDialog.dismiss() }
+    }
+
     private fun showLogoutConfirmationDialog() {
         val dialog = AlertDialog.Builder(this)
                 .setMessage(R.string.profile_message_confirm_logout)
@@ -122,8 +147,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
             R.id.tvVerification -> {
             }
 
-            R.id.tvInvitePeople -> {
-            }
+            R.id.tvInvitePeople -> invitePeople()
 
             R.id.tvShareContactDetails -> {
             }

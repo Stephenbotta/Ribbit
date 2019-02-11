@@ -294,6 +294,10 @@
     <string name="edit_profile_label_phone">Phone</string>
     <string name="edit_profile_label_gender">Gender</string>
 
+    <string name="dialog_gender_label_male">Male</string>
+    <string name="dialog_gender_label_female">Female</string>
+    <string name="dialog_gender_label_others">Others</string>
+
     <string name="settings_profile_label_invite_people">Invite People</string>
     <string name="settings_profile_label_share_contact_details">Share your Contact Details</string>
     <string name="settings_profile_label_about">About</string>
@@ -304,5 +308,9 @@
     <string name="settings_profile_label_terms_and_conditions">Terms and conditions</string>
     <string name="settings_profile_label_push_notifications">Push Notifications</string>
     <string name="settings_profile_label_alert_notifications">Alert Notifications</string>
+
+    <string name="dialog_invite_people_label_mail">Mail</string>
+    <string name="dialog_invite_people_label_message">Message</string>
+
 
 </resources>

@@ -11,7 +11,7 @@ class SocketManager(private val userManager: UserManager) {
     companion object {
         private const val SOCKET_URL_CLIENT = "http://52.35.234.66:8001"
         private const val SOCKET_URL_DEV = "http://52.35.234.66:8000"
-        private const val SOCKET_URL = SOCKET_URL_CLIENT
+        private const val SOCKET_URL = SOCKET_URL_DEV
 
         private const val EVENT_CONNECT = "socketConnected"
         const val EVENT_NEW_MESSAGE = "receiveMessage"
