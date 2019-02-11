@@ -6,5 +6,8 @@ data class AddVenueParticipantsRequest(
         @field:SerializedName("venueId")
         val venueId: String,
 
+        @field:SerializedName("groupId")
+        val groupId: String,
+
         @field:SerializedName("participants")
         val participantIds: List<String>)

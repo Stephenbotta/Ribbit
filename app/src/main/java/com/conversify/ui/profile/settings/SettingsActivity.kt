@@ -3,6 +3,7 @@ package com.conversify.ui.profile.settings
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
@@ -21,6 +22,7 @@ import com.conversify.extensions.shortToast
 import com.conversify.extensions.startLandingWithClear
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.profile.settings.verification.VerificationActivity
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : BaseActivity(), View.OnClickListener {
@@ -139,13 +141,17 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         dialog.findViewById<TextView>(android.R.id.message)?.typeface = typeface
     }
 
+    private fun verification() {
+        val intent = Intent(this, VerificationActivity::class.java)
+        startActivity(intent)
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
 
             R.id.btnBack -> onBackPressed()
 
-            R.id.tvVerification -> {
-            }
+            R.id.tvVerification -> verification()
 
             R.id.tvInvitePeople -> invitePeople()
 

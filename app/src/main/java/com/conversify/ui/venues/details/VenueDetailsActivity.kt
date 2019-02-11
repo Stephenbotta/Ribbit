@@ -137,7 +137,8 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
     }
 
     override fun onAddParticipantsClicked() {
-        AddVenueParticipantsActivity.start(this, venue.id ?: "")
+        AddVenueParticipantsActivity.start(this, venue.id
+                ?: "", AppConstants.REQ_CODE_VENUE_DETAILS)
     }
 
     override fun onMemberClicked(member: MemberDto) {

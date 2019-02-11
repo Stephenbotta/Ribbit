@@ -312,5 +312,10 @@
     <string name="dialog_invite_people_label_mail">Mail</string>
     <string name="dialog_invite_people_label_message">Message</string>
 
+    <string name="verification_label_email">Click here to verify email</string>
+    <string name="verification_label_mobile">Click here to verify mobile number</string>
+    <string name="verification_label_verify_email">Email verified</string>
+    <string name="verification_label_verify_mobile">Mobile number verified</string>
+    <string name="verification_btn_upload_document">Upload document (Passport Id)</string>
 
 </resources>

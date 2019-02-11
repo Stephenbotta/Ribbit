@@ -10,10 +10,10 @@ import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseActivity
-import com.conversify.ui.creategroup.addparticipants.AddParticipantsActivity
 import com.conversify.ui.creategroup.addparticipants.AddParticipantsAdapter
 import com.conversify.ui.creategroup.addparticipants.ParticipantViewHolder
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_add_participants.*
 
@@ -23,10 +23,12 @@ class AddVenueParticipantsActivity : BaseActivity() {
         private const val CHILD_NO_FOLLOWERS = 1
 
         private const val EXTRA_VENUE_ID = "EXTRA_VENUE_ID"
+        private const val EXTRA_FLAG = "EXTRA_FLAG"
 
-        fun start(context: Context, venueId: String) {
+        fun start(context: Context, venueId: String, flag: Int) {
             context.startActivity(Intent(context, AddVenueParticipantsActivity::class.java)
-                    .putExtra(EXTRA_VENUE_ID, venueId))
+                    .putExtra(EXTRA_VENUE_ID, venueId)
+                    .putExtra(EXTRA_FLAG, flag))
         }
     }
 
@@ -35,11 +37,13 @@ class AddVenueParticipantsActivity : BaseActivity() {
     private lateinit var venueId: String
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var addParticipantsAdapter: AddParticipantsAdapter
+    private var flag = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_participants)
 
+        flag = intent.getIntExtra(EXTRA_FLAG, 0)
         venueId = intent.getStringExtra(EXTRA_VENUE_ID)
         loadingDialog = LoadingDialog(this)
         swipeRefreshLayout.isEnabled = false
@@ -54,7 +58,7 @@ class AddVenueParticipantsActivity : BaseActivity() {
         btnBack.setOnClickListener { onBackPressed() }
         btnContinue.setOnClickListener {
             if (isNetworkActiveWithMessage()) {
-                viewModel.addVenueParticipants(venueId, selectedParticipantIds.toList())
+                viewModel.addVenueParticipants(venueId, selectedParticipantIds.toList(),flag)
             }
         }
     }
@@ -131,7 +135,12 @@ class AddVenueParticipantsActivity : BaseActivity() {
 
     private fun getFollowers() {
         if (isNetworkActiveWithMessage()) {
-            viewModel.getVenueAddParticipants(venueId)
+            val hashMap = hashMapOf<String, String>()
+            when (flag) {
+                AppConstants.REQ_CODE_VENUE_DETAILS -> hashMap.put("venueId", venueId)
+                AppConstants.REQ_CODE_GROUP_DETAILS -> hashMap.put("groupId", venueId)
+            }
+            viewModel.getVenueAddParticipants(hashMap)
         } else {
             swipeRefreshLayout.isRefreshing = false
         }

@@ -16,7 +16,6 @@ import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.MemberDto
 import com.conversify.data.remote.models.groups.AddParticipantsDto
 import com.conversify.data.remote.models.groups.GroupDto
-import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseActivity
@@ -172,7 +171,8 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
     }
 
     override fun onAddParticipantsClicked() {
-        AddVenueParticipantsActivity.start(this, group.id ?: "")
+        AddVenueParticipantsActivity.start(this, group.id
+                ?: "", AppConstants.REQ_CODE_GROUP_DETAILS)
     }
 
     override fun onMemberClicked(member: MemberDto) {

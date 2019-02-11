@@ -196,7 +196,7 @@ interface ConversifyApi {
 
     @POST("user/addParticipantsList")
     @FormUrlEncoded
-    fun getVenueAddParticipants(@Field("venueId") venueId: String): Call<ApiResponse<List<ProfileDto>>>
+    fun getVenueAddParticipants(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<List<ProfileDto>>>
 
     @POST("user/addParticipants")
     fun addVenueParticipants(@Body request: AddVenueParticipantsRequest): Call<Any>
@@ -259,5 +259,8 @@ interface ConversifyApi {
     @POST("user/editProfile")
     fun editProfile(@Body request: CreateEditProfileRequest): Call<ApiResponse<ProfileDto>>
 
+    @POST("user/settingVerification")
+    @FormUrlEncoded
+    fun postSettingsVerification(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<ProfileDto>>
 
 }

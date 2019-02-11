@@ -105,4 +105,13 @@ data class ProfileDto(
         @field:SerializedName("gender")
         var gender: String? = null,
 
+        @field:SerializedName("isUploaded")
+        val isUploaded:Boolean?=null,
+
+        @field:SerializedName("isPhoneNumberVerified")
+        val isMobileVerified:Boolean?=null,
+
+        @field:SerializedName("isEmailVerified")
+        val isEmailVerified:Boolean?=null,
+
         var isSelected: Boolean = false) : Parcelable

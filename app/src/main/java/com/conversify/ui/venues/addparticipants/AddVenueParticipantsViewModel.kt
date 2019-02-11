@@ -9,6 +9,7 @@ import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.venues.AddVenueParticipantsRequest
+import com.conversify.utils.AppConstants
 import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,10 +19,11 @@ class AddVenueParticipantsViewModel : ViewModel() {
     val getVenueAddParticipants by lazy { MutableLiveData<Resource<List<ProfileDto>>>() }
     val addVenueParticipants by lazy { SingleLiveEvent<Resource<Any>>() }
 
-    fun getVenueAddParticipants(venueId: String) {
+    fun getVenueAddParticipants(hashMap: HashMap<String, String>) {
         getVenueAddParticipants.value = Resource.loading()
+
         RetrofitClient.conversifyApi
-                .getVenueAddParticipants(venueId)
+                .getVenueAddParticipants(hashMap)
                 .enqueue(object : Callback<ApiResponse<List<ProfileDto>>> {
                     override fun onResponse(call: Call<ApiResponse<List<ProfileDto>>>,
                                             response: Response<ApiResponse<List<ProfileDto>>>) {
@@ -38,11 +40,11 @@ class AddVenueParticipantsViewModel : ViewModel() {
                 })
     }
 
-    fun addVenueParticipants(venueId: String, participantIds: List<String>) {
+    fun addVenueParticipants(venueId: String, participantIds: List<String>, flag: Int) {
         addVenueParticipants.value = Resource.loading()
-        val request = AddVenueParticipantsRequest(venueId, participantIds)
+
         RetrofitClient.conversifyApi
-                .addVenueParticipants(request)
+                .addVenueParticipants(request(venueId, participantIds, flag))
                 .enqueue(object : Callback<Any> {
                     override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         if (response.isSuccessful) {
@@ -56,5 +58,13 @@ class AddVenueParticipantsViewModel : ViewModel() {
                         addVenueParticipants.value = Resource.error(t.failureAppError())
                     }
                 })
+    }
+
+    private fun request(venueId: String, participantIds: List<String>, flag: Int): AddVenueParticipantsRequest {
+        return when (flag) {
+            AppConstants.REQ_CODE_VENUE_DETAILS -> AddVenueParticipantsRequest(venueId, "", participantIds)
+            AppConstants.REQ_CODE_GROUP_DETAILS -> AddVenueParticipantsRequest("", venueId, participantIds)
+            else -> AddVenueParticipantsRequest(venueId, "", participantIds)
+        }
     }
 }
