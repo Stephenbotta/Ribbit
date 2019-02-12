@@ -23,7 +23,7 @@ class PeopleDetailsViewModel(application: Application) : BaseViewModel(applicati
         peopleDetails.value = Resource.loading()
 
         val hashMap = hashMapOf<String, String>()
-        hashMap.put("userId", userId)
+        hashMap["userId"] = userId
         RetrofitClient.conversifyApi
                 .getUserProfileDetails(hashMap)
                 .enqueue(object : Callback<ApiResponse<ProfileDto>> {

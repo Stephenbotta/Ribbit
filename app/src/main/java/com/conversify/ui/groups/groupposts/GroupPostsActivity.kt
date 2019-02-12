@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.view.menu.MenuBuilder
-import android.support.v7.view.menu.MenuPopupHelper
 import android.support.v7.widget.*
 import android.view.MenuItem
 import android.view.View
@@ -201,8 +200,8 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
 //        # change the type of data you need to share,
 //        # for image use "image/*"
         intent.type = "text/plain"
-        intent.putExtra(Intent.EXTRA_TEXT, AppConstants.PLAY_STORE_URL)
-        startActivity(Intent.createChooser(intent, "Share via"))
+        intent.putExtra(Intent.EXTRA_TEXT, AppConstants.PLAY_STORE_URL + packageName)
+        startActivity(Intent.createChooser(intent, AppConstants.TITLE_SHARE_VIA))
     }
 
     @SuppressLint("RestrictedApi")

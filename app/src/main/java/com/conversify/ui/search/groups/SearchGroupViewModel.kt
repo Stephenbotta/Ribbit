@@ -9,8 +9,6 @@ import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.groups.GroupDto
-import com.conversify.data.remote.models.loginsignup.InterestDto
-import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.ui.base.BaseViewModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,18 +31,18 @@ class SearchGroupViewModel(application: Application) : BaseViewModel(application
 
     fun validForPaging(): Boolean = !isGetGroupLoading && !isLastGroupReceived
 
-    fun getGroupSearch(firstPage: Boolean,search:String) {
+    fun getGroupSearch(firstPage: Boolean, search: String) {
         isGetGroupLoading = true
         groupSearch.value = Resource.loading()
 
-        val hashMap= hashMapOf<String,String>()
+        val hashMap = hashMapOf<String, String>()
         if (firstPage)
-            hashMap.put("pageNo",1.toString())
+            hashMap["pageNo"] = 1.toString()
         else
-        hashMap.put("pageNo",page.toString())
+            hashMap["pageNo"] = page.toString()
 
-        if (!search.isNullOrEmpty()){
-            hashMap.put("search",search)
+        if (!search.isNullOrEmpty()) {
+            hashMap["search"] = search
         }
         RetrofitClient.conversifyApi
                 .getGroupSearch(hashMap)

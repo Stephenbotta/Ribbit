@@ -8,7 +8,6 @@ import com.conversify.data.remote.getAppError
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
-import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.ui.base.BaseViewModel
 import retrofit2.Call
@@ -32,18 +31,18 @@ class SearchTopViewModel(application: Application) : BaseViewModel(application) 
 
     fun validForPaging(): Boolean = !isGetTopLoading && !isLastTopReceived
 
-    fun getTopSearch(firstPage: Boolean,search:String) {
+    fun getTopSearch(firstPage: Boolean, search: String) {
         isGetTopLoading = true
         topSearch.value = Resource.loading()
 
-        val hashMap= hashMapOf<String,String>()
+        val hashMap = hashMapOf<String, String>()
         if (firstPage)
-            hashMap.put("pageNo",1.toString())
+            hashMap["pageNo"] = 1.toString()
         else
-        hashMap.put("pageNo",page.toString())
+            hashMap["pageNo"] = page.toString()
 
-        if (!search.isNullOrEmpty()){
-            hashMap.put("search",search)
+        if (!search.isNullOrEmpty()) {
+            hashMap["search"] = search
         }
         RetrofitClient.conversifyApi
                 .getTopSearch(hashMap)

@@ -45,6 +45,7 @@ object AppConstants {
     const val REQ_CODE_HOME_SEARCH = 127
     const val REQ_CODE_CREATE_NEW_POST = 128
     const val REQ_CODE_GROUP_DETAILS_MORE_OPTIONS = 129
+    const val REQ_CODE_CHOOSE_CONTACTS = 130
 
     const val EXTRA_VENUE_FILTERS = "EXTRA_VENUE_FILTERS"
     const val EXTRA_VENUE = "EXTRA_VENUE"
@@ -59,6 +60,7 @@ object AppConstants {
 
     const val INTENT_CROSSED_PEOPLE_DETAILS = "crossedPeopleDetails"
 
-    const val PLAY_STORE_URL = "PLAY_STORE_URL"
+    const val TITLE_SHARE_VIA="Share via"
+    const val PLAY_STORE_URL = "http://play.google.com/store/apps/details?id="
 
 }

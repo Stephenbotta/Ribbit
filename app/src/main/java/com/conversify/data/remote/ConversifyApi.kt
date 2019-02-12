@@ -261,6 +261,6 @@ interface ConversifyApi {
 
     @POST("user/settingVerification")
     @FormUrlEncoded
-    fun postSettingsVerification(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<ProfileDto>>
+    fun postSettingsVerification(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<Any>>
 
 }

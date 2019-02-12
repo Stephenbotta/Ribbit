@@ -38,19 +38,19 @@ class SearchVenueViewModel(application: Application) : BaseViewModel(application
 
         val hashMap = hashMapOf<String, String>()
         if (firstPage)
-            hashMap.put("pageNo", 1.toString())
+            hashMap["pageNo"] = 1.toString()
         else
-            hashMap.put("pageNo", page.toString())
+            hashMap["pageNo"] = page.toString()
 
         if (!search.isNullOrEmpty()) {
-            hashMap.put("search", search)
+            hashMap["search"] = search
         }
         val currentLat = UserManager.getLastLatitude()
         val currentLong = UserManager.getLastLongitude()
         if (currentLat != null)
-            hashMap.put("currentLat", currentLat.toString())
+            hashMap["currentLat"] = currentLat.toString()
         if (currentLong != null)
-            hashMap.put("currentLong", currentLong.toString())
+            hashMap["currentLong"] = currentLong.toString()
         RetrofitClient.conversifyApi
                 .getVenueSearch(hashMap)
                 .enqueue(object : Callback<ApiResponse<List<VenueDto>>> {

@@ -1,7 +1,6 @@
 package com.conversify.ui.profile.settings.verification
 
 import android.Manifest
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -15,9 +14,7 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
-import com.conversify.utils.AppConstants
-import com.conversify.utils.GetSampledImage
-import com.conversify.utils.MediaPicker
+import com.conversify.utils.*
 import com.conversify.utils.PermissionUtils
 import kotlinx.android.synthetic.main.activity_verification.*
 import permissions.dispatcher.*
@@ -31,6 +28,7 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
     private var selectedImage: File? = null
     private lateinit var mediaPicker: MediaPicker
     private lateinit var loadingDialog: LoadingDialog
+    private var apiFlag = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +36,9 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
 
         mediaPicker = MediaPicker(this)
         loadingDialog = LoadingDialog(this)
+        setData(viewModel.getProfile())
         setListener()
         observeChanges()
-        setData(viewModel.getProfile())
     }
 
     private fun setData(profile: ProfileDto) {
@@ -62,6 +60,20 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
         tvEmailVerified.setOnClickListener(this)
         tvMobileVerified.setOnClickListener(this)
         tvUploadDocument.setOnClickListener(this)
+        mediaPicker.setImagePickerListener { imageFile ->
+            getSampledImage?.removeListener()
+            getSampledImage?.cancel(true)
+
+            getSampledImage = GetSampledImage()
+            getSampledImage?.setListener { sampledImage ->
+                selectedImage = sampledImage
+                apiFlag = 3
+                viewModel.settingsVerification(hashMapOf(), selectedImage)
+            }
+
+            val imageDirectory = FileUtils.getAppCacheDirectoryPath(this)
+            getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
+        }
     }
 
     private fun observeChanges() {
@@ -72,8 +84,13 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
             when (resource.status) {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
-                    setResult(Activity.RESULT_OK)
-                    finish()
+                    selectedImage = null
+                    when (apiFlag) {
+                        1 -> longToast(getString(R.string.verification_api_message_verify_email))
+                        2 -> longToast(getString(R.string.verification_api_message_verify_mobile))
+                        3 -> longToast(getString(R.string.verification_api_message_verify_passport))
+                    }
+
                 }
 
                 Status.ERROR -> {
@@ -88,6 +105,24 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         })
+    }
+
+    private fun verifiedEmail(profile: ProfileDto) {
+        if (!profile.isEmailVerified!!) {
+            apiFlag = 1
+            val map = hashMapOf<String, String>()
+            map["email"] = profile.email!!
+            viewModel.settingsVerification(map, selectedImage)
+        }
+    }
+
+    private fun verifiedMobile(profile: ProfileDto) {
+        if (!profile.isMobileVerified!!) {
+            apiFlag = 2
+            val map = hashMapOf<String, String>()
+            map["phoneNumber"] = profile.fullPhoneNumber!!
+            viewModel.settingsVerification(map, selectedImage)
+        }
     }
 
     @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -125,15 +160,11 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
 
             R.id.btnBack -> onBackPressed()
 
-            R.id.tvEmailVerified -> {
-            }
+            R.id.tvEmailVerified -> verifiedEmail(viewModel.getProfile())
 
-            R.id.tvMobileVerified -> {
-            }
+            R.id.tvMobileVerified -> verifiedMobile(viewModel.getProfile())
 
-            R.id.tvUploadDocument -> {
-                showMediaPickerWithPermissionCheck()
-            }
+            R.id.tvUploadDocument -> showMediaPickerWithPermissionCheck()
         }
     }
 

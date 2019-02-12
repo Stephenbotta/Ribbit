@@ -254,7 +254,7 @@
     <string name="add_venue_participants_message_request_sent">Request has been sent to the participants. They will get added once they accept.</string>
 
     <string name="chat_listing_label_individual">Individual</string>
-    <string name="chat_listing_label_group">Group</string>
+    <string name="chat_listing_label_group">Channel</string>
     <string name="chat_listing_label_empty">No Chat Found</string>
     <string name="chat_listing_hint_search_for_chat">Search</string>
     <string name="chat_listing_photo_last_message_for_chat">Photo</string>
@@ -317,5 +317,11 @@
     <string name="verification_label_verify_email">Email verified</string>
     <string name="verification_label_verify_mobile">Mobile number verified</string>
     <string name="verification_btn_upload_document">Upload document (Passport Id)</string>
+    <string name="verification_api_message_verify_email">We have sent verification email to your registered email id. Please verify your email.</string>
+    <string name="verification_api_message_verify_mobile">We have sent verification otp to your registered mobile number. Please verify your mobile number.</string>
+    <string name="verification_api_message_verify_passport">Passport id uploaded successfully</string>
+
+    <string name="invite_people_option_more_text_message">work in process</string>
+
 
 </resources>

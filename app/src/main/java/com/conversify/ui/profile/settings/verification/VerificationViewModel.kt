@@ -10,8 +10,6 @@ import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.Resource
-import com.conversify.data.remote.models.loginsignup.ProfileDto
-import com.conversify.data.remote.models.profile.CreateEditProfileRequest
 import com.conversify.ui.base.BaseViewModel
 import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
@@ -26,19 +24,18 @@ class VerificationViewModel(application: Application) : BaseViewModel(applicatio
 
     private var profile = UserManager.getProfile()
     private val s3Uploader by lazy { S3Uploader(S3Utils.TRANSFER_UTILITY) }
-    val verificationApi by lazy { SingleLiveEvent<Resource<ApiResponse<ProfileDto>>>() }
+    val verificationApi by lazy { SingleLiveEvent<Resource<ApiResponse<Any>>>() }
 
-
-    fun editProfile(request: CreateEditProfileRequest, postImage: File?) {
+    fun settingsVerification(map: HashMap<String, String>, postImage: File?) {
         if (postImage == null) {
-            postSettingsVerification(request)
+            postSettingsVerification(map)
         } else {
             verificationApi.value = Resource.loading()
             s3Uploader.upload(postImage)
                     .addUploadCompleteListener { imageUrl ->
-                        request.imageOriginal = imageUrl
-                        request.imageThumbnail = imageUrl
-                        postSettingsVerification(request)
+                        val map = hashMapOf<String, String>()
+                        map["passportDocUrl"] = imageUrl
+                        postSettingsVerification(map)
                     }
                     .addUploadFailedListener {
                         verificationApi.value = Resource.error(AppError.WaitingForNetwork)
@@ -46,25 +43,21 @@ class VerificationViewModel(application: Application) : BaseViewModel(applicatio
         }
     }
 
-    private fun postSettingsVerification(request: CreateEditProfileRequest) {
+    private fun postSettingsVerification(map: HashMap<String, String>) {
         verificationApi.value = Resource.loading()
 
         RetrofitClient.conversifyApi
-                .editProfile(request)
-                .enqueue(object : Callback<ApiResponse<ProfileDto>> {
-                    override fun onResponse(call: Call<ApiResponse<ProfileDto>>, response: Response<ApiResponse<ProfileDto>>) {
+                .postSettingsVerification(map)
+                .enqueue(object : Callback<ApiResponse<Any>> {
+                    override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
                         if (response.isSuccessful) {
-                            val profile = response.body()?.data
-                            if (profile != null) {
-                                UserManager.saveProfile(profile)
-                            }
                             verificationApi.value = Resource.success()
                         } else {
                             verificationApi.value = Resource.error(response.getAppError())
                         }
                     }
 
-                    override fun onFailure(call: Call<ApiResponse<ProfileDto>>, t: Throwable) {
+                    override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
                         verificationApi.value = Resource.error(t.failureAppError())
                     }
                 })

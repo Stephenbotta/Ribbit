@@ -32,13 +32,10 @@ class ChatViewPagerAdapter(context: Context, manager: FragmentManager) : Fragmen
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        val title = if (position == 0) {
+        return if (position == 0) {
             context.getString(R.string.chat_listing_label_individual)
-//            "Individual"//getString(R.string.chat_listing_label_individual)
         } else {
             context.getString(R.string.chat_listing_label_group)
-//            "Group"//getString(R.string.chat_listing_label_group)
         }
-        return title
     }
 }

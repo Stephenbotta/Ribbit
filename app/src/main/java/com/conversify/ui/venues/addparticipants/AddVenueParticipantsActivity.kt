@@ -58,7 +58,7 @@ class AddVenueParticipantsActivity : BaseActivity() {
         btnBack.setOnClickListener { onBackPressed() }
         btnContinue.setOnClickListener {
             if (isNetworkActiveWithMessage()) {
-                viewModel.addVenueParticipants(venueId, selectedParticipantIds.toList(),flag)
+                viewModel.addVenueParticipants(venueId, selectedParticipantIds.toList(), flag)
             }
         }
     }
@@ -137,8 +137,8 @@ class AddVenueParticipantsActivity : BaseActivity() {
         if (isNetworkActiveWithMessage()) {
             val hashMap = hashMapOf<String, String>()
             when (flag) {
-                AppConstants.REQ_CODE_VENUE_DETAILS -> hashMap.put("venueId", venueId)
-                AppConstants.REQ_CODE_GROUP_DETAILS -> hashMap.put("groupId", venueId)
+                AppConstants.REQ_CODE_VENUE_DETAILS -> hashMap["venueId"] = venueId
+                AppConstants.REQ_CODE_GROUP_DETAILS -> hashMap["groupId"] = venueId
             }
             viewModel.getVenueAddParticipants(hashMap)
         } else {

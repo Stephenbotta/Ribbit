@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
@@ -16,13 +17,11 @@ import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.databinding.BottomSheetDialogInvitePeopleBinding
-import com.conversify.extensions.handleError
-import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.shortToast
-import com.conversify.extensions.startLandingWithClear
+import com.conversify.extensions.*
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.profile.settings.verification.VerificationActivity
+import com.conversify.utils.AppConstants
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : BaseActivity(), View.OnClickListener {
@@ -116,11 +115,11 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
             bottomSheetDialog.dismiss()
         }
         binding.tvMessage.setOnClickListener {
-            shortToast("work in process")
+            openContactList()
             bottomSheetDialog.dismiss()
         }
         binding.tvMore.setOnClickListener {
-            shortToast("work in process")
+            invitePeopleMoreOptions()
             bottomSheetDialog.dismiss()
         }
         binding.tvCancel.setOnClickListener { bottomSheetDialog.dismiss() }
@@ -144,6 +143,35 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     private fun verification() {
         val intent = Intent(this, VerificationActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun openContactList() {
+        val intent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
+        startActivityForResult(intent, AppConstants.REQ_CODE_CHOOSE_CONTACTS)
+    }
+
+    private fun invitePeopleMoreOptions() {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_people_option_more_text_message))
+        startActivity(Intent.createChooser(intent, AppConstants.TITLE_SHARE_VIA))
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            AppConstants.REQ_CODE_CHOOSE_CONTACTS -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val contactData = data?.data
+                    val phone = contentResolver.query(contactData, null, null, null, null)
+                    if (phone!!.moveToFirst()) {
+                        val contactNumberName = phone.getString(phone.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                        // Todo something when contact number selected
+                        longToast(contactNumberName)
+                    }
+                }
+            }
+        }
     }
 
     override fun onClick(v: View?) {
