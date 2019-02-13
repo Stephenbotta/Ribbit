@@ -115,7 +115,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
             bottomSheetDialog.dismiss()
         }
         binding.tvMessage.setOnClickListener {
-            openContactList()
+            openPhoneBookList()
             bottomSheetDialog.dismiss()
         }
         binding.tvMore.setOnClickListener {
@@ -145,7 +145,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         startActivity(intent)
     }
 
-    private fun openContactList() {
+    private fun openPhoneBookList() {
         val intent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
         startActivityForResult(intent, AppConstants.REQ_CODE_CHOOSE_CONTACTS)
     }
