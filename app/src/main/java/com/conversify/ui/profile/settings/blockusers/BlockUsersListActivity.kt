@@ -1,4 +1,4 @@
-package com.conversify.ui.profile.settings
+package com.conversify.ui.profile.settings.blockusers
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -28,9 +28,9 @@ import com.conversify.ui.profile.settings.verification.VerificationActivity
 import com.conversify.utils.AppConstants
 import kotlinx.android.synthetic.main.activity_settings.*
 
-class SettingsActivity : BaseActivity(), View.OnClickListener {
+class BlockUsersListActivity : BaseActivity(), View.OnClickListener {
 
-    private val viewModel by lazy { ViewModelProviders.of(this)[SettingsViewModel::class.java] }
+    private val viewModel by lazy { ViewModelProviders.of(this)[BlockUsersListViewModel::class.java] }
     private lateinit var loadingDialog: LoadingDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,9 +44,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setData(profile: ProfileDto) {
-        if (profile.isAlertNotifications!!)
-            tvAlert.isChecked = profile.isAlertNotifications
-        else tvAlert.isChecked = profile.isAlertNotifications
+
     }
 
     private fun setListener() {
@@ -117,7 +115,6 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         bottomSheetDialog.setContentView(binding.root)
         bottomSheetDialog.show()
         binding.tvMail.setOnClickListener {
-            sendEmail()
             bottomSheetDialog.dismiss()
         }
         binding.tvMessage.setOnClickListener {
@@ -154,15 +151,6 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     private fun openPhoneBookList() {
         val intent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
         startActivityForResult(intent, AppConstants.REQ_CODE_CHOOSE_CONTACTS)
-    }
-
-    private fun sendEmail() {
-        val emailIntent = Intent(android.content.Intent.ACTION_SEND)
-        emailIntent.type = "plain/text"
-//        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, "manishsharma@code-brew.com")
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite")
-        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.invite_people_option_more_text_message))
-        startActivity(emailIntent)
     }
 
     private fun sendInviteViaMessages() {

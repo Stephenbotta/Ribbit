@@ -106,12 +106,21 @@ data class ProfileDto(
         var gender: String? = null,
 
         @field:SerializedName("isUploaded")
-        val isUploaded:Boolean?=null,
+        val isUploaded: Boolean? = null,
 
         @field:SerializedName("isPhoneNumberVerified")
-        val isMobileVerified:Boolean?=null,
+        val isMobileVerified: Boolean? = null,
 
         @field:SerializedName("isEmailVerified")
-        val isEmailVerified:Boolean?=null,
+        val isEmailVerified: Boolean? = null,
+
+        @field:SerializedName("alertNotifications")
+        val isAlertNotifications: Boolean? = null,
+
+        @field:SerializedName("isAccountPrivate")
+        val isAccountPrivate: Boolean? = null,
+
+        @field:SerializedName("isPassportVerified")
+        val isPassportVerified: Boolean? = null,
 
         var isSelected: Boolean = false) : Parcelable

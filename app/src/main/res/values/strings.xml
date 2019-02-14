@@ -321,7 +321,9 @@
     <string name="verification_api_message_verify_mobile">We have sent verification otp to your registered mobile number. Please verify your mobile number.</string>
     <string name="verification_api_message_verify_passport">Passport id uploaded successfully</string>
 
-    <string name="invite_people_option_more_text_message">work in process</string>
+    <string name="invite_people_option_more_text_message">To share this app, please type their emails or select their names from the list. Enjoy!</string>
 
+    <string name="block_user_label_empty_list">No blocked user yet!!</string>
+    <string name="block_user_label_blocked_user">Blocked users</string>
 
 </resources>
