@@ -24,6 +24,7 @@ import com.conversify.extensions.longToast
 import com.conversify.extensions.startLandingWithClear
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.profile.settings.blockusers.BlockUsersListActivity
 import com.conversify.ui.profile.settings.verification.VerificationActivity
 import com.conversify.utils.AppConstants
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -179,6 +180,11 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         startActivity(Intent.createChooser(intent, AppConstants.TITLE_SHARE_VIA))
     }
 
+    private fun blockUsers() {
+        val intent = Intent(this, BlockUsersListActivity::class.java)
+        startActivity(intent)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -205,14 +211,12 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
             R.id.tvInvitePeople -> invitePeople()
 
-            R.id.tvShareContactDetails -> {
-            }
+            R.id.tvShareContactDetails -> {}
 
             R.id.tvHidePersonalInfo -> {
             }
 
-            R.id.tvBlockUsers -> {
-            }
+            R.id.tvBlockUsers -> blockUsers()
 
             R.id.tvAccessLocation -> {
             }

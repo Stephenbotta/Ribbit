@@ -263,4 +263,7 @@ interface ConversifyApi {
     @FormUrlEncoded
     fun postSettingsVerification(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<Any>>
 
+    @GET("user/listBlockedUsers")
+    fun getBlockedUsersList(): Call<ApiResponse<List<ProfileDto>>>
+
 }

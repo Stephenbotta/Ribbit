@@ -24,53 +24,27 @@ import java.io.File
  */
 class BlockUsersListViewModel(application: Application) : BaseViewModel(application) {
 
-    private var profile = UserManager.getProfile()
-    val editProfile by lazy { SingleLiveEvent<Resource<ApiResponse<ProfileDto>>>() }
-    val logout by lazy { SingleLiveEvent<Resource<Any>>() }
+    val blockUsersList by lazy { SingleLiveEvent<Resource<List<ProfileDto>>>() }
 
-    fun logout() {
-        logout.value = Resource.loading()
+    fun getBlockedUsers() {
+        blockUsersList.value = Resource.loading()
+
         RetrofitClient.conversifyApi
-                .logout()
-                .enqueue(object : Callback<Any> {
-                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                .getBlockedUsersList()
+                .enqueue(object : Callback<ApiResponse<List<ProfileDto>>> {
+                    override fun onResponse(call: Call<ApiResponse<List<ProfileDto>>>, response: Response<ApiResponse<List<ProfileDto>>>) {
                         if (response.isSuccessful) {
-                            logout.value = Resource.success()
+                            val list = response.body()?.data?: emptyList()
+                            blockUsersList.value = Resource.success(list)
                         } else {
-                            logout.value = Resource.error(response.getAppError())
+                            blockUsersList.value = Resource.error(response.getAppError())
                         }
                     }
 
-                    override fun onFailure(call: Call<Any>, t: Throwable) {
-                        logout.value = Resource.error(t.failureAppError())
+                    override fun onFailure(call: Call<ApiResponse<List<ProfileDto>>>, t: Throwable) {
+                        blockUsersList.value = Resource.error(t.failureAppError())
                     }
                 })
     }
-
-    private fun updateProfileApi(request: CreateEditProfileRequest) {
-        editProfile.value = Resource.loading()
-
-        RetrofitClient.conversifyApi
-                .editProfile(request)
-                .enqueue(object : Callback<ApiResponse<ProfileDto>> {
-                    override fun onResponse(call: Call<ApiResponse<ProfileDto>>, response: Response<ApiResponse<ProfileDto>>) {
-                        if (response.isSuccessful) {
-                            val profile = response.body()?.data
-                            if (profile != null) {
-                                UserManager.saveProfile(profile)
-                            }
-                            editProfile.value = Resource.success()
-                        } else {
-                            editProfile.value = Resource.error(response.getAppError())
-                        }
-                    }
-
-                    override fun onFailure(call: Call<ApiResponse<ProfileDto>>, t: Throwable) {
-                        editProfile.value = Resource.error(t.failureAppError())
-                    }
-                })
-    }
-
-    fun getProfile() = profile
 
 }

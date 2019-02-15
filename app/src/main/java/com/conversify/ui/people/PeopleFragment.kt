@@ -2,7 +2,6 @@ package com.conversify.ui.people
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -100,8 +99,7 @@ class PeopleFragment : BaseFragment(), PeopleCallback {
         if (isDetailShow) {
             if (item is UserCrossedDto) {
                 PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, item.crossedUser?.id!!)
-                val intent = Intent(activity, PeopleDetailsActivity::class.java)
-                intent.putExtra(AppConstants.INTENT_CROSSED_PEOPLE_DETAILS, item)
+                val intent = PeopleDetailsActivity.getStartIntent(requireContext(), item, AppConstants.REQ_CODE_PEOPLE)
                 activity?.startActivity(intent)
             }
         } else {
@@ -110,7 +108,6 @@ class PeopleFragment : BaseFragment(), PeopleCallback {
                 startActivityForResult(intent, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
             }
         }
-
     }
 
     override fun onClickItem() {

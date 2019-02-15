@@ -3,6 +3,8 @@ package com.conversify.ui.people.details
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.PopupMenu
 import android.view.MenuItem
@@ -26,12 +28,24 @@ import kotlinx.android.synthetic.main.activity_people_details.*
 
 class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
+    companion object {
+        private const val EXTRA_FLAG = "EXTRA_FLAG"
+        private const val EXTRA_CROSSED_PEOPLE_DETAILS = "EXTRA_CROSSED_PEOPLE_DETAILS"
+
+        fun getStartIntent(context: Context, userCrossed: UserCrossedDto, flag: Int): Intent {
+            return Intent(context, PeopleDetailsActivity::class.java)
+                    .putExtra(EXTRA_FLAG, flag)
+                    .putExtra(EXTRA_CROSSED_PEOPLE_DETAILS, userCrossed)
+        }
+
+    }
+
     private lateinit var viewModel: PeopleDetailsViewModel
     private lateinit var interestsAdapter: PeopleMutualInterestsAdapter
     private lateinit var userId: String
     private lateinit var userCrossed: UserCrossedDto
     private var profile: ProfileDto? = null
-
+    private var flag = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +55,8 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
 
     private fun inItClasses() {
         viewModel = ViewModelProviders.of(this).get(PeopleDetailsViewModel::class.java)
-        userCrossed = intent.getParcelableExtra<UserCrossedDto>(AppConstants.INTENT_CROSSED_PEOPLE_DETAILS)
+        flag = intent.getIntExtra(EXTRA_FLAG, 0)
+        userCrossed = intent.getParcelableExtra<UserCrossedDto>(EXTRA_CROSSED_PEOPLE_DETAILS)
         userId = PrefsManager.get().getString(PrefsManager.PREF_PEOPLE_USER_ID, "")
         swipeRefreshLayout.setOnRefreshListener { getPeopleDetails(userId) }
         observeChanges()
@@ -187,12 +202,11 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
 
     private fun toggleBlock(): Double {
         profile?.isBlocked = profile?.isBlocked?.not()
-        val action = if (profile?.isBlocked == true) {
+        return if (profile?.isBlocked == true) {
             1.0
         } else {
             2.0
         }
-        return action
     }
 
     private fun setupInterestsRecycler() {
@@ -254,11 +268,12 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
     private fun optionMenu(v: View) {
         val popup = PopupMenu(this, v)
         popup.inflate(R.menu.menu_block_user)
-        if (profile?.isBlocked!!) {
-            popup.menu.getItem(0).title = getString(R.string.people_detail_more_label_unblock)
-        } else {
-            popup.menu.getItem(0).title = getString(R.string.people_detail_more_label_block)
-        }
+        if (profile != null)
+            if (profile?.isBlocked!!) {
+                popup.menu.getItem(0).title = getString(R.string.people_detail_more_label_unblock)
+            } else {
+                popup.menu.getItem(0).title = getString(R.string.people_detail_more_label_block)
+            }
 //        val m = popup.menu as MenuBuilder     //  visible the icon for menu
 //        m.setOptionalIconsVisible(true)
         popup.setOnMenuItemClickListener(this)
@@ -278,8 +293,20 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
             }
 
             R.id.fabChat -> {
-                val intent = ChatActivity.getStartIntentForIndividualChat(this, userCrossed, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
-                startActivityForResult(intent, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
+                when (flag) {
+
+                    AppConstants.REQ_CODE_PEOPLE -> {
+                        val intent = ChatActivity.getStartIntentForIndividualChat(this, userCrossed, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
+                        startActivityForResult(intent, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
+                    }
+
+                    AppConstants.REQ_CODE_BLOCK_USER -> {
+                        val intent = ChatActivity.getStartIntentForIndividualChat(this, userCrossed, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
+                        startActivityForResult(intent, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
+                    }
+
+                }
+
             }
 
             R.id.btnMore -> optionMenu(v)

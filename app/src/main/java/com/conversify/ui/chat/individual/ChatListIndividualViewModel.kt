@@ -53,13 +53,13 @@ class ChatListIndividualViewModel(application: Application) : AndroidViewModel(a
     private val cacheDirectoryPath by lazy { cacheDirectory.absolutePath }
     private val mediaController by lazy { MediaController.getInstance() }
 
-    private lateinit var venue: UserCrossedDto
+    private lateinit var userCrossed: UserCrossedDto
 
     private var lastMessageId: String? = null
     private var isChatLoading = false
     private var isLastChatMessageReceived = false
 
-    private var venueDetailsLoaded = false
+    private var detailsLoaded = false
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + parentJob
@@ -67,26 +67,26 @@ class ChatListIndividualViewModel(application: Application) : AndroidViewModel(a
     private val newMessageListener = Emitter.Listener { args ->
         val chatMessage = chatMessageBuilder.getChatMessageFromSocketArgument(args.firstOrNull())
         Timber.i("New message received:\n$chatMessage")
-        if (chatMessage != null && chatMessage.conversationId == venue.conversationId) {
+        if (chatMessage != null && chatMessage.conversationId == userCrossed.conversationId) {
             newMessage.postValue(chatMessage)
         }
     }
 
-    fun start(venue: UserCrossedDto) {
-        updateVenue(venue)
-        venueDetailsLoaded = false
+    fun start(userCrossed: UserCrossedDto) {
+        update(userCrossed)
+        detailsLoaded = false
         lastMessageId = null
         socketManager.on(SocketManager.EVENT_NEW_MESSAGE, newMessageListener)
         socketManager.connect()
     }
 
-    fun updateVenue(venue: UserCrossedDto) {
-        this.venue = venue
+    fun update(userCrossed: UserCrossedDto) {
+        this.userCrossed = userCrossed
     }
 
     fun isValidForPaging() = !isChatLoading && !isLastChatMessageReceived
 
-    fun getVenue(): UserCrossedDto = venue
+    fun getUser(): UserCrossedDto = userCrossed
 
     fun sendTextMessage(textMessage: String) {
         val message = chatMessageBuilder.buildTextMessage(textMessage)
@@ -243,7 +243,7 @@ class ChatListIndividualViewModel(application: Application) : AndroidViewModel(a
         oldMessages.value = Resource.loading()
         isChatLoading = true
         val firstPage = lastMessageId == null
-        val call = RetrofitClient.conversifyApi.getIndividualChat(venue.conversationId, lastMessageId)
+        val call = RetrofitClient.conversifyApi.getIndividualChat(userCrossed.conversationId, lastMessageId)
         apiCalls.add(call)
         call.enqueue(object : Callback<ApiResponse<ChatIndividualResponse>> {
             override fun onResponse(call: Call<ApiResponse<ChatIndividualResponse>>,
@@ -298,7 +298,7 @@ class ChatListIndividualViewModel(application: Application) : AndroidViewModel(a
                 Timber.i("Send message acknowledge\n$acknowledgement")
                 message.id = acknowledgeMessage?.id
                 message.conversationId = acknowledgeMessage?.conversationId
-                venue.conversationId = acknowledgeMessage?.conversationId
+                userCrossed.conversationId = acknowledgeMessage?.conversationId
                 message.isDelivered = true
                 sendMessage.postValue(Resource.success(message))
             }
@@ -308,8 +308,8 @@ class ChatListIndividualViewModel(application: Application) : AndroidViewModel(a
     private fun getMessageJsonObject(message: ChatMessageDto): JSONObject {
         val jsonObject = JSONObject()
         jsonObject.putOpt("senderId", ownUserId)
-        jsonObject.putOpt("receiverId", venue.profile?.id)
-        jsonObject.putOpt("conversationId", venue.conversationId)
+        jsonObject.putOpt("receiverId", userCrossed.profile?.id)
+        jsonObject.putOpt("conversationId", userCrossed.conversationId)
         jsonObject.putOpt("type", message.details?.type)
         jsonObject.putOpt("message", message.details?.message)
 

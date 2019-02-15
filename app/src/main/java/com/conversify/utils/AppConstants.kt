@@ -46,6 +46,8 @@ object AppConstants {
     const val REQ_CODE_CREATE_NEW_POST = 128
     const val REQ_CODE_GROUP_DETAILS_MORE_OPTIONS = 129
     const val REQ_CODE_CHOOSE_CONTACTS = 130
+    const val REQ_CODE_BLOCK_USER = 131
+    const val REQ_CODE_PEOPLE = 132
 
     const val EXTRA_VENUE_FILTERS = "EXTRA_VENUE_FILTERS"
     const val EXTRA_VENUE = "EXTRA_VENUE"
@@ -57,8 +59,6 @@ object AppConstants {
     const val ACTION_GROUP_POSTS_LOADED = "ACTION_GROUP_POSTS_LOADED"
     const val ACTION_GROUP_POST_UPDATED_POST_DETAILS = "ACTION_GROUP_POST_UPDATED_POST_DETAILS"
     const val ACTION_GROUP_POST_UPDATED_GROUP_POSTS_LISTING = "ACTION_GROUP_POST_UPDATED_GROUP_POSTS_LISTING"
-
-    const val INTENT_CROSSED_PEOPLE_DETAILS = "crossedPeopleDetails"
 
     const val TITLE_SHARE_VIA="Share via"
     const val PLAY_STORE_URL = "http://play.google.com/store/apps/details?id="
