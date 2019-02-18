@@ -83,7 +83,6 @@
                 android:maxLength="@integer/venue_title_max_length"
                 android:singleLine="true"
                 android:textColor="@color/textGray"
-                android:textSize="16sp"
                 android:theme="@style/AppTheme.EditTextCreateVenue"
                 tools:text="Starbucks Fans" />
 
@@ -112,7 +111,6 @@
                 android:singleLine="true"
                 android:textColor="@color/textGray"
                 android:textIsSelectable="false"
-                android:textSize="16sp"
                 android:theme="@style/AppTheme.EditTextCreateVenue"
                 tools:text="@tools:sample/cities" />
 
@@ -137,7 +135,6 @@
                 android:inputType="text"
                 android:singleLine="true"
                 android:textColor="@color/textGray"
-                android:textSize="16sp"
                 android:theme="@style/AppTheme.EditTextCreateVenue"
                 tools:text="#movies #action" />
 
@@ -166,7 +163,6 @@
                 android:singleLine="true"
                 android:textColor="@color/textGray"
                 android:textIsSelectable="false"
-                android:textSize="16sp"
                 android:theme="@style/AppTheme.EditTextCreateVenue"
                 tools:text="12 Nov 2018, 06:25 PM" />
 
@@ -243,7 +239,6 @@
             android:singleLine="true"
             android:textColor="@color/textGray"
             android:textColorHint="@color/textGrayMedium"
-            android:textSize="16sp"
             android:theme="@style/AppTheme.EditTextCreateVenue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -352,6 +347,6 @@
 
         </LinearLayout>
 
-
     </android.support.constraint.ConstraintLayout>
+
 </ScrollView>

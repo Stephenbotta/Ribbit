@@ -8,7 +8,7 @@
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="back">Back</string>
+    <string name="back">BACK</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
     <string name="retry">Retry</string>
@@ -325,5 +325,26 @@
 
     <string name="block_user_label_empty_list">No blocked user yet!!</string>
     <string name="block_user_label_blocked_user">Blocked users</string>
+
+    <string name="search_user_label_explore_connections">EXPLORE CONNECTIONS</string>
+    <string name="search_user_label_select_location">Select location</string>
+    <string name="search_user_label_select_range">Selected Range</string>
+    <string name="search_user_label_go">Go</string>
+    <string name="search_user_label_finding_matches">Finding matches...</string>
+
+    <string name="hide_info_private_account">Private account</string>
+    <string name="hide_info_label_private_message">Only your followers will be able to see your photos and videos</string>
+    <string name="hide_info_see_profile_pic">Who can see my profile picture</string>
+    <string name="hide_info_see_profile_pic_message">Select people who can see your profile picture</string>
+    <string name="hide_info_see_private_info">Who can see my private info</string>
+    <string name="hide_info_see_private_info_message">Select people who can see your email, phone and gender</string>
+    <string name="hide_info_see_username">Who can see my username</string>
+    <string name="hide_info_see_username_message">Select people who can see your username</string>
+    <string name="hide_info_message_me">Who can message me</string>
+    <string name="hide_info_message_me_message">Select people who can tag you in photos and videos</string>
+    <string name="hide_info_search_username">Search by username</string>
+    <string name="hide_info_everyone">Everyone</string>
+    <string name="hide_info_your_followers">Your Followers</string>
+    <string name="hide_info_selected_users">Selected Users</string>
 
 </resources>

@@ -19,7 +19,7 @@
         android:paddingEnd="8dp"
         android:text="@string/create_group_label_channels"
         android:textColor="@color/colorPrimary"
-        android:textSize="12sp" />
+        android:textSize="@dimen/back_navigation_header_text_size" />
 
     <TextView
         android:id="@+id/tvTopic"

@@ -19,7 +19,7 @@
         android:paddingStart="8dp"
         android:text="@string/back"
         android:textColor="@color/colorPrimary"
-        android:textSize="12sp" />
+        android:textSize="@dimen/back_navigation_header_text_size" />
 
     <FrameLayout
         android:id="@+id/flContainer"

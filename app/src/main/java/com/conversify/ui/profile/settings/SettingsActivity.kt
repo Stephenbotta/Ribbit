@@ -8,13 +8,13 @@ import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.provider.Settings
 import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.TextView
 import com.conversify.R
-import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.databinding.BottomSheetDialogInvitePeopleBinding
@@ -26,6 +26,7 @@ import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.profile.settings.blockusers.BlockUsersListActivity
 import com.conversify.ui.profile.settings.verification.VerificationActivity
+import com.conversify.ui.profile.settings.weblink.WebLinkActivity
 import com.conversify.utils.AppConstants
 import kotlinx.android.synthetic.main.activity_settings.*
 
@@ -87,21 +88,21 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
             }
         })
 
-        viewModel.editProfile.observe(this, Observer { resource ->
+        viewModel.alert.observe(this, Observer { resource ->
             resource ?: return@Observer
 
             when (resource.status) {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
-                    setResult(Activity.RESULT_OK)
-                    finish()
+                    val data = resource.data
+                    if (data?.isAlertNotifications!!)
+                        tvAlert.isChecked = data.isAlertNotifications
+                    else tvAlert.isChecked = data.isAlertNotifications
                 }
 
                 Status.ERROR -> {
                     loadingDialog.setLoading(false)
-                    if (resource.error != AppError.WaitingForNetwork) {
-                        handleError(resource.error)
-                    }
+                    handleError(resource.error)
                 }
 
                 Status.LOADING -> {
@@ -185,6 +186,34 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         startActivity(intent)
     }
 
+    private fun shareContactDetails() {
+        val profile = viewModel.getProfile()
+        val details = "${getString(R.string.edit_profile_label_name)} : ${profile.fullName}\n${getString(R.string.welcome_label_username)} : ${profile.userName}\n" +
+                "${getString(R.string.profile_label_bio)} : ${profile.bio}\n${getString(R.string.edit_profile_label_private_info)}\n${getString(R.string.edit_profile_label_email)} : ${profile.email}\n" +
+                "${getString(R.string.edit_profile_label_phone)} : ${profile.fullPhoneNumber}\n${getString(R.string.edit_profile_label_gender)} : ${profile.gender}"
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, details)
+        startActivity(Intent.createChooser(intent, AppConstants.TITLE_SHARE_VIA))
+    }
+
+    private fun accessLocation() {
+        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+        startActivity(intent)
+    }
+
+    private fun notificationSettings() {
+        val intent = Intent()
+        intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
+//for Android 5-7
+        intent.putExtra("app_package", packageName)
+        intent.putExtra("app_uid", applicationInfo.uid)
+// for Android 8 and above
+        intent.putExtra("android.provider.extra.APP_PACKAGE", packageName)
+        startActivity(intent)
+    }
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -211,27 +240,22 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
             R.id.tvInvitePeople -> invitePeople()
 
-            R.id.tvShareContactDetails -> {}
+            R.id.tvShareContactDetails -> shareContactDetails()
 
             R.id.tvHidePersonalInfo -> {
             }
 
             R.id.tvBlockUsers -> blockUsers()
 
-            R.id.tvAccessLocation -> {
-            }
+            R.id.tvAccessLocation -> accessLocation()
 
-            R.id.tvContactUs -> {
-            }
+            R.id.tvContactUs -> {}
 
-            R.id.tvTermsAndConditions -> {
-            }
+            R.id.tvTermsAndConditions -> {}
 
-            R.id.tvPush -> {
-            }
+            R.id.tvPush -> notificationSettings()
 
-            R.id.tvAlert -> {
-            }
+            R.id.tvAlert -> viewModel.alertNotification(!viewModel.getProfile().isAlertNotifications!!)
 
             R.id.tvLogout -> showLogoutConfirmationDialog()
         }

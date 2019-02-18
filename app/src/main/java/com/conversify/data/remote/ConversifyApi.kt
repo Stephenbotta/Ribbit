@@ -216,12 +216,12 @@ interface ConversifyApi {
     @POST("user/blockUser")
     @FormUrlEncoded
     fun postBlock(@Field("userId") userId: String,
-                           @Field("action") action: Double): Call<ApiResponse<Any>>
+                  @Field("action") action: Double): Call<ApiResponse<Any>>
 
     @POST("user/followUnfollowTag")
     @FormUrlEncoded
     fun postFollowUnFollowTag(@Field("tagId") tagId: String,
-                           @Field("follow") follow: Boolean): Call<ApiResponse<Any>>
+                              @Field("follow") follow: Boolean): Call<ApiResponse<Any>>
 
     @POST("user/chatConversation")
     @FormUrlEncoded
@@ -265,5 +265,9 @@ interface ConversifyApi {
 
     @GET("user/listBlockedUsers")
     fun getBlockedUsersList(): Call<ApiResponse<List<ProfileDto>>>
+
+    @POST("user/configSetting")
+    @FormUrlEncoded
+    fun getAlertNotification(@Field("action") action: Boolean, @Field("flag") flag: Int = ApiConstants.FLAG_ALERT_NOTIFICATION): Call<ApiResponse<ProfileDto>>
 
 }

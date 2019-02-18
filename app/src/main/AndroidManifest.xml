@@ -22,6 +22,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute"
         tools:replace="android:allowBackup">
+        <activity android:name=".ui.profile.settings.weblink.WebLinkActivity"></activity>
         <activity
             android:name=".ui.landing.LandingActivity"
             android:screenOrientation="portrait"
@@ -113,25 +114,19 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.profile.ProfileActivity"
-            android:screenOrientation="portrait" />
-        <!-- https://developers.google.com/maps/documentation/android-sdk/config#specify_requirement_for_apache_http_legacy_library -->
-
+            android:screenOrientation="portrait" /> <!-- https://developers.google.com/maps/documentation/android-sdk/config#specify_requirement_for_apache_http_legacy_library -->
         <activity
             android:name=".ui.search.SearchActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.profile.edit.EditProfileActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.profile.settings.SettingsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.profile.settings.verification.VerificationActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.profile.settings.blockusers.BlockUsersListActivity"
             android:screenOrientation="portrait" />
@@ -163,7 +158,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/app_google_api_key" />
-
     </application>
 
 </manifest>

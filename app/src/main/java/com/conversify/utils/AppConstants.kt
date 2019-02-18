@@ -48,6 +48,8 @@ object AppConstants {
     const val REQ_CODE_CHOOSE_CONTACTS = 130
     const val REQ_CODE_BLOCK_USER = 131
     const val REQ_CODE_PEOPLE = 132
+    const val REQ_CODE_CONTACT_US = 133
+    const val REQ_CODE_TERMS_AND_CONDITIONS = 134
 
     const val EXTRA_VENUE_FILTERS = "EXTRA_VENUE_FILTERS"
     const val EXTRA_VENUE = "EXTRA_VENUE"

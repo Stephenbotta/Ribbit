@@ -21,7 +21,7 @@ class HomePostViewHolder(itemView: View,
                          callback: GroupPostCallback) : RecyclerView.ViewHolder(itemView) {
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
     private val postClickListener = View.OnClickListener {
-        callback.onPostClicked(post, false)
+        callback.onPostClicked(post, true)
     }
     private val likesCountClickListener = View.OnClickListener {
         callback.onLikesCountClicked(post)

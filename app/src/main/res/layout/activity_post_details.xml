@@ -18,9 +18,20 @@
         android:paddingEnd="8dp"
         android:text="@string/back"
         android:textColor="@color/colorPrimary"
-        android:textSize="12sp"
+        android:textSize="@dimen/back_navigation_header_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btnMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:padding="16dp"
+        android:src="@drawable/ic_more"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnBack"
+        tools:ignore="ContentDescription" />
 
     <View
         android:id="@+id/dividerToolbar"

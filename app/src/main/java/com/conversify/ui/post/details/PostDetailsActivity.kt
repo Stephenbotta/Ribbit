@@ -53,6 +53,13 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
         val groupPost = intent.getParcelableExtra<GroupPostDto>(EXTRA_POST)
         viewModel.start(groupPost)
 
+        val groupName = groupPost.group?.name ?: ""
+        val categoryName = String.format("[%s]", groupPost.category?.name ?: "")
+
+        if (!groupName.isNullOrEmpty()) {
+            btnBack.text = "$groupName $categoryName"
+        }
+
         updatePostLikedState(groupPost.isLiked ?: false)
         setupPostRecycler()
         setupUserMentionRecycler()

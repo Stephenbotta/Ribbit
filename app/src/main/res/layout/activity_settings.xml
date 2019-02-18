@@ -19,7 +19,7 @@
         android:paddingEnd="8dp"
         android:text="@string/back"
         android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
+        android:textSize="@dimen/back_navigation_header_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,7 +43,7 @@
         android:paddingEnd="8dp"
         android:text="@string/permission_label_settings"
         android:textColor="@color/textGray"
-        android:textSize="24sp"
+        android:textSize="@dimen/all_screen_header_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider_1" />
 
@@ -71,7 +71,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/profile_label_profile"
                 android:textColor="@color/textGray"
-                android:textSize="18sp"
+                android:textSize="@dimen/all_content_header_text_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -87,7 +87,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/verification_label_verification"
                 android:textColor="@color/textGray"
-                android:textSize="16sp"
+                android:textSize="@dimen/all_labels_and_others_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvLabelProfile" />
@@ -104,7 +104,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/settings_profile_label_invite_people"
                 android:textColor="@color/textGray"
-                android:textSize="16sp"
+                android:textSize="@dimen/all_labels_and_others_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvVerification" />
@@ -121,7 +121,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/settings_profile_label_share_contact_details"
                 android:textColor="@color/textGray"
-                android:textSize="16sp"
+                android:textSize="@dimen/all_labels_and_others_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvInvitePeople" />
@@ -146,7 +146,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/venue_filters_label_privacy"
                 android:textColor="@color/textGray"
-                android:textSize="18sp"
+                android:textSize="@dimen/all_content_header_text_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider_2" />
 
@@ -162,7 +162,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/settings_profile_label_hide_personal_info"
                 android:textColor="@color/textGray"
-                android:textSize="16sp"
+                android:textSize="@dimen/all_labels_and_others_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvLabelPrivacy" />
@@ -179,7 +179,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/settings_profile_label_block_users"
                 android:textColor="@color/textGray"
-                android:textSize="16sp"
+                android:textSize="@dimen/all_labels_and_others_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvHidePersonalInfo" />
@@ -196,7 +196,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/settings_profile_label_access_location"
                 android:textColor="@color/textGray"
-                android:textSize="16sp"
+                android:textSize="@dimen/all_labels_and_others_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvBlockUsers" />
@@ -221,7 +221,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/settings_profile_label_about"
                 android:textColor="@color/textGray"
-                android:textSize="18sp"
+                android:textSize="@dimen/all_content_header_text_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider_3" />
 
@@ -237,7 +237,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/settings_profile_label_contact_us"
                 android:textColor="@color/textGray"
-                android:textSize="16sp"
+                android:textSize="@dimen/all_labels_and_others_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvLabelAbout" />
@@ -254,7 +254,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/settings_profile_label_terms_and_conditions"
                 android:textColor="@color/textGray"
-                android:textSize="16sp"
+                android:textSize="@dimen/all_labels_and_others_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvContactUs" />
@@ -271,7 +271,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/settings_profile_label_push_notifications"
                 android:textColor="@color/textGray"
-                android:textSize="16sp"
+                android:textSize="@dimen/all_labels_and_others_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTermsAndConditions" />
@@ -289,7 +289,7 @@
                 android:padding="16dp"
                 android:text="@string/settings_profile_label_alert_notifications"
                 android:textColor="@color/textGray"
-                android:textSize="16sp"
+                android:textSize="@dimen/all_labels_and_others_text_size"
                 android:theme="@style/AppTheme.SwitchCompat"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -308,7 +308,7 @@
                 android:paddingEnd="8dp"
                 android:text="@string/profile_btn_logout"
                 android:textColor="@color/textGray"
-                android:textSize="16sp"
+                android:textSize="@dimen/all_labels_and_others_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvAlert" />

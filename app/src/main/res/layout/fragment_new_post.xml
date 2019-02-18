@@ -17,7 +17,7 @@
         android:maxLines="1"
         android:text="@string/new_post_label_new_post"
         android:textColor="@color/textGray"
-        android:textSize="32sp"
+        android:textSize="@dimen/all_screen_header_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

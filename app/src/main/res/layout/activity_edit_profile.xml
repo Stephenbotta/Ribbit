@@ -19,7 +19,7 @@
         android:paddingEnd="8dp"
         android:text="@string/profile_label_profile"
         android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
+        android:textSize="@dimen/back_navigation_header_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

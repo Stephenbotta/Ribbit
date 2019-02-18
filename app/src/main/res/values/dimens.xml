@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <integer name="username_max_length">50</integer>
     <integer name="name_max_length">100</integer>
     <integer name="email_max_length">100</integer>
@@ -18,5 +19,11 @@
     <dimen name="item_people_parent_layout_margin">16dp</dimen>
     <dimen name="item_people_tv_date_text_size">16sp</dimen>
     <dimen name="item_people_tv_address_text_size">12sp</dimen>
+
+    <dimen name="all_edit_text_size">16sp</dimen>
+    <dimen name="back_navigation_header_text_size">12sp</dimen>
+    <dimen name="all_screen_header_text_size">32sp</dimen>
+    <dimen name="all_content_header_text_size">16sp</dimen>
+    <dimen name="all_labels_and_others_text_size">14sp</dimen>
 
 </resources>

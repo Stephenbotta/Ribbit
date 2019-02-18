@@ -78,7 +78,6 @@
             android:maxLength="@integer/venue_title_max_length"
             android:singleLine="true"
             android:textColor="@color/textGray"
-            android:textSize="16sp"
             android:theme="@style/AppTheme.EditTextCreateVenue"
             tools:text="Starbucks Fans" />
 

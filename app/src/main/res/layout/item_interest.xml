@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:ellipsize="end"
-        android:fontFamily="@font/roboto_text_bold"
+        android:fontFamily="@font/roboto_text_medium"
         android:maxLines="2"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -55,4 +55,5 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Sports" />
+
 </android.support.constraint.ConstraintLayout>

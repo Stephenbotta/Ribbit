@@ -19,7 +19,7 @@
         android:paddingEnd="8dp"
         android:text="@string/back"
         android:textColor="@color/colorPrimary"
-        android:textSize="12sp" />
+        android:textSize="@dimen/back_navigation_header_text_size" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
         android:maxLines="1"
         android:text="@string/venue_details_label_notifications"
         android:textColor="@color/textGray"
-        android:textSize="32sp" />
+        android:textSize="@dimen/all_screen_header_text_size" />
 
     <View
         android:layout_width="match_parent"
