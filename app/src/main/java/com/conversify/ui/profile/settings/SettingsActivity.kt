@@ -1,13 +1,11 @@
 package com.conversify.ui.profile.settings
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.provider.Settings
 import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.res.ResourcesCompat
@@ -20,7 +18,6 @@ import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.databinding.BottomSheetDialogInvitePeopleBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.longToast
 import com.conversify.extensions.startLandingWithClear
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
@@ -153,15 +150,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         startActivity(intent)
     }
 
-    private fun openPhoneBookList() {
-        val intent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
-        startActivityForResult(intent, AppConstants.REQ_CODE_CHOOSE_CONTACTS)
-    }
-
     private fun sendEmail() {
         val emailIntent = Intent(android.content.Intent.ACTION_SEND)
         emailIntent.type = "plain/text"
-//        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, "manishsharma@code-brew.com")
         emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite")
         emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.invite_people_option_more_text_message))
         startActivity(emailIntent)
@@ -213,22 +204,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         startActivity(intent)
     }
 
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            AppConstants.REQ_CODE_CHOOSE_CONTACTS -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    val contactData = data?.data
-                    val phone = contentResolver.query(contactData, null, null, null, null)
-                    if (phone!!.moveToFirst()) {
-                        val contactNumberName = phone.getString(phone.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-                        // Todo something when contact number selected
-                        longToast(contactNumberName)
-                    }
-                }
-            }
-        }
+    private fun startWebLink(flag: Int) {
+        val intent = WebLinkActivity.getStartIntent(this, flag)
+        startActivity(intent)
     }
 
     override fun onClick(v: View?) {
@@ -249,9 +227,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
             R.id.tvAccessLocation -> accessLocation()
 
-            R.id.tvContactUs -> {}
+            R.id.tvContactUs -> startWebLink(AppConstants.REQ_CODE_CONTACT_US)
 
-            R.id.tvTermsAndConditions -> {}
+            R.id.tvTermsAndConditions -> startWebLink(AppConstants.REQ_CODE_TERMS_AND_CONDITIONS)
 
             R.id.tvPush -> notificationSettings()
 

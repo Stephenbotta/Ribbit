@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -51,6 +52,8 @@ class SearchActivity : BaseActivity() {
         viewPagerAdapter.addFragments(SearchGroupFragment())
         viewPagerAdapter.addFragments(SearchVenueFragment())
         binding.viewPagerSearch.adapter = viewPagerAdapter
+        binding.tabLayoutSearch.tabGravity=TabLayout.GRAVITY_CENTER
+        binding.tabLayoutSearch.tabMode = TabLayout.MODE_SCROLLABLE
         binding.tabLayoutSearch.setupWithViewPager(binding.viewPagerSearch)
         listener()
     }

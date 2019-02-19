@@ -10,12 +10,35 @@
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/ivProfilePic"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="centerCrop"
         app:riv_corner_radius="12dp"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/ivPrivate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_lock_white"
+        app:layout_constraintStart_toStartOf="@id/ivProfilePic"
+        app:layout_constraintTop_toTopOf="@id/ivProfilePic"
+        tools:ignore="ContentDescription" />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/ivParticipationRole"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="36dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="@id/ivProfilePic"
+        app:layout_constraintTop_toTopOf="@id/ivProfilePic"
+        app:riv_border_color="@color/white"
+        app:riv_border_width="2dp"
+        app:riv_oval="true"
         tools:src="@tools:sample/avatars" />
 
     <TextView
@@ -28,9 +51,19 @@
         android:singleLine="true"
         android:textColor="@color/textGray"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivProfilePic"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Name" />
+
+    <TextView
+        android:id="@+id/tvRequestStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="@string/venues_label_pending"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivProfilePic" />
 
 </android.support.constraint.ConstraintLayout>

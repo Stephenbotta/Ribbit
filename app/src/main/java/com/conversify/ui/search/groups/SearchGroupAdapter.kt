@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.data.remote.models.groups.GroupDto
-import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.inflate
 import com.conversify.utils.GlideRequests
 
@@ -45,7 +44,6 @@ class SearchGroupAdapter(private val glide: GlideRequests,
         val item = items[position]
 
         return when (item) {
-
             is GroupDto -> VIEW_TYPE_MY_VENUE
             else -> VIEW_TYPE_LABEL_YOUR_VENUES
         }
@@ -63,7 +61,7 @@ class SearchGroupAdapter(private val glide: GlideRequests,
         notifyItemRangeInserted(oldListSize, item.size)
     }
 
-    fun getUpdatedList():MutableList<Any>{
+    fun getUpdatedList(): MutableList<Any> {
         return items
     }
 

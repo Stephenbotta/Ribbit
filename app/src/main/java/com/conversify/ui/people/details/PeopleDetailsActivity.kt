@@ -292,25 +292,18 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
                 viewModel.postFollowUnFollow(userId, toggleFollow())
             }
 
-            R.id.fabChat -> {
-                when (flag) {
-
-                    AppConstants.REQ_CODE_PEOPLE -> {
-                        val intent = ChatActivity.getStartIntentForIndividualChat(this, userCrossed, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
-                        startActivityForResult(intent, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
-                    }
-
-                    AppConstants.REQ_CODE_BLOCK_USER -> {
-                        val intent = ChatActivity.getStartIntentForIndividualChat(this, userCrossed, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
-                        startActivityForResult(intent, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
-                    }
-
-                }
-
+            R.id.fabChat -> when (flag) {
+                AppConstants.REQ_CODE_PEOPLE -> navigateToChat(AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
+                AppConstants.REQ_CODE_BLOCK_USER -> navigateToChat(AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
             }
 
             R.id.btnMore -> optionMenu(v)
         }
+    }
+
+    private fun navigateToChat(flag: Int) {
+        val intent = ChatActivity.getStartIntentForIndividualChat(this, userCrossed, flag)
+        startActivityForResult(intent, flag)
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {

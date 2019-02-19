@@ -7,14 +7,17 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.data.remote.models.venues.YourVenuesDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
-import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.people.details.PeopleDetailsActivity
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_search_top.*
 
@@ -29,7 +32,7 @@ class SearchTopFragment : BaseFragment(), SearchTopAdapter.Callback {
 
     private lateinit var viewModel: SearchTopViewModel
     private lateinit var adapter: SearchTopAdapter
-//    private lateinit var loadingDialog: LoadingDialog
+    //    private lateinit var loadingDialog: LoadingDialog
     private var search = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,7 +106,15 @@ class SearchTopFragment : BaseFragment(), SearchTopAdapter.Callback {
         getTopSearch()
     }
 
-    override fun onClick(position:Int,profile: ProfileDto) {
-
+    override fun onClick(position: Int, profile: ProfileDto) {
+        val items = adapter.getUpdatedList()
+        val item = items[position]
+        if (item is ProfileDto) {
+            val data = UserCrossedDto()
+            data.profile = item
+            PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, item.id!!)
+            val intent = PeopleDetailsActivity.getStartIntent(requireActivity(), data, AppConstants.REQ_CODE_BLOCK_USER)
+            startActivity(intent)
+        }
     }
 }

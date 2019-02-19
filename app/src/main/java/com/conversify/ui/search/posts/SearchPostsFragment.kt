@@ -13,6 +13,8 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.post.details.PostDetailsActivity
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import com.conversify.utils.SpannedGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_search_posts.*
@@ -107,7 +109,7 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
                     viewModel.getPostSearch(false, search)
                 }
             }
-                                                           })
+        })
     }
 
     fun search(query: String) {
@@ -116,5 +118,11 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
     }
 
     override fun onClick(position: Int, post: GroupPostDto) {
+        val items = adapter.getUpdatedList()
+        val item = items[position]
+        if (item is GroupPostDto) {
+            val intent = PostDetailsActivity.getStartIntent(requireActivity(), item, true)
+            startActivityForResult(intent, AppConstants.REQ_CODE_POST_DETAILS)
+        }
     }
 }

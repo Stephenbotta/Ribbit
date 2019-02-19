@@ -9,13 +9,14 @@ import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
-import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.venues.YourVenuesDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
+import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.groups.groupposts.GroupPostsActivity
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_search_group.*
 
@@ -30,14 +31,15 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
 
     private lateinit var viewModel: SearchGroupViewModel
     private lateinit var adapter: SearchGroupAdapter
-//    private lateinit var loadingDialog: LoadingDialog
+    private lateinit var loadingDialog: LoadingDialog
     private var search = ""
+    private var adapterPosition: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SearchGroupViewModel::class.java)
         adapter = SearchGroupAdapter(GlideApp.with(this), this)
-//        loadingDialog = LoadingDialog(requireContext())
+        loadingDialog = LoadingDialog(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,7 +60,8 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
                     val data = resource.data?.result ?: emptyList()
                     val firstPage = resource.data?.isFirstPage ?: true
                     val items = mutableListOf<Any>()
-                    items.add(YourVenuesDto)
+                    if (firstPage)
+                        items.add(YourVenuesDto)
                     items.addAll(data)
                     if (firstPage) {
                         adapter.displayItems(items)
@@ -78,6 +81,38 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
             }
         })
 
+        viewModel.joinGroup.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    loadingDialog.setLoading(false)
+
+                    resource.data.let { group ->
+                        if (group?.isPrivate == true) {
+                            requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
+                            getGroupSearch()
+                        } else {
+                            val items = adapter.getUpdatedList()
+                            items.set(adapterPosition!!, group!!)
+                            groupDetails(group)
+                        }
+                    }
+                }
+
+                Status.ERROR -> {
+                    loadingDialog.setLoading(false)
+                    handleError(resource.error)
+                }
+
+                Status.LOADING -> loadingDialog.setLoading(true)
+            }
+        })
+    }
+
+    private fun groupDetails(group: GroupDto) {
+        GroupPostsActivity.start(requireActivity(), group)
+        adapter.notifyDataSetChanged()
     }
 
     private fun getGroupSearch(showLoading: Boolean = true) {
@@ -104,7 +139,15 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
         getGroupSearch()
     }
 
-    override fun onClick(position:Int,group: GroupDto) {
-
+    override fun onClick(position: Int, group: GroupDto) {
+        val items = adapter.getUpdatedList()
+        val item = items[position]
+        adapterPosition = position
+        if (item is GroupDto) {
+            if (!item.isMember!!) {
+                if (isNetworkActiveWithMessage())
+                    viewModel.joinGroup(item)
+            } else groupDetails(item)
+        }
     }
 }

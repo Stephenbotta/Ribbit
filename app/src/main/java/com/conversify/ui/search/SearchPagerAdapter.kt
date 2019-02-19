@@ -32,17 +32,12 @@ class SearchPagerAdapter(context: Context, manager: FragmentManager) : FragmentP
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        val title = if (position == 0) {
-            context.getString(R.string.search_title_top)
-        } else if (position == 1) {
-            context.getString(R.string.search_title_tags)
-        } else if (position == 2) {
-            context.getString(R.string.search_title_posts)
-        } else if (position == 3) {
-            context.getString(R.string.search_title_groups)
-        } else {
-            context.getString(R.string.search_title_venues)
+        return when (position) {
+            0 -> context.getString(R.string.search_title_top)
+            1 -> context.getString(R.string.search_title_tags)
+            2 -> context.getString(R.string.search_title_posts)
+            3 -> context.getString(R.string.search_title_groups)
+            else -> context.getString(R.string.search_title_venues)
         }
-        return title
     }
 }
