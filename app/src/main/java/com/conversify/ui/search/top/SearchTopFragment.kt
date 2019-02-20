@@ -60,7 +60,8 @@ class SearchTopFragment : BaseFragment(), SearchTopAdapter.Callback {
                     val data = resource.data?.result ?: emptyList()
                     val firstPage = resource.data?.isFirstPage ?: true
                     val items = mutableListOf<Any>()
-                    items.add(YourVenuesDto)
+                    if (firstPage)
+                        items.add(YourVenuesDto)
                     items.addAll(data)
                     if (firstPage) {
                         adapter.displayItems(items)

@@ -22,7 +22,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.profile.settings.weblink.WebLinkActivity"></activity>
         <activity
             android:name=".ui.landing.LandingActivity"
             android:screenOrientation="portrait"
@@ -129,6 +128,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.profile.settings.blockusers.BlockUsersListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profile.settings.weblink.WebLinkActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profile.settings.hideinfo.HidePersonalInfoActivity"
             android:screenOrientation="portrait" />
 
         <uses-library

@@ -14,7 +14,6 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
-import com.conversify.ui.custom.LoadingDialog
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_search_venue.*
 
@@ -29,7 +28,7 @@ class SearchVenueFragment : BaseFragment(), SearchVenueAdapter.Callback {
 
     private lateinit var viewModel: SearchVenueViewModel
     private lateinit var adapter: SearchVenueAdapter
-//    private lateinit var loadingDialog: LoadingDialog
+    //    private lateinit var loadingDialog: LoadingDialog
     private var search = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +56,8 @@ class SearchVenueFragment : BaseFragment(), SearchVenueAdapter.Callback {
                     val data = resource.data?.result ?: emptyList()
                     val firstPage = resource.data?.isFirstPage ?: true
                     val items = mutableListOf<Any>()
-                    items.add(YourVenuesDto)
+                    if (firstPage)
+                        items.add(YourVenuesDto)
                     items.addAll(data)
                     if (firstPage) {
                         adapter.displayItems(items)
@@ -103,7 +103,7 @@ class SearchVenueFragment : BaseFragment(), SearchVenueAdapter.Callback {
         getVenueSearch()
     }
 
-    override fun onClick(position:Int,venue: VenueDto) {
+    override fun onClick(position: Int, venue: VenueDto) {
 
     }
 }

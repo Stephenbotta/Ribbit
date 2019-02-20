@@ -22,6 +22,7 @@ import com.conversify.extensions.startLandingWithClear
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.profile.settings.blockusers.BlockUsersListActivity
+import com.conversify.ui.profile.settings.hideinfo.HidePersonalInfoActivity
 import com.conversify.ui.profile.settings.verification.VerificationActivity
 import com.conversify.ui.profile.settings.weblink.WebLinkActivity
 import com.conversify.utils.AppConstants
@@ -207,6 +208,10 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     private fun startWebLink(flag: Int) {
         val intent = WebLinkActivity.getStartIntent(this, flag)
         startActivity(intent)
+    }
+
+    private fun hidePersonalInfo() {
+        startActivity(HidePersonalInfoActivity.start(this))
     }
 
     override fun onClick(v: View?) {
