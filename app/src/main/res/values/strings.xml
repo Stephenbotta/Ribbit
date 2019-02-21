@@ -346,5 +346,8 @@
     <string name="hide_info_everyone">Everyone</string>
     <string name="hide_info_your_followers">Your Followers</string>
     <string name="hide_info_selected_users">Selected Users</string>
+    <string name="hide_info_my_followers">My Followers</string>
+    <string name="hide_info_people">People</string>
+    <string name="hide_info_label_status">%d %s</string>
 
 </resources>

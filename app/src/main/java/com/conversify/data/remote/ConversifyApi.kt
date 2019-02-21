@@ -268,6 +268,6 @@ interface ConversifyApi {
 
     @POST("user/configSetting")
     @FormUrlEncoded
-    fun getAlertNotification(@Field("action") action: Boolean, @Field("flag") flag: Int = ApiConstants.FLAG_ALERT_NOTIFICATION): Call<ApiResponse<ProfileDto>>
+    fun getAlertNotification(@Field("action") action: Boolean, @Field("flag") flag: Int): Call<ApiResponse<ProfileDto>>
 
 }

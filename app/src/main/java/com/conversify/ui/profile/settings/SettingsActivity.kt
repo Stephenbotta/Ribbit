@@ -210,10 +210,6 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         startActivity(intent)
     }
 
-    private fun hidePersonalInfo() {
-        startActivity(HidePersonalInfoActivity.start(this))
-    }
-
     override fun onClick(v: View?) {
         when (v?.id) {
 
@@ -225,8 +221,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
             R.id.tvShareContactDetails -> shareContactDetails()
 
-            R.id.tvHidePersonalInfo -> {
-            }
+            R.id.tvHidePersonalInfo -> startActivity(HidePersonalInfoActivity.start(this))
 
             R.id.tvBlockUsers -> blockUsers()
 

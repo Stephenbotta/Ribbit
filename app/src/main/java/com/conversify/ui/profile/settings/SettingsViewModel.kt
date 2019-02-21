@@ -2,6 +2,7 @@ package com.conversify.ui.profile.settings
 
 import android.app.Application
 import com.conversify.data.local.UserManager
+import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
@@ -46,7 +47,7 @@ class SettingsViewModel(application: Application) : BaseViewModel(application) {
         alert.value = Resource.loading()
 
         RetrofitClient.conversifyApi
-                .getAlertNotification(action)
+                .getAlertNotification(action, ApiConstants.FLAG_ALERT_NOTIFICATION)
                 .enqueue(object : Callback<ApiResponse<ProfileDto>> {
                     override fun onResponse(call: Call<ApiResponse<ProfileDto>>, response: Response<ApiResponse<ProfileDto>>) {
                         if (response.isSuccessful) {

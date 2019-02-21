@@ -123,4 +123,61 @@ data class ProfileDto(
         @field:SerializedName("isPassportVerified")
         val isPassportVerified: Boolean? = null,
 
+        @field:SerializedName("groupFollowed")
+        val groupFollowed: List<String>? = null,
+
+        @field:SerializedName("followers")
+        val followers: List<String>? = null,
+
+        @field:SerializedName("following")
+        val following: List<String>? = null,
+
+        @field:SerializedName("blockedBy")
+        val blockedBy: List<String>? = null,
+
+        @field:SerializedName("blockedWhom")
+        val blockedWhom: List<String>? = null,
+
+        @field:SerializedName("homeSearchTop")
+        val homeSearchTop: List<String>? = null,
+
+        @field:SerializedName("tagsFollowed")
+        val tagsFollowed: List<String>? = null,
+
+        @field:SerializedName("imageVisibility")
+        val imageVisibility: List<String>? = null,
+
+        @field:SerializedName("nameVisibility")
+        val nameVisibility: List<String>? = null,
+
+        @field:SerializedName("tagPermission")
+        val tagPermission: List<String>? = null,
+
+        @field:SerializedName("personalInfoVisibility")
+        val personalInfoVisibility: List<String>? = null,
+
+        @field:SerializedName("locationVisibility")
+        val locationVisibility: Boolean? = null,
+
+        @field:SerializedName("imageVisibilityForFollowers")
+        val imageVisibilityForFollowers: Boolean? = null,
+
+        @field:SerializedName("nameVisibilityForFollowers")
+        val nameVisibilityForFollowers: Boolean? = null,
+
+        @field:SerializedName("tagPermissionForFollowers")
+        val tagPermissionForFollowers: Boolean? = null,
+
+        @field:SerializedName("personalInfoVisibilityForFollowers")
+        val personalInfoVisibilityForFollowers: Boolean? = null,
+
+        @field:SerializedName("imageVisibilityForEveryone")
+        val imageVisibilityForEveryone: Boolean? = null,
+
+        @field:SerializedName("nameVisibilityForEveryone")
+        val nameVisibilityForEveryone: Boolean? = null,
+
+        @field:SerializedName("tagPermissionForEveryone")
+        val tagPermissionForEveryone: Boolean? = null,
+
         var isSelected: Boolean = false) : Parcelable
