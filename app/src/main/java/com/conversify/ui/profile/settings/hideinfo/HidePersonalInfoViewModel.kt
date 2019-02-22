@@ -23,7 +23,6 @@ class HidePersonalInfoViewModel(application: Application) : BaseViewModel(applic
     private var profile = UserManager.getProfile()
     val privateAccount by lazy { SingleLiveEvent<Resource<ProfileDto>>() }
 
-
     fun privateAccount(action: Boolean) {
         privateAccount.value = Resource.loading()
 
@@ -51,7 +50,7 @@ class HidePersonalInfoViewModel(application: Application) : BaseViewModel(applic
 
     fun getProfile() = profile
 
-    private fun updateProfile(): ProfileDto {
+    fun updateProfile(): ProfileDto {
         profile = UserManager.getProfile()
         return profile
     }

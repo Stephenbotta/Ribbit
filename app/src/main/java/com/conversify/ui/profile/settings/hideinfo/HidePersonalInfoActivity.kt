@@ -58,19 +58,19 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
 
     private fun setData(profile: ProfileDto) {
 
-        if (profile.isPrivate!!)
-            privateAccount.isChecked = profile.isPrivate
-        else privateAccount.isChecked = profile.isPrivate
+        if (profile.isAccountPrivate!!)
+            privateAccount.isChecked = profile.isAccountPrivate
+        else privateAccount.isChecked = profile.isAccountPrivate
 
         if (profile.imageVisibilityForEveryone!!) {
             tvPicViewStatus.text = getString(R.string.hide_info_everyone)
         } else {
+            val size = profile.imageVisibility?.size
             if (profile.imageVisibilityForFollowers!!) {
-                val size = profile.imageVisibility?.size
                 if (size != 0) {
                     tvPicViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
                 } else {
-                    tvPicViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
+                    tvPicViewStatus.text = getString(R.string.hide_info_my_followers)
                 }
             } else {
                 tvPicViewStatus.text = getString(R.string.hide_info_my_followers)
@@ -91,12 +91,12 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
         if (profile.nameVisibilityForEveryone!!) {
             tvUsernameViewStatus.text = getString(R.string.hide_info_everyone)
         } else {
+            val size = profile.nameVisibility?.size
             if (profile.nameVisibilityForFollowers!!) {
-                val size = profile.nameVisibility?.size
                 if (size != 0) {
                     tvUsernameViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
                 } else {
-                    tvUsernameViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
+                    tvUsernameViewStatus.text = getString(R.string.hide_info_my_followers)
                 }
             } else {
                 tvUsernameViewStatus.text = getString(R.string.hide_info_my_followers)
@@ -106,12 +106,12 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
         if (profile.tagPermissionForEveryone!!) {
             tvMessageViewStatus.text = getString(R.string.hide_info_everyone)
         } else {
+            val size = profile.tagPermission?.size
             if (profile.tagPermissionForFollowers!!) {
-                val size = profile.tagPermission?.size
                 if (size != 0) {
                     tvMessageViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
                 } else {
-                    tvMessageViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
+                    tvMessageViewStatus.text = getString(R.string.hide_info_my_followers)
                 }
             } else {
                 tvMessageViewStatus.text = getString(R.string.hide_info_my_followers)
@@ -128,9 +128,9 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
             when (resource.status) {
                 Status.SUCCESS -> {
                     val data = resource.data
-                    if (data?.isPrivate!!)
-                        privateAccount.isChecked = data.isPrivate
-                    else privateAccount.isChecked = data.isPrivate
+                    if (data?.isAccountPrivate!!)
+                        privateAccount.isChecked = data.isAccountPrivate
+                    else privateAccount.isChecked = data.isAccountPrivate
                 }
 
                 Status.ERROR -> {
@@ -144,7 +144,7 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun isAccountPrivate() {
-        viewModel.privateAccount(!viewModel.getProfile().isPrivate!!)
+        viewModel.privateAccount(!viewModel.getProfile().isAccountPrivate!!)
     }
 
     private fun status(flag: Int) {
@@ -156,24 +156,15 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
 
             R.id.btnBack -> onBackPressed()
 
-            R.id.privateAccount -> isAccountPrivate()
-            R.id.tvLabelPrivateMsg -> isAccountPrivate()
+            R.id.privateAccount, R.id.tvLabelPrivateMsg -> isAccountPrivate()
 
-            R.id.tvProfilePic -> status(ApiConstants.FLAG_PROFILE_PICTURE)
-            R.id.tvPicViewStatus -> status(ApiConstants.FLAG_PROFILE_PICTURE)
-            R.id.tvLabelPicMsg -> status(ApiConstants.FLAG_PROFILE_PICTURE)
+            R.id.tvProfilePic, R.id.tvPicViewStatus, R.id.tvLabelPicMsg -> status(ApiConstants.FLAG_PROFILE_PICTURE)
 
-            R.id.tvInfo -> status(ApiConstants.FLAG_PRIVATE_INFO)
-            R.id.tvInfoViewStatus -> status(ApiConstants.FLAG_PRIVATE_INFO)
-            R.id.tvLabelInfoMsg -> status(ApiConstants.FLAG_PRIVATE_INFO)
+            R.id.tvInfo, R.id.tvInfoViewStatus, R.id.tvLabelInfoMsg -> status(ApiConstants.FLAG_PRIVATE_INFO)
 
-            R.id.tvUsername -> status(ApiConstants.FLAG_USERNAME)
-            R.id.tvUsernameViewStatus -> status(ApiConstants.FLAG_USERNAME)
-            R.id.tvLabelUsernameMsg -> status(ApiConstants.FLAG_USERNAME)
+            R.id.tvUsername, R.id.tvUsernameViewStatus, R.id.tvLabelUsernameMsg -> status(ApiConstants.FLAG_USERNAME)
 
-            R.id.tvMessage -> status(ApiConstants.FLAG_MESSAGE)
-            R.id.tvMessageViewStatus -> status(ApiConstants.FLAG_MESSAGE)
-            R.id.tvLabelMessage -> status(ApiConstants.FLAG_MESSAGE)
+            R.id.tvMessage, R.id.tvMessageViewStatus, R.id.tvLabelMessage -> status(ApiConstants.FLAG_MESSAGE)
 
         }
     }

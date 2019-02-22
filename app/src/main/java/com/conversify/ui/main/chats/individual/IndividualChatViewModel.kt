@@ -89,5 +89,4 @@ class IndividualChatViewModel(application: Application) : BaseViewModel(applicat
         return groupItems
     }
 
-
 }

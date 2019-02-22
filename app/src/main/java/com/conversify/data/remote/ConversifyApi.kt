@@ -18,6 +18,12 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface ConversifyApi {
+
+    companion object {
+        private const val FLAG = "flag"
+        private const val ACTION = "action"
+    }
+
     @POST("user/regEmailOrPhone")
     @FormUrlEncoded
     fun registerEmailOrPhoneNumber(@Field("email") email: String? = null,
@@ -46,14 +52,14 @@ interface ConversifyApi {
 
     @POST("user/getData")
     @FormUrlEncoded
-    fun getInterests(@Field("flag") flag: Int = ApiConstants.FLAG_INTERESTS): Call<ApiResponse<List<InterestDto>>>
+    fun getInterests(@Field(FLAG) flag: Int = ApiConstants.FLAG_INTERESTS): Call<ApiResponse<List<InterestDto>>>
 
     @POST("user/addEditVenueGroup")
     fun createVenue(@Body request: CreateEditVenueRequest): Call<ApiResponse<VenueDto>>
 
     @POST("user/getData")
     @FormUrlEncoded
-    fun getVenues(@Field("flag") flag: Int = ApiConstants.FLAG_GET_VENUES,
+    fun getVenues(@Field(FLAG) flag: Int = ApiConstants.FLAG_GET_VENUES,
                   @Field("currentLat") latitude: Double? = null,
                   @Field("currentLong") longitude: Double? = null): Call<ApiResponse<GetVenuesResponse>>
 
@@ -79,7 +85,7 @@ interface ConversifyApi {
     @POST("user/configNotification")
     @FormUrlEncoded
     fun changeVenueNotifications(@Field("venueId") venueId: String,
-                                 @Field("action") isEnabled: Boolean): Call<Any>
+                                 @Field(ACTION) isEnabled: Boolean): Call<Any>
 
     @POST("user/exitGroup")
     @FormUrlEncoded
@@ -96,7 +102,7 @@ interface ConversifyApi {
 
     @POST("user/getData")
     @FormUrlEncoded
-    fun getGroups(@Field("flag") flag: Int = ApiConstants.FLAG_GET_GROUPS): Call<ApiResponse<GetGroupsResponse>>
+    fun getGroups(@Field(FLAG) flag: Int = ApiConstants.FLAG_GET_GROUPS): Call<ApiResponse<GetGroupsResponse>>
 
     @POST("user/addEditPostGroup")
     fun createGroup(@Body request: CreateEditGroupRequest): Call<Any>
@@ -137,17 +143,17 @@ interface ConversifyApi {
 
     @POST("user/listFollowerFollowing")
     @FormUrlEncoded
-    fun getFollowers(@Field("flag") flag: Int = ApiConstants.FLAG_FOLLOWERS): Call<ApiResponse<List<ProfileDto>>>
+    fun getFollowers(@Field(FLAG) flag: Int = ApiConstants.FLAG_FOLLOWERS): Call<ApiResponse<List<ProfileDto>>>
 
     @POST("user/getData")
     @FormUrlEncoded
-    fun getHomeFeed(@Field("flag") flag: Int = ApiConstants.FLAG_GET_HOME_FEED,
+    fun getHomeFeed(@Field(FLAG) flag: Int = ApiConstants.FLAG_GET_HOME_FEED,
                     @Field("pageNo") page: Int,
                     @Field("limit") limit: Int): Call<ApiResponse<List<GroupPostDto>>>
 
     @POST("user/getData")
     @FormUrlEncoded
-    fun getYourGroups(@Field("flag") flag: Int = ApiConstants.FLAG_GET_YOUR_GROUPS): Call<ApiResponse<List<GroupDto>>>
+    fun getYourGroups(@Field(FLAG) flag: Int = ApiConstants.FLAG_GET_YOUR_GROUPS): Call<ApiResponse<List<GroupDto>>>
 
     @POST("user/addEditPost")
     fun createPost(@Body request: CreatePostRequest): Call<Any>
@@ -169,19 +175,19 @@ interface ConversifyApi {
     @FormUrlEncoded
     fun likeUnlikePost(@Field("postId") postId: String,
                        @Field("postBy") postOwnerId: String,
-                       @Field("action") action: Int): Call<Any>
+                       @Field(ACTION) action: Int): Call<Any>
 
     @POST("user/likeOrUnlike")
     @FormUrlEncoded
     fun likeUnlikeReply(@Field("commentId") replyId: String,
                         @Field("commentBy") replyOwnerId: String,
-                        @Field("action") action: Int): Call<Any>
+                        @Field(ACTION) action: Int): Call<Any>
 
     @POST("user/likeOrUnlike")
     @FormUrlEncoded
     fun likeUnlikeSubReply(@Field("replyId") subReplyId: String,
                            @Field("replyBy") subReplyOwnerId: String,
-                           @Field("action") action: Int): Call<Any>
+                           @Field(ACTION) action: Int): Call<Any>
 
     @POST("user/addEditReplies")
     fun addPostSubReply(@Body request: AddPostSubReplyRequest): Call<ApiResponse<PostReplyDto>>
@@ -211,12 +217,12 @@ interface ConversifyApi {
     @POST("user/followUnfollow")
     @FormUrlEncoded
     fun postFollowUnFollow(@Field("userId") userId: String,
-                           @Field("action") action: Double): Call<ApiResponse<Any>>
+                           @Field(ACTION) action: Double): Call<ApiResponse<Any>>
 
     @POST("user/blockUser")
     @FormUrlEncoded
     fun postBlock(@Field("userId") userId: String,
-                  @Field("action") action: Double): Call<ApiResponse<Any>>
+                  @Field(ACTION) action: Double): Call<ApiResponse<Any>>
 
     @POST("user/followUnfollowTag")
     @FormUrlEncoded
@@ -230,7 +236,7 @@ interface ConversifyApi {
 
     @POST("user/chatSummary")
     @FormUrlEncoded
-    fun getChatSummary(@Field("flag") flag: Double?): Call<ApiResponse<List<ChatListingDto>>>
+    fun getChatSummary(@Field(FLAG) flag: Double?): Call<ApiResponse<List<ChatListingDto>>>
 
     @POST("user/groupDetails")
     @FormUrlEncoded
@@ -268,6 +274,13 @@ interface ConversifyApi {
 
     @POST("user/configSetting")
     @FormUrlEncoded
-    fun getAlertNotification(@Field("action") action: Boolean, @Field("flag") flag: Int): Call<ApiResponse<ProfileDto>>
+    fun getAlertNotification(@Field(ACTION) action: Boolean, @Field(FLAG) flag: Int): Call<ApiResponse<ProfileDto>>
 
+    @POST("user/configSetting")
+    @FormUrlEncoded
+    fun postConfigSetting(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<ProfileDto>>
+
+    @POST("user/listFollowerFollowing")
+    @FormUrlEncoded
+    fun getFollowerFollowingList(@Field(FLAG) flag: Int): Call<ApiResponse<List<ProfileDto>>>
 }
