@@ -12,7 +12,7 @@ import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.utils.GlideApp
-import kotlinx.android.synthetic.main.activity_notifications.*
+import kotlinx.android.synthetic.main.fragment_notifications.*
 
 class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
 
@@ -36,7 +36,7 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout.setOnRefreshListener { getNotifications() }
-        btnBack.setOnClickListener { activity?.onBackPressed() }
+        clearNotification.setOnClickListener { }
         setupNotificationsRecycler()
         observeChanges()
         getNotifications()
@@ -114,6 +114,18 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
             CHILD_NO_NOTIFICATIONS
         } else {
             CHILD_NOTIFICATIONS
+        }
+        checkEnableClearNotification()
+    }
+
+    private fun checkEnableClearNotification() {
+        val clear = viewSwitcher.displayedChild
+
+        when (clear) {
+
+            CHILD_NOTIFICATIONS -> clearNotification.isEnabled = true
+
+            CHILD_NO_NOTIFICATIONS -> clearNotification.isEnabled = false
         }
     }
 

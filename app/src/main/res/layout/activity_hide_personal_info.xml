@@ -7,6 +7,13 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.67" />
+
     <TextView
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
@@ -40,11 +47,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:checked="false"
+        android:checked="true"
         android:ellipsize="end"
         android:fontFamily="@font/roboto_text_bold"
         android:maxLines="1"
-        android:padding="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="8dp"
         android:text="@string/hide_info_private_account"
         android:textColor="@color/textGray"
         android:textSize="@dimen/all_content_header_text_size"
@@ -84,7 +93,7 @@
         android:text="@string/hide_info_see_profile_pic"
         android:textColor="@color/textGray"
         android:textSize="@dimen/all_content_header_text_size"
-        app:layout_constraintEnd_toStartOf="@id/tvPicViewStatus"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelPrivateMsg" />
 
@@ -104,7 +113,7 @@
         android:textSize="@dimen/all_labels_and_others_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelPrivateMsg"
-        tools:text="@string/hide_info_everyone" />
+        tools:text="@string/hide_info_my_followers" />
 
     <TextView
         android:id="@+id/tvLabelPicMsg"
@@ -119,7 +128,7 @@
         android:text="@string/hide_info_see_profile_pic_message"
         android:textColor="@color/textGray"
         android:textSize="@dimen/all_labels_and_others_text_size"
-        app:layout_constraintEnd_toStartOf="@id/tvPicViewStatus"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvProfilePic" />
 
@@ -136,7 +145,7 @@
         android:text="@string/hide_info_see_private_info"
         android:textColor="@color/textGray"
         android:textSize="@dimen/all_content_header_text_size"
-        app:layout_constraintEnd_toStartOf="@id/tvInfoViewStatus"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelPicMsg" />
 
@@ -171,7 +180,7 @@
         android:text="@string/hide_info_see_private_info_message"
         android:textColor="@color/textGray"
         android:textSize="@dimen/all_labels_and_others_text_size"
-        app:layout_constraintEnd_toStartOf="@id/tvInfoViewStatus"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvInfo" />
 
@@ -188,7 +197,7 @@
         android:text="@string/hide_info_see_username"
         android:textColor="@color/textGray"
         android:textSize="@dimen/all_content_header_text_size"
-        app:layout_constraintEnd_toStartOf="@id/tvUsernameViewStatus"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelInfoMsg" />
 
@@ -223,7 +232,7 @@
         android:text="@string/hide_info_see_username_message"
         android:textColor="@color/textGray"
         android:textSize="@dimen/all_labels_and_others_text_size"
-        app:layout_constraintEnd_toStartOf="@id/tvUsernameViewStatus"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
 
@@ -240,7 +249,7 @@
         android:text="@string/hide_info_message_me"
         android:textColor="@color/textGray"
         android:textSize="@dimen/all_content_header_text_size"
-        app:layout_constraintEnd_toStartOf="@id/tvMessageViewStatus"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelUsernameMsg" />
 
@@ -275,7 +284,7 @@
         android:text="@string/hide_info_message_me_message"
         android:textColor="@color/textGray"
         android:textSize="@dimen/all_labels_and_others_text_size"
-        app:layout_constraintEnd_toStartOf="@id/tvMessageViewStatus"
+        app:layout_constraintEnd_toEndOf="@id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvMessage" />
 

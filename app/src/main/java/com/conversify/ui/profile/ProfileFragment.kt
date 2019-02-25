@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.conversify.R
+import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.gone
@@ -16,6 +17,7 @@ import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
 import com.conversify.ui.profile.edit.EditProfileActivity
+import com.conversify.ui.profile.followerandfollowing.FollowerAndFollowingActivity
 import com.conversify.ui.profile.settings.SettingsActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
@@ -23,7 +25,7 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
+class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.OnClickListener {
     companion object {
         const val TAG = "ProfileFragment"
     }
@@ -113,9 +115,13 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     }
 
     private fun listener() {
-        tvTitle.setOnClickListener { activity?.onBackPressed() }
-        fabEdit.setOnClickListener { editProfile() }
-        btnSettings.setOnClickListener { settings() }
+        tvTitle.setOnClickListener(this)
+        fabEdit.setOnClickListener(this)
+        btnSettings.setOnClickListener(this)
+        tvFollowersCount.setOnClickListener(this)
+        tvLabelFollowers.setOnClickListener(this)
+        tvFollowingCount.setOnClickListener(this)
+        tvLabelFollowing.setOnClickListener(this)
     }
 
     private fun getUserProfile() {
@@ -155,6 +161,23 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
 //            displayProfile(viewModel.getProfile())
             getUserProfile()
         }
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+
+            R.id.tvTitle -> activity?.onBackPressed()
+
+            R.id.fabEdit -> editProfile()
+
+            R.id.btnSettings -> settings()
+
+            R.id.tvFollowersCount, R.id.tvLabelFollowers -> startActivity(FollowerAndFollowingActivity.getIntentStart(requireActivity(), ApiConstants.FLAG_FOLLOWERS))
+
+            R.id.tvFollowingCount, R.id.tvLabelFollowing -> startActivity(FollowerAndFollowingActivity.getIntentStart(requireActivity(), ApiConstants.FLAG_FOLLOWINGS))
+
+        }
+
     }
 
     private fun visible() {

@@ -124,37 +124,37 @@ data class ProfileDto(
         val isPassportVerified: Boolean? = null,
 
         @field:SerializedName("groupFollowed")
-        val groupFollowed: List<String>? = null,
+        val groupFollowed: MutableList<String>? = null,
 
         @field:SerializedName("followers")
-        val followers: List<String>? = null,
+        val followers: MutableList<String>? = null,
 
         @field:SerializedName("following")
-        val following: List<String>? = null,
+        val following: MutableList<String>? = null,
 
         @field:SerializedName("blockedBy")
-        val blockedBy: List<String>? = null,
+        val blockedBy: MutableList<String>? = null,
 
         @field:SerializedName("blockedWhom")
-        val blockedWhom: List<String>? = null,
+        val blockedWhom: MutableList<String>? = null,
 
         @field:SerializedName("homeSearchTop")
-        val homeSearchTop: List<String>? = null,
+        val homeSearchTop: MutableList<String>? = null,
 
         @field:SerializedName("tagsFollowed")
-        val tagsFollowed: List<String>? = null,
+        val tagsFollowed: MutableList<String>? = null,
 
         @field:SerializedName("imageVisibility")
-        val imageVisibility: List<String>? = null,
+        var imageVisibility: MutableList<String>? = null,
 
         @field:SerializedName("nameVisibility")
-        val nameVisibility: List<String>? = null,
+        var nameVisibility: MutableList<String>? = null,
 
         @field:SerializedName("tagPermission")
-        val tagPermission: List<String>? = null,
+        var tagPermission: MutableList<String>? = null,
 
         @field:SerializedName("personalInfoVisibility")
-        val personalInfoVisibility: List<String>? = null,
+        var personalInfoVisibility: MutableList<String>? = null,
 
         @field:SerializedName("locationVisibility")
         val locationVisibility: Boolean? = null,

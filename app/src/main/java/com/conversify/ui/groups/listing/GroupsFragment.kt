@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.SearchView
 import android.view.View
-import android.widget.Toast
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
@@ -168,7 +167,8 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
                             requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
                             groupsAdapter.updateSuggestedGroup(group)
                         } else {
-                            GroupPostsActivity.start(requireActivity(), group)
+                            val intent = GroupPostsActivity.start(requireActivity(), group)
+                            startActivity(intent)
                             getGroups(false)
                         }
                     }
@@ -204,7 +204,8 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
     }
 
     override fun onYourGroupClicked(group: GroupDto) {
-        GroupPostsActivity.start(requireActivity(), group)
+        val intent = GroupPostsActivity.start(requireActivity(), group)
+        startActivity(intent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

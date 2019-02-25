@@ -30,11 +30,26 @@
         app:layout_constraintTop_toTopOf="@id/ivVenue"
         tools:ignore="ContentDescription" />
 
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/ivParticipationRole"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="44dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="@id/ivVenue"
+        app:layout_constraintTop_toTopOf="@id/ivVenue"
+        app:riv_border_color="@color/white"
+        app:riv_border_width="2dp"
+        app:riv_oval="true"
+        tools:src="@tools:sample/avatars" />
+
     <TextView
         android:id="@+id/tvVenueName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:fontFamily="@font/roboto_text_bold"
         android:includeFontPadding="false"
@@ -42,11 +57,21 @@
         android:textColor="@color/textGray"
         android:textSize="16sp"
         app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toStartOf="@id/barrierEnd"
+        app:layout_constraintEnd_toStartOf="@id/tvRequestStatus"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/ivVenue"
         app:layout_constraintTop_toTopOf="@id/ivVenue"
         tools:text="Test Venue" />
+
+    <TextView
+        android:id="@+id/tvRequestStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="@string/venues_label_pending"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivVenue" />
 
     <TextView
         android:id="@+id/tvVenueLocation"

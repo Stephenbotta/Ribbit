@@ -68,5 +68,19 @@ class SearchVenueAdapter(private val glide: GlideRequests,
         return items
     }
 
+    fun updateVenueJoinedStatus(updatedVenue: VenueDto) {
+        val index = items.indexOfFirst { it is VenueDto && it.id == updatedVenue.id }
+        if (index != -1) {
+            val existingVenue = items[index] as VenueDto
+
+            existingVenue.requestStatus = updatedVenue.requestStatus
+            existingVenue.isMember = updatedVenue.isMember
+            existingVenue.participationRole = updatedVenue.participationRole
+
+            items[index] = updatedVenue
+            notifyItemChanged(index)
+        }
+    }
+
     interface Callback : SearchVenueViewHolder.Callback
 }

@@ -2,6 +2,7 @@ package com.conversify.ui.creategroup.addparticipants
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
@@ -18,7 +19,7 @@ class AddParticipantsViewModel : ViewModel() {
     fun getFollowers() {
         followers.value = Resource.loading()
         RetrofitClient.conversifyApi
-                .getFollowers()
+                .getFollowerFollowingList(ApiConstants.FLAG_FOLLOWERS)
                 .enqueue(object : Callback<ApiResponse<List<ProfileDto>>> {
                     override fun onResponse(call: Call<ApiResponse<List<ProfileDto>>>,
                                             response: Response<ApiResponse<List<ProfileDto>>>) {

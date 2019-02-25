@@ -19,6 +19,7 @@
     <color name="black80">#80000000</color>
 
     <color name="red">#FF0000</color>
+    <color name="disableTextView">#550069FF</color>
 
     <color name="textGray">#4A566C</color>
     <color name="textGrayDE">#DE4A566C</color>

@@ -7,33 +7,33 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/btnBack"
+        android:id="@+id/clearNotification"
         android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
-        android:layout_marginStart="4dp"
-        android:drawableStart="@drawable/ic_back"
-        android:drawablePadding="6dp"
+        android:layout_marginEnd="4dp"
         android:fontFamily="@font/roboto_text_bold"
         android:gravity="center_vertical"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:text="@string/back"
-        android:textColor="@color/colorPrimary"
+        android:enabled="false"
+        android:layout_gravity="end"
+        android:text="@string/notifications_btn_clear"
+        android:textColor="@color/state_clear_notification"
         android:textSize="@dimen/back_navigation_header_text_size" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/roboto_text_bold"
-        android:includeFontPadding="false"
-        android:maxLines="1"
-        android:text="@string/venue_details_label_notifications"
-        android:textColor="@color/textGray"
-        android:textSize="@dimen/all_screen_header_text_size" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:ellipsize="end"-->
+        <!--android:fontFamily="@font/roboto_text_bold"-->
+        <!--android:includeFontPadding="false"-->
+        <!--android:maxLines="1"-->
+        <!--android:text="@string/venue_details_label_notifications"-->
+        <!--android:textColor="@color/textGray"-->
+        <!--android:textSize="@dimen/all_screen_header_text_size" />-->
 
     <View
         android:layout_width="match_parent"

@@ -45,7 +45,7 @@ object AppConstants {
     const val REQ_CODE_HOME_SEARCH = 127
     const val REQ_CODE_CREATE_NEW_POST = 128
     const val REQ_CODE_GROUP_DETAILS_MORE_OPTIONS = 129
-    const val REQ_CODE_JOIN_GROUP = 130
+    const val REQ_CODE_EXIT_GROUP = 130
     const val REQ_CODE_BLOCK_USER = 131
     const val REQ_CODE_PEOPLE = 132
     const val REQ_CODE_CONTACT_US = 133

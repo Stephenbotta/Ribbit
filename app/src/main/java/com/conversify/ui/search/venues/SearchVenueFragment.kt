@@ -1,7 +1,9 @@
 package com.conversify.ui.search.venues
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
@@ -14,6 +16,9 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.chat.ChatActivity
+import com.conversify.ui.venues.join.JoinVenueActivity
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_search_venue.*
 
@@ -79,6 +84,44 @@ class SearchVenueFragment : BaseFragment(), SearchVenueAdapter.Callback {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            AppConstants.REQ_CODE_VENUE_CHAT -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val venue = data?.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
+                    if (venue != null && venue.isMember == false) {
+                        // Only valid if user has exit a venue
+//                        venuesListAdapter.removeVenue(venue)
+//
+//                        // Set displayed child to no venues if venues count is 0
+//                        if (venuesListAdapter.getVenuesCount() == 0) {
+//                            viewSwitcher.displayedChild = VenuesListFragment.CHILD_NO_VENUES
+//                        }
+                    }
+                    getVenueSearch()
+                }
+            }
+
+            AppConstants.REQ_CODE_JOIN_VENUE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val venue = data?.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
+                    if (venue != null) {
+                        if (venue.isPrivate == true) {
+                            // Update venue if joined venue was private
+                            adapter.updateVenueJoinedStatus(venue)
+                        } else {
+                            // Open the joined venue chat if venue is public
+                            adapter.updateVenueJoinedStatus(venue)
+                            val intent = ChatActivity.getStartIntent(requireActivity(), venue, AppConstants.REQ_CODE_VENUE_CHAT)
+                            startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun getVenueSearch(showLoading: Boolean = true) {
         if (isNetworkActiveWithMessage()) {
             viewModel.getVenueSearch(showLoading, search)
@@ -104,6 +147,19 @@ class SearchVenueFragment : BaseFragment(), SearchVenueAdapter.Callback {
     }
 
     override fun onClick(position: Int, venue: VenueDto) {
+        val items = adapter.getUpdatedList()
+        val item = items[position]
+        if (item is VenueDto) {
 
+            // Open own venue
+            if (item.isMember == true) {
+                val intent = ChatActivity.getStartIntent(requireActivity(), item, AppConstants.REQ_CODE_VENUE_CHAT)
+                startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
+                return
+            }
+            // Join other venue
+            val intent = JoinVenueActivity.getStartIntent(requireActivity(), item)
+            startActivityForResult(intent, AppConstants.REQ_CODE_JOIN_VENUE)
+        }
     }
 }

@@ -207,8 +207,9 @@
 
     <string name="notifications_btn_accept">Accept</string>
     <string name="notifications_btn_reject">Reject</string>
-    <string name="notifications_label_no_notifications_found">No notifications found</string>
+    <string name="notifications_label_no_notifications_found">No Notifications Found</string>
     <string name="notifications_label_send_request_to_join">%s send request to join %s</string>
+    <string name="notifications_btn_clear">CLEAR</string>
 
     <string name="profile_label_profile">Profile</string>
     <string name="profile_label_followers">Followers</string>
@@ -349,5 +350,8 @@
     <string name="hide_info_my_followers">My Followers</string>
     <string name="hide_info_people">People</string>
     <string name="hide_info_label_status">%d %s</string>
+
+    <string name="follower_label_empty_list">No follower user yet!!</string>
+    <string name="following_label_empty_list">No following user yet!!</string>
 
 </resources>

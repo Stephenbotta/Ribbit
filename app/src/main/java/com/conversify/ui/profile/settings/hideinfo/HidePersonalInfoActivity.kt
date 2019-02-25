@@ -35,6 +35,7 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
 
     override fun onStart() {
         super.onStart()
+        viewModel.updateProfile()
         setData(viewModel.getProfile())
     }
 

@@ -31,6 +31,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     private var flag = 0
     private lateinit var adapter: HideStatusAdapter
     private lateinit var items: List<Any>
+    private lateinit var selectedUserList: MutableList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +83,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     }
 
     private fun profilePicture(profile: ProfileDto) {
+        selectedUserList = profile.imageVisibility!!
         if (profile.imageVisibilityForEveryone!!) {
             everyone.isChecked = profile.imageVisibilityForEveryone
         } else {
@@ -99,6 +101,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     }
 
     private fun privateInfo(profile: ProfileDto) {
+        selectedUserList = profile.personalInfoVisibility!!
         everyone.visibility = View.GONE
         if (profile.personalInfoVisibilityForFollowers!!) {
             val size = profile.personalInfoVisibility?.size
@@ -113,6 +116,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     }
 
     private fun username(profile: ProfileDto) {
+        selectedUserList = profile.nameVisibility!!
         if (profile.nameVisibilityForEveryone!!) {
             everyone.isChecked = profile.nameVisibilityForEveryone
         } else {
@@ -130,6 +134,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     }
 
     private fun message(profile: ProfileDto) {
+        selectedUserList = profile.tagPermission!!
         if (profile.tagPermissionForEveryone!!) {
             everyone.isChecked = profile.tagPermissionForEveryone
         } else {
@@ -157,12 +162,12 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
 
             when (resource.status) {
                 Status.SUCCESS -> {
-                    val data = resource.data
-
+                    onBackPressed()
                 }
 
                 Status.ERROR -> {
 //                    handleError(resource.error)
+                    onBackPressed()
                 }
 
                 Status.LOADING -> {
@@ -177,6 +182,33 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
                 Status.SUCCESS -> {
                     swipeRefreshLayout.isRefreshing = false
                     items = resource.data ?: emptyList()
+                    for (i in items.indices) {
+
+                        when (flag) {
+                            ApiConstants.FLAG_PROFILE_PICTURE -> {
+                                val list = viewModel.getProfile().imageVisibility!!
+                                for (j in list.indices) {
+                                    val item = items[i]
+                                    if (item is ProfileDto) {
+                                        if (item.id.equals(list[j])) {
+                                            item.isSelected = true
+                                            break
+                                        }
+                                    }
+                                }
+                            }
+                            ApiConstants.FLAG_PRIVATE_INFO -> {
+
+                            }
+                            ApiConstants.FLAG_USERNAME -> {
+
+                            }
+                            ApiConstants.FLAG_MESSAGE -> {
+
+                            }
+                        }
+
+                    }
                     adapter.displayCategories(items)
                 }
 
@@ -195,7 +227,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     override fun onClick(v: View?) {
         when (v?.id) {
 
-            R.id.btnBack -> onBackPressed()
+            R.id.btnBack -> onBackPress()
 
             R.id.everyone -> {
             }
@@ -209,11 +241,29 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
 
     override fun onClick(position: Int) {
         val item = items[position]
+        if (item is ProfileDto) {
+            item.isSelected = item.isSelected.not()
+//            if (selectedUserList.size == 0) {
+//                selectedUserList.add(item.id!!)
+//            } else {
+//                for (i in selectedUserList.indices) {
+//                    if (!selectedUserList[i].equals(item.id)) {
+//                        selectedUserList.add(item.id!!)
+////                    item.imageVisibility?.add(item.id!!)
+//                        break
+//                    }
+//                    if (selectedUserList[i].equals(item.id)) {
+//                        selectedUserList.remove(item.id!!)
+////                    item.imageVisibility?.remove(item.id!!)
+//                        break
+//                    }
+//                }
+//            }
+        }
         adapter.notifyDataSetChanged()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
+    private fun onBackPress() {
         val map = hashMapOf<String, String>()
         map["flag"] = flag.toString()
         when (rgStatus.checkedRadioButtonId) {
@@ -251,17 +301,20 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
             R.id.selectedUser -> {
                 when (flag) {
                     ApiConstants.FLAG_PROFILE_PICTURE -> {
-                        val array = Gson().toJson("")
+                        val array = Gson().toJson(selectedUserList)
                         map["userIds"] = array
                     }
                     ApiConstants.FLAG_PRIVATE_INFO -> {
-                        map["userIds"] = true.toString()
+                        val array = Gson().toJson(selectedUserList)
+                        map["userIds"] = array
                     }
                     ApiConstants.FLAG_USERNAME -> {
-                        map["userIds"] = true.toString()
+                        val array = Gson().toJson(selectedUserList)
+                        map["userIds"] = array
                     }
                     ApiConstants.FLAG_MESSAGE -> {
-                        map["userIds"] = true.toString()
+                        val array = Gson().toJson(selectedUserList)
+                        map["userIds"] = array
                     }
                 }
             }

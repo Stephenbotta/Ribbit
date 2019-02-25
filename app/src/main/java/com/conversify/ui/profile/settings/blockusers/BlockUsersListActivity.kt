@@ -61,8 +61,8 @@ class BlockUsersListActivity : BaseActivity(), View.OnClickListener, BlockUsersL
                     items.addAll(data)
                     if (items.size > 0) {
                         tvNoBlockUser.visibility = View.GONE
-                        adapter.displayItems(items)
                     } else tvNoBlockUser.visibility = View.VISIBLE
+                    adapter.displayItems(items)
                 }
 
                 Status.ERROR -> {

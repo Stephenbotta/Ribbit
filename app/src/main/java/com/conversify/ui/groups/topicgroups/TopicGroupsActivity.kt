@@ -61,7 +61,8 @@ class TopicGroupsActivity : BaseActivity() {
     private fun setupGroupsRecycler() {
         groupsAdapter = TopicGroupsAdapter(GlideApp.with(this)) { group ->
             if (group.isMember == true) {
-                GroupPostsActivity.start(this, group)
+                val intent = GroupPostsActivity.start(this, group)
+                startActivity(intent)
             } else if (isNetworkActiveWithMessage()) {
                 groupsViewModel.joinGroup(group)
             }
@@ -122,7 +123,8 @@ class TopicGroupsActivity : BaseActivity() {
                         if (group.isPrivate == true) {
                             longToast(R.string.venues_message_notification_sent_to_admin)
                         } else {
-                            GroupPostsActivity.start(this, group)
+                            val intent = GroupPostsActivity.start(this, group)
+                            startActivity(intent)
                             setResult(Activity.RESULT_OK)
                         }
                     }

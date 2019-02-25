@@ -1,7 +1,9 @@
 package com.conversify.ui.search.groups
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
@@ -17,6 +19,7 @@ import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.groups.groupposts.GroupPostsActivity
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_search_group.*
 
@@ -94,7 +97,7 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
                             getGroupSearch()
                         } else {
                             val items = adapter.getUpdatedList()
-                            items.set(adapterPosition!!, group!!)
+                            items[adapterPosition!!] = group!!
                             groupDetails(group)
                         }
                     }
@@ -110,8 +113,23 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
         })
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            AppConstants.REQ_CODE_EXIT_GROUP -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val group = data?.getParcelableExtra<GroupDto>(AppConstants.EXTRA_GROUP)
+                    if (group != null && group.isMember == false) {
+                        getGroupSearch()
+                    }
+                }
+            }
+        }
+    }
+
     private fun groupDetails(group: GroupDto) {
-        GroupPostsActivity.start(requireActivity(), group)
+        val intent = GroupPostsActivity.start(requireActivity(), group)
+        startActivityForResult(intent, AppConstants.REQ_CODE_EXIT_GROUP)
         adapter.notifyDataSetChanged()
     }
 

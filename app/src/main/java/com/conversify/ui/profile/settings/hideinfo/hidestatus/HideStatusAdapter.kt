@@ -36,9 +36,9 @@ class HideStatusAdapter(private val glide: GlideRequests, private val callback: 
         }
     }
 
-    fun displayCategories(peoples: List<Any>) {
+    fun displayCategories(item: List<Any>) {
         items.clear()
-        items.addAll(peoples)
+        items.addAll(item)
         notifyDataSetChanged()
     }
 
@@ -62,13 +62,23 @@ class HideStatusAdapter(private val glide: GlideRequests, private val callback: 
             itemView.tvUserName.text = items.userName
             when (flag) {
                 ApiConstants.FLAG_PROFILE_PICTURE -> {
-                    val size = ownProfile.imageVisibility?.size
-                    if (size != 0)
-                        for (i in ownProfile.imageVisibility!!.indices) {
-                            if (ownProfile.imageVisibility[i].equals(items.id)) {
-                                itemView.tvUserName.setTextColor(selectedUser)
-                            }
-                        }
+                    if (items.isSelected) {
+                        itemView.tvUserName.setTextColor(selectedUser)
+                    } else {
+                        itemView.tvUserName.setTextColor(unselectedUser)
+                    }
+//                    val size = ownProfile.imageVisibility?.size
+//                    if (size != 0)
+//                        for (i in ownProfile.imageVisibility!!.indices) {
+//                            if (!ownProfile.imageVisibility!![i].equals(items.id)) {
+//                                itemView.tvUserName.setTextColor(unselectedUser)
+//                                break
+//                            }
+//                            if (ownProfile.imageVisibility!![i].equals(items.id)) {
+//                                itemView.tvUserName.setTextColor(selectedUser)
+//                                break
+//                            }
+//                        }
                 }
                 ApiConstants.FLAG_PRIVATE_INFO -> {
                     ownProfile.personalInfoVisibility?.size

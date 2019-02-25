@@ -138,6 +138,9 @@
         <activity
             android:name=".ui.profile.settings.hideinfo.hidestatus.HideStatusActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profile.followerandfollowing.FollowerAndFollowingActivity"
+            android:screenOrientation="portrait" />
 
         <uses-library
             android:name="org.apache.http.legacy"

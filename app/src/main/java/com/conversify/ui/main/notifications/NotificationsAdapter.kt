@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.data.remote.models.notifications.NotificationDto
 import com.conversify.extensions.inflate
-import com.conversify.ui.notifications.viewholders.VenueGroupInviteRequestViewHolder
+import com.conversify.ui.main.notifications.viewholders.VenueGroupInviteRequestViewHolder
 import com.conversify.utils.GlideRequests
 
 class NotificationsAdapter(private val glide: GlideRequests,

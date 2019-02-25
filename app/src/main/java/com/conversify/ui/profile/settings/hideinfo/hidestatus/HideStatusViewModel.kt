@@ -2,6 +2,7 @@ package com.conversify.ui.profile.settings.hideinfo.hidestatus
 
 import android.app.Application
 import com.conversify.data.local.UserManager
+import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
@@ -54,7 +55,7 @@ class HideStatusViewModel(application: Application) : BaseViewModel(application)
         followerList.value = Resource.loading()
 
         RetrofitClient.conversifyApi
-                .getFollowerFollowingList(1)
+                .getFollowerFollowingList(ApiConstants.FLAG_FOLLOWERS)
                 .enqueue(object : Callback<ApiResponse<List<ProfileDto>>> {
                     override fun onResponse(call: Call<ApiResponse<List<ProfileDto>>>, response: Response<ApiResponse<List<ProfileDto>>>) {
                         if (response.isSuccessful) {

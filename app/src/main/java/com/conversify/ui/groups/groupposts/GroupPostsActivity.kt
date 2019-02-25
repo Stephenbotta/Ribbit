@@ -42,9 +42,9 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         private const val CHILD_POSTS = 0
         private const val CHILD_NO_POSTS = 1
 
-        fun start(context: Context, group: GroupDto) {
-            context.startActivity(Intent(context, GroupPostsActivity::class.java)
-                    .putExtra(EXTRA_GROUP, group))
+        fun start(context: Context, group: GroupDto): Intent {
+            return Intent(context, GroupPostsActivity::class.java)
+                    .putExtra(EXTRA_GROUP, group)
         }
     }
 
@@ -160,6 +160,9 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
                 Status.SUCCESS -> {
                     swipeRefreshLayout.isRefreshing = false
                     group.isMember = false
+                    val data = Intent()
+                    data.putExtra(AppConstants.EXTRA_GROUP, group)
+                    setResult(Activity.RESULT_OK, data)
                     finish()
                 }
 
