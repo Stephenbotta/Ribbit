@@ -145,16 +145,16 @@ data class ProfileDto(
         val tagsFollowed: MutableList<String>? = null,
 
         @field:SerializedName("imageVisibility")
-        var imageVisibility: MutableList<String>? = null,
+        var imageVisibility: MutableList<SelectedUser>? = null,
 
         @field:SerializedName("nameVisibility")
-        var nameVisibility: MutableList<String>? = null,
+        var nameVisibility: MutableList<SelectedUser>? = null,
 
         @field:SerializedName("tagPermission")
-        var tagPermission: MutableList<String>? = null,
+        var tagPermission: MutableList<SelectedUser>? = null,
 
         @field:SerializedName("personalInfoVisibility")
-        var personalInfoVisibility: MutableList<String>? = null,
+        var personalInfoVisibility: MutableList<SelectedUser>? = null,
 
         @field:SerializedName("locationVisibility")
         val locationVisibility: Boolean? = null,

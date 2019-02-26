@@ -67,27 +67,27 @@ class HideStatusAdapter(private val glide: GlideRequests, private val callback: 
                     } else {
                         itemView.tvUserName.setTextColor(unselectedUser)
                     }
-//                    val size = ownProfile.imageVisibility?.size
-//                    if (size != 0)
-//                        for (i in ownProfile.imageVisibility!!.indices) {
-//                            if (!ownProfile.imageVisibility!![i].equals(items.id)) {
-//                                itemView.tvUserName.setTextColor(unselectedUser)
-//                                break
-//                            }
-//                            if (ownProfile.imageVisibility!![i].equals(items.id)) {
-//                                itemView.tvUserName.setTextColor(selectedUser)
-//                                break
-//                            }
-//                        }
                 }
                 ApiConstants.FLAG_PRIVATE_INFO -> {
-                    ownProfile.personalInfoVisibility?.size
+                    if (items.isSelected) {
+                        itemView.tvUserName.setTextColor(selectedUser)
+                    } else {
+                        itemView.tvUserName.setTextColor(unselectedUser)
+                    }
                 }
                 ApiConstants.FLAG_USERNAME -> {
-                    ownProfile.nameVisibility?.size
+                    if (items.isSelected) {
+                        itemView.tvUserName.setTextColor(selectedUser)
+                    } else {
+                        itemView.tvUserName.setTextColor(unselectedUser)
+                    }
                 }
                 ApiConstants.FLAG_MESSAGE -> {
-                    ownProfile.tagPermission?.size
+                    if (items.isSelected) {
+                        itemView.tvUserName.setTextColor(selectedUser)
+                    } else {
+                        itemView.tvUserName.setTextColor(unselectedUser)
+                    }
                 }
             }
 

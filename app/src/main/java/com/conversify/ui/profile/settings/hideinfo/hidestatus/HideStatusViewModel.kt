@@ -51,6 +51,31 @@ class HideStatusViewModel(application: Application) : BaseViewModel(application)
                 })
     }
 
+    fun configSetting(flag: Int, selectedUserIds: List<String>) {
+        configSetting.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .postConfigSettingUserArray(flag, selectedUserIds)
+                .enqueue(object : Callback<ApiResponse<ProfileDto>> {
+                    override fun onResponse(call: Call<ApiResponse<ProfileDto>>, response: Response<ApiResponse<ProfileDto>>) {
+                        if (response.isSuccessful) {
+                            val data = response.body()?.data
+                            if (data != null) {
+                                UserManager.saveProfile(data)
+                            }
+                            updateProfile()
+                            configSetting.value = Resource.success(data)
+                        } else {
+                            configSetting.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<ProfileDto>>, t: Throwable) {
+                        configSetting.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
     fun getFollowerList() {
         followerList.value = Resource.loading()
 

@@ -1,5 +1,6 @@
 package com.conversify.ui.profile.settings.hideinfo
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -12,6 +13,7 @@ import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.profile.settings.hideinfo.hidestatus.HideStatusActivity
+import com.conversify.utils.AppConstants
 import kotlinx.android.synthetic.main.activity_hide_personal_info.*
 
 class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
@@ -29,14 +31,9 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hide_personal_info)
 
+        setData(viewModel.getProfile())
         setListener()
         observeChanges()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.updateProfile()
-        setData(viewModel.getProfile())
     }
 
     private fun setListener() {
@@ -67,18 +64,18 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
             tvPicViewStatus.text = getString(R.string.hide_info_everyone)
         } else {
             val size = profile.imageVisibility?.size
-            if (profile.imageVisibilityForFollowers!!) {
+            if (!profile.imageVisibilityForFollowers!!) {
                 if (size != 0) {
                     tvPicViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
                 } else {
-                    tvPicViewStatus.text = getString(R.string.hide_info_my_followers)
+                    tvPicViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
                 }
             } else {
                 tvPicViewStatus.text = getString(R.string.hide_info_my_followers)
             }
         }
 
-        if (profile.personalInfoVisibilityForFollowers!!) {
+        if (!profile.personalInfoVisibilityForFollowers!!) {
             val size = profile.personalInfoVisibility?.size
             if (size != 0) {
                 tvInfoViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
@@ -93,11 +90,11 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
             tvUsernameViewStatus.text = getString(R.string.hide_info_everyone)
         } else {
             val size = profile.nameVisibility?.size
-            if (profile.nameVisibilityForFollowers!!) {
+            if (!profile.nameVisibilityForFollowers!!) {
                 if (size != 0) {
                     tvUsernameViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
                 } else {
-                    tvUsernameViewStatus.text = getString(R.string.hide_info_my_followers)
+                    tvUsernameViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
                 }
             } else {
                 tvUsernameViewStatus.text = getString(R.string.hide_info_my_followers)
@@ -108,11 +105,11 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
             tvMessageViewStatus.text = getString(R.string.hide_info_everyone)
         } else {
             val size = profile.tagPermission?.size
-            if (profile.tagPermissionForFollowers!!) {
+            if (!profile.tagPermissionForFollowers!!) {
                 if (size != 0) {
                     tvMessageViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
                 } else {
-                    tvMessageViewStatus.text = getString(R.string.hide_info_my_followers)
+                    tvMessageViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
                 }
             } else {
                 tvMessageViewStatus.text = getString(R.string.hide_info_my_followers)
@@ -149,7 +146,8 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun status(flag: Int) {
-        startActivity(HideStatusActivity.start(this, flag))
+        val intent = HideStatusActivity.start(this, flag)
+        startActivityForResult(intent, AppConstants.REQ_CODE_HIDE_INFO_STATUS)
     }
 
     override fun onClick(v: View?) {
@@ -167,6 +165,20 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
 
             R.id.tvMessage, R.id.tvMessageViewStatus, R.id.tvLabelMessage -> status(ApiConstants.FLAG_MESSAGE)
 
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            AppConstants.REQ_CODE_HIDE_INFO_STATUS -> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val profile = data.getParcelableExtra<ProfileDto>(AppConstants.EXTRA_PROFILE)
+                    if (profile != null) {
+                        setData(profile)
+                    }
+                }
+            }
         }
     }
 

@@ -276,6 +276,10 @@ interface ConversifyApi {
     @FormUrlEncoded
     fun postConfigSetting(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<ProfileDto>>
 
+    @POST("user/configSetting")
+    @FormUrlEncoded
+    fun postConfigSettingUserArray(@Field(FLAG) flag: Int, @Field("userIds") userIds: List<String>): Call<ApiResponse<ProfileDto>>
+
     @POST("user/listFollowerFollowing")
     @FormUrlEncoded
     fun getFollowerFollowingList(@Field(FLAG) flag: Int): Call<ApiResponse<List<ProfileDto>>>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Conversify</string>
+    <string name="app_name">Cheetahify</string>
 
     <string name="facebook_app_id" translatable="false">1875226609239116</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb1875226609239116</string>
