@@ -6,6 +6,8 @@
     <string name="app_google_api_key" translatable="false">AIzaSyBqwIX2rq8pjlqJec8LBfDrlE673Im5pBM</string>
     <string name="server_client_id" translatable="false">327229537398-5eg6hd30pi66li2joafo0eoqab4020be.apps.googleusercontent.com</string>
 
+    <string name="default_notification_channel_id">11</string>
+
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="back">BACK</string>
@@ -353,5 +355,8 @@
 
     <string name="follower_label_empty_list">No follower user yet!!</string>
     <string name="following_label_empty_list">No following user yet!!</string>
+
+    <string name="post_label_delete_post">Delete post</string>
+    <string name="post_label_edit_post">Edit post</string>
 
 </resources>

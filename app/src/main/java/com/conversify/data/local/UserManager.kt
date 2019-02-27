@@ -102,6 +102,14 @@ object UserManager {
         return PrefsManager.get().getInt(PrefsManager.PREF_GROUP_COUNT, 0)
     }
 
+    fun saveDeviceToken(token: String) {
+        PrefsManager.get().save(PrefsManager.PREF_DEVICE_TOKEN, token)
+    }
+
+    fun getDeviceToken(): String {
+        return PrefsManager.get().getString(PrefsManager.PREF_DEVICE_TOKEN, "")
+    }
+
     fun getUniqueId(): String {
         val existingUniqueId = PrefsManager.get().getString(PrefsManager.PREF_UNIQUE_ID, "")
 

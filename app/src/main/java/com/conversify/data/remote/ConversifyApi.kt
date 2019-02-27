@@ -284,4 +284,12 @@ interface ConversifyApi {
     @FormUrlEncoded
     fun getFollowerFollowingList(@Field(FLAG) flag: Int): Call<ApiResponse<List<ProfileDto>>>
 
+    @POST("user/deletePost")
+    @FormUrlEncoded
+    fun deleteGroupPost(@Field("postId") postId: String): Call<ApiResponse<Any>>
+
+    @POST("user/updateDeviceToken")
+    @FormUrlEncoded
+    fun updateDeviceToken(@Field("deviceToken") deviceToken: String): Call<ApiResponse<Any>>
+
 }

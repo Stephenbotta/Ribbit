@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.UserManager
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
@@ -66,6 +67,9 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         setupHomeRecycler()
         observeChanges()
         getHomeFeed()
+        val token = UserManager.getDeviceToken()
+        if (!token.isNullOrEmpty())
+            homeViewModel.updateDeviceToken(token)
     }
 
     private fun registerPostUpdatedReceiver() {
@@ -119,6 +123,25 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
                 Status.LOADING -> {
                     swipeRefreshLayout.isRefreshing = true
+                }
+            }
+        })
+
+        homeViewModel.updateDeviceToken.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    // Ignored
+                }
+
+                Status.ERROR -> {
+                    // Ignored
+//                    handleError(resource.error)
+                }
+
+                Status.LOADING -> {
+                    // Ignored
                 }
             }
         })

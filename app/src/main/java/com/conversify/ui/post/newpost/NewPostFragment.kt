@@ -99,6 +99,7 @@ class NewPostFragment : BaseFragment() {
                 GlideApp.with(this)
                         .load(sampledImage)
                         .into(ivImage)
+                createPostMenuItem.isEnabled = true
             }
 
             val imageDirectory = FileUtils.getAppCacheDirectoryPath(requireActivity())

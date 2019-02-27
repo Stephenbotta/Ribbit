@@ -9,6 +9,7 @@ import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,6 +21,7 @@ class HomeViewModel : ViewModel() {
     }
 
     val homeFeed by lazy { MutableLiveData<Resource<PagingResult<List<GroupPostDto>>>>() }
+    val updateDeviceToken by lazy { SingleLiveEvent<Resource<Any>>() }
 
     private var page = 1
     private var isGetHomeFeedLoading = false
@@ -71,4 +73,26 @@ class HomeViewModel : ViewModel() {
             }
         })
     }
+
+
+    fun updateDeviceToken(deviceToken: String) {
+        updateDeviceToken.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .updateDeviceToken(deviceToken)
+                .enqueue(object : Callback<ApiResponse<Any>> {
+                    override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
+                        if (response.isSuccessful) {
+                            updateDeviceToken.value = Resource.success(response.body()?.data)
+                        } else {
+                            updateDeviceToken.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                        updateDeviceToken.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
 }

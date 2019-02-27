@@ -1,13 +1,18 @@
 package com.conversify.ui.post.details
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.LocalBroadcastManager
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.SimpleItemAnimator
+import android.view.MenuItem
+import android.view.View
 import com.conversify.R
+import com.conversify.data.local.UserManager
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
@@ -22,7 +27,7 @@ import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_post_details.*
 import timber.log.Timber
 
-class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMentionAdapter.Callback {
+class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMentionAdapter.Callback, PopupMenu.OnMenuItemClickListener {
     companion object {
         private const val EXTRA_POST = "EXTRA_POST"
         private const val EXTRA_FOCUS_REPLY_EDIT_TEXT = "EXTRA_FOCUS_REPLY_EDIT_TEXT"
@@ -43,6 +48,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     private lateinit var postDetailsAdapter: PostDetailsAdapter
     private lateinit var userMentionAdapter: UserMentionAdapter
     private var replyingToTopLevelReply: PostReplyDto? = null
+    private lateinit var postId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +61,14 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
 
         val groupName = groupPost.group?.name ?: ""
         val categoryName = String.format("[%s]", groupPost.category?.name ?: "")
+
+        if (groupPost.user?.id!!.equals(UserManager.getUserId())) {
+            btnMore.visibility = View.VISIBLE
+        } else {
+            btnMore.visibility = View.GONE
+        }
+
+        postId = groupPost.id!!
 
         if (!groupName.isNullOrEmpty()) {
             btnBack.text = "$groupName $categoryName"
@@ -112,6 +126,8 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
                 llReplyingTo.gone()
             }
         }
+
+        btnMore.setOnClickListener { optionMenu(btnMore) }
     }
 
     private fun observeChanges() {
@@ -231,6 +247,51 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
                 }
             }
         })
+
+        viewModel.deletePost.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    finish()
+                }
+
+                Status.ERROR -> {
+                    // Ignored
+                    handleError(resource.error)
+                }
+
+                Status.LOADING -> {
+                    // Ignored
+                }
+            }
+        })
+
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun optionMenu(v: View) {
+        val popup = PopupMenu(this, v)
+        popup.inflate(R.menu.menu_post_more)
+//        val m = popup.menu as MenuBuilder     //  visible the icon for menu
+//        m.setOptionalIconsVisible(true)
+        popup.setOnMenuItemClickListener(this)
+        popup.show()
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+
+            R.id.deletePost -> {
+                viewModel.deletePost(postId)
+                return true
+            }
+            R.id.editPost -> {
+//                viewModel.deletePost("")
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setupPostReplyEditText() {

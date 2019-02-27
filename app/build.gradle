@@ -118,6 +118,9 @@ dependencies {
     // Firebase
     implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
 
+    // FCM
+    implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
+
     // https://firebase.google.com/docs/crashlytics
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 

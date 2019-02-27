@@ -5,6 +5,7 @@ import android.location.Location
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.conversify.R
+import com.conversify.data.local.UserManager
 import com.conversify.ui.base.BaseLocationActivity
 import com.conversify.ui.main.chats.ChatsFragment
 import com.conversify.ui.main.explore.ExploreFragment
@@ -12,6 +13,8 @@ import com.conversify.ui.main.home.HomeFragment
 import com.conversify.ui.main.notifications.NotificationsFragment
 import com.conversify.ui.main.searchusers.SearchUsersFragment
 import com.conversify.utils.FragmentSwitcher
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
@@ -34,7 +37,7 @@ class MainActivity : BaseLocationActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        createDeviceToken()
         viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
         fragmentSwitcher = FragmentSwitcher(supportFragmentManager, R.id.flMainContainer)
 
@@ -53,8 +56,20 @@ class MainActivity : BaseLocationActivity() {
             val currentFragmentTag = savedInstanceState.getString(EXTRA_SELECTED_FRAGMENT_TAG)
             fragmentSwitcher.setCurrentFragmentTag(currentFragmentTag)
         }
-
         setupBottomTabs()
+    }
+
+    private fun createDeviceToken() {
+        FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Timber.d("getInstanceId failed : ${task.exception}")
+                        return@OnCompleteListener
+                    }
+                    // Get new Instance ID token
+                    val token = task.result?.token
+                    UserManager.saveDeviceToken(token.toString())
+                })
     }
 
     private fun setupBottomTabs() {
