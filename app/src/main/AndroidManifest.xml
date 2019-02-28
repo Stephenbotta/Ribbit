@@ -22,6 +22,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute"
         tools:replace="android:allowBackup">
+
         <activity
             android:name=".ui.landing.LandingActivity"
             android:screenOrientation="portrait"
@@ -141,6 +142,12 @@
         <activity
             android:name=".ui.profile.followerandfollowing.FollowerAndFollowingActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.conversenearby.SelectNearByActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.conversenearby.post.PostNearByActivity"
+            android:screenOrientation="portrait" />
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -159,7 +166,9 @@
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
-        <service android:name=".services.MessagingService">
+        <service
+            android:name=".services.MessagingService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -168,8 +177,10 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/cheetahify_b" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimary" />

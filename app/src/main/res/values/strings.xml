@@ -11,6 +11,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="back">BACK</string>
+    <string name="next">NEXT</string>
     <string name="login">Login</string>
     <string name="sign_up">Sign Up</string>
     <string name="retry">Retry</string>
@@ -229,6 +230,8 @@
     <string name="home_label_search">Search</string>
     <string name="home_label_no_posts_found">No post yet!! Please create your one by tapping + icon</string><!--No post found-->
     <string name="home_label_username_with_group_and_category_name">%s in %s %s</string>
+    <string name="home_label_username_with_in">%s</string>
+    <string name="home_label_group_and_category_name">in %s %s</string>
 
     <string name="new_post_label_new_post">New Post</string>
     <string name="new_post_label_choose_a_channel_you_want_to_post_into">Choose a channel you want to post into</string>
@@ -300,6 +303,8 @@
     <string name="dialog_gender_label_male">Male</string>
     <string name="dialog_gender_label_female">Female</string>
     <string name="dialog_gender_label_others">Others</string>
+    <string name="dialog_post_label_publicly">Publicly</string>
+    <string name="dialog_post_label_follower_selected_people">Followers/Selected People</string>
 
     <string name="settings_profile_label_invite_people">Invite People</string>
     <string name="settings_profile_label_share_contact_details">Share your Contact Details</string>
@@ -358,5 +363,20 @@
 
     <string name="post_label_delete_post">Delete post</string>
     <string name="post_label_edit_post">Edit post</string>
+
+    <string name="home_label_find_someone">Find someone</string>
+    <string name="home_label_create_new_post">Create new post</string>
+
+    <string name="converse_near_label_someone_near_by">Converse with someone nearby</string>
+    <string name="converse_near_label_crossed_path">Find someone i crossed path with</string>
+
+    <string name="converse_post_label_thinking">What are you thinking?</string>
+    <string name="converse_post_label_publicity">Publicly</string>
+    <string name="converse_post_label_select_interest">Select interest</string>
+
+    <string name="converse_post_label_create">Create</string>
+    <string name="converse_post_label_add_location">Add Location</string>
+    <string name="converse_post_label_tap_location">Tap to select location</string>
+
 
 </resources>

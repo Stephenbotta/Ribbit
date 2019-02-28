@@ -20,6 +20,9 @@ object ApiConstants {
     const val TYPE_VENUE = "VENUE"
     const val TYPE_GROUP = "GROUP"
 
+    const val CONVERSE_NEARBY = "CONVERSE_NEARBY"
+    const val LOOK_NEARBY = "LOOK_NEARBY"
+
     const val PRIVACY_PRIVATE = 1
     const val PRIVACY_PUBLIC = 2
 

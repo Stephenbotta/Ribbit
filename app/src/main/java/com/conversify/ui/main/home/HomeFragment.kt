@@ -8,25 +8,31 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
 import com.conversify.data.local.UserManager
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.conversenearby.SelectNearByActivity
+import com.conversify.ui.people.details.PeopleDetailsActivity
 import com.conversify.ui.post.details.PostDetailsActivity
 import com.conversify.ui.post.details.PostDetailsViewModel
 import com.conversify.ui.post.newpost.NewPostActivity
 import com.conversify.ui.search.SearchActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
+import com.leinardi.android.speeddial.SpeedDialActionItem
 import kotlinx.android.synthetic.main.fragment_home.*
 import timber.log.Timber
 
@@ -59,17 +65,21 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout.setOnRefreshListener { getHomeFeed() }
-        fabPost.setOnClickListener {
-            val intent = Intent(requireActivity(), NewPostActivity::class.java)
-            startActivityForResult(intent, AppConstants.REQ_CODE_NEW_POST)
-        }
+//        fabPost.setOnClickListener {
+
+//        }
         registerPostUpdatedReceiver()
         setupHomeRecycler()
+        setupGroupsFab()
         observeChanges()
-        getHomeFeed()
         val token = UserManager.getDeviceToken()
         if (!token.isNullOrEmpty())
             homeViewModel.updateDeviceToken(token)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getHomeFeed()
     }
 
     private fun registerPostUpdatedReceiver() {
@@ -155,6 +165,43 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         }
     }
 
+    private fun setupGroupsFab() {
+        val colorWhite = ContextCompat.getColor(requireActivity(), R.color.white)
+        val colorPrimary = ContextCompat.getColor(requireActivity(), R.color.colorPrimary)
+
+        fabGroups.addActionItem(SpeedDialActionItem.Builder(R.id.fabAddGroup, R.drawable.ic_plus_white)
+                .setFabBackgroundColor(colorWhite)
+                .setFabImageTintColor(colorPrimary)
+                .setLabel(R.string.home_label_create_new_post)
+                .setLabelColor(colorPrimary)
+                .create())
+
+        fabGroups.addActionItem(SpeedDialActionItem.Builder(R.id.fabTopics, R.drawable.binoculars)
+                .setFabBackgroundColor(colorWhite)
+//                .setFabImageTintColor(colorPrimary)
+                .setLabel(R.string.home_label_find_someone)
+                .setLabelColor(colorPrimary)
+                .create())
+
+        fabGroups.setOnActionSelectedListener { item ->
+            return@setOnActionSelectedListener when (item.id) {
+                R.id.fabAddGroup -> {
+                    val intent = Intent(requireActivity(), NewPostActivity::class.java)
+                    startActivityForResult(intent, AppConstants.REQ_CODE_NEW_POST)
+                    false
+                }
+
+                R.id.fabTopics -> {
+                    val intent = Intent(requireActivity(), SelectNearByActivity::class.java)
+                    startActivity(intent)
+                    false
+                }
+
+                else -> false
+            }
+        }
+    }
+
     override fun onHomeSearchClicked() {
         Timber.i("Home search clicked")
         val intent = SearchActivity.getStartIntent(requireContext(), AppConstants.REQ_CODE_HOME_SEARCH)
@@ -178,6 +225,11 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onUserProfileClicked(profile: ProfileDto) {
         Timber.i("User profile clicked : $profile")
+        val data = UserCrossedDto()
+        data.profile = profile
+        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, profile.id!!)
+        val intent = PeopleDetailsActivity.getStartIntent(requireContext(), data, AppConstants.REQ_CODE_BLOCK_USER)
+        startActivity(intent)
     }
 
     override fun onHashtagClicked(tag: String) {

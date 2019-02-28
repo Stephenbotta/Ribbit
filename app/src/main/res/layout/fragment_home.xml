@@ -34,14 +34,32 @@
         android:textSize="18sp"
         android:visibility="gone" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabPost"
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fabPost"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|end"-->
+        <!--android:layout_margin="16dp"-->
+        <!--android:src="@drawable/ic_plus_white"-->
+        <!--app:backgroundTint="@color/colorPrimary"-->
+        <!--app:fabSize="normal" />-->
+    <!---->
+    <com.leinardi.android.speeddial.SpeedDialOverlayLayout
+        android:id="@+id/fabOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black44"
+        android:layout_gravity="center" />
+
+    <com.leinardi.android.speeddial.SpeedDialView
+        android:id="@+id/fabGroups"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.FabGroups"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_plus_white"
-        app:backgroundTint="@color/colorPrimary"
-        app:fabSize="normal" />
+        app:sdMainFabClosedSrc="@drawable/ic_plus_white"
+        app:sdMainFabOpenedSrc="@drawable/ic_close_white_24dp"
+        app:sdOverlayLayout="@id/fabOverlay"
+        app:sdUseReverseAnimationOnClose="true" />
 
 </FrameLayout>
