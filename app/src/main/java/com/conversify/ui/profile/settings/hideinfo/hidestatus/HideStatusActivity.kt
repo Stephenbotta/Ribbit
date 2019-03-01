@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.v7.widget.SearchView
 import android.view.View
 import com.conversify.R
@@ -55,16 +56,21 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     }
 
     private fun setData(profile: ProfileDto, flag: Int) {
-
         when (flag) {
             ApiConstants.FLAG_PROFILE_PICTURE -> profilePicture(profile)
             ApiConstants.FLAG_PRIVATE_INFO -> privateInfo(profile)
             ApiConstants.FLAG_USERNAME -> username(profile)
             ApiConstants.FLAG_MESSAGE -> message(profile)
+            AppConstants.REQ_CODE_NEW_POST -> newPost()
         }
 
         if (selectedUser.isChecked)
             getFollower()
+    }
+
+    private fun newPost() {
+        everyone.visibility = View.GONE
+        yourFollowers.isChecked = true
     }
 
     private fun setupSearch() {
@@ -104,12 +110,12 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
 
     private fun privateInfo(profile: ProfileDto) {
         everyone.visibility = View.GONE
-        if (profile.personalInfoVisibilityForFollowers!!) {
+        if (!profile.personalInfoVisibilityForFollowers!!) {
             val size = profile.personalInfoVisibility?.size
             if (size != 0) {
                 selectedUser.isChecked = true
             } else {
-                yourFollowers.isChecked = profile.personalInfoVisibilityForFollowers
+                selectedUser.isChecked = true
             }
         } else {
             yourFollowers.isChecked = true
@@ -120,12 +126,12 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
         if (profile.nameVisibilityForEveryone!!) {
             everyone.isChecked = profile.nameVisibilityForEveryone
         } else {
-            if (profile.nameVisibilityForFollowers!!) {
+            if (!profile.nameVisibilityForFollowers!!) {
                 val size = profile.nameVisibility?.size
                 if (size != 0) {
                     selectedUser.isChecked = true
                 } else {
-                    yourFollowers.isChecked = profile.nameVisibilityForFollowers
+                    selectedUser.isChecked = true
                 }
             } else {
                 yourFollowers.isChecked = true
@@ -137,12 +143,12 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
         if (profile.tagPermissionForEveryone!!) {
             everyone.isChecked = profile.tagPermissionForEveryone
         } else {
-            if (profile.tagPermissionForFollowers!!) {
+            if (!profile.tagPermissionForFollowers!!) {
                 val size = profile.tagPermission?.size
                 if (size != 0) {
                     selectedUser.isChecked = true
                 } else {
-                    yourFollowers.isChecked = profile.tagPermissionForFollowers
+                    selectedUser.isChecked = true
                 }
             } else {
                 yourFollowers.isChecked = true
@@ -350,6 +356,15 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     }
 
     override fun onBackPressed() {
-        onBackPress()
+        when (flag) {
+            AppConstants.REQ_CODE_NEW_POST -> {
+                buildIdArray()
+                val data = Intent()
+                data.putParcelableArrayListExtra(AppConstants.EXTRA_FOLLOWERS, selectedUserList as java.util.ArrayList<out Parcelable>)
+                setResult(Activity.RESULT_OK, data)
+            }
+            else -> onBackPress()
+        }
+
     }
 }

@@ -203,8 +203,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape_rounded_go"
             android:gravity="center"
-            android:text="@string/search_user_label_go"
-            android:textColor="@color/white"
             android:theme="@style/AppTheme.FabGroups"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

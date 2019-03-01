@@ -5,11 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.conversify.R
 import com.conversify.ui.base.BaseActivity
-import com.conversify.ui.custom.LoadingDialog
-import com.conversify.utils.GetSampledImage
-import com.conversify.utils.MediaPicker
-import permissions.dispatcher.RuntimePermissions
-import java.io.File
+import com.conversify.utils.FragmentSwitcher
 
 class PostNearByActivity : BaseActivity() {
 
@@ -22,18 +18,19 @@ class PostNearByActivity : BaseActivity() {
         }
     }
 
-    private var getSampledImage: GetSampledImage? = null
-    private var selectedImage: File? = null
-    private lateinit var mediaPicker: MediaPicker
-    private lateinit var loadingDialog: LoadingDialog
+    private var flag = 0
+    private lateinit var fragmentSwitcher: FragmentSwitcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_post_near_by)
+        setContentView(R.layout.activity_profile)
+
+        flag = intent.getIntExtra(EXTRA_FLAG, 0)
+        fragmentSwitcher = FragmentSwitcher(supportFragmentManager, R.id.flProfileContainer)
+        fragmentSwitcher.addFragment(PostNearByFragment(), PostNearByFragment.TAG)
+
     }
 
-
-
-
+    fun getFlag(): Int = flag
 
 }

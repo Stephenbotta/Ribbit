@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:drawableStart="@drawable/ic_back"
+        android:drawablePadding="6dp"
+        android:fontFamily="@font/roboto_text_bold"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="@string/back"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/back_navigation_header_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/btnNext"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginEnd="8dp"
+        android:enabled="false"
+        android:fontFamily="@font/roboto_text_bold"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="@string/converse_post_label_create"
+        android:textColor="@color/state_clear_notification"
+        android:textSize="@dimen/back_navigation_header_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider_1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/greyImageBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+
+
+    <TextView
+        android:id="@+id/tvLabelAddLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_text_regular"
+        android:text="@string/converse_post_label_add_location"
+        android:textColor="@color/textGray"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_1" />
+
+    <TextView
+        android:id="@+id/tvSelectLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@drawable/ic_location"
+        android:drawablePadding="12dp"
+        android:fontFamily="@font/roboto_text_regular"
+        android:text="@string/converse_post_label_tap_location"
+        android:textColor="@color/colorPrimary"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelAddLocation" />
+
+    <View
+        android:id="@+id/divider_2"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/greyImageBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSelectLocation" />
+
+    <TextView
+        android:id="@+id/tvLabelStartDateAndTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_text_medium"
+        android:textSize="@dimen/all_content_header_text_size"
+        android:text="@string/converse_post_label_set_date_time"
+        android:textColor="@color/textGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_2" />
+
+    <TextView
+        android:id="@+id/tvStartDateAndTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:fontFamily="@font/roboto_text_regular"
+        android:textSize="@dimen/all_content_header_text_size"
+        android:text="@string/converse_post_label_select_date_time"
+        android:textColor="@color/textGray"
+        app:layout_constraintEnd_toStartOf="@id/tvStartChange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelStartDateAndTime" />
+
+    <TextView
+        android:id="@+id/tvStartChange"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_text_medium"
+        android:textSize="@dimen/back_navigation_header_text_size"
+        android:text="@string/converse_post_label_change"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelStartDateAndTime" />
+
+
+    <View
+        android:id="@+id/divider_3"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/greyImageBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvStartChange" />
+
+    <TextView
+        android:id="@+id/tvLabelEndDateAndTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_text_medium"
+        android:textSize="@dimen/all_content_header_text_size"
+        android:text="@string/converse_post_label_set_exp_date_time"
+        android:textColor="@color/textGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_3" />
+
+    <TextView
+        android:id="@+id/tvEndDateAndTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:fontFamily="@font/roboto_text_regular"
+        android:textSize="@dimen/all_content_header_text_size"
+        android:text="@string/converse_post_label_select_date_time"
+        android:textColor="@color/textGray"
+        app:layout_constraintEnd_toStartOf="@id/tvEndChange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelEndDateAndTime" />
+
+    <TextView
+        android:id="@+id/tvEndChange"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/roboto_text_medium"
+        android:textSize="@dimen/back_navigation_header_text_size"
+        android:text="@string/converse_post_label_change"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelEndDateAndTime" />
+
+
+
+</android.support.constraint.ConstraintLayout>

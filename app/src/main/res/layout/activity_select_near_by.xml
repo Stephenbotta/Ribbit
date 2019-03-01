@@ -31,51 +31,54 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
-    <TextView
-        android:id="@+id/someoneNearBy"
+    <LinearLayout
+        android:id="@+id/layoutBtn"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:drawableBottom="@drawable/ic_nearby"
-        android:drawablePadding="40dp"
-        android:fontFamily="@font/roboto_text_regular"
-        android:gravity="center"
-        android:paddingTop="16dp"
-        android:paddingBottom="64dp"
-        android:text="@string/converse_near_label_someone_near_by"
-        android:textColor="@color/textGray"
-        android:textSize="@dimen/all_labels_and_others_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/divider_2"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider_1"
-        app:layout_constraintVertical_weight="1" />
+        app:layout_constraintTop_toBottomOf="@+id/divider_1">
 
-    <View
-        android:id="@+id/divider_2"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/greyImageBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/someoneNearBy" />
+        <TextView
+            android:id="@+id/someoneNearBy"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:drawableBottom="@drawable/ic_nearby"
+            android:drawablePadding="40dp"
+            android:fontFamily="@font/roboto_text_regular"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:paddingBottom="64dp"
+            android:text="@string/converse_near_label_someone_near_by"
+            android:textColor="@color/textGray"
+            android:textSize="@dimen/all_labels_and_others_text_size" />
 
-    <TextView
-        android:id="@+id/crossedPath"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:drawableBottom="@drawable/ic_paths"
-        android:drawablePadding="40dp"
-        android:fontFamily="@font/roboto_text_regular"
-        android:gravity="center"
-        android:paddingTop="16dp"
-        android:paddingBottom="64dp"
-        android:text="@string/converse_near_label_crossed_path"
-        android:textColor="@color/textGray"
-        android:textSize="@dimen/all_labels_and_others_text_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider_2"
-        app:layout_constraintVertical_weight="1" />
+        <View
+            android:id="@+id/divider_2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/greyImageBackground" />
+
+        <TextView
+            android:id="@+id/crossedPath"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:drawableBottom="@drawable/ic_paths"
+            android:drawablePadding="40dp"
+            android:fontFamily="@font/roboto_text_regular"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:paddingBottom="64dp"
+            android:text="@string/converse_near_label_crossed_path"
+            android:textColor="@color/textGray"
+            android:textSize="@dimen/all_labels_and_others_text_size" />
+
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

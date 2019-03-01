@@ -377,6 +377,9 @@
     <string name="converse_post_label_create">Create</string>
     <string name="converse_post_label_add_location">Add Location</string>
     <string name="converse_post_label_tap_location">Tap to select location</string>
-
+    <string name="converse_post_label_set_date_time">Set date and time to meet</string>
+    <string name="converse_post_label_select_date_time">Select date/time</string>
+    <string name="converse_post_label_set_exp_date_time">Set expiration date and time</string>
+    <string name="converse_post_label_change">Change</string>
 
 </resources>

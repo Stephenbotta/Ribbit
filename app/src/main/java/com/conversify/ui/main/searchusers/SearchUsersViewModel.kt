@@ -2,6 +2,7 @@ package com.conversify.ui.main.searchusers
 
 import android.app.Application
 import com.conversify.data.local.UserManager
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.ui.base.BaseViewModel
 
 /**
@@ -15,8 +16,10 @@ class SearchUsersViewModel(application: Application):BaseViewModel(application) 
 
     fun getProfile() = profile
 
-    fun profileUpdated() {
+
+    fun updateProfile(): ProfileDto {
         profile = UserManager.getProfile()
+        return profile
     }
 
 }

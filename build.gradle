@@ -17,8 +17,8 @@ buildscript {
         glideVersion = '4.8.0'
         roundedImageViewVersion = '2.3.0'
         countryCodePickerVersion = '2.2.3'
-        firebaseCoreVersion = '16.0.6'
-        firebaseMessagingVersion = '17.3.4'
+        firebaseCoreVersion = '16.0.7'
+        firebaseMessagingVersion = '17.4.0'
         googleAuthVersion = '16.0.1'
         googlePlacesVersion = '16.0.0'
         googleLocationVersion = '16.0.0'
@@ -29,7 +29,7 @@ buildscript {
         fabSpeedDialVersion = '2.0.1'
         exoPlayerVersion = '2.9.1'
         mp4ParserVersion = '1.0.6'
-        crashlyticsVersion = '2.9.8'
+        crashlyticsVersion = '2.9.9'
         flexboxVersion = '1.0.0'    // (1.1.0 and above is based on AndroidX)
         asymmetricGridView = '2.0.1'
     }

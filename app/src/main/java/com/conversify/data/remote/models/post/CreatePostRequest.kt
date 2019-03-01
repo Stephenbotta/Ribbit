@@ -1,7 +1,21 @@
 package com.conversify.data.remote.models.post
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class CreatePostRequest(val groupId: String? = null,
-                             val postText: String? = null,
+                             var postText: String? = null,
                              var imageOriginal: String? = null,
                              var imageThumbnail: String? = null,
-                             val hashTags: List<String>? = null)
+                             var hashTags: List<String>? = null,
+                             var locationLong: Double? = null,
+                             var locationLat: Double? = null,
+                             var meetingTime: Double? = null,
+                             var expirationTime: Double? = null,
+                             var locationName: String? = null,
+                             var locationAddress: String? = null,
+                             var postType: String? = null,
+                             var postingIn: String? = null,
+                             val selectedPeople: List<String>? = null,
+                             var selectInterests: List<String>? = null) : Parcelable

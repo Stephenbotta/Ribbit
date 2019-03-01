@@ -52,6 +52,9 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
             tvMobileVerified.text = getString(R.string.verification_label_verify_mobile)
             tvMobileVerified.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_success, 0)
         }
+        if (profile.isPassportVerified!!) {
+            tvUploadDocument.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_success, 0)
+        }
         tvLabelMobile.text = profile.fullPhoneNumber
     }
 
@@ -88,7 +91,10 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
                     when (apiFlag) {
                         1 -> longToast(getString(R.string.verification_api_message_verify_email))
                         2 -> longToast(getString(R.string.verification_api_message_verify_mobile))
-                        3 -> longToast(getString(R.string.verification_api_message_verify_passport))
+                        3 -> {
+                            longToast(getString(R.string.verification_api_message_verify_passport))
+                            tvUploadDocument.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_success, 0)
+                        }
                     }
 
                 }
