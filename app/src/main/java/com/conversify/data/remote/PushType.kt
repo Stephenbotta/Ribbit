@@ -6,8 +6,11 @@ package com.conversify.data.remote
 object PushType {
 
     const val LIKE = "LIKE"
+    const val LIKE_REPLY = "LIKE_REPLY"
     const val REPLY = "REPLY"
     const val COMMENT = "COMMENT"
+    const val LIKE_COMMENT = "LIKE_COMMENT"
+    const val LIKE_POST = "LIKE_POST"
     const val VENUE = "VENUE"
     const val GROUP = "GROUP"
     const val REQUEST_VENUE = "REQUEST_VENUE"
@@ -23,6 +26,8 @@ object PushType {
     const val POST = "POST"
     const val TAG_COMMENT = "TAG_COMMENT"
     const val TAG_REPLY = "TAG_REPLY"
+    const val JOINED_VENUE = "JOINED_VENUE"
+    const val JOINED_GROUP = "JOINED_GROUP"
     const val REQUEST_FOLLOW = "REQUEST_FOLLOW"
     const val ACCEPT_REQUEST_FOLLOW = "ACCEPT_REQUEST_FOLLOW"
     const val ALERT_CONVERSE_NEARBY_PUSH = "ALERT_CONVERSE_NEARBY_PUSH"

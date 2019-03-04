@@ -382,4 +382,6 @@
     <string name="converse_post_label_set_exp_date_time">Set expiration date and time</string>
     <string name="converse_post_label_change">Change</string>
 
+    <string name="hide_info_label_people_count">%d People</string>
+
 </resources>

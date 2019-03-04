@@ -51,6 +51,7 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     private lateinit var postType: String
     private lateinit var interestsAdapter: ProfileInterestsAdapter
     private var flag = 0
+    private val selectedUserIdList by lazy { ArrayList<String>() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,7 +62,7 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         setupInterestsRecycler()
         observeChanges()
 
-        setData(viewModel.getProfile().interests!!)
+        setData(viewModel.getProfile().interests ?: emptyList())
     }
 
     private fun setData(list: List<InterestDto>) {
@@ -190,6 +191,7 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         }
         binding.tvFollowers.setOnClickListener {
             val intent = HideStatusActivity.start(requireContext(), AppConstants.REQ_CODE_NEW_POST)
+            intent.putExtra(AppConstants.EXTRA_FOLLOWERS, selectedUserIdList)
             startActivityForResult(intent, AppConstants.REQ_CODE_NEW_POST)
             bottomSheetDialog.dismiss()
         }
@@ -226,42 +228,52 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
 
         when (requestCode) {
             AppConstants.REQ_CODE_CONVERSE_NEARBY -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    val request = data?.getParcelableExtra<CreatePostRequest>(AppConstants.EXTRA_POST_DATA)
-                    request?.postType = ApiConstants.CONVERSE_NEARBY
-                    request?.postText = etPostDescription.text.toString()
-                    val list = mutableSetOf<String>()
-                    val interest = viewModel.updateProfile().interests!!
-                    for (i in interest.indices) {
-                        list.add(interest[i].name.toString())
-                    }
-                    viewModel.createPost(request!!, selectedImage)
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    requestData(data.getParcelableExtra(AppConstants.EXTRA_POST_DATA), ApiConstants.CONVERSE_NEARBY)
                 }
             }
 
             AppConstants.REQ_CODE_CROSSED_PATH -> {
-                if (resultCode == Activity.RESULT_OK) {
-
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    requestData(data.getParcelableExtra(AppConstants.EXTRA_POST_DATA), ApiConstants.LOOK_NEARBY)
                 }
             }
 
             AppConstants.REQ_CODE_CHOOSE_INTERESTS -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    setData(viewModel.updateProfile().interests!!)
+                    setData(viewModel.updateProfile().interests ?: emptyList())
                 }
             }
 
             AppConstants.REQ_CODE_NEW_POST -> {
                 tvPostingIn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_group, 0, 0, 0)
-                if (resultCode == Activity.RESULT_OK) {
-
-
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    selectedUserIdList.clear()
+                    selectedUserIdList.addAll(data.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS))
+                    if (selectedUserIdList.isNotEmpty()) {
+                        tvPostingIn.text = getString(R.string.hide_info_label_people_count, selectedUserIdList.size)
+                    } else {
+                        tvPostingIn.text = getString(R.string.hide_info_my_followers)
+                    }
                 }
+
             }
 
             else -> mediaPicker.onActivityResult(requestCode, resultCode, data)
         }
 
+    }
+
+    private fun requestData(createPostRequest: CreatePostRequest, postType: String) {
+        createPostRequest.postType = postType
+        createPostRequest.postText = etPostDescription.text.toString()
+        val list = mutableSetOf<String>()
+        val interest = viewModel.updateProfile().interests ?: emptyList()
+        for (i in interest.indices) {
+            list.add(interest[i].name.toString())
+        }
+        createPostRequest.selectedPeople = selectedUserIdList
+        viewModel.createPost(createPostRequest, selectedImage)
     }
 
     override fun onEditInterestsClicked() {

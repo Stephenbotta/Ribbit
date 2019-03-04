@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.conversify.R
-import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.venues.VenueCategoriesHeader
 import com.conversify.extensions.inflate
@@ -60,37 +59,38 @@ class HideStatusAdapter(private val glide: GlideRequests, private val callback: 
                     .into(itemView.ivProfilePic)
 
             itemView.tvUserName.text = items.userName
-            when (flag) {
-                ApiConstants.FLAG_PROFILE_PICTURE -> {
-                    if (items.isSelected) {
-                        itemView.tvUserName.setTextColor(selectedUser)
-                    } else {
-                        itemView.tvUserName.setTextColor(unselectedUser)
-                    }
-                }
-                ApiConstants.FLAG_PRIVATE_INFO -> {
-                    if (items.isSelected) {
-                        itemView.tvUserName.setTextColor(selectedUser)
-                    } else {
-                        itemView.tvUserName.setTextColor(unselectedUser)
-                    }
-                }
-                ApiConstants.FLAG_USERNAME -> {
-                    if (items.isSelected) {
-                        itemView.tvUserName.setTextColor(selectedUser)
-                    } else {
-                        itemView.tvUserName.setTextColor(unselectedUser)
-                    }
-                }
-                ApiConstants.FLAG_MESSAGE -> {
-                    if (items.isSelected) {
-                        itemView.tvUserName.setTextColor(selectedUser)
-                    } else {
-                        itemView.tvUserName.setTextColor(unselectedUser)
-                    }
-                }
+            if (items.isSelected) {
+                itemView.tvUserName.setTextColor(selectedUser)
+            } else {
+                itemView.tvUserName.setTextColor(unselectedUser)
             }
 
+//            when (flag) {
+//                ApiConstants.FLAG_PROFILE_PICTURE -> {
+//                    if (items.isSelected) {
+//                        itemView.tvUserName.setTextColor(selectedUser)
+//                    } else {
+//                        itemView.tvUserName.setTextColor(unselectedUser)
+//                    }
+//                }
+//                ApiConstants.FLAG_PRIVATE_INFO -> {
+//                    if (items.isSelected) {
+//                        itemView.tvUserName.setTextColor(selectedUser)
+//                    } else {
+//                        itemView.tvUserName.setTextColor(unselectedUser)
+//                    }
+//                }
+//                ApiConstants.FLAG_USERNAME -> {
+//                    if (items.isSelected) {
+//                        itemView.tvUserName.setTextColor(selectedUser)
+//                    } else {
+//                        itemView.tvUserName.setTextColor(unselectedUser)
+//                    }
+//                }
+//                ApiConstants.FLAG_MESSAGE -> {
+//
+//                }
+//            }
         }
     }
 

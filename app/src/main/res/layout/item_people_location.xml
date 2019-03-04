@@ -77,7 +77,4 @@
         app:layout_constraintTop_toBottomOf="@+id/tvLocationName"
         tools:text="14, Hahn Garden Street. 917, NY" />
 
-
-
-
 </android.support.constraint.ConstraintLayout>

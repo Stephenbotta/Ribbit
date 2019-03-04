@@ -44,5 +44,14 @@ data class GroupPostDto(
         @field:SerializedName("comment")
         val replies: List<PostReplyDto>? = null,
 
+        @field:SerializedName("locationName")
+        val locationName: String? = null,
+
+        @field:SerializedName("locationAddress")
+        val locationAddress: String? = null,
+
+        @field:SerializedName("postType")
+        val postType: String? = null,
+
         @field:SerializedName("commentCount")
         var repliesCount: Int? = null) : Parcelable

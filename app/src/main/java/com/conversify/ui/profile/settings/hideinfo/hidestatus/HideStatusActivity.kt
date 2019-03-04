@@ -6,13 +6,13 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.support.v7.widget.SearchView
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.loginsignup.SelectedUser
 import com.conversify.extensions.handleError
 import com.conversify.ui.base.BaseActivity
 import com.conversify.utils.AppConstants
@@ -33,7 +33,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     private var flag = 0
     private lateinit var adapter: HideStatusAdapter
     private lateinit var items: List<Any>
-    private val selectedUserList by lazy { mutableSetOf<String>() }
+    private val selectedUserList by lazy { ArrayList<String>() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,16 +61,20 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
             ApiConstants.FLAG_PRIVATE_INFO -> privateInfo(profile)
             ApiConstants.FLAG_USERNAME -> username(profile)
             ApiConstants.FLAG_MESSAGE -> message(profile)
-            AppConstants.REQ_CODE_NEW_POST -> newPost()
+            AppConstants.REQ_CODE_NEW_POST -> newPost(intent.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS))
         }
 
         if (selectedUser.isChecked)
             getFollower()
     }
 
-    private fun newPost() {
+    private fun newPost(list: ArrayList<String>) {
         everyone.visibility = View.GONE
-        yourFollowers.isChecked = true
+        if (list.size > 0) {
+            selectedUser.isChecked = true
+        } else {
+            yourFollowers.isChecked = true
+        }
     }
 
     private fun setupSearch() {
@@ -96,12 +100,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
             everyone.isChecked = profile.imageVisibilityForEveryone
         } else {
             if (!profile.imageVisibilityForFollowers!!) {
-                val size = profile.imageVisibility?.size
-                if (size != 0) {
-                    selectedUser.isChecked = true
-                } else {
-                    selectedUser.isChecked = true
-                }
+                selectedUser.isChecked = true
             } else {
                 yourFollowers.isChecked = true
             }
@@ -111,12 +110,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     private fun privateInfo(profile: ProfileDto) {
         everyone.visibility = View.GONE
         if (!profile.personalInfoVisibilityForFollowers!!) {
-            val size = profile.personalInfoVisibility?.size
-            if (size != 0) {
-                selectedUser.isChecked = true
-            } else {
-                selectedUser.isChecked = true
-            }
+            selectedUser.isChecked = true
         } else {
             yourFollowers.isChecked = true
         }
@@ -127,12 +121,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
             everyone.isChecked = profile.nameVisibilityForEveryone
         } else {
             if (!profile.nameVisibilityForFollowers!!) {
-                val size = profile.nameVisibility?.size
-                if (size != 0) {
-                    selectedUser.isChecked = true
-                } else {
-                    selectedUser.isChecked = true
-                }
+                selectedUser.isChecked = true
             } else {
                 yourFollowers.isChecked = true
             }
@@ -140,16 +129,11 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     }
 
     private fun message(profile: ProfileDto) {
-        if (profile.tagPermissionForEveryone!!) {
+        if (profile.tagPermissionForEveryone == true) {
             everyone.isChecked = profile.tagPermissionForEveryone
         } else {
-            if (!profile.tagPermissionForFollowers!!) {
-                val size = profile.tagPermission?.size
-                if (size != 0) {
-                    selectedUser.isChecked = true
-                } else {
-                    selectedUser.isChecked = true
-                }
+            if (profile.tagPermissionForFollowers == false) {
+                selectedUser.isChecked = true
             } else {
                 yourFollowers.isChecked = true
             }
@@ -190,55 +174,26 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
                 Status.SUCCESS -> {
                     swipeRefreshLayout.isRefreshing = false
                     items = resource.data ?: emptyList()
-                    for (i in items.indices) {
+                    for (index in items.indices) {
                         when (flag) {
                             ApiConstants.FLAG_PROFILE_PICTURE -> {
-                                val list = viewModel.getProfile().imageVisibility!!
-                                for (j in list.indices) {
-                                    val item = items[i]
-                                    if (item is ProfileDto) {
-                                        if (item.id.equals(list[j].id)) {
-                                            item.isSelected = true
-                                            break
-                                        }
-                                    }
-                                }
+                                selectedUser(viewModel.getProfile().imageVisibility
+                                        ?: emptyList(), index)
                             }
                             ApiConstants.FLAG_PRIVATE_INFO -> {
-                                val list = viewModel.getProfile().personalInfoVisibility!!
-                                for (j in list.indices) {
-                                    val item = items[i]
-                                    if (item is ProfileDto) {
-                                        if (item.id.equals(list[j].id)) {
-                                            item.isSelected = true
-                                            break
-                                        }
-                                    }
-                                }
+                                selectedUser(viewModel.getProfile().personalInfoVisibility
+                                        ?: emptyList(), index)
                             }
                             ApiConstants.FLAG_USERNAME -> {
-                                val list = viewModel.getProfile().nameVisibility!!
-                                for (j in list.indices) {
-                                    val item = items[i]
-                                    if (item is ProfileDto) {
-                                        if (item.id.equals(list[j].id)) {
-                                            item.isSelected = true
-                                            break
-                                        }
-                                    }
-                                }
+                                selectedUser(viewModel.getProfile().nameVisibility
+                                        ?: emptyList(), index)
                             }
                             ApiConstants.FLAG_MESSAGE -> {
-                                val list = viewModel.getProfile().tagPermission!!
-                                for (j in list.indices) {
-                                    val item = items[i]
-                                    if (item is ProfileDto) {
-                                        if (item.id.equals(list[j].id)) {
-                                            item.isSelected = true
-                                            break
-                                        }
-                                    }
-                                }
+                                selectedUser(viewModel.getProfile().tagPermission
+                                        ?: emptyList(), index)
+                            }
+                            AppConstants.REQ_CODE_NEW_POST -> {
+                                selectedUserPost(intent.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS), index)
                             }
                         }
 
@@ -256,6 +211,30 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
                 }
             }
         })
+    }
+
+    private fun selectedUser(list: List<SelectedUser>, index: Int) {
+        for (selected in list.indices) {
+            val item = items[index]
+            if (item is ProfileDto) {
+                if (item.id.equals(list[selected].id)) {
+                    item.isSelected = true
+                    break
+                }
+            }
+        }
+    }
+
+    private fun selectedUserPost(list: MutableList<String>, index: Int) {
+        for (selected in list.indices) {
+            val item = items[index]
+            if (item is ProfileDto) {
+                if (item.id.equals(list[selected])) {
+                    item.isSelected = true
+                    break
+                }
+            }
+        }
     }
 
     override fun onClick(v: View?) {
@@ -320,24 +299,6 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
 
             R.id.selectedUser -> {
                 buildIdArray()
-                when (flag) {
-                    ApiConstants.FLAG_PROFILE_PICTURE -> {
-//                        val array = Gson().toJson(selectedUserList)
-//                        map["userIds"] = array
-                    }
-                    ApiConstants.FLAG_PRIVATE_INFO -> {
-//                        val array = Gson().toJson(selectedUserList)
-//                        map["userIds"] = array
-                    }
-                    ApiConstants.FLAG_USERNAME -> {
-//                        val array = Gson().toJson(selectedUserList)
-//                        map["userIds"] = array
-                    }
-                    ApiConstants.FLAG_MESSAGE -> {
-//                        val array = Gson().toJson(selectedUserList)
-//                        map["userIds"] = array
-                    }
-                }
                 val list = selectedUserList.toList()
                 viewModel.configSetting(flag, list)
             }
@@ -349,7 +310,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
             val item = items[i]
             if (item is ProfileDto) {
                 if (item.isSelected) {
-                    selectedUserList.add(item.id!!)
+                    selectedUserList.add(item.id ?: "")
                 }
             }
         }
@@ -360,11 +321,13 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
             AppConstants.REQ_CODE_NEW_POST -> {
                 buildIdArray()
                 val data = Intent()
-                data.putParcelableArrayListExtra(AppConstants.EXTRA_FOLLOWERS, selectedUserList as java.util.ArrayList<out Parcelable>)
+                if (yourFollowers.isChecked)
+                    selectedUserList.clear()
+                data.putStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS, selectedUserList)
                 setResult(Activity.RESULT_OK, data)
+                finish()
             }
             else -> onBackPress()
         }
-
     }
 }

@@ -1,5 +1,6 @@
 package com.conversify.ui.conversenearby
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import com.conversify.R
@@ -24,17 +25,17 @@ class SelectNearByActivity : BaseActivity() {
 
     private fun start(flag: Int) {
         val intent = PostNearByActivity.getStartIntent(this, flag)
-        startActivityForResult(intent, 23)
+        startActivityForResult(intent, AppConstants.REQ_CODE_CREATE_NEW_POST)
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
 
-            23 -> {
-                finish()
+            AppConstants.REQ_CODE_CREATE_NEW_POST -> {
+                if (resultCode == Activity.RESULT_OK)
+                    finish()
             }
 
         }

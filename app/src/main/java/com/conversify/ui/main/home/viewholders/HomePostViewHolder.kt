@@ -10,10 +10,7 @@ import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.extensions.*
 import com.conversify.ui.groups.GroupPostCallback
-import com.conversify.utils.AppUtils
-import com.conversify.utils.DateTimeUtils
-import com.conversify.utils.GlideRequests
-import com.conversify.utils.SpannableTextClickListener
+import com.conversify.utils.*
 import kotlinx.android.synthetic.main.item_home_feed_post.view.*
 
 class HomePostViewHolder(itemView: View,
@@ -116,6 +113,22 @@ class HomePostViewHolder(itemView: View,
         } else {
             itemView.tvMessage.visible()
             itemView.tvMessage.text = message
+        }
+
+        if (!post.locationAddress.isNullOrEmpty())
+            itemView.tvLocationAddress.text = post.locationAddress
+
+        when (post.postType) {
+            AppConstants.POST_TYPE_REGULAR -> {
+                itemView.ivType.gone()
+            }
+            AppConstants.POST_TYPE_CONVERSE_NEARBY -> {
+                itemView.ivType.visible()
+            }
+            AppConstants.POST_TYPE_LOOK_NEARBY -> {
+                itemView.ivType.visible()
+                itemView.ivType.setImageDrawable(itemView.context.getDrawable(R.drawable.binoculars))
+            }
         }
 
         updateLikeButtonState()

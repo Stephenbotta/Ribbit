@@ -38,7 +38,7 @@ class MessagingService : FirebaseMessagingService() {
         val data = message!!.data
         val type = data[TYPE]
         val msg = data[MESSAGE]
-        when (type) {
+     /*   when (type) {
 
             PushType.LIKE -> {
 
@@ -95,7 +95,7 @@ class MessagingService : FirebaseMessagingService() {
             PushType.ALERT_LOOK_NEARBY_PUSH -> {
             }
 
-        }
+        }*/
         val intent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 123,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT)

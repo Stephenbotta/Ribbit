@@ -3,6 +3,7 @@ package com.conversify.ui.main.notifications
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.conversify.R
+import com.conversify.data.remote.PushType
 import com.conversify.data.remote.models.notifications.NotificationDto
 import com.conversify.extensions.inflate
 import com.conversify.ui.main.notifications.viewholders.VenueGroupInviteRequestViewHolder
@@ -11,15 +12,21 @@ import com.conversify.utils.GlideRequests
 class NotificationsAdapter(private val glide: GlideRequests,
                            private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
-        private const val TYPE_VENUE_GROUP_INVITE_REQUEST = 0
+        private const val NOTIFICATION_TYPE_VENUE = 0
+        private const val NOTIFICATION_TYPE_INVITE_REQUEST = 1
+        private const val NOTIFICATION_TYPE_CROSSED_PATH = 2
     }
 
     private val notifications = mutableListOf<NotificationDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            TYPE_VENUE_GROUP_INVITE_REQUEST ->
+            NOTIFICATION_TYPE_VENUE ->
+                VenueGroupInviteRequestViewHolder(parent.inflate(R.layout.item_notification_normal), glide, callback)
+            NOTIFICATION_TYPE_INVITE_REQUEST ->
                 VenueGroupInviteRequestViewHolder(parent.inflate(R.layout.item_notification_venue_group_invite_request), glide, callback)
+            NOTIFICATION_TYPE_CROSSED_PATH ->
+                VenueGroupInviteRequestViewHolder(parent.inflate(R.layout.item_notification_normal_with_detail), glide, callback)
 
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -30,16 +37,32 @@ class NotificationsAdapter(private val glide: GlideRequests,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val notification = notifications[position]
 
-        when (holder) {
-            is VenueGroupInviteRequestViewHolder -> {
-                holder.bind(notification)
-            }
-        }
+        /*   when (holder) {
+               is VenueGroupInviteRequestViewHolder -> {
+                   holder.bind(notification)
+               }
+           }*/
     }
 
     override fun getItemViewType(position: Int): Int {
-        // todo add other types when added in the layout
-        return TYPE_VENUE_GROUP_INVITE_REQUEST
+        return when (notifications[position].type) {
+            PushType.LIKE, PushType.COMMENT, PushType.REPLY, PushType.VENUE, PushType.GROUP,
+            PushType.FOLLOW, PushType.POST, PushType.TAG_COMMENT, PushType.TAG_REPLY, PushType.LIKE_REPLY,
+            PushType.LIKE_COMMENT, PushType.LIKE_POST, PushType.JOINED_VENUE, PushType.JOINED_GROUP -> {
+                NOTIFICATION_TYPE_VENUE
+            }
+            PushType.REQUEST_FOLLOW, PushType.REQUEST_GROUP, PushType.ACCEPT_INVITE_GROUP, PushType.REQUEST_VENUE,
+            PushType.ACCEPT_REQUEST_FOLLOW, PushType.ACCEPT_INVITE_VENUE, PushType.ACCEPT_REQUEST_GROUP,
+            PushType.ACCEPT_REQUEST_VENUE -> {
+                NOTIFICATION_TYPE_INVITE_REQUEST
+            }
+            PushType.ALERT_CONVERSE_NEARBY_PUSH -> {
+                NOTIFICATION_TYPE_CROSSED_PATH
+            }
+            else -> {
+                throw IllegalArgumentException("Invalid View type")
+            }
+        }
     }
 
     fun displayNotifications(notifications: List<NotificationDto>) {

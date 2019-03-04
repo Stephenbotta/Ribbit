@@ -17,5 +17,5 @@ data class CreatePostRequest(val groupId: String? = null,
                              var locationAddress: String? = null,
                              var postType: String? = null,
                              var postingIn: String? = null,
-                             val selectedPeople: List<String>? = null,
+                             var selectedPeople: List<String>? = null,
                              var selectInterests: List<String>? = null) : Parcelable

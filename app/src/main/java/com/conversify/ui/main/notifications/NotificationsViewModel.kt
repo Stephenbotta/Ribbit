@@ -71,7 +71,7 @@ class NotificationsViewModel : ViewModel() {
                         ++page
                     }
 
-                    notifications.value = Resource.success(PagingResult(firstPage, venueJoinRequestNotifications))
+                    notifications.value = Resource.success(PagingResult(firstPage, receivedNotifications))
                 } else {
                     notifications.value = Resource.error(response.getAppError())
                 }

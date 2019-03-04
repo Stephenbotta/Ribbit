@@ -48,6 +48,23 @@
         app:layout_constraintTop_toTopOf="@id/ivProfile"
         tools:text="40 min" />
 
+    <TextView
+        android:id="@+id/tvLocationAddress"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/textGray"
+        android:textSize="@dimen/item_people_tv_address_text_size"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@+id/ivImage"
+        app:layout_constraintEnd_toStartOf="@id/tvTime"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/ivProfile"
+        app:layout_constraintTop_toBottomOf="@+id/tvUserName"
+        tools:text="14, Hahn Garden Street. 917, NY" />
+
     <ImageView
         android:id="@+id/ivImage"
         android:layout_width="0dp"
@@ -112,6 +129,21 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_replies"
         app:layout_constraintStart_toEndOf="@id/ivLike"
+        app:layout_constraintTop_toBottomOf="@id/tvMessage"
+        tools:ignore="ContentDescription" />
+
+
+    <ImageView
+        android:id="@+id/ivType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_converse_nerby"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvMessage"
         tools:ignore="ContentDescription" />
 

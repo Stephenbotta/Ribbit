@@ -31,7 +31,7 @@ class VenueGroupInviteRequestViewHolder(itemView: View,
     }
 
     init {
-        itemView.btnAccept.setOnClickListener {
+        /*itemView.btnAccept.setOnClickListener {
             if (adapterPosition != RecyclerView.NO_POSITION) {
                 callback.onInviteRequestAction(true, notification)
             }
@@ -43,7 +43,7 @@ class VenueGroupInviteRequestViewHolder(itemView: View,
             }
         }
 
-        itemView.ivProfile.setOnClickListener(userProfileClickListener)
+        itemView.ivProfile.setOnClickListener(userProfileClickListener)*/
     }
 
     private lateinit var notification: NotificationDto

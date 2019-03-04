@@ -72,10 +72,11 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.btnNext -> {
-                if (!checkDateTime()) {
-                    shortToast("wrong date & time")
-                    return
-                }
+                if (request.meetingTime != null)
+                    if (!checkDateTime()) {
+                        shortToast("Expiration time should be greater than meeting time")
+                        return
+                    }
                 val data = Intent()
                 data.putExtra(AppConstants.EXTRA_POST_DATA, request)
                 setResult(Activity.RESULT_OK, data)
@@ -107,8 +108,8 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun checkDateTime(): Boolean {
-        val startDate = request.meetingTime!!.toLong()
-        val endDate = request.expirationTime!!.toLong()
+        val startDate = request.meetingTime ?: 0.0
+        val endDate = request.expirationTime ?: 0.0
         return if (startDate < endDate) {
             true
         } else false

@@ -3,6 +3,7 @@ package com.conversify.ui.main.notifications
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
@@ -45,6 +46,14 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
     private fun setupNotificationsRecycler() {
         notificationsAdapter = NotificationsAdapter(GlideApp.with(this), this)
         rvNotifications.adapter = notificationsAdapter
+
+        rvNotifications.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+            if(!rvNotifications.canScrollVertically(1) && viewModel.validForPaging())
+                getNotifications(false)
+            }
+        })
     }
 
     private fun observeChanges() {
