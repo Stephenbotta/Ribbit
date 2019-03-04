@@ -296,4 +296,12 @@ interface ConversifyApi {
     @FormUrlEncoded
     fun updateDeviceToken(@Field("deviceToken") deviceToken: String): Call<ApiResponse<Any>>
 
+    @POST("user/interestMatchUsers")
+    @FormUrlEncoded
+    fun interestMatchUsers(@Field("locationLong") locationLong: Double,
+                           @Field("locationLat") locationLat: Double,
+                           @Field("range") range: Int,
+                           @Field("pageNo") pageNo: Int,
+                           @Field("categoryIds") categoryIds: List<String>): Call<ApiResponse<List<ProfileDto>>>
+
 }

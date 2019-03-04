@@ -19,12 +19,14 @@ import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.loginsignup.BackButtonEnabledListener
 import com.conversify.ui.main.MainActivity
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_choose_interests.*
 
 class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback {
     companion object {
         private const val ARGUMENT_STARTED_FOR_RESULT = "ARGUMENT_STARTED_FOR_RESULT"
+        private const val ARGUMENT_UPDATE_PREF = "ARGUMENT_UPDATE_PREF"
         const val TAG = "ChooseInterestsFragment"
 
         private const val CHILD_INTERESTS = 0
@@ -33,10 +35,11 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
 
         private const val MINIMUM_INTEREST_COUNT = 3
 
-        fun newInstance(startedForResult: Boolean = false): Fragment {
+        fun newInstance(startedForResult: Boolean = false, updateInPref: Boolean = true): Fragment {
             val fragment = ChooseInterestsFragment()
             val arguments = Bundle()
             arguments.putBoolean(ARGUMENT_STARTED_FOR_RESULT, startedForResult)
+            arguments.putBoolean(ARGUMENT_UPDATE_PREF, updateInPref)
             fragment.arguments = arguments
             return fragment
         }
@@ -44,6 +47,9 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
 
     private val startedForResult: Boolean by lazy {
         arguments?.getBoolean(ARGUMENT_STARTED_FOR_RESULT) ?: false
+    }
+    private val updateInPref: Boolean by lazy {
+        arguments?.getBoolean(ARGUMENT_UPDATE_PREF) ?: false
     }
     private val selectedInterestIds by lazy { mutableSetOf<String>() }
     private lateinit var viewModel: ChooseInterestsViewModel
@@ -82,7 +88,7 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
 
         btnContinue.setOnClickListener {
             if (isNetworkActiveWithMessage()) {
-                viewModel.updateInterests(selectedInterestIds.toList())
+                viewModel.updateInterests(selectedInterestIds.toList(), updateInPref)
             }
         }
     }
@@ -104,7 +110,8 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
                         interests.forEach { interest ->
                             if (myInterestIds.contains(interest.id)) {
                                 interest.selected = true
-                                selectedInterestIds.add(interest.id ?: "")  // Add interest to selected set
+                                selectedInterestIds.add(interest.id
+                                        ?: "")  // Add interest to selected set
                             }
                         }
 
@@ -133,8 +140,12 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
             when (resource.status) {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
+                    val interests = ArrayList<InterestDto>()
+                    interests.addAll(resource.data ?: emptyList())
                     if (startedForResult) {
-                        targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, null)
+                        val selectedIdsIntent = Intent()
+                        selectedIdsIntent.putParcelableArrayListExtra(AppConstants.EXTRA_INTEREST, interests)
+                        targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, selectedIdsIntent)
                         requireActivity().onBackPressed()
                     } else {
                         startActivity(Intent(requireActivity(), MainActivity::class.java))
