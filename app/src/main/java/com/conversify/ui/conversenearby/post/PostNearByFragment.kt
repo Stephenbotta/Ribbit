@@ -261,7 +261,6 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
 
             else -> mediaPicker.onActivityResult(requestCode, resultCode, data)
         }
-
     }
 
     private fun requestData(createPostRequest: CreatePostRequest, postType: String) {

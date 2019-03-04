@@ -180,4 +180,7 @@ data class ProfileDto(
         @field:SerializedName("tagPermissionForEveryone")
         val tagPermissionForEveryone: Boolean? = null,
 
+        @field:SerializedName("distance")
+        val distance: Double? = null,
+
         var isSelected: Boolean = false) : Parcelable
