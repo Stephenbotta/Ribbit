@@ -214,6 +214,22 @@
     <string name="notifications_label_send_request_to_join">%s send request to join %s</string>
     <string name="notifications_btn_clear">CLEAR</string>
 
+    <string name="notifications_label_cross_path">%s has crossed your path at %s</string>
+    <string name="notifications_label_converse_nearby">%s wants to converse with someone nearby. Tap here to check the details</string>
+    <string name="notifications_label_follow">%s start following you</string>
+
+    <string name="notifications_label_sub_reply_like">%s has like your reply</string>
+    <string name="notifications_label_like">%s has like your post</string>
+    <string name="notifications_label_like_comment">%s has like your comment</string>
+    <string name="notifications_label_comment">%s has commented on your post</string>
+    <string name="notifications_label_tag_comment">%s has tag you in comment</string>
+    <string name="notifications_label_tag_reply">%s has tag you in replied</string>
+    <string name="notifications_label_accept_invite">%s has accepted your invitation %s</string>
+    <string name="notifications_label_accept_request">%s has accepted your request %s</string>
+    <string name="notifications_label_accept_request_follow">%s has accepted your follow request</string>
+    <string name="notifications_label_joined">%s has joined your %s</string>
+
+
     <string name="profile_label_profile">Profile</string>
     <string name="profile_label_followers">Followers</string>
     <string name="profile_label_following">Following</string>

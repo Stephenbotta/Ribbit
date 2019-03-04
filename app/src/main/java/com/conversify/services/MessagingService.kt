@@ -38,15 +38,24 @@ class MessagingService : FirebaseMessagingService() {
         val data = message!!.data
         val type = data[TYPE]
         val msg = data[MESSAGE]
-     /*   when (type) {
+        when (type) {
 
             PushType.LIKE -> {
+
+            }
+            PushType.LIKE_POST -> {
 
             }
             PushType.REPLY -> {
 
             }
+            PushType.LIKE_REPLY -> {
+
+            }
             PushType.COMMENT -> {
+
+            }
+            PushType.LIKE_COMMENT -> {
 
             }
             PushType.VENUE -> {
@@ -57,7 +66,6 @@ class MessagingService : FirebaseMessagingService() {
             }
             PushType.REQUEST_VENUE -> {
                 val id = data[ID]
-
                 val byId = data["byId"]
             }
             PushType.REQUEST_GROUP -> {
@@ -94,8 +102,13 @@ class MessagingService : FirebaseMessagingService() {
             }
             PushType.ALERT_LOOK_NEARBY_PUSH -> {
             }
+            PushType.JOINED_VENUE -> {
 
-        }*/
+            }
+            PushType.JOINED_GROUP -> {
+
+            }
+        }
         val intent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, 123,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT)

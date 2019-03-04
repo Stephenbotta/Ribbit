@@ -87,6 +87,54 @@ class NotificationsViewModel : ViewModel() {
         })
     }
 
+    fun clearNotifications() {
+        isGetNotificationsLoading = true
+        notifications.value = Resource.loading()
+
+        val call = RetrofitClient.conversifyApi
+                .clearNotification()
+
+        // Cancel any on-going call
+        getNotificationsCall?.cancel()
+        getNotificationsCall = call
+
+        call.enqueue(object : Callback<ApiResponse<List<NotificationDto>>> {
+            override fun onResponse(call: Call<ApiResponse<List<NotificationDto>>>,
+                                    response: Response<ApiResponse<List<NotificationDto>>>) {
+                if (response.isSuccessful) {
+                    // Reset for first page
+                    isLastNotificationReceived = false
+                    page = 1
+
+                    /*
+                    * todo - currently only displaying the venue and group join requests.
+                    * Use "receivedNotifications" list later and remove "venueJoinRequestNotifications".
+                    * */
+                    val receivedNotifications = response.body()?.data ?: emptyList()
+                    if (receivedNotifications.size < PAGE_LIMIT) {
+                        Timber.i("Last notification is received")
+                        isLastNotificationReceived = true
+                    } else {
+                        Timber.i("Next page for notifications is available")
+                        ++page
+                    }
+
+                    notifications.value = Resource.success(PagingResult(true, receivedNotifications))
+                } else {
+                    notifications.value = Resource.error(response.getAppError())
+                }
+                isGetNotificationsLoading = false
+            }
+
+            override fun onFailure(call: Call<ApiResponse<List<NotificationDto>>>, t: Throwable) {
+                isGetNotificationsLoading = false
+                if (!call.isCanceled) {
+                    notifications.value = Resource.error(t.failureAppError())
+                }
+            }
+        })
+    }
+
     fun acceptRejectInviteRequest(acceptRequest: Boolean, notification: NotificationDto) {
         joinVenueRequest.value = Resource.loading()
 

@@ -6,6 +6,8 @@ import com.conversify.R
 import com.conversify.data.remote.PushType
 import com.conversify.data.remote.models.notifications.NotificationDto
 import com.conversify.extensions.inflate
+import com.conversify.ui.main.notifications.viewholders.NormalDetailsViewHolder
+import com.conversify.ui.main.notifications.viewholders.NormalViewHolder
 import com.conversify.ui.main.notifications.viewholders.VenueGroupInviteRequestViewHolder
 import com.conversify.utils.GlideRequests
 
@@ -22,11 +24,11 @@ class NotificationsAdapter(private val glide: GlideRequests,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             NOTIFICATION_TYPE_VENUE ->
-                VenueGroupInviteRequestViewHolder(parent.inflate(R.layout.item_notification_normal), glide, callback)
+                NormalViewHolder(parent.inflate(R.layout.item_notification_normal), glide, callback)
             NOTIFICATION_TYPE_INVITE_REQUEST ->
                 VenueGroupInviteRequestViewHolder(parent.inflate(R.layout.item_notification_venue_group_invite_request), glide, callback)
             NOTIFICATION_TYPE_CROSSED_PATH ->
-                VenueGroupInviteRequestViewHolder(parent.inflate(R.layout.item_notification_normal_with_detail), glide, callback)
+                NormalDetailsViewHolder(parent.inflate(R.layout.item_notification_normal_with_detail), glide, callback)
 
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -37,26 +39,35 @@ class NotificationsAdapter(private val glide: GlideRequests,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val notification = notifications[position]
 
-        /*   when (holder) {
-               is VenueGroupInviteRequestViewHolder -> {
-                   holder.bind(notification)
-               }
-           }*/
+        when (holder) {
+
+            is NormalViewHolder -> {
+                holder.bind(notification)
+            }
+
+            is VenueGroupInviteRequestViewHolder -> {
+                holder.bind(notification)
+            }
+
+            is NormalDetailsViewHolder -> {
+                holder.bind(notification)
+            }
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (notifications[position].type) {
-            PushType.LIKE, PushType.COMMENT, PushType.REPLY, PushType.VENUE, PushType.GROUP,
-            PushType.FOLLOW, PushType.POST, PushType.TAG_COMMENT, PushType.TAG_REPLY, PushType.LIKE_REPLY,
-            PushType.LIKE_COMMENT, PushType.LIKE_POST, PushType.JOINED_VENUE, PushType.JOINED_GROUP -> {
+            PushType.LIKE, PushType.COMMENT, PushType.REPLY, PushType.ACCEPT_INVITE_GROUP,
+            PushType.ACCEPT_REQUEST_FOLLOW, PushType.ACCEPT_INVITE_VENUE, PushType.ACCEPT_REQUEST_GROUP,
+            PushType.ACCEPT_REQUEST_VENUE, PushType.VENUE, PushType.GROUP, PushType.FOLLOW, PushType.POST,
+            PushType.TAG_COMMENT, PushType.TAG_REPLY, PushType.LIKE_REPLY, PushType.LIKE_COMMENT,
+            PushType.LIKE_POST, PushType.JOINED_VENUE, PushType.JOINED_GROUP -> {
                 NOTIFICATION_TYPE_VENUE
             }
-            PushType.REQUEST_FOLLOW, PushType.REQUEST_GROUP, PushType.ACCEPT_INVITE_GROUP, PushType.REQUEST_VENUE,
-            PushType.ACCEPT_REQUEST_FOLLOW, PushType.ACCEPT_INVITE_VENUE, PushType.ACCEPT_REQUEST_GROUP,
-            PushType.ACCEPT_REQUEST_VENUE -> {
+            PushType.REQUEST_FOLLOW, PushType.REQUEST_GROUP, PushType.REQUEST_VENUE -> {
                 NOTIFICATION_TYPE_INVITE_REQUEST
             }
-            PushType.ALERT_CONVERSE_NEARBY_PUSH -> {
+            PushType.ALERT_CONVERSE_NEARBY_PUSH, PushType.ALERT_LOOK_NEARBY_PUSH -> {
                 NOTIFICATION_TYPE_CROSSED_PATH
             }
             else -> {
@@ -85,5 +96,5 @@ class NotificationsAdapter(private val glide: GlideRequests,
         }
     }
 
-    interface Callback : VenueGroupInviteRequestViewHolder.Callback
+    interface Callback : VenueGroupInviteRequestViewHolder.Callback, NormalViewHolder.Callback, NormalDetailsViewHolder.Callback
 }

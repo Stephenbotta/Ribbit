@@ -1,6 +1,7 @@
 package com.conversify.data.remote.models.notifications
 
 import com.conversify.data.remote.models.groups.GroupDto
+import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.google.gson.annotations.SerializedName
@@ -24,6 +25,9 @@ data class NotificationDto(
 
         @field:SerializedName("type")
         val type: String? = null,
+
+        @field:SerializedName("postId")
+        val postId: GroupPostDto? = null,
 
         @field:SerializedName("createdOn")
         val createdOnDateTime: ZonedDateTime? = null)

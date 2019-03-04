@@ -92,7 +92,7 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
                 DateTimePicker(this,
                         minDateMillis = System.currentTimeMillis()) { selectedDateTime ->
                     tvStartDateAndTime.text = DateTimeUtils.formatVenueDateTime(selectedDateTime)
-                    request.meetingTime = selectedDateTime.toInstant().toEpochMilli().toDouble()
+                    request.meetingTime = selectedDateTime.toInstant().toEpochMilli()
                 }.show()
             }
 
@@ -100,7 +100,7 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
                 DateTimePicker(this,
                         minDateMillis = System.currentTimeMillis()) { selectedDateTime ->
                     tvEndDateAndTime.text = DateTimeUtils.formatVenueDateTime(selectedDateTime)
-                    request.expirationTime = selectedDateTime.toInstant().toEpochMilli().toDouble()
+                    request.expirationTime = selectedDateTime.toInstant().toEpochMilli()
                 }.show()
             }
 
@@ -108,11 +108,9 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun checkDateTime(): Boolean {
-        val startDate = request.meetingTime ?: 0.0
-        val endDate = request.expirationTime ?: 0.0
-        return if (startDate < endDate) {
-            true
-        } else false
+        val startDate = request.meetingTime ?: 0
+        val endDate = request.expirationTime ?: 0
+        return startDate < endDate
     }
 
 

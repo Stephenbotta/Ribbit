@@ -52,6 +52,7 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     private lateinit var interestsAdapter: ProfileInterestsAdapter
     private var flag = 0
     private val selectedUserIdList by lazy { ArrayList<String>() }
+    private var postingIn = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -186,6 +187,7 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         bottomSheetDialog.show()
         binding.tvPublicly.setOnClickListener {
             tvPostingIn.text = getString(R.string.converse_post_label_publicity)
+            postingIn = false
             tvPostingIn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_public, 0, 0, 0)
             bottomSheetDialog.dismiss()
         }
@@ -246,8 +248,9 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
             }
 
             AppConstants.REQ_CODE_NEW_POST -> {
-                tvPostingIn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_group, 0, 0, 0)
                 if (resultCode == Activity.RESULT_OK && data != null) {
+                    postingIn = true
+                    tvPostingIn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_group, 0, 0, 0)
                     selectedUserIdList.clear()
                     selectedUserIdList.addAll(data.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS))
                     if (selectedUserIdList.isNotEmpty()) {
@@ -270,7 +273,17 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         val list = mutableSetOf<String>()
         val interest = viewModel.updateProfile().interests ?: emptyList()
         for (i in interest.indices) {
-            list.add(interest[i].name.toString())
+            list.add(interest[i].id.toString())
+        }
+        createPostRequest.selectInterests = list.toList()
+        if (postingIn) {
+            if (selectedUserIdList.size > 0) {
+                createPostRequest.postingIn = AppConstants.POST_IN_SELECTED_PEOPLE
+            } else {
+                createPostRequest.postingIn = AppConstants.POST_IN_FOLLOWERS
+            }
+        } else {
+            createPostRequest.postingIn = AppConstants.POST_IN_PUBLICILY
         }
         createPostRequest.selectedPeople = selectedUserIdList
         viewModel.createPost(createPostRequest, selectedImage)

@@ -5,17 +5,19 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.conversify.R
+import com.conversify.data.remote.PushType
 import com.conversify.data.remote.models.notifications.NotificationDto
 import com.conversify.extensions.clickSpannable
-import com.conversify.utils.AppUtils
+import com.conversify.extensions.gone
+import com.conversify.extensions.visible
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.GlideRequests
-import kotlinx.android.synthetic.main.item_notification_venue_group_invite_request.view.*
+import kotlinx.android.synthetic.main.item_notification_normal_with_detail.view.*
 import timber.log.Timber
 
-class VenueGroupInviteRequestViewHolder(itemView: View,
-                                        private val glide: GlideRequests,
-                                        private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+class NormalDetailsViewHolder(itemView: View,
+                              private val glide: GlideRequests,
+                              private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
 
     private val userProfileClickListener = View.OnClickListener {
@@ -31,18 +33,6 @@ class VenueGroupInviteRequestViewHolder(itemView: View,
     }
 
     init {
-        itemView.btnAccept.setOnClickListener {
-            if (adapterPosition != RecyclerView.NO_POSITION) {
-                callback.onInviteRequestAction(true, notification)
-            }
-        }
-
-        itemView.btnReject.setOnClickListener {
-            if (adapterPosition != RecyclerView.NO_POSITION) {
-                callback.onInviteRequestAction(false, notification)
-            }
-        }
-
         itemView.ivProfile.setOnClickListener(userProfileClickListener)
     }
 
@@ -51,7 +41,7 @@ class VenueGroupInviteRequestViewHolder(itemView: View,
 
     fun bind(notification: NotificationDto) {
         this.notification = notification
-        isRequestForVenue = AppUtils.isRequestForVenue(notification)
+
 
         val sender = notification.sender
         glide.load(sender?.image?.thumbnail)
@@ -59,23 +49,33 @@ class VenueGroupInviteRequestViewHolder(itemView: View,
         itemView.tvTime.text = DateTimeUtils.formatChatListingTime(notification.createdOnDateTime, itemView.context)
 
         val username = sender?.userName ?: ""
-        val venueName = if (isRequestForVenue) {
-            notification.venue?.name
-        } else {
-            notification.group?.name
-        } ?: ""
-        val completeText = itemView.context.getString(R.string.notifications_label_send_request_to_join, username, venueName)
+        val address = notification.postId?.locationAddress ?: ""
+        val completeText = when (notification.type) {
+            PushType.ALERT_CONVERSE_NEARBY_PUSH -> {
+                itemView.context.getString(R.string.notifications_label_cross_path, username, address)
+            }
+            PushType.ALERT_LOOK_NEARBY_PUSH -> {
+                itemView.context.getString(R.string.notifications_label_converse_nearby, username)
+            }
+            else -> {
+                ""
+            }
+        }
 
         itemView.tvTitle.setText(completeText, TextView.BufferType.SPANNABLE)
+
+        if (!notification.postId?.imageUrl?.original.isNullOrEmpty()) {
+            itemView.ivCrossPic.visible()
+            glide.load(notification.postId?.imageUrl?.thumbnail)
+                    .into(itemView.ivCrossPic)
+        } else itemView.ivCrossPic.gone()
 
         itemView.tvTitle.clickSpannable(spannableText = username,
                 textColorRes = R.color.textGray,
                 textTypeface = boldTypeface,
                 clickListener = userProfileClickListener)
 
-        itemView.tvTitle.clickSpannable(spannableText = venueName,
-                textColorRes = R.color.colorPrimary,
-                textTypeface = boldTypeface,
+        itemView.tvTitle.clickSpannable(spannableText = address,
                 clickListener = venueGroupClickListener)
     }
 

@@ -37,7 +37,7 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout.setOnRefreshListener { getNotifications() }
-        clearNotification.setOnClickListener { }
+        clearNotification.setOnClickListener { clearNotifications() }
         setupNotificationsRecycler()
         observeChanges()
         getNotifications()
@@ -47,11 +47,11 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
         notificationsAdapter = NotificationsAdapter(GlideApp.with(this), this)
         rvNotifications.adapter = notificationsAdapter
 
-        rvNotifications.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+        rvNotifications.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-            if(!rvNotifications.canScrollVertically(1) && viewModel.validForPaging())
-                getNotifications(false)
+                if (!rvNotifications.canScrollVertically(1) && viewModel.validForPaging())
+                    getNotifications(false)
             }
         })
     }
@@ -113,6 +113,14 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
     private fun getNotifications(firstPage: Boolean = true) {
         if (isNetworkActiveWithMessage()) {
             viewModel.getNotifications(firstPage)
+        } else {
+            swipeRefreshLayout.isRefreshing = false
+        }
+    }
+
+    private fun clearNotifications() {
+        if (isNetworkActiveWithMessage()) {
+            viewModel.clearNotifications()
         } else {
             swipeRefreshLayout.isRefreshing = false
         }

@@ -130,6 +130,10 @@ interface ConversifyApi {
     @FormUrlEncoded
     fun getNotifications(@Field("pageNo") page: Int): Call<ApiResponse<List<NotificationDto>>>
 
+    @POST("user/clearNotification")
+    @FormUrlEncoded
+    fun clearNotification(@Field("pageNo") page: Int = 1): Call<ApiResponse<List<NotificationDto>>>
+
     @POST("user/acceptInviteRequest")
     @FormUrlEncoded
     fun acceptRejectInviteRequest(@Field("acceptType") acceptType: String,
