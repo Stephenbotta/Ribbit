@@ -96,10 +96,10 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     }
 
     private fun profilePicture(profile: ProfileDto) {
-        if (profile.imageVisibilityForEveryone!!) {
+        if (profile.imageVisibilityForEveryone == true) {
             everyone.isChecked = profile.imageVisibilityForEveryone
         } else {
-            if (!profile.imageVisibilityForFollowers!!) {
+            if (profile.imageVisibilityForFollowers == false) {
                 selectedUser.isChecked = true
             } else {
                 yourFollowers.isChecked = true
@@ -109,7 +109,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
 
     private fun privateInfo(profile: ProfileDto) {
         everyone.visibility = View.GONE
-        if (!profile.personalInfoVisibilityForFollowers!!) {
+        if (profile.personalInfoVisibilityForFollowers == false) {
             selectedUser.isChecked = true
         } else {
             yourFollowers.isChecked = true
@@ -117,10 +117,10 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     }
 
     private fun username(profile: ProfileDto) {
-        if (profile.nameVisibilityForEveryone!!) {
+        if (profile.nameVisibilityForEveryone == true) {
             everyone.isChecked = profile.nameVisibilityForEveryone
         } else {
-            if (!profile.nameVisibilityForFollowers!!) {
+            if (profile.nameVisibilityForFollowers == false) {
                 selectedUser.isChecked = true
             } else {
                 yourFollowers.isChecked = true

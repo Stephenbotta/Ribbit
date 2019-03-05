@@ -242,7 +242,7 @@ class WelcomeFragment : BaseFragment() {
             when (resource.status) {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
-                    val fragment = ChooseInterestsFragment.newInstance()
+                    val fragment = ChooseInterestsFragment.newInstance(interest = arrayListOf())
                     fragmentManager?.apply {
                         beginTransaction()
                                 .setCustomAnimations(R.anim.parallax_right_in, R.anim.parallax_left_out,

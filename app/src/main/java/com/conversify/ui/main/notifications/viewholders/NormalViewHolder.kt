@@ -7,6 +7,7 @@ import android.widget.TextView
 import com.conversify.R
 import com.conversify.data.remote.PushType
 import com.conversify.data.remote.models.notifications.NotificationDto
+import com.conversify.extensions.clickSpannable
 import com.conversify.utils.AppUtils
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.GlideRequests
@@ -52,6 +53,11 @@ class NormalViewHolder(itemView: View,
         } else {
             notification.group?.name
         } ?: ""
+
+        val comment = if (!notification.commentId?.comment.isNullOrEmpty()) {
+            notification.commentId?.comment
+        } else ""
+
         val completeText = when (notification.type) {
 
             PushType.LIKE_POST -> {
@@ -64,7 +70,7 @@ class NormalViewHolder(itemView: View,
                 itemView.context.getString(R.string.notifications_label_sub_reply_like, username)
             }
             PushType.COMMENT -> {
-                itemView.context.getString(R.string.notifications_label_comment, username)
+                itemView.context.getString(R.string.notifications_label_comment, username, comment)
             }
             PushType.TAG_COMMENT -> {
                 itemView.context.getString(R.string.notifications_label_tag_comment, username)
@@ -84,7 +90,9 @@ class NormalViewHolder(itemView: View,
             PushType.JOINED_VENUE, PushType.JOINED_GROUP -> {
                 itemView.context.getString(R.string.notifications_label_joined, username, venueName)
             }
-
+            PushType.REPLY -> {
+                itemView.context.getString(R.string.notifications_label_tag_comment, username)
+            }
             else -> {
                 ""
             }
@@ -93,10 +101,10 @@ class NormalViewHolder(itemView: View,
 
         itemView.tvTitle.setText(completeText, TextView.BufferType.SPANNABLE)
 
-//        itemView.tvTitle.clickSpannable(spannableText = username,
-//                textColorRes = R.color.textGray,
-//                textTypeface = boldTypeface,
-//                clickListener = userProfileClickListener)
+        itemView.tvTitle.clickSpannable(spannableText = username,
+                textColorRes = R.color.textGray,
+                textTypeface = boldTypeface,
+                clickListener = userProfileClickListener)
 
 //        itemView.tvTitle.clickSpannable(spannableText = venueName,
 //                textColorRes = R.color.colorPrimary,

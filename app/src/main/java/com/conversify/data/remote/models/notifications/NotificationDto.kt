@@ -3,6 +3,7 @@ package com.conversify.data.remote.models.notifications
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.google.gson.annotations.SerializedName
 import org.threeten.bp.ZonedDateTime
@@ -28,6 +29,9 @@ data class NotificationDto(
 
         @field:SerializedName("postId")
         val postId: GroupPostDto? = null,
+
+        @field:SerializedName("commentId")
+        val commentId: PostReplyDto? = null,
 
         @field:SerializedName("createdOn")
         val createdOnDateTime: ZonedDateTime? = null)

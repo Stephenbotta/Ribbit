@@ -35,7 +35,7 @@ class PostNearByViewModel(application: Application) : BaseViewModel(application)
     val interests by lazy { MutableLiveData<Resource<List<InterestDto>>>() }
 
     fun createPost(request: CreatePostRequest, postImage: File?) {
-        val hashTags = AppUtils.getHashTagsFromString(request.postText!!, false)
+        val hashTags = AppUtils.getHashTagsFromString(request.postText ?: "", false)
         request.hashTags = hashTags
         if (postImage == null) {
             createPostApi(request)

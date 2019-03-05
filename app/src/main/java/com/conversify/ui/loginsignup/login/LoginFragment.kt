@@ -12,6 +12,7 @@ import com.conversify.R
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.FacebookLogin
 import com.conversify.data.remote.models.Status
+import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.loginsignup.LoginRequest
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.social.FacebookProfile
@@ -147,7 +148,7 @@ class LoginFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginLi
                             requireActivity().finishAffinity()
                         } else {
                             // When interests are not selected for social profile
-                            val fragment = ChooseInterestsFragment.newInstance()
+                            val fragment = ChooseInterestsFragment.newInstance(interest = profile.interests?:ArrayList())
                             val tag = ChooseInterestsFragment.TAG
                             navigateToFragment(fragment, tag, true, false)
                         }

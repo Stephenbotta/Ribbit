@@ -52,6 +52,7 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     private lateinit var interestsAdapter: ProfileInterestsAdapter
     private var flag = 0
     private val selectedUserIdList by lazy { ArrayList<String>() }
+    private val interest by lazy { ArrayList<InterestDto>() }
     private var postingIn = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,8 +63,8 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         setListener()
         setupInterestsRecycler()
         observeChanges()
-
-        setData(viewModel.getProfile().interests ?: emptyList())
+        interest.addAll(viewModel.getProfile().interests ?: emptyList())
+        setData(interest)
     }
 
     private fun setData(list: List<InterestDto>) {
@@ -135,7 +136,9 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
             when (resource.status) {
                 Status.SUCCESS -> {
                     val interests = resource.data ?: emptyList()
-                    setData(interests)
+                    interest.clear()
+                    interest.addAll(interests)
+                    setData(interest)
                 }
 
                 Status.ERROR -> {
@@ -242,8 +245,11 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
             }
 
             AppConstants.REQ_CODE_CHOOSE_INTERESTS -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    setData(viewModel.updateProfile().interests ?: emptyList())
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val interests = data.getParcelableArrayListExtra<InterestDto>(AppConstants.EXTRA_INTEREST)
+                    interest.clear()
+                    interest.addAll(interests)
+                    setData(interest)
                 }
             }
 
@@ -269,12 +275,11 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     private fun requestData(createPostRequest: CreatePostRequest, postType: String) {
         createPostRequest.postType = postType
         createPostRequest.postText = etPostDescription.text.toString()
-        val list = mutableSetOf<String>()
-        val interest = viewModel.updateProfile().interests ?: emptyList()
-        for (i in interest.indices) {
-            list.add(interest[i].id.toString())
-        }
-        createPostRequest.selectInterests = list.toList()
+//        val list = mutableSetOf<String>()
+//        for (i in interest.indices) {
+//            list.add(interest[i].id.toString())
+//        }
+        createPostRequest.selectInterests = interest.mapNotNull { it.id }.toSet().toList()
         if (postingIn) {
             if (selectedUserIdList.size > 0) {
                 createPostRequest.postingIn = AppConstants.POST_IN_SELECTED_PEOPLE
@@ -289,7 +294,7 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     }
 
     override fun onEditInterestsClicked() {
-        val fragment = ChooseInterestsFragment.newInstance(true)
+        val fragment = ChooseInterestsFragment.newInstance(true, updateInPref = false, interest = interest)
         fragment.setTargetFragment(this, AppConstants.REQ_CODE_CHOOSE_INTERESTS)
         fragmentManager?.apply {
             beginTransaction()

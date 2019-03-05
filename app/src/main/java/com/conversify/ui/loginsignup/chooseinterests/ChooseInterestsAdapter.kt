@@ -29,6 +29,10 @@ class ChooseInterestsAdapter(private val glide: GlideRequests,
         notifyDataSetChanged()
     }
 
+    fun getSelectedInterest(): ArrayList<InterestDto> {
+        return interests.filter { it.selected } as ArrayList<InterestDto>
+    }
+
     class ViewHolder(itemView: View,
                      private val glide: GlideRequests,
                      callback: Callback) : RecyclerView.ViewHolder(itemView) {

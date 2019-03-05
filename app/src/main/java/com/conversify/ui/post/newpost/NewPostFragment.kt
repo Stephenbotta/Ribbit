@@ -17,11 +17,14 @@ import com.conversify.R
 import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
+import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.data.remote.models.post.CreatePostRequest
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.utils.*
 import com.conversify.utils.PermissionUtils
+import com.google.android.gms.location.places.ui.PlacePicker
 import kotlinx.android.synthetic.main.fragment_new_post.*
 import permissions.dispatcher.*
 import java.io.File
@@ -31,24 +34,38 @@ class NewPostFragment : BaseFragment() {
     companion object {
         const val TAG = "NewPostFragment"
         private const val ARGUMENT_GROUP = "ARGUMENT_GROUP"
-
+        private const val ARGUMENT_GROUP_POST = "ARGUMENT_GROUP_POST"
+        private var ids = ""
         fun newInstance(group: GroupDto? = null): Fragment {
             val fragment = NewPostFragment()
             if (group != null) {
                 val arguments = Bundle()
                 fragment.arguments = arguments
                 arguments.putParcelable(ARGUMENT_GROUP, group)
+                ids = group.id ?: ""
+            }
+            return fragment
+        }
+
+        fun newInstance(groupPost: GroupPostDto? = null): Fragment {
+            val fragment = NewPostFragment()
+            if (groupPost != null) {
+                val arguments = Bundle()
+                fragment.arguments = arguments
+                arguments.putParcelable(ARGUMENT_GROUP_POST, groupPost)
+                ids = groupPost.id ?: ""
             }
             return fragment
         }
     }
 
     private val group by lazy { arguments?.getParcelable<GroupDto?>(ARGUMENT_GROUP) }
+    private val groupPost by lazy { arguments?.getParcelable<GroupPostDto?>(ARGUMENT_GROUP_POST) }
     private lateinit var viewModel: NewPostViewModel
     private lateinit var mediaPicker: MediaPicker
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var createPostMenuItem: MenuItem
-
+    private val request = CreatePostRequest()
     private var getSampledImage: GetSampledImage? = null
     private var selectedImage: File? = null
 
@@ -81,6 +98,24 @@ class NewPostFragment : BaseFragment() {
                     .into(ivGroup)
             tvGroupName.text = group.name
         }
+        if (!group?.id.isNullOrEmpty()) {
+            request.groupId = group?.id
+        }
+        if (!groupPost?.id.isNullOrEmpty()) {
+            request.postId = groupPost?.id
+            request.groupId = groupPost?.group?.id
+        }
+
+        groupPost?.let { groupPost ->
+            etPostText.setText(groupPost.postText)
+            if (!groupPost.imageUrl?.thumbnail.isNullOrEmpty())
+                GlideApp.with(this)
+                        .load(groupPost.imageUrl?.thumbnail)
+                        .into(ivImage)
+            if (!groupPost.locationName.isNullOrEmpty())
+                tvSelectLocation.text = groupPost.locationName + " " + groupPost.locationAddress
+        }
+
     }
 
     private fun setListeners() {
@@ -88,7 +123,10 @@ class NewPostFragment : BaseFragment() {
             it.hideKeyboard()
             showMediaPickerWithPermissionCheck()
         }
-
+        tvSelectLocation.setOnClickListener {
+            val builder = PlacePicker.IntentBuilder()
+            startActivityForResult(builder.build(activity), AppConstants.REQ_CODE_PLACE_PICKER)
+        }
         mediaPicker.setImagePickerListener { imageFile ->
             getSampledImage?.removeListener()
             getSampledImage?.cancel(true)
@@ -179,7 +217,20 @@ class NewPostFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        mediaPicker.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            AppConstants.REQ_CODE_PLACE_PICKER -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val place = PlacePicker.getPlace(context, data)
+                    request.locationLat = place.latLng.latitude
+                    request.locationLong = place.latLng.longitude
+                    request.locationName = place.name?.toString()
+                    request.locationAddress = place.address?.toString()
+                    tvSelectLocation.text = AppUtils.getFormattedAddress(request.locationName, request.locationAddress)
+//                    updateCreateVenueMenuState()
+                }
+            }
+            else -> mediaPicker.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
@@ -197,7 +248,7 @@ class NewPostFragment : BaseFragment() {
             etPostText.clearFocus()
             etPostText.hideKeyboard()
             if (isNetworkActiveWithMessage()) {
-                viewModel.createPost(group?.id, etPostText.text.toString(), selectedImage)
+                viewModel.createPost(etPostText.text.toString(), selectedImage, request)
             }
             return true
         }

@@ -44,9 +44,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setData(profile: ProfileDto) {
-        if (profile.isAlertNotifications!!)
+        if (profile.isAlertNotifications == true)
             tvAlert.isChecked = profile.isAlertNotifications
-        else tvAlert.isChecked = profile.isAlertNotifications
+        else tvAlert.isChecked = profile.isAlertNotifications ?: false
     }
 
     private fun setListener() {
@@ -93,9 +93,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
                     val data = resource.data
-                    if (data?.isAlertNotifications!!)
+                    if (data?.isAlertNotifications==true)
                         tvAlert.isChecked = data.isAlertNotifications
-                    else tvAlert.isChecked = data.isAlertNotifications
+                    else tvAlert.isChecked = data?.isAlertNotifications?:false
                 }
 
                 Status.ERROR -> {

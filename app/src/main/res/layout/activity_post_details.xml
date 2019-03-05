@@ -40,17 +40,24 @@
         android:background="@color/greyImageBackground"
         app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvPostDetails"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/llReplyingTo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dividerToolbar"
-        tools:listitem="@layout/item_post_details_reply" />
+        app:layout_constraintTop_toBottomOf="@id/dividerToolbar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvPostDetails"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_post_details_reply" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <ViewFlipper
         android:id="@+id/viewFlipperUserMentions"

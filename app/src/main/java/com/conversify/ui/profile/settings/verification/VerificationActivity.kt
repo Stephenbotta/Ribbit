@@ -43,16 +43,16 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
 
     private fun setData(profile: ProfileDto) {
 
-        if (profile.isEmailVerified!!) {
+        if (profile.isEmailVerified == true) {
             tvEmailVerified.text = getString(R.string.verification_label_verify_email)
             tvEmailVerified.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_success, 0)
         }
         tvLabelEmail.text = profile.email
-        if (profile.isMobileVerified!!) {
+        if (profile.isMobileVerified == true) {
             tvMobileVerified.text = getString(R.string.verification_label_verify_mobile)
             tvMobileVerified.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_success, 0)
         }
-        if (profile.isPassportVerified!!) {
+        if (profile.isPassportVerified == true) {
             tvUploadDocument.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_success, 0)
         }
         tvLabelMobile.text = profile.fullPhoneNumber
@@ -114,19 +114,19 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun verifiedEmail(profile: ProfileDto) {
-        if (!profile.isEmailVerified!!) {
+        if (profile.isEmailVerified == false) {
             apiFlag = 1
             val map = hashMapOf<String, String>()
-            map["email"] = profile.email!!
+            map["email"] = profile.email ?: ""
             viewModel.settingsVerification(map, selectedImage)
         }
     }
 
     private fun verifiedMobile(profile: ProfileDto) {
-        if (!profile.isMobileVerified!!) {
+        if (profile.isMobileVerified == false) {
             apiFlag = 2
             val map = hashMapOf<String, String>()
-            map["phoneNumber"] = profile.fullPhoneNumber!!
+            map["phoneNumber"] = profile.fullPhoneNumber?:""
             viewModel.settingsVerification(map, selectedImage)
         }
     }

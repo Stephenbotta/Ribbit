@@ -98,7 +98,7 @@ class PeopleFragment : BaseFragment(), PeopleCallback {
         val item = items[position]
         if (isDetailShow) {
             if (item is UserCrossedDto) {
-                PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, item.crossedUser?.id!!)
+                PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, item.crossedUser?.id?:"")
                 val intent = PeopleDetailsActivity.getStartIntent(requireContext(), item, AppConstants.REQ_CODE_PEOPLE)
                 activity?.startActivity(intent)
             }

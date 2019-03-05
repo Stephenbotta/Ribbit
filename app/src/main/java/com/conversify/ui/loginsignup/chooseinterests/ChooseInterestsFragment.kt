@@ -27,6 +27,7 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
     companion object {
         private const val ARGUMENT_STARTED_FOR_RESULT = "ARGUMENT_STARTED_FOR_RESULT"
         private const val ARGUMENT_UPDATE_PREF = "ARGUMENT_UPDATE_PREF"
+        private const val ARGUMENT_EXTRA_LIST = "ARGUMENT_EXTRA_LIST"
         const val TAG = "ChooseInterestsFragment"
 
         private const val CHILD_INTERESTS = 0
@@ -35,11 +36,12 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
 
         private const val MINIMUM_INTEREST_COUNT = 3
 
-        fun newInstance(startedForResult: Boolean = false, updateInPref: Boolean = true): Fragment {
+        fun newInstance(startedForResult: Boolean = false, updateInPref: Boolean = true, interest: ArrayList<InterestDto>): Fragment {
             val fragment = ChooseInterestsFragment()
             val arguments = Bundle()
             arguments.putBoolean(ARGUMENT_STARTED_FOR_RESULT, startedForResult)
             arguments.putBoolean(ARGUMENT_UPDATE_PREF, updateInPref)
+            arguments.putParcelableArrayList(ARGUMENT_EXTRA_LIST, interest)
             fragment.arguments = arguments
             return fragment
         }
@@ -51,7 +53,10 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
     private val updateInPref: Boolean by lazy {
         arguments?.getBoolean(ARGUMENT_UPDATE_PREF) ?: false
     }
-    private val selectedInterestIds by lazy { mutableSetOf<String>() }
+    private val interest: ArrayList<InterestDto> by lazy {
+        arguments?.getParcelableArrayList(ARGUMENT_EXTRA_LIST) ?: ArrayList<InterestDto>()
+    }
+    private val selectedInterestIds by lazy { mutableListOf<String>() }
     private lateinit var viewModel: ChooseInterestsViewModel
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var interestsAdapter: ChooseInterestsAdapter
@@ -71,6 +76,7 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
 
         backButtonEnabledListener?.onBackButtonEnabled(false)
         viewModel = ViewModelProviders.of(this)[ChooseInterestsViewModel::class.java]
+        viewModel.start(interest)
         loadingDialog = LoadingDialog(requireActivity())
 
         interestsAdapter = ChooseInterestsAdapter(GlideApp.with(this), this)
@@ -87,8 +93,20 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
         }
 
         btnContinue.setOnClickListener {
-            if (isNetworkActiveWithMessage()) {
-                viewModel.updateInterests(selectedInterestIds.toList(), updateInPref)
+            if (updateInPref) {
+                if (isNetworkActiveWithMessage()) {
+                    viewModel.updateInterests(selectedInterestIds.toList(), updateInPref)
+                }
+            } else {
+                if (startedForResult) {
+                    val selectedIdsIntent = Intent()
+                    selectedIdsIntent.putParcelableArrayListExtra(AppConstants.EXTRA_INTEREST, interestsAdapter.getSelectedInterest())
+                    targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, selectedIdsIntent)
+                    requireActivity().onBackPressed()
+                } else {
+                    startActivity(Intent(requireActivity(), MainActivity::class.java))
+                    requireActivity().finishAffinity()
+                }
             }
         }
     }

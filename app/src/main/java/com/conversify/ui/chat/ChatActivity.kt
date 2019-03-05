@@ -416,10 +416,10 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
 
     private fun showGroupDetails(flag: Int) {
         if (flag == AppConstants.REQ_CODE_LISTING_GROUP_DETAILS) {
-            val intent = GroupDetailsActivity.getStartIntent(this, viewModelChatGroup.getGroup().profile?.id!!, flag)
+            val intent = GroupDetailsActivity.getStartIntent(this, viewModelChatGroup.getGroup().profile?.id?:"", flag)
             startActivityForResult(intent, flag)
         } else if (flag == AppConstants.REQ_CODE_GROUP_DETAILS) {
-            val intent = GroupDetailsActivity.getStartIntent(this, viewModelGroup.getGroup().id!!, flag)
+            val intent = GroupDetailsActivity.getStartIntent(this, viewModelGroup.getGroup().id?:"", flag)
             startActivityForResult(intent, flag)
         }
 

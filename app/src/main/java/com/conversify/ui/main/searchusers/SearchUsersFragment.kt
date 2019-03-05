@@ -43,6 +43,7 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     private var longitude: Double = 0.0
     private var distanceRange = 5
     private var hideContent = true
+    private val interest by lazy { ArrayList<InterestDto>() }
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_search_users
 
@@ -50,7 +51,8 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         super.onViewCreated(view, savedInstanceState)
         inItClasses()
         setupInterestsRecycler()
-        setData(viewModel.getProfile().interests ?: emptyList())
+        interest.addAll(viewModel.getProfile().interests ?: emptyList())
+        setData(interest)
         setListener()
         observeInterestMatchedUsersList()
         setAdapter()
@@ -62,6 +64,7 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
                 .load(viewModel.getProfile().image?.original)
                 .thumbnail(thumbnail)
                 .into(ivProfilePic)
+        tvSelectedRange.text = getString(R.string.search_user_label_progress_count, distanceRange)
         ivProfilePic.setOnClickListener { startActivity(Intent(requireContext(), ProfileActivity::class.java)) }
     }
 
@@ -100,6 +103,7 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         sbRange.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 distanceRange = progress
+                tvSelectedRange.text = getString(R.string.search_user_label_progress_count, distanceRange)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -213,14 +217,16 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val interests = data.getParcelableArrayListExtra(AppConstants.EXTRA_INTEREST)
                             ?: emptyList<InterestDto>()
-                    setData(interests)
+                    interest.clear()
+                    interest.addAll(interests)
+                    setData(interest)
                 }
             }
         }
     }
 
     override fun onEditInterestsClicked() {
-        val fragment = ChooseInterestsFragment.newInstance(startedForResult = true, updateInPref = false)
+        val fragment = ChooseInterestsFragment.newInstance(startedForResult = true, updateInPref = false, interest = interest)
         fragment.setTargetFragment(this, AppConstants.REQ_CODE_CHOOSE_INTERESTS)
         fragmentManager?.apply {
             beginTransaction()

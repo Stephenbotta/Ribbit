@@ -227,7 +227,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         Timber.i("User profile clicked : $profile")
         val data = UserCrossedDto()
         data.profile = profile
-        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, profile.id!!)
+        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, profile.id?:"")
         val intent = PeopleDetailsActivity.getStartIntent(requireContext(), data, AppConstants.REQ_CODE_BLOCK_USER)
         startActivity(intent)
     }

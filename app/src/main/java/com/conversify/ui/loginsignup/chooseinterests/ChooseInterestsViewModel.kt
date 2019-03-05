@@ -21,9 +21,7 @@ class ChooseInterestsViewModel : ViewModel() {
     val interests by lazy { MutableLiveData<Resource<List<InterestDto>>>() }
     val updateInterests by lazy { SingleLiveEvent<Resource<List<InterestDto>>>() }
     val myInterestIds by lazy {
-        (UserManager.getProfile().interests ?: ArrayList())
-                .mapNotNull { it.id }
-                .toSet()
+        ArrayList<String>()
     }
 
     private val interestsRepository by lazy { InterestsRepository.getInstance() }
@@ -65,7 +63,7 @@ class ChooseInterestsViewModel : ViewModel() {
                                 UserManager.saveProfile(profile)
                             }
                             updateInterests.value = Resource.success(profile?.interests
-                                    ?: emptyList())
+                                    ?: arrayListOf())
                         } else {
                             updateInterests.value = Resource.error(response.getAppError())
                         }
@@ -75,5 +73,9 @@ class ChooseInterestsViewModel : ViewModel() {
                         updateInterests.value = Resource.error(t.failureAppError())
                     }
                 })
+    }
+
+    fun start(interest: ArrayList<InterestDto>) {
+        myInterestIds.addAll(interest.mapNotNull { it.id }.toSet())
     }
 }

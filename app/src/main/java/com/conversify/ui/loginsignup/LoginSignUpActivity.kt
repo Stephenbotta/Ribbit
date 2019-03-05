@@ -67,7 +67,8 @@ class LoginSignUpActivity : BaseActivity(), BackButtonEnabledListener {
                 }
 
                 ChooseInterestsFragment.TAG -> {
-                    val fragment = ChooseInterestsFragment.newInstance()
+                    val fragment = ChooseInterestsFragment.newInstance(interest = UserManager.getProfile().interests
+                            ?: arrayListOf())
                     supportFragmentManager.beginTransaction()
                             .replace(R.id.flContainer, fragment, ChooseInterestsFragment.TAG)
                             .commit()

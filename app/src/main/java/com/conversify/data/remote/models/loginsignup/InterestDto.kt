@@ -15,4 +15,4 @@ data class InterestDto(
         @field:SerializedName("categoryName")
         val name: String? = null,
 
-        var selected: Boolean = false) : Parcelable
+        var selected: Boolean = false):Parcelable

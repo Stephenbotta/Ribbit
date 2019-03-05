@@ -56,15 +56,15 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
 
     private fun setData(profile: ProfileDto) {
 
-        if (profile.isAccountPrivate!!)
+        if (profile.isAccountPrivate == true)
             privateAccount.isChecked = profile.isAccountPrivate
-        else privateAccount.isChecked = profile.isAccountPrivate
+        else privateAccount.isChecked = profile.isAccountPrivate ?: false
 
-        if (profile.imageVisibilityForEveryone!!) {
+        if (profile.imageVisibilityForEveryone == true) {
             tvPicViewStatus.text = getString(R.string.hide_info_everyone)
         } else {
             val size = profile.imageVisibility?.size
-            if (!profile.imageVisibilityForFollowers!!) {
+            if (profile.imageVisibilityForFollowers == false) {
                 if (size != 0) {
                     tvPicViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
                 } else {
@@ -75,7 +75,7 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        if (!profile.personalInfoVisibilityForFollowers!!) {
+        if (profile.personalInfoVisibilityForFollowers == false) {
             val size = profile.personalInfoVisibility?.size
             if (size != 0) {
                 tvInfoViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
@@ -86,11 +86,11 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
             tvInfoViewStatus.text = getString(R.string.hide_info_my_followers)
         }
 
-        if (profile.nameVisibilityForEveryone!!) {
+        if (profile.nameVisibilityForEveryone == true) {
             tvUsernameViewStatus.text = getString(R.string.hide_info_everyone)
         } else {
             val size = profile.nameVisibility?.size
-            if (!profile.nameVisibilityForFollowers!!) {
+            if (profile.nameVisibilityForFollowers == false) {
                 if (size != 0) {
                     tvUsernameViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
                 } else {
@@ -101,11 +101,11 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        if (profile.tagPermissionForEveryone!!) {
+        if (profile.tagPermissionForEveryone == true) {
             tvMessageViewStatus.text = getString(R.string.hide_info_everyone)
         } else {
             val size = profile.tagPermission?.size
-            if (!profile.tagPermissionForFollowers!!) {
+            if (profile.tagPermissionForFollowers == false) {
                 if (size != 0) {
                     tvMessageViewStatus.text = getString(R.string.hide_info_label_status, size, getString(R.string.hide_info_people))
                 } else {
@@ -126,9 +126,9 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
             when (resource.status) {
                 Status.SUCCESS -> {
                     val data = resource.data
-                    if (data?.isAccountPrivate!!)
+                    if (data?.isAccountPrivate == true)
                         privateAccount.isChecked = data.isAccountPrivate
-                    else privateAccount.isChecked = data.isAccountPrivate
+                    else privateAccount.isChecked = data?.isAccountPrivate ?: false
                 }
 
                 Status.ERROR -> {

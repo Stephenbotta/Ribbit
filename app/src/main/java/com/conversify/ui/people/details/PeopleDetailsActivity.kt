@@ -269,7 +269,7 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
         val popup = PopupMenu(this, v)
         popup.inflate(R.menu.menu_block_user)
         if (profile != null)
-            if (profile?.isBlocked!!) {
+            if (profile?.isBlocked == true) {
                 popup.menu.getItem(0).title = getString(R.string.people_detail_more_label_unblock)
             } else {
                 popup.menu.getItem(0).title = getString(R.string.people_detail_more_label_block)
@@ -310,7 +310,7 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
         when (item?.itemId) {
 
             R.id.menuBlock -> {
-                viewModel.postBlock(profile?.id!!, toggleBlock())
+                viewModel.postBlock(profile?.id ?: "", toggleBlock())
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

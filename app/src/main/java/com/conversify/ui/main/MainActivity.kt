@@ -40,11 +40,11 @@ class MainActivity : BaseLocationActivity() {
         createDeviceToken()
         viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
         fragmentSwitcher = FragmentSwitcher(supportFragmentManager, R.id.flMainContainer)
-
         if (savedInstanceState == null) {
             // On first launch add home fragment
-            fragmentSwitcher.addFragment(HomeFragment(), HomeFragment.TAG)
+//            fragmentSwitcher.addFragment(HomeFragment(), HomeFragment.TAG)
             Timber.d("Saved instance state is null")
+            checkPushNavigation()
         } else {
             // Restore the tab state to the last selected if activity state is restored
             val tabIndex = savedInstanceState.getInt(EXTRA_SELECTED_TAB_INDEX, TAB_INDEX_HOME)
@@ -58,6 +58,19 @@ class MainActivity : BaseLocationActivity() {
         }
         setupBottomTabs()
     }
+
+    private fun checkPushNavigation() {
+        val type = intent.getStringExtra("TYPE")
+        if (!type.isNullOrEmpty()) {
+            bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)?.select()
+            if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG))
+                fragmentSwitcher.addFragment(NotificationsFragment(), NotificationsFragment.TAG)
+        } else {
+            fragmentSwitcher.addFragment(HomeFragment(), HomeFragment.TAG)
+        }
+
+    }
+
 
     private fun createDeviceToken() {
         FirebaseInstanceId.getInstance().instanceId

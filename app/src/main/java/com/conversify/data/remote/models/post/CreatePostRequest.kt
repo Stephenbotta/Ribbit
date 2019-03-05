@@ -4,7 +4,8 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class CreatePostRequest(val groupId: String? = null,
+data class CreatePostRequest(var postId: String? = null,
+                             var groupId: String? = null,
                              var postText: String? = null,
                              var imageOriginal: String? = null,
                              var imageThumbnail: String? = null,

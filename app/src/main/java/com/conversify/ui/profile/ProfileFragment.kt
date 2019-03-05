@@ -98,7 +98,7 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.O
                 Status.SUCCESS -> {
                     visible()
                     swipeRefreshLayout.isRefreshing = false
-                    displayProfile(viewModel.getProfile())
+                    displayProfile(resource.data ?: ProfileDto())
                 }
 
                 Status.ERROR -> {
@@ -143,7 +143,8 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.O
     }
 
     override fun onEditInterestsClicked() {
-        val fragment = ChooseInterestsFragment.newInstance(true)
+        val fragment = ChooseInterestsFragment.newInstance(true, interest = viewModel.getProfile().interests
+                ?: arrayListOf())
         fragment.setTargetFragment(this, AppConstants.REQ_CODE_CHOOSE_INTERESTS)
         fragmentManager?.apply {
             beginTransaction()

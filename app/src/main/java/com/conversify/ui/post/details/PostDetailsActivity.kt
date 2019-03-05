@@ -22,6 +22,7 @@ import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.SocialEditText
+import com.conversify.ui.post.newpost.NewPostActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_post_details.*
@@ -49,6 +50,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     private lateinit var userMentionAdapter: UserMentionAdapter
     private var replyingToTopLevelReply: PostReplyDto? = null
     private lateinit var postId: String
+    private lateinit var postType: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,13 +65,13 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
         val categoryName = String.format("[%s]", groupPost.category?.name ?: "")
 
         if (groupPost.user?.id!!.equals(UserManager.getUserId())) {
-            btnMore.visibility = View.VISIBLE
+            btnMore.visible()
         } else {
-            btnMore.visibility = View.GONE
+            btnMore.gone()
         }
 
-        postId = groupPost.id!!
-
+        postType = groupPost.postType ?: ""
+        postId = groupPost.id ?: ""
         if (!groupName.isNullOrEmpty()) {
             btnBack.text = "$groupName $categoryName"
         }
@@ -96,6 +98,10 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     }
 
     private fun setListeners() {
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = false
+            getReplies()
+        }
         ivLikePost.setOnClickListener {
             if (isNetworkActive()) {
                 val isLiked = !viewModel.isPostLiked()
@@ -148,10 +154,9 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
                         dividerReplyEditText.visible()
                         etReply.visible()
                         ivLikePost.visible()
-
-                        if (focusReplyEditText) {
-                            etReply.showKeyboard()
-                        }
+                    }
+                    if (focusReplyEditText) {
+                        etReply.showKeyboard()
                     }
                 }
 
@@ -273,6 +278,12 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     private fun optionMenu(v: View) {
         val popup = PopupMenu(this, v)
         popup.inflate(R.menu.menu_post_more)
+        when (postType) {
+            AppConstants.POST_TYPE_REGULAR -> {
+                popup.menu.getItem(1).isVisible = true
+            }
+        }
+
 //        val m = popup.menu as MenuBuilder     //  visible the icon for menu
 //        m.setOptionalIconsVisible(true)
         popup.setOnMenuItemClickListener(this)
@@ -287,7 +298,8 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
                 return true
             }
             R.id.editPost -> {
-//                viewModel.deletePost("")
+                val intent = NewPostActivity.getStartIntentForEdit(this, intent.getParcelableExtra(EXTRA_POST), AppConstants.REQ_CODE_EDIT_POST)
+                startActivityForResult(intent, AppConstants.REQ_CODE_EDIT_POST)
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

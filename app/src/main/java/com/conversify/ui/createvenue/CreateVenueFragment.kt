@@ -329,7 +329,7 @@ class CreateVenueFragment : BaseFragment() {
                                 .toList()
                     }
                     // Display the selected participants and update the member count
-                    memberCount = request.participantIds?.size!!
+                    memberCount = request.participantIds?.size ?: 0
                     tvLabelMembers.text = context?.getString(R.string.venue_details_label_members_with_count, memberCount)
                 }
             }

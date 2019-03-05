@@ -20,7 +20,7 @@ class SearchTagViewHolder(itemView: View,
         this.profile = profile
 
         itemView.tvTag.text = profile.tagName
-        if (profile.isFollowing!!) {
+        if (profile.isFollowing==true) {
             itemView.tvFollowedStatus.text = itemView.context.getString(R.string.people_detail_button_un_follow)
         } else {
             itemView.tvFollowedStatus.text = itemView.context.getString(R.string.people_detail_button_follow)

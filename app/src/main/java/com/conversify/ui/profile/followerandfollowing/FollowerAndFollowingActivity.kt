@@ -132,7 +132,7 @@ class FollowerAndFollowingActivity : BaseActivity(), View.OnClickListener, Follo
         if (item is ProfileDto) {
             val data = UserCrossedDto()
             data.profile = item
-            PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, item.id!!)
+            PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, item.id?:"")
             val intent = PeopleDetailsActivity.getStartIntent(this, data, AppConstants.REQ_CODE_BLOCK_USER)
             startActivity(intent)
         }

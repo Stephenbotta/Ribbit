@@ -52,11 +52,10 @@ class NewPostViewModel : ViewModel() {
                 })
     }
 
-    fun createPost(groupId: String?, postText: String, postImage: File?) {
+    fun createPost(postText: String, postImage: File?, request: CreatePostRequest) {
         val hashTags = AppUtils.getHashTagsFromString(postText, false)
-        val request = CreatePostRequest(groupId = groupId,
-                postText = postText,
-                hashTags = hashTags)
+        request.hashTags = hashTags
+        request.postText = postText
         if (postImage == null) {
             createPostApi(request)
         } else {

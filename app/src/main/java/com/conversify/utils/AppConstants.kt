@@ -53,6 +53,9 @@ object AppConstants {
     const val REQ_CODE_HIDE_INFO_STATUS = 135
     const val REQ_CODE_CONVERSE_NEARBY = 136
     const val REQ_CODE_CROSSED_PATH = 137
+    const val REQ_CODE_EDIT_POST = 138
+    const val REQ_CODE_PENDING_INTENT = 139
+
 
     const val EXTRA_VENUE_FILTERS = "EXTRA_VENUE_FILTERS"
     const val EXTRA_VENUE = "EXTRA_VENUE"

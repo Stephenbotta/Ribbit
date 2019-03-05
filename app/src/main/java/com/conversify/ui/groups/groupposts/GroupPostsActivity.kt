@@ -249,7 +249,7 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
             }
 
             R.id.menuGroupDetail -> {
-                val intent = GroupDetailsActivity.getStartIntent(this, group.id!!, AppConstants.REQ_CODE_GROUP_DETAILS_MORE_OPTIONS)
+                val intent = GroupDetailsActivity.getStartIntent(this, group.id?:"", AppConstants.REQ_CODE_GROUP_DETAILS_MORE_OPTIONS)
                 startActivityForResult(intent, AppConstants.REQ_CODE_GROUP_DETAILS_MORE_OPTIONS)
                 return true
             }

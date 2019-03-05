@@ -125,7 +125,7 @@ class SearchTagFragment : BaseFragment(), SearchTagAdapter.Callback {
             profile.isFollowing = profile.isFollowing?.not()
             items.set(position, profile)
             adapter.notifyDataSetChanged()
-            viewModel.postFollowUnFollowTag(profile.id!!, profile.isFollowing!!)
+            viewModel.postFollowUnFollowTag(profile.id?:"", profile.isFollowing!!)
         }
     }
 }

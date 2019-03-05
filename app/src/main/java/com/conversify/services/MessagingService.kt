@@ -14,6 +14,7 @@ import com.conversify.R
 import com.conversify.data.local.UserManager
 import com.conversify.data.remote.PushType
 import com.conversify.ui.main.MainActivity
+import com.conversify.utils.AppConstants
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -35,85 +36,46 @@ class MessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage?) {
         val notificationTitle = getString(R.string.app_name)
-        val data = message!!.data
+        val data = message?.data ?: emptyMap()
         val type = data[TYPE]
         val msg = data[MESSAGE]
+
+        val intent = Intent(this, MainActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+
+
         when (type) {
 
-            PushType.LIKE -> {
-
-            }
-            PushType.LIKE_POST -> {
-
-            }
-            PushType.REPLY -> {
-
-            }
-            PushType.LIKE_REPLY -> {
-
-            }
-            PushType.COMMENT -> {
-
-            }
-            PushType.LIKE_COMMENT -> {
-
-            }
-            PushType.VENUE -> {
-
-            }
-            PushType.GROUP -> {
-
-            }
-            PushType.REQUEST_VENUE -> {
+            PushType.LIKE, PushType.LIKE_POST, PushType.REPLY, PushType.LIKE_REPLY,
+            PushType.COMMENT, PushType.LIKE_COMMENT, PushType.VENUE, PushType.GROUP,
+            PushType.REQUEST_VENUE, PushType.REQUEST_GROUP, PushType.FOLLOW, PushType.POST,
+            PushType.TAG_COMMENT, PushType.TAG_REPLY, PushType.REQUEST_FOLLOW,
+            PushType.ACCEPT_REQUEST_FOLLOW, PushType.ALERT_CONVERSE_NEARBY_PUSH,
+            PushType.ALERT_LOOK_NEARBY_PUSH, PushType.JOINED_VENUE, PushType.JOINED_GROUP -> {
                 val id = data[ID]
-                val byId = data["byId"]
+//                val byId = data["byId"]
+                intent.putExtra(ID, id)
+                intent.putExtra(TYPE, type)
             }
-            PushType.REQUEST_GROUP -> {
+            PushType.GROUP_CHAT, PushType.VENUE_CHAT -> {
+            }
 
-            }
-            PushType.ACCEPT_INVITE_GROUP -> {
-
-            }
-            PushType.ACCEPT_INVITE_VENUE -> {
-            }
-            PushType.ACCEPT_REQUEST_GROUP -> {
-            }
-            PushType.ACCEPT_REQUEST_VENUE -> {
-            }
-            PushType.GROUP_CHAT -> {
-            }
-            PushType.VENUE_CHAT -> {
-            }
             PushType.CHAT -> {
             }
-            PushType.FOLLOW -> {
-            }
-            PushType.POST -> {
-            }
-            PushType.TAG_COMMENT -> {
-            }
-            PushType.TAG_REPLY -> {
-            }
-            PushType.REQUEST_FOLLOW -> {
-            }
-            PushType.ACCEPT_REQUEST_FOLLOW -> {
-            }
-            PushType.ALERT_CONVERSE_NEARBY_PUSH -> {
-            }
-            PushType.ALERT_LOOK_NEARBY_PUSH -> {
-            }
-            PushType.JOINED_VENUE -> {
 
+            PushType.ACCEPT_REQUEST_GROUP, PushType.ACCEPT_REQUEST_VENUE -> {
             }
-            PushType.JOINED_GROUP -> {
 
+            PushType.ACCEPT_INVITE_GROUP, PushType.ACCEPT_INVITE_VENUE -> {
             }
         }
-        val intent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 123,
+
+        val pendingIntent = PendingIntent.getActivity(this, AppConstants.REQ_CODE_PENDING_INTENT,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        sendNotification(notificationTitle, msg, pendingIntent, "11", 123)
+        sendNotification(notificationTitle, msg, pendingIntent, "11", AppConstants.REQ_CODE_PENDING_INTENT)
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -138,9 +100,6 @@ class MessagingService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(mChannel)
         }
 
-
-        //  notificationManager.notify(requestID, notificationBuilder)
-
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             notificationBuilder.setSmallIcon(notificationIcon)
             notificationBuilder.color = ContextCompat.getColor(this, R.color.colorPrimary)
@@ -148,9 +107,7 @@ class MessagingService : FirebaseMessagingService() {
             notificationBuilder.setSmallIcon(notificationIcon)
         }
 
-
         notificationManager.notify(requestId, notificationBuilder.build())
-
     }
 
     private val notificationIcon: Int

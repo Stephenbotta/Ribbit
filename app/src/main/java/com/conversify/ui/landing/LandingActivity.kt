@@ -37,7 +37,12 @@ class LandingActivity : BaseActivity() {
                 }
 
                 profile.isVerified == true && profile.isPasswordExist == true -> {
-                    startActivity(Intent(this, MainActivity::class.java))
+                    val type = intent.getStringExtra("TYPE")
+                    val intent = Intent(this, MainActivity::class.java)
+                    if (!type.isNullOrEmpty()) {
+                        intent.putExtra("TYPE", type)
+                    }
+                    startActivity(intent)
                     finishAffinity()
                 }
 

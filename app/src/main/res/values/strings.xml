@@ -219,9 +219,9 @@
     <string name="notifications_label_follow">%s start following you</string>
 
     <string name="notifications_label_sub_reply_like">%s has like your reply</string>
-    <string name="notifications_label_like">%s has like your post</string>
+    <string name="notifications_label_like">%s liked your post</string>
     <string name="notifications_label_like_comment">%s has like your comment</string>
-    <string name="notifications_label_comment">%s has commented on your post</string>
+    <string name="notifications_label_comment">%s commented: %s</string>
     <string name="notifications_label_tag_comment">%s has tag you in comment</string>
     <string name="notifications_label_tag_reply">%s has tag you in replied</string>
     <string name="notifications_label_accept_invite">%s has accepted your invitation %s</string>
@@ -255,6 +255,8 @@
     <string name="new_post_label_post">Post</string>
     <string name="new_post_label_type_here">Type here</string>
     <string name="new_post_label_posting_in">Posting in</string>
+    <string name="new_post_label_text_caption">Write a caption</string>
+    <string name="new_post_label_check_in">Check in</string>
 
     <string name="post_details_btn_reply">Reply</string>
     <string name="post_details_btn_load_replies_with_count">Load replies (%d)</string>
@@ -399,5 +401,7 @@
     <string name="converse_post_label_change">Change</string>
 
     <string name="hide_info_label_people_count">%d People</string>
+    <string name="search_user_label_progress_count">%02d mi</string>
+
 
 </resources>
