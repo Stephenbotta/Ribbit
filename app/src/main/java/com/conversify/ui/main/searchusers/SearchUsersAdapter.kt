@@ -5,16 +5,19 @@ import android.view.View
 import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.extensions.inflate
 import com.conversify.utils.GlideRequests
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.item_search_user.view.*
 
-class SearchUsersAdapter(private val glide: GlideRequests) : RecyclerView.Adapter<SearchUsersAdapter.ViewHolder>() {
+class SearchUsersAdapter(private val glide: GlideRequests, private val callback: Callback) : RecyclerView.Adapter<SearchUsersAdapter.ViewHolder>() {
 
     private val userList = mutableListOf<ProfileDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchUsersAdapter.ViewHolder {
-        return ViewHolder(parent.inflate(R.layout.item_search_user), glide)
+        return ViewHolder(parent.inflate(R.layout.item_search_user), glide, callback)
     }
 
     override fun getItemCount(): Int = userList.size
@@ -35,16 +38,41 @@ class SearchUsersAdapter(private val glide: GlideRequests) : RecyclerView.Adapte
         notifyItemRangeInserted(oldSize, userList.size - 1)
     }
 
-    class ViewHolder(itemView: View, private val glide: GlideRequests) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private val glide: GlideRequests, callback: Callback) : RecyclerView.ViewHolder(itemView) {
+        private val context = itemView.context
+        private val interestsAdapter = InterestsAdapter(context)
+
+        init {
+            val layoutManager = FlexboxLayoutManager(context)
+            layoutManager.flexWrap = FlexWrap.WRAP
+            itemView.rvMutualInterests.layoutManager = layoutManager
+            itemView.rvMutualInterests.isNestedScrollingEnabled = false
+            itemView.rvMutualInterests.adapter = interestsAdapter
+
+            itemView.fabChat.setOnClickListener {
+                val user = UserCrossedDto(crossedUser = ProfileDto(fullName = profile.fullName, image = profile.image,
+                        id = profile.id),
+                        conversationId = profile.conversationId)
+                callback.openChatScreen(user)
+            }
+        }
+
+        private lateinit var profile: ProfileDto
+
         fun bindUserData(profile: ProfileDto) {
+            this.profile = profile
             glide.load(profile.image?.thumbnail)
                     .error(R.color.greyImageBackground)
                     .placeholder(R.color.greyImageBackground)
                     .into(itemView.ivProfilePic)
 
-            itemView.tvUserName.text = profile.userName
+            itemView.tvUserName.text = profile.fullName
 
-
+            interestsAdapter.displayMutualInterests(profile.interests ?: emptyList())
         }
+    }
+
+    interface Callback {
+        fun openChatScreen(user: UserCrossedDto)
     }
 }

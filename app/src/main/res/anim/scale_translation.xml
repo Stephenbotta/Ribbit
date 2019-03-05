@@ -11,8 +11,8 @@
         android:pivotY="50%"
         android:repeatCount="10"
         android:repeatMode="restart"
-        android:toXScale="1.8"
-        android:toYScale="1.8" />
+        android:toXScale="2.4"
+        android:toYScale="2.4" />
 
     <alpha
         android:duration="4000"
