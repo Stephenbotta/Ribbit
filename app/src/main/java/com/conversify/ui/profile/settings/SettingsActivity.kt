@@ -233,7 +233,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
             R.id.tvPush -> notificationSettings()
 
-            R.id.tvAlert -> viewModel.alertNotification(!viewModel.getProfile().isAlertNotifications!!)
+            R.id.tvAlert -> viewModel.alertNotification(viewModel.getProfile().isAlertNotifications?.not()?:false)
 
             R.id.tvLogout -> showLogoutConfirmationDialog()
         }

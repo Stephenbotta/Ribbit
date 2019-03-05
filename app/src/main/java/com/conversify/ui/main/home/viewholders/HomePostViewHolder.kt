@@ -115,9 +115,12 @@ class HomePostViewHolder(itemView: View,
             itemView.tvMessage.text = message
         }
 
-        if (!post.locationAddress.isNullOrEmpty())
-            itemView.tvLocationAddress.text = post.locationAddress
-
+        if (!post.locationAddress.isNullOrEmpty()) {
+            itemView.tvLocationAddress.visible()
+            itemView.tvLocationAddress.text = post.locationName + "," + post.locationAddress
+        } else {
+            itemView.tvLocationAddress.gone()
+        }
         when (post.postType) {
             AppConstants.POST_TYPE_REGULAR -> {
                 itemView.ivType.gone()

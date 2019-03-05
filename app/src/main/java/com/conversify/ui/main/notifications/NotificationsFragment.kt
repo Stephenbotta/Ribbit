@@ -6,12 +6,19 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
 import com.conversify.data.remote.models.Status
+import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.notifications.NotificationDto
+import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.people.details.PeopleDetailsActivity
+import com.conversify.ui.post.details.PostDetailsActivity
+import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_notifications.*
 
@@ -150,6 +157,19 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
         if (isNetworkActiveWithMessage()) {
             viewModel.acceptRejectInviteRequest(acceptRequest, notification)
         }
+    }
+
+    override fun onUserProfileClicked(profile: ProfileDto) {
+        val data = UserCrossedDto()
+        data.profile = profile
+        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, profile.id ?: "")
+        val intent = PeopleDetailsActivity.getStartIntent(requireActivity(), data, AppConstants.REQ_CODE_BLOCK_USER)
+        startActivity(intent)
+    }
+
+    override fun onGroupPostClicked(groupPost: GroupPostDto) {
+        val intent = PostDetailsActivity.getStartIntent(requireActivity(), groupPost, true)
+        startActivityForResult(intent, AppConstants.REQ_CODE_POST_DETAILS)
     }
 
     override fun onDestroyView() {

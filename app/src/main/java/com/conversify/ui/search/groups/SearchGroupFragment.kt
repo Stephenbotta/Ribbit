@@ -97,8 +97,8 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
                             getGroupSearch()
                         } else {
                             val items = adapter.getUpdatedList()
-                            items[adapterPosition!!] = group!!
-                            groupDetails(group)
+                            items[adapterPosition ?: 0] = group ?: GroupDto()
+                            groupDetails(group ?: GroupDto())
                         }
                     }
                 }
@@ -162,7 +162,7 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
         val item = items[position]
         adapterPosition = position
         if (item is GroupDto) {
-            if (item.isMember==false) {
+            if (item.isMember == false) {
                 if (isNetworkActiveWithMessage())
                     viewModel.joinGroup(item)
             } else groupDetails(item)

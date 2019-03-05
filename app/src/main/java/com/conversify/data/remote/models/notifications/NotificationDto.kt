@@ -33,5 +33,14 @@ data class NotificationDto(
         @field:SerializedName("commentId")
         val commentId: PostReplyDto? = null,
 
+        @field:SerializedName("locationName")
+        val locationName: String? = null,
+
+        @field:SerializedName("locationAddress")
+        val locationAddress: String? = null,
+
+        @field:SerializedName("toId")
+        val toId: String? = null,
+
         @field:SerializedName("createdOn")
         val createdOnDateTime: ZonedDateTime? = null)

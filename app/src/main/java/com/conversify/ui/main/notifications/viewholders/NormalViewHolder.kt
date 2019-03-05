@@ -82,13 +82,13 @@ class NormalViewHolder(itemView: View,
                 itemView.context.getString(R.string.notifications_label_accept_invite, username, venueName)
             }
             PushType.ACCEPT_REQUEST_VENUE, PushType.ACCEPT_REQUEST_GROUP -> {
-                itemView.context.getString(R.string.notifications_label_accept_request, username, venueName)
+                itemView.context.getString(R.string.notifications_label_accept_request_channel, username, venueName)
             }
             PushType.ACCEPT_REQUEST_FOLLOW -> {
                 itemView.context.getString(R.string.notifications_label_accept_request_follow, username)
             }
             PushType.JOINED_VENUE, PushType.JOINED_GROUP -> {
-                itemView.context.getString(R.string.notifications_label_joined, username, venueName)
+                itemView.context.getString(R.string.notifications_label_joined_group, username, venueName)
             }
             PushType.REPLY -> {
                 itemView.context.getString(R.string.notifications_label_tag_comment, username)

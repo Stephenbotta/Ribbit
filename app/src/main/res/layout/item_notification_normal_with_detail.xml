@@ -50,6 +50,7 @@
         android:layout_height="48dp"
         android:scaleType="centerCrop"
         android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintStart_toEndOf="@id/ivProfile"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle"
         app:riv_corner_radius="12dp"

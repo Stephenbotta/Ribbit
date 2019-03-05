@@ -107,8 +107,8 @@ object DateTimeUtils {
     }
 
     fun formatPeopleRecentTime(zonedDateTime: String?): String {
-        return DateUtils.getRelativeTimeSpanString(zonedDateTime!!.toLong(), System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString()
-                ?: ""
+        return DateUtils.getRelativeTimeSpanString(zonedDateTime?.toLong()
+                ?: 0L, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString()
     }
 
 }

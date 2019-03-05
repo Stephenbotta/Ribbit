@@ -24,12 +24,9 @@ class NotificationsAdapter(private val glide: GlideRequests,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             NOTIFICATION_TYPE_VENUE ->
-                NormalViewHolder(parent.inflate(R.layout.item_notification_normal), glide, callback)
+                NormalDetailsViewHolder(parent.inflate(R.layout.item_notification_normal_with_detail), glide, callback)
             NOTIFICATION_TYPE_INVITE_REQUEST ->
                 VenueGroupInviteRequestViewHolder(parent.inflate(R.layout.item_notification_venue_group_invite_request), glide, callback)
-            NOTIFICATION_TYPE_CROSSED_PATH ->
-                NormalDetailsViewHolder(parent.inflate(R.layout.item_notification_normal_with_detail), glide, callback)
-
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -41,7 +38,7 @@ class NotificationsAdapter(private val glide: GlideRequests,
 
         when (holder) {
 
-            is NormalViewHolder -> {
+            is NormalDetailsViewHolder -> {
                 holder.bind(notification)
             }
 
@@ -49,9 +46,6 @@ class NotificationsAdapter(private val glide: GlideRequests,
                 holder.bind(notification)
             }
 
-            is NormalDetailsViewHolder -> {
-                holder.bind(notification)
-            }
         }
     }
 
@@ -61,14 +55,12 @@ class NotificationsAdapter(private val glide: GlideRequests,
             PushType.ACCEPT_REQUEST_FOLLOW, PushType.ACCEPT_INVITE_VENUE, PushType.ACCEPT_REQUEST_GROUP,
             PushType.ACCEPT_REQUEST_VENUE, PushType.VENUE, PushType.GROUP, PushType.FOLLOW, PushType.POST,
             PushType.TAG_COMMENT, PushType.TAG_REPLY, PushType.LIKE_REPLY, PushType.LIKE_COMMENT,
-            PushType.LIKE_POST, PushType.JOINED_VENUE, PushType.JOINED_GROUP -> {
+            PushType.LIKE_POST, PushType.JOINED_VENUE, PushType.JOINED_GROUP,
+            PushType.ALERT_CONVERSE_NEARBY_PUSH, PushType.ALERT_LOOK_NEARBY_PUSH -> {
                 NOTIFICATION_TYPE_VENUE
             }
             PushType.REQUEST_FOLLOW, PushType.REQUEST_GROUP, PushType.REQUEST_VENUE -> {
                 NOTIFICATION_TYPE_INVITE_REQUEST
-            }
-            PushType.ALERT_CONVERSE_NEARBY_PUSH, PushType.ALERT_LOOK_NEARBY_PUSH -> {
-                NOTIFICATION_TYPE_CROSSED_PATH
             }
             else -> {
                 throw IllegalArgumentException("Invalid View type")

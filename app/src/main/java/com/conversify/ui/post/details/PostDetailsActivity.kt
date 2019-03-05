@@ -64,7 +64,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
         val groupName = groupPost.group?.name ?: ""
         val categoryName = String.format("[%s]", groupPost.category?.name ?: "")
 
-        if (groupPost.user?.id!!.equals(UserManager.getUserId())) {
+        if (groupPost.user?.id == (UserManager.getUserId())) {
             btnMore.visible()
         } else {
             btnMore.gone()

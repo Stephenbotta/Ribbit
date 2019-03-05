@@ -142,7 +142,7 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun isAccountPrivate() {
-        viewModel.privateAccount(!viewModel.getProfile().isAccountPrivate!!)
+        viewModel.privateAccount(viewModel.getProfile().isAccountPrivate?.not() ?: false)
     }
 
     private fun status(flag: Int) {

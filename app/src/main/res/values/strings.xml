@@ -214,20 +214,25 @@
     <string name="notifications_label_send_request_to_join">%s send request to join %s</string>
     <string name="notifications_btn_clear">CLEAR</string>
 
-    <string name="notifications_label_cross_path">%s has crossed your path at %s</string>
+    <string name="notifications_label_cross_path">%s has crossed your path %s at %s</string>
     <string name="notifications_label_converse_nearby">%s wants to converse with someone nearby. Tap here to check the details</string>
     <string name="notifications_label_follow">%s start following you</string>
 
     <string name="notifications_label_sub_reply_like">%s has like your reply</string>
-    <string name="notifications_label_like">%s liked your post</string>
+    <string name="notifications_label_like">%s like your post</string>
     <string name="notifications_label_like_comment">%s has like your comment</string>
     <string name="notifications_label_comment">%s commented: %s</string>
-    <string name="notifications_label_tag_comment">%s has tag you in comment</string>
-    <string name="notifications_label_tag_reply">%s has tag you in replied</string>
-    <string name="notifications_label_accept_invite">%s has accepted your invitation %s</string>
-    <string name="notifications_label_accept_request">%s has accepted your request %s</string>
+    <string name="notifications_label_tag_comment">%s mentioned you in comment</string>
+    <string name="notifications_label_tag_reply">%s mentioned you in reply</string>
+    <string name="notifications_label_accept_invite">%s  has accepted your invite for %s</string>
+    <string name="notifications_label_accept_request_channel">%s has accepted your request for channel. Now you are the member of group %s</string>
+    <string name="notifications_label_accept_request_venue">%s has accepted your request for venue. Now you are the member of venue %s</string>
     <string name="notifications_label_accept_request_follow">%s has accepted your follow request</string>
-    <string name="notifications_label_joined">%s has joined your %s</string>
+
+    <string name="notifications_label_joined_group">%s you are now member of channel %s</string>
+    <string name="notifications_label_joined_venue">%s you are now member of venue %s</string>
+    <string name="notifications_msg_requestFollow">%s has started following you </string>
+    <string name="notifications_msg_requestFollowPrivate">%s has requested to follow you</string>
 
 
     <string name="profile_label_profile">Profile</string>

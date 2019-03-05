@@ -6,10 +6,13 @@ import android.view.View
 import android.widget.TextView
 import com.conversify.R
 import com.conversify.data.remote.PushType
+import com.conversify.data.remote.models.groups.GroupPostDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.notifications.NotificationDto
 import com.conversify.extensions.clickSpannable
 import com.conversify.extensions.gone
 import com.conversify.extensions.visible
+import com.conversify.utils.AppUtils
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_notification_normal_with_detail.view.*
@@ -22,6 +25,9 @@ class NormalDetailsViewHolder(itemView: View,
 
     private val userProfileClickListener = View.OnClickListener {
         Timber.i("User profile clicked : ${notification.sender?.userName}")
+        notification.sender?.let { profile ->
+            callback.onUserProfileClicked(profile)
+        }
     }
 
     private val venueGroupClickListener = View.OnClickListener {
@@ -32,8 +38,30 @@ class NormalDetailsViewHolder(itemView: View,
         }
     }
 
+    private val itemClickListener = View.OnClickListener {
+
+        when (notification.type) {
+            PushType.FOLLOW -> {
+                notification.sender?.let { profile ->
+                    callback.onUserProfileClicked(profile)
+                }
+            }
+            PushType.ALERT_CONVERSE_NEARBY_PUSH -> {
+                notification.sender?.let { profile ->
+                    callback.onUserProfileClicked(profile)
+                }
+            }
+            else -> {
+                notification.postId?.let { groupPostDto ->
+                    callback.onGroupPostClicked(groupPostDto)
+                }
+            }
+        }
+    }
+
     init {
         itemView.ivProfile.setOnClickListener(userProfileClickListener)
+        itemView.setOnClickListener(itemClickListener)
     }
 
     private lateinit var notification: NotificationDto
@@ -41,7 +69,7 @@ class NormalDetailsViewHolder(itemView: View,
 
     fun bind(notification: NotificationDto) {
         this.notification = notification
-
+        isRequestForVenue = AppUtils.isRequestForVenue(notification)
 
         val sender = notification.sender
         glide.load(sender?.image?.thumbnail)
@@ -49,13 +77,69 @@ class NormalDetailsViewHolder(itemView: View,
         itemView.tvTime.text = DateTimeUtils.formatChatListingTime(notification.createdOnDateTime, itemView.context)
 
         val username = sender?.userName ?: ""
-        val address = notification.postId?.locationAddress ?: ""
+        val venueName = if (isRequestForVenue) {
+            notification.venue?.name
+        } else {
+            notification.group?.name
+        } ?: ""
+
+        val comment = if (!notification.commentId?.comment.isNullOrEmpty()) {
+            notification.commentId?.comment
+        } else ""
+
+        val address = if (!notification.locationAddress.isNullOrEmpty()) {
+            notification.locationAddress
+        } else ""
+
+
+        val locationName = if (!notification.locationName.isNullOrEmpty()) {
+            notification.locationName
+        } else ""
         val completeText = when (notification.type) {
             PushType.ALERT_CONVERSE_NEARBY_PUSH -> {
-                itemView.context.getString(R.string.notifications_label_cross_path, username, address)
+                itemView.context.getString(R.string.notifications_label_cross_path, username, locationName, address)
             }
             PushType.ALERT_LOOK_NEARBY_PUSH -> {
                 itemView.context.getString(R.string.notifications_label_converse_nearby, username)
+            }
+            PushType.LIKE_POST -> {
+                itemView.context.getString(R.string.notifications_label_like, username)
+            }
+            PushType.LIKE_COMMENT -> {
+                itemView.context.getString(R.string.notifications_label_like_comment, username)
+            }
+            PushType.LIKE_REPLY -> {
+                itemView.context.getString(R.string.notifications_label_sub_reply_like, username)
+            }
+            PushType.COMMENT -> {
+                itemView.context.getString(R.string.notifications_label_comment, username, comment)
+            }
+            PushType.TAG_COMMENT -> {
+                itemView.context.getString(R.string.notifications_label_tag_comment, username)
+            }
+            PushType.TAG_REPLY -> {
+                itemView.context.getString(R.string.notifications_label_tag_reply, username)
+            }
+            PushType.ACCEPT_INVITE_VENUE, PushType.ACCEPT_INVITE_GROUP -> {
+                itemView.context.getString(R.string.notifications_label_accept_invite, username, venueName)
+            }
+            PushType.ACCEPT_REQUEST_VENUE -> {
+                itemView.context.getString(R.string.notifications_label_accept_request_venue, username, venueName)
+            }
+            PushType.ACCEPT_REQUEST_GROUP -> {
+                itemView.context.getString(R.string.notifications_label_accept_request_channel, username, venueName)
+            }
+            PushType.ACCEPT_REQUEST_FOLLOW -> {
+                itemView.context.getString(R.string.notifications_label_accept_request_follow, username)
+            }
+            PushType.JOINED_VENUE -> {
+                itemView.context.getString(R.string.notifications_label_joined_venue, username, venueName)
+            }
+            PushType.JOINED_GROUP -> {
+                itemView.context.getString(R.string.notifications_label_joined_group, username, venueName)
+            }
+            PushType.REPLY -> {
+                itemView.context.getString(R.string.notifications_label_tag_comment, username)
             }
             else -> {
                 ""
@@ -76,10 +160,18 @@ class NormalDetailsViewHolder(itemView: View,
                 clickListener = userProfileClickListener)
 
         itemView.tvTitle.clickSpannable(spannableText = address,
+                textColorRes = R.color.textGray,
                 clickListener = venueGroupClickListener)
+
+        itemView.tvTitle.clickSpannable(spannableText = venueName,
+                textColorRes = R.color.textGray,
+                clickListener = venueGroupClickListener)
+
     }
 
     interface Callback {
         fun onInviteRequestAction(acceptRequest: Boolean, notification: NotificationDto)
+        fun onUserProfileClicked(profile: ProfileDto)
+        fun onGroupPostClicked(groupPost: GroupPostDto)
     }
 }

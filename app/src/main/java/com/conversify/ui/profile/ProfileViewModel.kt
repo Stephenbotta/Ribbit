@@ -26,7 +26,7 @@ class ProfileViewModel : ViewModel() {
                 .enqueue(object : Callback<ApiResponse<ProfileDto>> {
                     override fun onResponse(call: Call<ApiResponse<ProfileDto>>, response: Response<ApiResponse<ProfileDto>>) {
                         if (response.isSuccessful) {
-                            profile = response.body()?.data!!
+                            profile = response.body()?.data ?: ProfileDto()
                             peopleDetails.value = Resource.success(profile)
                         } else {
                             peopleDetails.value = Resource.error(response.getAppError())
