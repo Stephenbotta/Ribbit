@@ -14,10 +14,12 @@ import android.widget.SeekBar
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.InterestDto
+import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.extensions.gone
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
 import com.conversify.ui.profile.ProfileActivity
 import com.conversify.ui.profile.ProfileInterestsAdapter
@@ -29,7 +31,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.gms.location.places.ui.PlacePicker
 import kotlinx.android.synthetic.main.fragment_search_users.*
 
-class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
+class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback, SearchUsersAdapter.Callback {
 
     companion object {
         const val TAG = "SearchUsersFragment"
@@ -89,13 +91,13 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         goLarge.setOnClickListener { startSearching() }
         ivGo.setOnClickListener { startSearching() }
         go.setOnClickListener { startSearching() }
-        rlSearchAnimation.setOnClickListener {
-            rlSearchAnimation.gone()
-            goLarge.visible()
-            ivGo.visible()
-            tvFindingMatch.gone()
-            viewModel.cancelGettingResultsFromApi()
-        }
+        /*  rlSearchAnimation.setOnClickListener {
+              rlSearchAnimation.gone()
+              goLarge.visible()
+              ivGo.visible()
+              tvFindingMatch.gone()
+              viewModel.cancelGettingResultsFromApi()
+          }*/
         goLarge.isEnabled = false
         goLarge.isClickable = false
         ivGo.isClickable = false
@@ -130,18 +132,22 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     fun getMatchedUsersList(isFirstPage: Boolean) {
         if (isNetworkActiveWithMessage()) {
             count = 1
-            viewModel.getMatchedResultsApi(latitude, longitude, distanceRange, isFirstPage,
-                    interestsAdapter.getCategoryIds())
+            val delayTimeInMillis = if (isFirstPage) 5000L else 0L
+            Handler().postDelayed({
+                viewModel.getMatchedResultsApi(latitude, longitude, distanceRange, isFirstPage,
+                        interestsAdapter.getCategoryIds())
+            }, delayTimeInMillis)
         } else {
             rlSearchAnimation.gone()
             goLarge.visible()
             ivGo.visible()
             tvFindingMatch.gone()
-            viewModel.cancelGettingResultsFromApi()
+//            viewModel.cancelGettingResultsFromApi()
         }
     }
 
     private fun recursion() {
+        val delayTimeInMillis = if (count == 1) 0L else 1000L
         Handler().postDelayed({
             when (count) {
                 1 -> scaleView(ll_request1)
@@ -152,7 +158,7 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
             count++
             if (count < 5)
                 recursion()
-        }, 0)
+        }, delayTimeInMillis)
     }
 
     private fun scaleView(view: View) {
@@ -175,7 +181,7 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     }
 
     private fun setAdapter() {
-        searchUsersAdapter = SearchUsersAdapter(GlideApp.with(requireActivity()))
+        searchUsersAdapter = SearchUsersAdapter(GlideApp.with(requireActivity()), this)
         rvMatchedResults.adapter = searchUsersAdapter
 
         rvMatchedResults.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -276,11 +282,13 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     }
 
     private fun showSearchedResults() {
-        if (hideContent) {
-            clFilterData.gone()
-        } else {
-            clFilterData.visible()
-        }
+        if (hideContent) clFilterData.gone() else clFilterData.visible()
         hideContent = !hideContent
+    }
+
+    override fun openChatScreen(user: UserCrossedDto) {
+        val intent = ChatActivity.getStartIntentForIndividualChat(requireContext(),
+                user, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
+        startActivity(intent)
     }
 }

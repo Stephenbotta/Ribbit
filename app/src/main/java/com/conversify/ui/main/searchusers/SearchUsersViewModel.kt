@@ -48,9 +48,11 @@ class SearchUsersViewModel(application: Application) : BaseViewModel(application
             override fun onFailure(call: Call<ApiResponse<List<ProfileDto>>>, t: Throwable) {
                 if (!call.isCanceled)
                     matchedResults.value = Resource.error(t.failureAppError())
+                isLoading = false
             }
 
             override fun onResponse(call: Call<ApiResponse<List<ProfileDto>>>, response: Response<ApiResponse<List<ProfileDto>>>) {
+                isLoading = false
                 if (response.isSuccessful) {
                     if (isFirstPage) {
                         // Reset for first page

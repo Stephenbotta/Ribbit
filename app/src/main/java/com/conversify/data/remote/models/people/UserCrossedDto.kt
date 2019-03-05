@@ -4,11 +4,7 @@ import android.os.Parcelable
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
-import org.threeten.bp.ZonedDateTime
 
-/**
- * Created by Manish Bhargav
- */
 @Parcelize
 data class UserCrossedDto(
         @field:SerializedName("_id")
