@@ -56,7 +56,7 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
     private fun inItClasses() {
         viewModel = ViewModelProviders.of(this).get(PeopleDetailsViewModel::class.java)
         flag = intent.getIntExtra(EXTRA_FLAG, 0)
-        userCrossed = intent.getParcelableExtra<UserCrossedDto>(EXTRA_CROSSED_PEOPLE_DETAILS)
+        userCrossed = intent.getParcelableExtra(EXTRA_CROSSED_PEOPLE_DETAILS)
         userId = PrefsManager.get().getString(PrefsManager.PREF_PEOPLE_USER_ID, "")
         swipeRefreshLayout.setOnRefreshListener { getPeopleDetails(userId) }
         observeChanges()

@@ -329,6 +329,9 @@
     <string name="dialog_post_label_publicly">Publicly</string>
     <string name="dialog_post_label_follower_selected_people">Followers/Selected People</string>
 
+    <string name="dialog_notification_label_okay">Okay!!</string>
+    <string name="dialog_notification_label_show_post">Show Post</string>
+
     <string name="settings_profile_label_invite_people">Invite People</string>
     <string name="settings_profile_label_share_contact_details">Share your Contact Details</string>
     <string name="settings_profile_label_about">About</string>

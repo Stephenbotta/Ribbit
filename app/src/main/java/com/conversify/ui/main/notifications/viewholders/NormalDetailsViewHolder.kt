@@ -47,9 +47,7 @@ class NormalDetailsViewHolder(itemView: View,
                 }
             }
             PushType.ALERT_CONVERSE_NEARBY_PUSH -> {
-                notification.sender?.let { profile ->
-                    callback.onUserProfileClicked(profile)
-                }
+                callback.onCrossedPathClicked(notification)
             }
             else -> {
                 notification.postId?.let { groupPostDto ->
@@ -173,5 +171,6 @@ class NormalDetailsViewHolder(itemView: View,
         fun onInviteRequestAction(acceptRequest: Boolean, notification: NotificationDto)
         fun onUserProfileClicked(profile: ProfileDto)
         fun onGroupPostClicked(groupPost: GroupPostDto)
+        fun onCrossedPathClicked(notification: NotificationDto)
     }
 }

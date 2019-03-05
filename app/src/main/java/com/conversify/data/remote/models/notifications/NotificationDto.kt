@@ -39,6 +39,9 @@ data class NotificationDto(
         @field:SerializedName("locationAddress")
         val locationAddress: String? = null,
 
+        @field:SerializedName("location")
+        val location: ArrayList<Double>? = null,
+
         @field:SerializedName("toId")
         val toId: String? = null,
 

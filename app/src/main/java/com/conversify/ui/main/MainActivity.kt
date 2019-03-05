@@ -6,12 +6,19 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import com.conversify.R
 import com.conversify.data.local.UserManager
+import com.conversify.data.remote.PushType
+import com.conversify.data.remote.models.groups.GroupDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.people.UserCrossedDto
+import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.ui.base.BaseLocationActivity
+import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.main.chats.ChatsFragment
 import com.conversify.ui.main.explore.ExploreFragment
 import com.conversify.ui.main.home.HomeFragment
 import com.conversify.ui.main.notifications.NotificationsFragment
 import com.conversify.ui.main.searchusers.SearchUsersFragment
+import com.conversify.utils.AppConstants
 import com.conversify.utils.FragmentSwitcher
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
@@ -62,9 +69,44 @@ class MainActivity : BaseLocationActivity() {
     private fun checkPushNavigation() {
         val type = intent.getStringExtra("TYPE")
         if (!type.isNullOrEmpty()) {
-            bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)?.select()
-            if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG))
-                fragmentSwitcher.addFragment(NotificationsFragment(), NotificationsFragment.TAG)
+            when (type) {
+                PushType.CHAT -> {
+                    val data = intent.getParcelableExtra<ProfileDto>("data")
+                    bottomTabs.getTabAt(TAB_INDEX_CHATS)?.select()
+                    val userCrossed = UserCrossedDto()
+                    userCrossed.profile = data
+                    userCrossed.conversationId = intent.getStringExtra("id")
+                    if (!fragmentSwitcher.fragmentExist(ChatsFragment.TAG))
+                        fragmentSwitcher.addFragment(ChatsFragment(), ChatsFragment.TAG)
+
+                    val intent = ChatActivity.getStartIntentForIndividualChat(this, userCrossed, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
+                    startActivityForResult(intent, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
+                }
+                PushType.GROUP_CHAT -> {
+                    val data = intent.getParcelableExtra<GroupDto>("data")
+                    bottomTabs.getTabAt(TAB_INDEX_CHATS)?.select()
+                    data.conversationId = intent.getStringExtra("id")
+                    if (!fragmentSwitcher.fragmentExist(ChatsFragment.TAG))
+                        fragmentSwitcher.addFragment(ChatsFragment(), ChatsFragment.TAG)
+                    val intent = ChatActivity.getStartIntentForGroupChat(this, data, AppConstants.REQ_CODE_GROUP_CHAT)
+                    startActivityForResult(intent, AppConstants.REQ_CODE_GROUP_CHAT)
+                }
+                PushType.VENUE_CHAT -> {
+                    bottomTabs.getTabAt(TAB_INDEX_EXPLORE)?.select()
+                    val data = intent.getParcelableExtra<VenueDto>("data")
+                    data.conversationId = intent.getStringExtra("id")
+                    if (!fragmentSwitcher.fragmentExist(ExploreFragment.TAG))
+                        fragmentSwitcher.addFragment(ExploreFragment(), ExploreFragment.TAG)
+                    val intent = ChatActivity.getStartIntent(this, data, AppConstants.REQ_CODE_VENUE_CHAT)
+                    startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
+                }
+                else -> {
+                    bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)?.select()
+                    if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG))
+                        fragmentSwitcher.addFragment(NotificationsFragment(), NotificationsFragment.TAG)
+                }
+            }
+
         } else {
             fragmentSwitcher.addFragment(HomeFragment(), HomeFragment.TAG)
         }

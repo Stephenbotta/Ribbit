@@ -13,6 +13,9 @@ import android.support.v4.content.ContextCompat
 import com.conversify.R
 import com.conversify.data.local.UserManager
 import com.conversify.data.remote.PushType
+import com.conversify.data.remote.models.groups.GroupDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.ui.main.MainActivity
 import com.conversify.utils.AppConstants
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -53,23 +56,38 @@ class MessagingService : FirebaseMessagingService() {
             PushType.REQUEST_VENUE, PushType.REQUEST_GROUP, PushType.FOLLOW, PushType.POST,
             PushType.TAG_COMMENT, PushType.TAG_REPLY, PushType.REQUEST_FOLLOW,
             PushType.ACCEPT_REQUEST_FOLLOW, PushType.ALERT_CONVERSE_NEARBY_PUSH,
-            PushType.ALERT_LOOK_NEARBY_PUSH, PushType.JOINED_VENUE, PushType.JOINED_GROUP -> {
+            PushType.ALERT_LOOK_NEARBY_PUSH, PushType.JOINED_VENUE, PushType.JOINED_GROUP,
+            PushType.ACCEPT_REQUEST_GROUP, PushType.ACCEPT_REQUEST_VENUE ,
+            PushType.ACCEPT_INVITE_GROUP, PushType.ACCEPT_INVITE_VENUE -> {
                 val id = data[ID]
 //                val byId = data["byId"]
                 intent.putExtra(ID, id)
                 intent.putExtra(TYPE, type)
             }
-            PushType.GROUP_CHAT, PushType.VENUE_CHAT -> {
+            PushType.GROUP_CHAT -> {
+                val id = data[ID]
+                val group = data["groupDetails"] as GroupDto
+                intent.putExtra(ID, id)
+                intent.putExtra(TYPE, type)
+                intent.putExtra("data", group)
+            }
+
+            PushType.VENUE_CHAT -> {
+                val id = data[ID]
+                val venue = data["groupDetails"] as VenueDto
+                intent.putExtra(ID, id)
+                intent.putExtra(TYPE, type)
+                intent.putExtra("data", venue)
             }
 
             PushType.CHAT -> {
+                val id = data[ID]
+                val profile = data["senderDetails"] as ProfileDto
+                intent.putExtra(ID, id)
+                intent.putExtra(TYPE, type)
+                intent.putExtra("data", profile)
             }
 
-            PushType.ACCEPT_REQUEST_GROUP, PushType.ACCEPT_REQUEST_VENUE -> {
-            }
-
-            PushType.ACCEPT_INVITE_GROUP, PushType.ACCEPT_INVITE_VENUE -> {
-            }
         }
 
         val pendingIntent = PendingIntent.getActivity(this, AppConstants.REQ_CODE_PENDING_INTENT,

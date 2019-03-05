@@ -32,7 +32,7 @@ object MapUtils {
         }
     }
 
-    fun getStaticMapWithMarker(context: Context, latitude: Double, longitude: Double): String {
+    fun getStaticMapWithMarker(context: Context, latitude: Double?, longitude: Double?): String {
         val key = context.getString(R.string.app_google_api_key)
         return "https://maps.googleapis.com/maps/api/staticmap?zoom=16&size=600x350&scale=1&markers=$latitude,$longitude&key=$key"
     }

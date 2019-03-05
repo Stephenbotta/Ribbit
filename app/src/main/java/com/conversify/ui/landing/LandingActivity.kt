@@ -13,6 +13,10 @@ import android.text.style.ClickableSpan
 import android.view.View
 import com.conversify.R
 import com.conversify.data.local.UserManager
+import com.conversify.data.remote.PushType
+import com.conversify.data.remote.models.groups.GroupDto
+import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.clickSpannable
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.loginsignup.LoginSignUpActivity
@@ -41,6 +45,24 @@ class LandingActivity : BaseActivity() {
                     val intent = Intent(this, MainActivity::class.java)
                     if (!type.isNullOrEmpty()) {
                         intent.putExtra("TYPE", type)
+                        intent.putExtra("id", intent.getStringExtra("id"))
+                        when (type) {
+                            PushType.CHAT -> {
+                                val data = intent.getParcelableExtra<ProfileDto>("data")
+                                intent.putExtra("data", data)
+                            }
+                            PushType.GROUP_CHAT -> {
+                                val data = intent.getParcelableExtra<GroupDto>("data")
+                                intent.putExtra("data", data)
+                            }
+                            PushType.VENUE_CHAT -> {
+                                val data = intent.getParcelableExtra<VenueDto>("data")
+                                intent.putExtra("data", data)
+                            }
+                            else -> {
+
+                            }
+                        }
                     }
                     startActivity(intent)
                     finishAffinity()

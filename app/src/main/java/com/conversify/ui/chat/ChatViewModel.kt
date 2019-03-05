@@ -325,6 +325,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
         jsonObject.putOpt("senderId", ownUserId)
         jsonObject.putOpt("groupId", venue.id)
         jsonObject.putOpt("groupType", ApiConstants.TYPE_VENUE)
+        jsonObject.putOpt("conversationId", venue.conversationId)
         jsonObject.putOpt("type", message.details?.type)
         jsonObject.putOpt("message", message.details?.message)
 

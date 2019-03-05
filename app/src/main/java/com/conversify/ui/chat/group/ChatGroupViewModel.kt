@@ -17,7 +17,6 @@ import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.data.remote.models.groups.GroupDto
-import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.data.remote.socket.SocketManager
 import com.conversify.ui.chat.ChatMessageBuilder
 import com.conversify.ui.chat.individual.ChatIndividualResponse

@@ -12,6 +12,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.SeekBar
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.people.UserCrossedDto
@@ -21,6 +22,7 @@ import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
+import com.conversify.ui.people.details.PeopleDetailsActivity
 import com.conversify.ui.profile.ProfileActivity
 import com.conversify.ui.profile.ProfileInterestsAdapter
 import com.conversify.utils.AppConstants
@@ -286,9 +288,15 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback, Se
         hideContent = !hideContent
     }
 
-    override fun openChatScreen(user: UserCrossedDto) {
-        val intent = ChatActivity.getStartIntentForIndividualChat(requireContext(),
-                user, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
-        startActivity(intent)
+    override fun openChatScreen(user: UserCrossedDto, isDetailShow: Boolean) {
+        if (isDetailShow) {
+            PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, user.crossedUser?.id ?: "")
+            val intent = PeopleDetailsActivity.getStartIntent(requireContext(), user, AppConstants.REQ_CODE_PEOPLE)
+            activity?.startActivity(intent)
+        } else {
+            val intent = ChatActivity.getStartIntentForIndividualChat(requireContext(),
+                    user, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
+            startActivity(intent)
+        }
     }
 }

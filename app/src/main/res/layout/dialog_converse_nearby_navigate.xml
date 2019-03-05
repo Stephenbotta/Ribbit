@@ -1,24 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="view"
-            type="com.conversify.ui.conversenearby.post.PostNearByActivity" />
+            type="com.conversify.ui.main.notifications.NotificationsFragment" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <ImageView
+        <LinearLayout
+            android:id="@+id/llCrossedPath"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/ivMapMarker"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="68dp"
+                android:layout_marginEnd="24dp"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="12dp"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/crossPath"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="@font/roboto_text_regular"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:textSize="16sp"
+                tools:text="gur has crossed your path at Code Brew Labs " />
+
+            <android.support.design.button.MaterialButton
+                android:id="@+id/btnOkay"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="@font/roboto_text_medium"
+                android:letterSpacing="0"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/dialog_notification_label_okay"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/all_content_header_text_size"
+                app:backgroundTint="@color/colorPrimary"
+                app:cornerRadius="32dp"
+                app:rippleColor="?attr/colorAccent"
+                tools:visibility="visible" />
+
+
+            <android.support.design.button.MaterialButton
+                android:id="@+id/btnShowPost"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="@font/roboto_text_medium"
+                android:letterSpacing="0"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/dialog_notification_label_show_post"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/all_content_header_text_size"
+                app:backgroundTint="@color/colorPrimary"
+                app:cornerRadius="32dp"
+                app:rippleColor="?attr/colorAccent"
+                tools:visibility="visible" />
+
+            <android.support.design.button.MaterialButton
+                android:id="@+id/btnCancel"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="@font/roboto_text_medium"
+                android:letterSpacing="0"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/all_content_header_text_size"
+                app:backgroundTint="@color/colorPrimary"
+                app:cornerRadius="32dp"
+                app:rippleColor="?attr/colorAccent"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/ivProfilePic"
-            android:layout_width="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toTopOf="@id/llCrossedPath"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_height="wrap_content" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/llCrossedPath"
+            app:riv_oval="true"
+            android:scaleType="centerCrop"
+            tools:src="@tools:sample/avatars" />
+
+
     </android.support.constraint.ConstraintLayout>
 
 </layout>

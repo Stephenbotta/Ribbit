@@ -51,11 +51,11 @@ class NotificationsAdapter(private val glide: GlideRequests,
 
     override fun getItemViewType(position: Int): Int {
         return when (notifications[position].type) {
-            PushType.LIKE, PushType.COMMENT, PushType.REPLY, PushType.ACCEPT_INVITE_GROUP,
-            PushType.ACCEPT_REQUEST_FOLLOW, PushType.ACCEPT_INVITE_VENUE, PushType.ACCEPT_REQUEST_GROUP,
-            PushType.ACCEPT_REQUEST_VENUE, PushType.VENUE, PushType.GROUP, PushType.FOLLOW, PushType.POST,
-            PushType.TAG_COMMENT, PushType.TAG_REPLY, PushType.LIKE_REPLY, PushType.LIKE_COMMENT,
-            PushType.LIKE_POST, PushType.JOINED_VENUE, PushType.JOINED_GROUP,
+            PushType.LIKE, PushType.LIKE_REPLY, PushType.LIKE_POST, PushType.COMMENT, PushType.REPLY, PushType.VENUE,
+            PushType.GROUP, PushType.ACCEPT_INVITE_GROUP, PushType.ACCEPT_INVITE_VENUE, PushType.ACCEPT_REQUEST_FOLLOW,
+            PushType.ACCEPT_REQUEST_GROUP, PushType.ACCEPT_REQUEST_VENUE, PushType.FOLLOW, PushType.POST,
+            PushType.TAG_COMMENT, PushType.TAG_REPLY, PushType.LIKE_COMMENT,
+            PushType.JOINED_VENUE, PushType.JOINED_GROUP,
             PushType.ALERT_CONVERSE_NEARBY_PUSH, PushType.ALERT_LOOK_NEARBY_PUSH -> {
                 NOTIFICATION_TYPE_VENUE
             }
@@ -63,7 +63,7 @@ class NotificationsAdapter(private val glide: GlideRequests,
                 NOTIFICATION_TYPE_INVITE_REQUEST
             }
             else -> {
-                throw IllegalArgumentException("Invalid View type")
+                throw IllegalArgumentException("invalid View type")
             }
         }
     }

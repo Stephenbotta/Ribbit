@@ -22,7 +22,7 @@ data class VenueDto(
         val adminId: String? = null,
 
         @field:SerializedName("conversationId")
-        val conversationId: String? = null,
+        var conversationId: String? = null,
 
         @field:SerializedName("_id")
         val id: String? = null,

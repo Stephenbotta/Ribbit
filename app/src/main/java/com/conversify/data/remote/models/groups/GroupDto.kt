@@ -24,7 +24,7 @@ data class GroupDto(
         val adminId: String? = null,
 
         @field:SerializedName("_id")//, alternate = ["groupId"]
-        val id: String? = null,
+        var id: String? = null,
 
         @field:SerializedName("requestStatus")
         var requestStatus: String? = null,

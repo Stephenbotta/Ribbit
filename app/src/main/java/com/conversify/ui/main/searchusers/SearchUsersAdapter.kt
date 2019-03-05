@@ -49,11 +49,18 @@ class SearchUsersAdapter(private val glide: GlideRequests, private val callback:
             itemView.rvMutualInterests.isNestedScrollingEnabled = false
             itemView.rvMutualInterests.adapter = interestsAdapter
 
-            itemView.fabChat.setOnClickListener {
-                val user = UserCrossedDto(crossedUser = ProfileDto(fullName = profile.fullName, image = profile.image,
+            itemView.setOnClickListener {
+                val user = UserCrossedDto(crossedUser = ProfileDto(fullName = profile.fullName, userName = profile.userName, image = profile.image,
                         id = profile.id),
                         conversationId = profile.conversationId)
-                callback.openChatScreen(user)
+                callback.openChatScreen(user, true)
+            }
+
+            itemView.fabChat.setOnClickListener {
+                val user = UserCrossedDto(crossedUser = ProfileDto(fullName = profile.fullName, userName = profile.userName, image = profile.image,
+                        id = profile.id),
+                        conversationId = profile.conversationId)
+                callback.openChatScreen(user, false)
             }
         }
 
@@ -73,6 +80,6 @@ class SearchUsersAdapter(private val glide: GlideRequests, private val callback:
     }
 
     interface Callback {
-        fun openChatScreen(user: UserCrossedDto)
+        fun openChatScreen(user: UserCrossedDto, isDetailShow: Boolean)
     }
 }

@@ -1,10 +1,14 @@
 package com.conversify.ui.main.notifications
 
+import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import com.conversify.R
 import com.conversify.data.local.PrefsManager
 import com.conversify.data.remote.models.Status
@@ -12,6 +16,7 @@ import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.notifications.NotificationDto
 import com.conversify.data.remote.models.people.UserCrossedDto
+import com.conversify.databinding.DialogConverseNearbyNavigateBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
@@ -20,7 +25,9 @@ import com.conversify.ui.people.details.PeopleDetailsActivity
 import com.conversify.ui.post.details.PostDetailsActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
+import com.conversify.utils.MapUtils
 import kotlinx.android.synthetic.main.fragment_notifications.*
+
 
 class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
 
@@ -133,6 +140,37 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
         }
     }
 
+    private fun showDialog(notification: NotificationDto) {
+        val inflater = layoutInflater
+        val binding = DataBindingUtil.inflate<DialogConverseNearbyNavigateBinding>(inflater, R.layout.dialog_converse_nearby_navigate, null, false)
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.setContentView(binding.root)
+        GlideApp.with(requireContext()).load(notification.sender?.image?.original).into(binding.ivProfilePic)
+        val lon = notification.location?.get(0)
+        val lat = notification.location?.get(1)
+        val url = MapUtils.getStaticMapWithMarker(requireContext(), lat, lon)
+        GlideApp.with(requireContext()).load(url).into(binding.ivMapMarker)
+        binding.crossPath.text = "${notification.sender?.userName} has crossed your path at ${notification.locationName}"
+        dialog.show()
+        binding.btnOkay.setOnClickListener {
+            notification.sender?.let { profile ->
+                onUserProfileClicked(profile)
+            }
+            dialog.dismiss()
+        }
+        binding.btnShowPost.setOnClickListener {
+            notification.postId?.let { groupPostDto ->
+                onGroupPostClicked(groupPostDto)
+            }
+            dialog.dismiss()
+        }
+        binding.btnCancel.setOnClickListener { dialog.dismiss() }
+    }
+
+
     private fun checkForNoNotificationsState() {
         viewSwitcher.displayedChild = if (notificationsAdapter.itemCount == 0) {
             CHILD_NO_NOTIFICATIONS
@@ -170,6 +208,10 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
     override fun onGroupPostClicked(groupPost: GroupPostDto) {
         val intent = PostDetailsActivity.getStartIntent(requireActivity(), groupPost, true)
         startActivityForResult(intent, AppConstants.REQ_CODE_POST_DETAILS)
+    }
+
+    override fun onCrossedPathClicked(notification: NotificationDto) {
+        showDialog(notification)
     }
 
     override fun onDestroyView() {
