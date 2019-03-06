@@ -5,19 +5,25 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
 import com.conversify.R
+import com.conversify.data.local.UserManager
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.MemberDto
 import com.conversify.data.remote.models.groups.AddParticipantsDto
 import com.conversify.data.remote.models.venues.VenueDto
+import com.conversify.databinding.BottomSheetDialogInviteVenueBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
+import com.conversify.extensions.sendInviteViaEmail
+import com.conversify.extensions.shareText
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.venues.addparticipants.AddVenueParticipantsActivity
@@ -37,10 +43,12 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         }
     }
 
-    private val venue by lazy { intent.getParcelableExtra<VenueDto>(EXTRA_VENUE) }
+    private val venues by lazy { intent.getParcelableExtra<VenueDto>(EXTRA_VENUE) }
     private val members by lazy { intent.getParcelableArrayListExtra<MemberDto>(EXTRA_VENUE_MEMBERS) }
     private lateinit var viewModel: VenueDetailsViewModel
     private lateinit var loadingDialog: LoadingDialog
+    private lateinit var venue: VenueDto
+    private lateinit var member: MemberDto
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +59,7 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         setupToolbar()
         observeChanges()
         setupVenueDetailsRecycler()
+        callApi(venues.id ?: "")
     }
 
     private fun setupToolbar() {
@@ -63,23 +72,50 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         val boldTypeface = ResourcesCompat.getFont(this, R.font.roboto_text_bold)
         collapsingToolbar.setExpandedTitleTypeface(boldTypeface)
         collapsingToolbar.setCollapsedTitleTypeface(boldTypeface)
-        collapsingToolbar.title = venue.name
+        collapsingToolbar.title = venues.name
 
-        val thumbnail = GlideApp.with(this).load(venue.imageUrl?.thumbnail)
+        val thumbnail = GlideApp.with(this).load(venues.imageUrl?.thumbnail)
         GlideApp.with(this)
-                .load(venue.imageUrl?.original)
+                .load(venues.imageUrl?.original)
                 .thumbnail(thumbnail)
                 .into(ivVenue)
     }
 
+    private fun callApi(venueId: String) {
+        if (isNetworkActiveWithMessage())
+            viewModel.getVenueDetails(venueId)
+    }
+
     private fun observeChanges() {
+        viewModel.venueDetails.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    resource.data?.let { venue ->
+
+
+                    }
+
+                }
+
+                Status.ERROR -> {
+                    handleError(resource.error)
+                }
+
+                Status.LOADING -> {
+                    // Ignored
+                }
+            }
+        })
+
         viewModel.changeVenueNotifications.observe(this, Observer { resource ->
             resource ?: return@Observer
             when (resource.status) {
                 Status.SUCCESS -> {
-                    venue.notification = resource.data
+                    venues.notification = resource.data
                     val data = Intent()
-                    data.putExtra(AppConstants.EXTRA_VENUE, venue)
+                    data.putExtra(AppConstants.EXTRA_VENUE, venues)
                     setResult(Activity.RESULT_OK, data)
                 }
 
@@ -97,9 +133,9 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
             when (resource.status) {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
-                    venue.isMember = false
+                    venues.isMember = false
                     val data = Intent()
-                    data.putExtra(AppConstants.EXTRA_VENUE, venue)
+                    data.putExtra(AppConstants.EXTRA_VENUE, venues)
                     setResult(Activity.RESULT_OK, data)
                     finish()
                 }
@@ -124,7 +160,7 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         rvVenueDetails.adapter = venueDetailsAdapter
 
         val items = mutableListOf<Any>()
-        items.add(venue)    // Header
+        items.add(venues)    // Header
         items.add(AddParticipantsDto)    // Add participants
         items.addAll(members)   // Members
         items.add(Any())    // Exit group
@@ -132,12 +168,25 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         venueDetailsAdapter.displayItems(items)
     }
 
+    private fun invitePeopleToVenue() {
+        val inflater = layoutInflater
+        val binding = DataBindingUtil.inflate<BottomSheetDialogInviteVenueBinding>(inflater, R.layout.bottom_sheet_dialog_invite_venue, null, false)
+        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.setContentView(binding.root)
+        bottomSheetDialog.show()
+        binding.tvInvite.setOnClickListener {
+            sendInviteViaEmail(getString(R.string.venue_share_link))
+            bottomSheetDialog.dismiss()
+        }
+        binding.tvCancel.setOnClickListener { bottomSheetDialog.dismiss() }
+    }
+
     override fun onNotificationsChanged(isEnabled: Boolean) {
-        viewModel.changeVenueNotifications(venue.id ?: "", isEnabled)
+        viewModel.changeVenueNotifications(venues.id ?: "", isEnabled)
     }
 
     override fun onAddParticipantsClicked() {
-        AddVenueParticipantsActivity.start(this, venue.id
+        AddVenueParticipantsActivity.start(this, venues.id
                 ?: "", AppConstants.REQ_CODE_VENUE_DETAILS)
     }
 
@@ -145,11 +194,21 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
     }
 
     override fun onExitVenueClicked() {
+        val message = if (venues.adminId == UserManager.getUserId()) {
+            getString(R.string.venue_details_label_delete_venue_question)
+        } else {
+            getString(R.string.venue_details_label_exit_venue_question)
+        }
+        val action = if (venues.adminId == UserManager.getUserId()) {
+            getString(R.string.group_more_options_label_channel_delete)
+        } else {
+            getString(R.string.group_more_options_label_exit)
+        }
         AlertDialog.Builder(this)
-                .setMessage(R.string.venue_details_label_exit_venue_question)
-                .setPositiveButton(R.string.venue_details_btn_exit) { _, _ ->
+                .setMessage(message)
+                .setPositiveButton(action) { _, _ ->
                     if (isNetworkActiveWithMessage()) {
-                        viewModel.exitVenue(venue.id ?: "")
+                        viewModel.exitVenue(venues.id ?: "")
                     }
                 }
                 .setNegativeButton(R.string.cancel, null)
@@ -162,7 +221,7 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
                 .setMessage(R.string.venue_details_label_archive_venue_question)
                 .setPositiveButton(R.string.venue_details_btn_archive) { _, _ ->
                     if (isNetworkActiveWithMessage()) {
-                        viewModel.archiveVenue(venue.id ?: "")
+                        viewModel.archiveVenue(venues.id ?: "")
                     }
                 }
                 .setNegativeButton(R.string.cancel, null)
@@ -183,10 +242,12 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
             }
 
             R.id.menuShare -> {
+                shareText(getString(R.string.venue_share_link))
                 true
             }
 
             R.id.menuMore -> {
+                invitePeopleToVenue()
                 true
             }
 

@@ -11,6 +11,7 @@ import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
 import com.conversify.data.local.UserManager
 import com.conversify.data.remote.PushType
 import com.conversify.data.remote.models.groups.GroupDto
@@ -42,12 +43,12 @@ class MessagingService : FirebaseMessagingService() {
         val data = message?.data ?: emptyMap()
         val type = data[TYPE]
         val msg = data[MESSAGE]
+        var isChatOpen = false
 
         val intent = Intent(this, MainActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-
 
         when (type) {
 
@@ -57,7 +58,7 @@ class MessagingService : FirebaseMessagingService() {
             PushType.TAG_COMMENT, PushType.TAG_REPLY, PushType.REQUEST_FOLLOW,
             PushType.ACCEPT_REQUEST_FOLLOW, PushType.ALERT_CONVERSE_NEARBY_PUSH,
             PushType.ALERT_LOOK_NEARBY_PUSH, PushType.JOINED_VENUE, PushType.JOINED_GROUP,
-            PushType.ACCEPT_REQUEST_GROUP, PushType.ACCEPT_REQUEST_VENUE ,
+            PushType.ACCEPT_REQUEST_GROUP, PushType.ACCEPT_REQUEST_VENUE,
             PushType.ACCEPT_INVITE_GROUP, PushType.ACCEPT_INVITE_VENUE -> {
                 val id = data[ID]
 //                val byId = data["byId"]
@@ -70,6 +71,7 @@ class MessagingService : FirebaseMessagingService() {
                 intent.putExtra(ID, id)
                 intent.putExtra(TYPE, type)
                 intent.putExtra("data", group)
+                isChatOpen = PrefsManager.get().getBoolean(PrefsManager.PREF_IS_CHAT_OPEN, false)
             }
 
             PushType.VENUE_CHAT -> {
@@ -78,6 +80,7 @@ class MessagingService : FirebaseMessagingService() {
                 intent.putExtra(ID, id)
                 intent.putExtra(TYPE, type)
                 intent.putExtra("data", venue)
+                isChatOpen = PrefsManager.get().getBoolean(PrefsManager.PREF_IS_CHAT_OPEN, false)
             }
 
             PushType.CHAT -> {
@@ -86,14 +89,15 @@ class MessagingService : FirebaseMessagingService() {
                 intent.putExtra(ID, id)
                 intent.putExtra(TYPE, type)
                 intent.putExtra("data", profile)
+                isChatOpen = PrefsManager.get().getBoolean(PrefsManager.PREF_IS_CHAT_OPEN, false)
             }
 
         }
 
         val pendingIntent = PendingIntent.getActivity(this, AppConstants.REQ_CODE_PENDING_INTENT,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-        sendNotification(notificationTitle, msg, pendingIntent, "11", AppConstants.REQ_CODE_PENDING_INTENT)
+        if (!isChatOpen)
+            sendNotification(notificationTitle, msg, pendingIntent, "11", AppConstants.REQ_CODE_PENDING_INTENT)
     }
 
     @TargetApi(Build.VERSION_CODES.O)

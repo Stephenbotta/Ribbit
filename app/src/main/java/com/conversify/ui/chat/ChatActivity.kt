@@ -13,6 +13,7 @@ import android.support.v7.widget.SimpleItemAnimator
 import android.view.MenuItem
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
 import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
@@ -416,10 +417,12 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
 
     private fun showGroupDetails(flag: Int) {
         if (flag == AppConstants.REQ_CODE_LISTING_GROUP_DETAILS) {
-            val intent = GroupDetailsActivity.getStartIntent(this, viewModelChatGroup.getGroup().profile?.id?:"", flag)
+            val intent = GroupDetailsActivity.getStartIntent(this, viewModelChatGroup.getGroup().profile?.id
+                    ?: "", flag)
             startActivityForResult(intent, flag)
         } else if (flag == AppConstants.REQ_CODE_GROUP_DETAILS) {
-            val intent = GroupDetailsActivity.getStartIntent(this, viewModelGroup.getGroup().id?:"", flag)
+            val intent = GroupDetailsActivity.getStartIntent(this, viewModelGroup.getGroup().id
+                    ?: "", flag)
             startActivityForResult(intent, flag)
         }
 
@@ -488,6 +491,16 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        PrefsManager.get().save(PrefsManager.PREF_IS_CHAT_OPEN, true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        PrefsManager.get().save(PrefsManager.PREF_IS_CHAT_OPEN, false)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

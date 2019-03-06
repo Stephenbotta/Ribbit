@@ -17,6 +17,7 @@ class SocketManager(private val userManager: UserManager) {
         const val EVENT_NEW_MESSAGE = "receiveMessage"
         const val EVENT_SEND_MESSAGE = "sendMessage"
         const val EVENT_CURRENT_LOCATION = "currentLocation"
+        const val EVENT_REQUEST_COUNT = "requestCount"
 
         private var INSTANCE: SocketManager? = null
 

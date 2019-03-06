@@ -11,11 +11,13 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
+import android.support.v7.app.AlertDialog
 import android.support.v7.view.menu.MenuBuilder
 import android.support.v7.widget.*
 import android.view.MenuItem
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.UserManager
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
@@ -212,6 +214,11 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         val popup = PopupMenu(this, v)
         popup.inflate(R.menu.menu_group_more_options)
         val m = popup.menu as MenuBuilder
+        m.getItem(0).title = if (group.adminId == UserManager.getUserId()) {
+            getString(R.string.group_more_options_label_channel_delete)
+        } else {
+            getString(R.string.group_more_options_label_exit)
+        }
         m.setOptionalIconsVisible(true)
         popup.setOnMenuItemClickListener(this)
         popup.show()
@@ -226,8 +233,7 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         when (item?.itemId) {
 
             R.id.menuGroupExit -> {
-                if (isNetworkActiveWithMessage())
-                    groupPostsViewModel.exitGroup()
+                showDialog()
                 return true
             }
 
@@ -257,6 +263,29 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
 
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showDialog() {
+        val message = if (group.adminId == UserManager.getUserId()) {
+            getString(R.string.group_details_label_delete_group_question)
+        } else {
+            getString(R.string.group_details_label_exit_group_question)
+        }
+        val action = if (group.adminId == UserManager.getUserId()) {
+            getString(R.string.group_more_options_label_channel_delete)
+        } else {
+            getString(R.string.group_more_options_label_exit)
+        }
+        AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton(action) { _, _ ->
+                    if (isNetworkActiveWithMessage()) {
+                        groupPostsViewModel.exitGroup()
+                    }
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+                .show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

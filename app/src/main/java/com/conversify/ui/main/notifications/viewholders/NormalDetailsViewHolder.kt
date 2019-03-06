@@ -6,9 +6,11 @@ import android.view.View
 import android.widget.TextView
 import com.conversify.R
 import com.conversify.data.remote.PushType
+import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.notifications.NotificationDto
+import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.clickSpannable
 import com.conversify.extensions.gone
 import com.conversify.extensions.visible
@@ -33,8 +35,14 @@ class NormalDetailsViewHolder(itemView: View,
     private val venueGroupClickListener = View.OnClickListener {
         if (isRequestForVenue) {
             Timber.i("Venue name clicked : ${notification.venue?.name}")
+            notification.venue?.let { venue ->
+                callback.onVenueClicked(venue)
+            }
         } else {
             Timber.i("Group name clicked : ${notification.group?.name}")
+            notification.group?.let { group ->
+                callback.onGroupClicked(group)
+            }
         }
     }
 
@@ -46,7 +54,7 @@ class NormalDetailsViewHolder(itemView: View,
                     callback.onUserProfileClicked(profile)
                 }
             }
-            PushType.ALERT_CONVERSE_NEARBY_PUSH -> {
+            PushType.ALERT_CONVERSE_NEARBY_PUSH, PushType.ALERT_LOOK_NEARBY_PUSH -> {
                 callback.onCrossedPathClicked(notification)
             }
             else -> {
@@ -60,6 +68,7 @@ class NormalDetailsViewHolder(itemView: View,
     init {
         itemView.ivProfile.setOnClickListener(userProfileClickListener)
         itemView.setOnClickListener(itemClickListener)
+
     }
 
     private lateinit var notification: NotificationDto
@@ -100,6 +109,9 @@ class NormalDetailsViewHolder(itemView: View,
             PushType.ALERT_LOOK_NEARBY_PUSH -> {
                 itemView.context.getString(R.string.notifications_label_converse_nearby, username)
             }
+            PushType.LIKE -> {
+                itemView.context.getString(R.string.notifications_label_like, username)
+            }
             PushType.LIKE_POST -> {
                 itemView.context.getString(R.string.notifications_label_like, username)
             }
@@ -108,6 +120,9 @@ class NormalDetailsViewHolder(itemView: View,
             }
             PushType.LIKE_REPLY -> {
                 itemView.context.getString(R.string.notifications_label_sub_reply_like, username)
+            }
+            PushType.REPLY -> {
+                itemView.context.getString(R.string.notifications_label_reply, username)
             }
             PushType.COMMENT -> {
                 itemView.context.getString(R.string.notifications_label_comment, username, comment)
@@ -118,7 +133,10 @@ class NormalDetailsViewHolder(itemView: View,
             PushType.TAG_REPLY -> {
                 itemView.context.getString(R.string.notifications_label_tag_reply, username)
             }
-            PushType.ACCEPT_INVITE_VENUE, PushType.ACCEPT_INVITE_GROUP -> {
+            PushType.ACCEPT_INVITE_VENUE -> {
+                itemView.context.getString(R.string.notifications_label_accept_invite_venue, username, venueName)
+            }
+            PushType.ACCEPT_INVITE_GROUP -> {
                 itemView.context.getString(R.string.notifications_label_accept_invite, username, venueName)
             }
             PushType.ACCEPT_REQUEST_VENUE -> {
@@ -136,8 +154,17 @@ class NormalDetailsViewHolder(itemView: View,
             PushType.JOINED_GROUP -> {
                 itemView.context.getString(R.string.notifications_label_joined_group, username, venueName)
             }
-            PushType.REPLY -> {
-                itemView.context.getString(R.string.notifications_label_tag_comment, username)
+            PushType.GROUP -> {
+                itemView.context.getString(R.string.notifications_label_public_joined_group, username, venueName)
+            }
+            PushType.VENUE -> {
+                itemView.context.getString(R.string.notifications_label_public_joined_venue, username, venueName)
+            }
+            PushType.FOLLOW -> {
+                itemView.context.getString(R.string.notifications_msg_requestFollow, username)
+            }
+            PushType.POST -> {
+                itemView.context.getString(R.string.notifications_label_post, username, venueName)
             }
             else -> {
                 ""
@@ -152,18 +179,20 @@ class NormalDetailsViewHolder(itemView: View,
                     .into(itemView.ivCrossPic)
         } else itemView.ivCrossPic.gone()
 
-        itemView.tvTitle.clickSpannable(spannableText = username,
-                textColorRes = R.color.textGray,
-                textTypeface = boldTypeface,
-                clickListener = userProfileClickListener)
-
-        itemView.tvTitle.clickSpannable(spannableText = address,
-                textColorRes = R.color.textGray,
-                clickListener = venueGroupClickListener)
-
-        itemView.tvTitle.clickSpannable(spannableText = venueName,
-                textColorRes = R.color.textGray,
-                clickListener = venueGroupClickListener)
+        if (completeText.contains(username))
+            itemView.tvTitle.clickSpannable(spannableText = username,
+                    textColorRes = R.color.textGray,
+                    textTypeface = boldTypeface,
+                    clickListener = userProfileClickListener)
+        if (completeText.contains(address))
+            itemView.tvTitle.clickSpannable(spannableText = address,
+                    textColorRes = R.color.textGray,
+                    clickListener = venueGroupClickListener)
+        if (completeText.contains(venueName))
+            itemView.tvTitle.clickSpannable(spannableText = venueName,
+                    textColorRes = R.color.colorPrimary,
+                    textTypeface = boldTypeface,
+                    clickListener = venueGroupClickListener)
 
     }
 
@@ -172,5 +201,7 @@ class NormalDetailsViewHolder(itemView: View,
         fun onUserProfileClicked(profile: ProfileDto)
         fun onGroupPostClicked(groupPost: GroupPostDto)
         fun onCrossedPathClicked(notification: NotificationDto)
+        fun onGroupClicked(group: GroupDto)
+        fun onVenueClicked(venue: VenueDto)
     }
 }

@@ -120,14 +120,16 @@
             android:id="@+id/ivProfilePic"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:padding="2dp"
             app:layout_constraintBottom_toTopOf="@id/llCrossedPath"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/llCrossedPath"
             app:riv_oval="true"
+            app:riv_border_color="@color/colorPrimary"
+            app:riv_border_width="1dp"
             android:scaleType="centerCrop"
             tools:src="@tools:sample/avatars" />
-
 
     </android.support.constraint.ConstraintLayout>
 

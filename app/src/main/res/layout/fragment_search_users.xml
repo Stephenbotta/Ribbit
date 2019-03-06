@@ -7,39 +7,35 @@
     android:animateLayoutChanges="true"
     android:orientation="vertical">
 
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/ivProfilePic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:scaleType="centerCrop"
+        app:riv_oval="true"
+        tools:src="@tools:sample/avatars" />
+
+    <View
+        android:id="@+id/divider_1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/greyImageBackground" />
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/clFilterData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/ivProfilePic"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:riv_oval="true"
-            tools:src="@tools:sample/avatars" />
-
-        <View
-            android:id="@+id/divider_1"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/greyImageBackground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivProfilePic" />
 
         <TextView
             android:id="@+id/tvLabelExploreConnection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/roboto_text_bold"
             android:text="@string/search_user_label_explore_connections"
@@ -48,34 +44,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider_1" />
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/layoutExplore"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvLabelExploreConnection">
+            app:layout_constraintTop_toTopOf="parent" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvConnection"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="16dp"
                 android:paddingStart="16dp"
+                android:maxHeight="100dp"
                 android:paddingEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvLabelMyInterests"
+                app:layout_constraintTop_toBottomOf="@+id/tvLabelExploreConnection"
                 tools:layoutManager="android.support.v7.widget.GridLayoutManager"
                 tools:listitem="@layout/item_profile_interest"
                 tools:orientation="horizontal"
                 tools:spanCount="2" />
-
-        </android.support.constraint.ConstraintLayout>
 
         <TextView
             android:id="@+id/tvSelectLocation"
@@ -93,7 +78,7 @@
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layoutExplore" />
+            app:layout_constraintTop_toBottomOf="@id/rvConnection" />
 
         <TextView
             android:id="@+id/tvLocationAddress"
@@ -134,11 +119,11 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/roboto_text_regular"
-            tools:text="5 mi"
             android:textColor="@color/textGray"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLocationAddress" />
+            app:layout_constraintTop_toBottomOf="@id/tvLocationAddress"
+            tools:text="5 mi" />
 
         <SeekBar
             android:id="@+id/sbRange"
@@ -172,7 +157,7 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/clSearchResult"
             android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_height="160dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -270,10 +255,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="@color/transparent_white"
         android:padding="16dp"
         android:src="@drawable/ic_down"
         android:visibility="gone"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:visibility="visible" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvMatchedResults"

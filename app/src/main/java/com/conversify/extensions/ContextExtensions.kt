@@ -16,6 +16,7 @@ import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.socket.SocketManager
 import com.conversify.ui.custom.AppToast
 import com.conversify.ui.landing.LandingActivity
+import com.conversify.utils.AppConstants
 import timber.log.Timber
 
 fun Context.shortToast(text: CharSequence) {
@@ -64,7 +65,22 @@ fun Context.shareText(text: String) {
     val intent = Intent(Intent.ACTION_SEND)
     intent.putExtra(Intent.EXTRA_TEXT, text)
     intent.type = "text/plain"
-    startActivity(intent)
+    startActivity(Intent.createChooser(intent, AppConstants.TITLE_SHARE_VIA))
+}
+
+fun Context.sendInviteViaMessages(text: String){
+    val smsIntent = Intent(Intent.ACTION_VIEW)
+    smsIntent.data = Uri.parse("smsto:")
+    smsIntent.putExtra("sms_body", text)
+    startActivity(smsIntent)
+}
+
+fun Context.sendInviteViaEmail(text: String) {
+    val emailIntent = Intent(android.content.Intent.ACTION_SEND)
+    emailIntent.type = "plain/text"
+    emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite")
+    emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, text)
+    startActivity(emailIntent)
 }
 
 fun Context.openUrl(url: String) {

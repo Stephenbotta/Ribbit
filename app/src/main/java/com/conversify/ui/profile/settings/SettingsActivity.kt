@@ -16,9 +16,7 @@ import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.databinding.BottomSheetDialogInvitePeopleBinding
-import com.conversify.extensions.handleError
-import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.startLandingWithClear
+import com.conversify.extensions.*
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.profile.settings.blockusers.BlockUsersListActivity
@@ -117,11 +115,11 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         bottomSheetDialog.setContentView(binding.root)
         bottomSheetDialog.show()
         binding.tvMail.setOnClickListener {
-            sendEmail()
+            sendInviteViaEmail(getString(R.string.invite_people_option_more_text_message))
             bottomSheetDialog.dismiss()
         }
         binding.tvMessage.setOnClickListener {
-            sendInviteViaMessages()
+            sendInviteViaMessages(getString(R.string.invite_people_option_more_text_message))
             bottomSheetDialog.dismiss()
         }
         binding.tvMore.setOnClickListener {
@@ -149,21 +147,6 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     private fun verification() {
         val intent = Intent(this, VerificationActivity::class.java)
         startActivity(intent)
-    }
-
-    private fun sendEmail() {
-        val emailIntent = Intent(android.content.Intent.ACTION_SEND)
-        emailIntent.type = "plain/text"
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite")
-        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, getString(R.string.invite_people_option_more_text_message))
-        startActivity(emailIntent)
-    }
-
-    private fun sendInviteViaMessages() {
-        val smsIntent = Intent(Intent.ACTION_VIEW)
-        smsIntent.data = Uri.parse("smsto:")
-        smsIntent.putExtra("sms_body", getString(R.string.invite_people_option_more_text_message))
-        startActivity(smsIntent)
     }
 
     private fun invitePeopleMoreOptions() {

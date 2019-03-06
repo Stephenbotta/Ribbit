@@ -1,7 +1,6 @@
 package com.conversify.ui.main
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
 import android.location.Geocoder
 import android.location.Location
 import com.conversify.data.local.UserManager
@@ -9,6 +8,7 @@ import com.conversify.data.remote.socket.SocketManager
 import com.conversify.data.repository.InterestsRepository
 import com.conversify.ui.base.BaseViewModel
 import io.socket.client.Ack
+import io.socket.emitter.Emitter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -27,11 +27,17 @@ class MainViewModel(application: Application) : BaseViewModel(application), Coro
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + parentJob
 
+    private val requestCount = Emitter.Listener { args ->
+        Timber.i("Request Count received:\n${args.firstOrNull()}")
+    }
+
+
     init {
         // Get and cache interests. Callback is not required.
         InterestsRepository.getInstance().getInterests()
 
         // Connect socket
+        socketManager.on(SocketManager.EVENT_REQUEST_COUNT, requestCount)
         socketManager.connect()
     }
 
@@ -81,6 +87,7 @@ class MainViewModel(application: Application) : BaseViewModel(application), Coro
 
     override fun onCleared() {
         super.onCleared()
+        socketManager.off(SocketManager.EVENT_REQUEST_COUNT, requestCount)
         parentJob.cancel()
     }
 }

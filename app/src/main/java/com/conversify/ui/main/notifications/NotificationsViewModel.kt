@@ -164,6 +164,35 @@ class NotificationsViewModel : ViewModel() {
                 })
     }
 
+    fun acceptFollowRequest(acceptRequest: Boolean, notification: NotificationDto) {
+        joinVenueRequest.value = Resource.loading()
+
+        val acceptType = getAcceptType(notification)
+        val groupType = getGroupType(notification)
+        val userId = notification.sender?.id ?: ""
+        val groupId = if (AppUtils.isRequestForVenue(notification)) {
+            notification.venue?.id
+        } else {
+            notification.group?.id
+        } ?: ""
+
+        RetrofitClient.conversifyApi
+                .acceptFollowRequest(userId, acceptRequest)
+                .enqueue(object : Callback<Any> {
+                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                        if (response.isSuccessful) {
+                            joinVenueRequest.value = Resource.success(notification)
+                        } else {
+                            joinVenueRequest.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Any>, t: Throwable) {
+                        joinVenueRequest.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
     private fun getAcceptType(notification: NotificationDto): String {
         return when (notification.type) {
             ApiConstants.NOTIFICATION_TYPE_REQUEST_JOIN_VENUE,

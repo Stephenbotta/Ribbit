@@ -64,4 +64,4 @@ data class VenueDto(
         var isMember: Boolean? = null,
 
         @field:SerializedName("membersList")
-        var members: List<MemberDto>? = null) : Parcelable
+        var members: ArrayList<MemberDto>? = null) : Parcelable

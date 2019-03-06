@@ -5,7 +5,9 @@ import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
+import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.Resource
+import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,6 +17,7 @@ class VenueDetailsViewModel : ViewModel() {
     val changeVenueNotifications by lazy { SingleLiveEvent<Resource<Boolean>>() }
     val exitVenue by lazy { SingleLiveEvent<Resource<Any>>() }
     val archiveVenue by lazy { SingleLiveEvent<Resource<Any>>() }
+    val venueDetails by lazy { SingleLiveEvent<Resource<VenueDto>>() }
 
     fun changeVenueNotifications(venueId: String, isEnabled: Boolean) {
         changeVenueNotifications.value = Resource.loading()
@@ -75,4 +78,25 @@ class VenueDetailsViewModel : ViewModel() {
                     }
                 })
     }
+
+    fun getVenueDetails(venueId: String) {
+        venueDetails.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .getVenueDetails(venueId)
+                .enqueue(object : Callback<ApiResponse<VenueDto>> {
+                    override fun onResponse(call: Call<ApiResponse<VenueDto>>, response: Response<ApiResponse<VenueDto>>) {
+                        if (response.isSuccessful) {
+                            venueDetails.value = Resource.success(response.body()?.data)
+                        } else {
+                            venueDetails.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<VenueDto>>, t: Throwable) {
+                        venueDetails.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
 }

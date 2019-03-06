@@ -6,12 +6,11 @@ import com.conversify.R
 import com.conversify.data.remote.models.chat.MemberDto
 import com.conversify.data.remote.models.groups.AddParticipantsDto
 import com.conversify.data.remote.models.groups.GroupDto
-import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.inflate
 import com.conversify.ui.creategroup.create.viewholders.AddParticipantsViewHolder
 import com.conversify.ui.groups.details.viewholder.GroupDetailsExitGroupViewHolder
-import com.conversify.ui.groups.details.viewholder.GroupDetailsMemberViewHolder
 import com.conversify.ui.groups.details.viewholder.GroupDetailsHeaderViewHolder
+import com.conversify.ui.groups.details.viewholder.GroupDetailsMemberViewHolder
 import com.conversify.utils.GlideRequests
 
 class GroupDetailsAdapter(val glide: GlideRequests,
@@ -50,9 +49,13 @@ class GroupDetailsAdapter(val glide: GlideRequests,
                     holder.bind(item)
                 }
             }
-
             is GroupDetailsMemberViewHolder -> {
                 if (item is MemberDto) {
+                    holder.bind(item)
+                }
+            }
+            is GroupDetailsExitGroupViewHolder -> {
+                if (item is GroupDto) {
                     holder.bind(item)
                 }
             }

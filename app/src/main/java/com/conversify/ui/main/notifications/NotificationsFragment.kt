@@ -11,15 +11,19 @@ import android.view.ViewGroup
 import android.view.Window
 import com.conversify.R
 import com.conversify.data.local.PrefsManager
+import com.conversify.data.remote.PushType
 import com.conversify.data.remote.models.Status
+import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.notifications.NotificationDto
 import com.conversify.data.remote.models.people.UserCrossedDto
+import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.databinding.DialogConverseNearbyNavigateBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.people.details.PeopleDetailsActivity
 import com.conversify.ui.post.details.PostDetailsActivity
@@ -149,11 +153,24 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
         dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.setContentView(binding.root)
         GlideApp.with(requireContext()).load(notification.sender?.image?.original).into(binding.ivProfilePic)
-        val lon = notification.location?.get(0)
-        val lat = notification.location?.get(1)
-        val url = MapUtils.getStaticMapWithMarker(requireContext(), lat, lon)
-        GlideApp.with(requireContext()).load(url).into(binding.ivMapMarker)
-        binding.crossPath.text = "${notification.sender?.userName} has crossed your path at ${notification.locationName}"
+        if (notification.location != null) {
+            val lon = notification.location[0]
+            val lat = notification.location[1]
+            val url = MapUtils.getStaticMapWithMarker(requireContext(), lat, lon)
+            GlideApp.with(requireContext()).load(url).into(binding.ivMapMarker)
+        }
+
+        binding.crossPath.text = when (notification.type) {
+            PushType.ALERT_CONVERSE_NEARBY_PUSH -> {
+                "${notification.sender?.userName} has crossed your path at ${notification.locationName}"
+            }
+            PushType.ALERT_LOOK_NEARBY_PUSH -> {
+                activity?.getString(R.string.notifications_label_converse_nearby, notification.sender?.userName)
+            }
+            else -> {
+                ""
+            }
+        }
         dialog.show()
         binding.btnOkay.setOnClickListener {
             notification.sender?.let { profile ->
@@ -212,6 +229,22 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
 
     override fun onCrossedPathClicked(notification: NotificationDto) {
         showDialog(notification)
+    }
+
+    override fun onGroupClicked(group: GroupDto) {
+        val intent = ChatActivity.getStartIntentForGroupChat(requireContext(), group, AppConstants.REQ_CODE_GROUP_CHAT)
+        startActivityForResult(intent, AppConstants.REQ_CODE_GROUP_CHAT)
+    }
+
+    override fun onFollowRequestAction(action: Boolean, notification: NotificationDto) {
+        if (isNetworkActiveWithMessage()) {
+            viewModel.acceptFollowRequest(action, notification)
+        }
+    }
+
+    override fun onVenueClicked(venue: VenueDto) {
+        val intent = ChatActivity.getStartIntent(requireContext(), venue, AppConstants.REQ_CODE_VENUE_CHAT)
+        startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
     }
 
     override fun onDestroyView() {

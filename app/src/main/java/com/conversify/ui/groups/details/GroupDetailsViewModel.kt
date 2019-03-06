@@ -41,7 +41,6 @@ class GroupDetailsViewModel : ViewModel() {
                 })
     }
 
-
     fun changeVenueNotifications(groupId: String, isEnabled: Boolean) {
         changeVenueNotifications.value = Resource.loading()
 

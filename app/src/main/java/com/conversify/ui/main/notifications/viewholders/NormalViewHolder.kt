@@ -8,6 +8,7 @@ import com.conversify.R
 import com.conversify.data.remote.PushType
 import com.conversify.data.remote.models.notifications.NotificationDto
 import com.conversify.extensions.clickSpannable
+import com.conversify.extensions.shortToast
 import com.conversify.utils.AppUtils
 import com.conversify.utils.DateTimeUtils
 import com.conversify.utils.GlideRequests
@@ -41,7 +42,7 @@ class NormalViewHolder(itemView: View,
     fun bind(notification: NotificationDto) {
         this.notification = notification
         isRequestForVenue = AppUtils.isRequestForVenue(notification)
-
+        itemView.context.shortToast(notification.type ?: "")
         val sender = notification.sender
         glide.load(sender?.image?.thumbnail)
                 .into(itemView.ivProfile)
@@ -106,10 +107,10 @@ class NormalViewHolder(itemView: View,
                 textTypeface = boldTypeface,
                 clickListener = userProfileClickListener)
 
-//        itemView.tvTitle.clickSpannable(spannableText = venueName,
-//                textColorRes = R.color.colorPrimary,
-//                textTypeface = boldTypeface,
-//                clickListener = venueGroupClickListener)
+        itemView.tvTitle.clickSpannable(spannableText = venueName,
+                textColorRes = R.color.colorPrimary,
+                textTypeface = boldTypeface,
+                clickListener = venueGroupClickListener)
     }
 
     interface Callback {

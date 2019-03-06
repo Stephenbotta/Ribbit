@@ -55,11 +55,17 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback, Se
         super.onViewCreated(view, savedInstanceState)
         inItClasses()
         setupInterestsRecycler()
-        interest.addAll(viewModel.getProfile().interests ?: emptyList())
-        setData(interest)
         setListener()
         observeInterestMatchedUsersList()
         setAdapter()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.updateProfile()
+        interest.clear()
+        interest.addAll(viewModel.getProfile().interests ?: emptyList())
+        setData(interest)
     }
 
     private fun inItClasses() {
@@ -284,7 +290,13 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback, Se
     }
 
     private fun showSearchedResults() {
-        if (hideContent) clFilterData.gone() else clFilterData.visible()
+        if (hideContent) {
+            clFilterData.gone()
+            btnViewResults.setImageDrawable(activity?.getDrawable(R.drawable.ic_down))
+        } else {
+            btnViewResults.setImageDrawable(activity?.getDrawable(R.drawable.ic_up))
+            clFilterData.visible()
+        }
         hideContent = !hideContent
     }
 

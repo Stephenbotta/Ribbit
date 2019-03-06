@@ -46,24 +46,32 @@ class NotificationsAdapter(private val glide: GlideRequests,
                 holder.bind(notification)
             }
 
+            is NormalViewHolder -> {
+                holder.bind(notification)
+            }
+
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (notifications[position].type) {
-            PushType.LIKE, PushType.LIKE_REPLY, PushType.LIKE_POST, PushType.COMMENT, PushType.REPLY, PushType.VENUE,
-            PushType.GROUP, PushType.ACCEPT_INVITE_GROUP, PushType.ACCEPT_INVITE_VENUE, PushType.ACCEPT_REQUEST_FOLLOW,
-            PushType.ACCEPT_REQUEST_GROUP, PushType.ACCEPT_REQUEST_VENUE, PushType.FOLLOW, PushType.POST,
-            PushType.TAG_COMMENT, PushType.TAG_REPLY, PushType.LIKE_COMMENT,
-            PushType.JOINED_VENUE, PushType.JOINED_GROUP,
-            PushType.ALERT_CONVERSE_NEARBY_PUSH, PushType.ALERT_LOOK_NEARBY_PUSH -> {
+            PushType.LIKE, PushType.LIKE_REPLY, PushType.LIKE_POST, PushType.COMMENT,
+            PushType.REPLY, PushType.LIKE_COMMENT, PushType.VENUE, PushType.GROUP,
+            PushType.ACCEPT_INVITE_GROUP, PushType.ACCEPT_INVITE_VENUE,
+            PushType.ACCEPT_REQUEST_FOLLOW, PushType.ACCEPT_REQUEST_GROUP,
+            PushType.ACCEPT_REQUEST_VENUE, PushType.FOLLOW, PushType.POST,
+            PushType.TAG_COMMENT, PushType.TAG_REPLY, PushType.JOINED_VENUE,
+            PushType.JOINED_GROUP, PushType.ALERT_CONVERSE_NEARBY_PUSH,
+            PushType.ALERT_LOOK_NEARBY_PUSH-> {
                 NOTIFICATION_TYPE_VENUE
             }
-            PushType.REQUEST_FOLLOW, PushType.REQUEST_GROUP, PushType.REQUEST_VENUE -> {
+            PushType.REQUEST_FOLLOW, PushType.REQUEST_GROUP, PushType.REQUEST_VENUE,
+            PushType.INVITE_VENUE, PushType.INVITE_GROUP-> {
                 NOTIFICATION_TYPE_INVITE_REQUEST
             }
             else -> {
-                throw IllegalArgumentException("invalid View type")
+//                throw IllegalArgumentException("invalid View type")
+                NOTIFICATION_TYPE_CROSSED_PATH
             }
         }
     }
@@ -88,5 +96,5 @@ class NotificationsAdapter(private val glide: GlideRequests,
         }
     }
 
-    interface Callback : VenueGroupInviteRequestViewHolder.Callback, NormalViewHolder.Callback, NormalDetailsViewHolder.Callback
+    interface Callback : VenueGroupInviteRequestViewHolder.Callback, NormalDetailsViewHolder.Callback
 }

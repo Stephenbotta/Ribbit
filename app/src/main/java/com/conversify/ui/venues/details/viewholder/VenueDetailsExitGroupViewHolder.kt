@@ -2,6 +2,9 @@ package com.conversify.ui.venues.details.viewholder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.conversify.R
+import com.conversify.data.local.UserManager
+import com.conversify.data.remote.models.venues.VenueDto
 import kotlinx.android.synthetic.main.item_venue_details_exit_group.view.*
 
 class VenueDetailsExitGroupViewHolder(itemView: View,
@@ -9,6 +12,18 @@ class VenueDetailsExitGroupViewHolder(itemView: View,
     init {
         itemView.btnExitVenue.setOnClickListener { callback.onExitVenueClicked() }
         itemView.btnArchiveVenue.setOnClickListener { callback.onArchiveVenueClicked() }
+    }
+
+    private lateinit var venue: VenueDto
+
+    fun bind(venue: VenueDto) {
+        this.venue = venue
+
+        itemView.btnExitVenue.text = if (venue.adminId == UserManager.getUserId()) {
+            itemView.context.getString(R.string.venue_details_btn_delete_venue)
+        } else {
+            itemView.context.getString(R.string.venue_details_btn_exit_venue)
+        }
     }
 
     interface Callback {

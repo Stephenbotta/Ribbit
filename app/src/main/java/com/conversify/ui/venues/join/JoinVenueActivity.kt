@@ -74,7 +74,7 @@ class JoinVenueActivity : BaseActivity(), JoinVenueDetailsAdapter.Callback {
                         this.venue = venue
 
                         // Display items in correct order
-                        val members = venue.members ?: listOf()
+                        val members = venue.members ?: arrayListOf()
                         val items = mutableListOf<Any>()
                         items.add(venue)
                         items.addAll(members)
