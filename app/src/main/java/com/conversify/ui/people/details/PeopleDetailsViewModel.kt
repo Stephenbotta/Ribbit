@@ -19,6 +19,8 @@ class PeopleDetailsViewModel(application: Application) : BaseViewModel(applicati
     val followUnFollow by lazy { SingleLiveEvent<Resource<Any>>() }
     val block by lazy { SingleLiveEvent<Resource<Any>>() }
 
+    private lateinit var profile: ProfileDto
+
     fun getOtherUserProfileDetails(userId: String) {
         peopleDetails.value = Resource.loading()
 
@@ -79,6 +81,10 @@ class PeopleDetailsViewModel(application: Application) : BaseViewModel(applicati
                         block.value = Resource.error(t.failureAppError())
                     }
                 })
+    }
+
+    fun start(profile: ProfileDto) {
+        this.profile = profile
     }
 
 }

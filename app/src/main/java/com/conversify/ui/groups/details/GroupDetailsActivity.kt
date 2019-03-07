@@ -13,12 +13,14 @@ import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
 import com.conversify.data.local.UserManager
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.MemberDto
 import com.conversify.data.remote.models.groups.AddParticipantsDto
 import com.conversify.data.remote.models.groups.GroupDto
+import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.databinding.BottomSheetDialogInviteVenueBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
@@ -26,6 +28,8 @@ import com.conversify.extensions.sendInviteViaEmail
 import com.conversify.extensions.shareText
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.people.details.PeopleDetailsActivity
+import com.conversify.ui.profile.ProfileActivity
 import com.conversify.ui.venues.addparticipants.AddVenueParticipantsActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
@@ -196,6 +200,15 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
     }
 
     override fun onMemberClicked(member: MemberDto) {
+        val data = UserCrossedDto()
+        data.profile = member.user
+        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, member.user?.id ?: "")
+        if (member.user?.id == UserManager.getUserId()) {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        } else {
+            val intent = PeopleDetailsActivity.getStartIntent(this, data, AppConstants.REQ_CODE_BLOCK_USER)
+            startActivity(intent)
+        }
     }
 
     override fun onExitVenueClicked() {

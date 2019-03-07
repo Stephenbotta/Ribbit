@@ -7,14 +7,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
+import com.conversify.data.local.UserManager
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.MemberDto
+import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.people.details.PeopleDetailsActivity
+import com.conversify.ui.profile.ProfileActivity
 import com.conversify.ui.venues.VenuesViewModel
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
@@ -131,6 +136,15 @@ class JoinVenueActivity : BaseActivity(), JoinVenueDetailsAdapter.Callback {
     }
 
     override fun onMemberClicked(member: MemberDto) {
+        val data = UserCrossedDto()
+        data.profile = member.user
+        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, member.user?.id ?: "")
+        if (member.user?.id == UserManager.getUserId()) {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        } else {
+            val intent = PeopleDetailsActivity.getStartIntent(this, data, AppConstants.REQ_CODE_BLOCK_USER)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroy() {

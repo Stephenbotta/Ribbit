@@ -142,10 +142,11 @@ interface ConversifyApi {
                                   @Field("groupId") groupId: String,
                                   @Field("accept") accept: Boolean): Call<Any>
 
-    @POST("user/acceptFollowRequest")
+    @POST("user/acceptInviteRequest")
     @FormUrlEncoded
-    fun acceptFollowRequest(@Field("userId") userId: String,
-                            @Field("action") action: Boolean): Call<Any>
+    fun acceptFollowRequest(@Field("acceptType") acceptType: String,
+                            @Field("userId") userId: String,
+                            @Field("accept") action: Boolean): Call<Any>
 
     @POST("user/logOut")
     fun logout(): Call<Any>

@@ -27,7 +27,6 @@
         android:background="@drawable/ic_lock_white"
         android:gravity="center"
         android:textColor="@color/colorPrimary"
-        android:textSize="14sp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

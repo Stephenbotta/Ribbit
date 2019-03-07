@@ -180,6 +180,9 @@ data class ProfileDto(
         @field:SerializedName("tagPermissionForEveryone")
         val tagPermissionForEveryone: Boolean? = null,
 
+        @field:SerializedName("requestPending")
+        val isRequestPending: Boolean? = null,
+
         @field:SerializedName("distance")
         val distance: Double? = null,
 

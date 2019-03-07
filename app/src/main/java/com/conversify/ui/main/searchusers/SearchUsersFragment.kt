@@ -53,7 +53,6 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback, Se
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        inItClasses()
         setupInterestsRecycler()
         setListener()
         observeInterestMatchedUsersList()
@@ -66,6 +65,7 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback, Se
         interest.clear()
         interest.addAll(viewModel.getProfile().interests ?: emptyList())
         setData(interest)
+        inItClasses()
     }
 
     private fun inItClasses() {

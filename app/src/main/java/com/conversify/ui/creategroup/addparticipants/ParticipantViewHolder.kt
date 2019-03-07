@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_group_participant.view.*
 class ParticipantViewHolder(itemView: View,
                             private val glide: GlideRequests,
                             clickableParticipants: Boolean,
-                            callback: Callback?=null) : RecyclerView.ViewHolder(itemView) {
+                            callback: Callback? = null) : RecyclerView.ViewHolder(itemView) {
     init {
         if (clickableParticipants) {
             itemView.setOnClickListener {

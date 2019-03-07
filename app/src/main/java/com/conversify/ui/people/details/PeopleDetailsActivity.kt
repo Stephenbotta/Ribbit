@@ -14,10 +14,7 @@ import com.conversify.data.local.PrefsManager
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.people.UserCrossedDto
-import com.conversify.extensions.gone
-import com.conversify.extensions.handleError
-import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.visible
+import com.conversify.extensions.*
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.chat.ChatActivity
 import com.conversify.utils.AppConstants
@@ -181,11 +178,12 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
             tvBio.text = profile?.bio
         }
 
-        if (profile?.isAccountPrivate==true){
+        if (profile?.isAccountPrivate == true) {
             ivPrivate.visible()
-        }else{
+        } else {
             ivPrivate.gone()
         }
+        viewModel.start(profile ?: ProfileDto())
 
         interestsAdapter.displayMutualInterests(profile?.interests ?: emptyList())
     }
@@ -295,7 +293,11 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
             }
 
             R.id.tvFollowedStatus -> {
-                viewModel.postFollowUnFollow(userId, toggleFollow())
+                if (profile?.isRequestPending == false)
+                    viewModel.postFollowUnFollow(userId, toggleFollow())
+                else {
+                    shortToast(getString(R.string.follow_request_text))
+                }
             }
 
             R.id.fabChat -> when (flag) {

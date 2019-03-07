@@ -68,11 +68,13 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.O
         } else {
             getString(R.string.profile_label_name_with_age, profile.fullName, profile.age)
         }
-        if (profile.designation.isNullOrBlank() || profile.company.isNullOrBlank()) {
+//        if (profile.designation.isNullOrBlank() || profile.company.isNullOrBlank()) {
+        if (profile.designation.isNullOrBlank()) {
             tvDesignation.gone()
         } else {
             tvDesignation.visible()
-            tvDesignation.text = getString(R.string.profile_label_designation_at_company, profile.designation, profile.company)
+//            tvDesignation.text = getString(R.string.profile_label_designation_at_company, profile.designation, profile.company)
+            tvDesignation.text = profile.designation
         }
 
         tvFollowersCount.text = (profile.followersCount ?: 0).toString()
