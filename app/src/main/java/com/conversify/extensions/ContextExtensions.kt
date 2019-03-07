@@ -68,7 +68,7 @@ fun Context.shareText(text: String) {
     startActivity(Intent.createChooser(intent, AppConstants.TITLE_SHARE_VIA))
 }
 
-fun Context.sendInviteViaMessages(text: String){
+fun Context.sendInviteViaMessages(text: String) {
     val smsIntent = Intent(Intent.ACTION_VIEW)
     smsIntent.data = Uri.parse("smsto:")
     smsIntent.putExtra("sms_body", text)
@@ -78,6 +78,15 @@ fun Context.sendInviteViaMessages(text: String){
 fun Context.sendInviteViaEmail(text: String) {
     val emailIntent = Intent(android.content.Intent.ACTION_SEND)
     emailIntent.type = "plain/text"
+    emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite")
+    emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, text)
+    startActivity(emailIntent)
+}
+
+fun Context.sendInviteViaEmailToMultipleContacts(text: String, emailList: ArrayList<String>) {
+    val emails = emailList.joinToString { it }
+    Timber.d("Emails $emails")
+    val emailIntent = Intent(android.content.Intent.ACTION_SENDTO, Uri.parse("mailto:$emails"))
     emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Invite")
     emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, text)
     startActivity(emailIntent)

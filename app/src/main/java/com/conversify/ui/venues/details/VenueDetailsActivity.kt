@@ -22,14 +22,18 @@ import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.databinding.BottomSheetDialogInviteVenueBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.sendInviteViaEmail
 import com.conversify.extensions.shareText
+import com.conversify.extensions.shortToast
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.venues.addparticipants.AddVenueParticipantsActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
+import com.google.gson.Gson
+import com.wafflecopter.multicontactpicker.MultiContactPicker
 import kotlinx.android.synthetic.main.activity_venue_details.*
+import timber.log.Timber
+
 
 class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
     companion object {
@@ -49,6 +53,7 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var venue: VenueDto
     private lateinit var member: MemberDto
+    private val gson by lazy { Gson() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +65,8 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         observeChanges()
         setupVenueDetailsRecycler()
         callApi(venues.id ?: "")
+
+        observeInviteUsersCallback()
     }
 
     private fun setupToolbar() {
@@ -163,7 +170,7 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         items.add(venues)    // Header
         items.add(AddParticipantsDto)    // Add participants
         items.addAll(members)   // Members
-        items.add(venues.adminId?:"")    // Exit group
+        items.add(venues.adminId ?: "")    // Exit group
 
         venueDetailsAdapter.displayItems(items)
     }
@@ -175,7 +182,8 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         bottomSheetDialog.setContentView(binding.root)
         bottomSheetDialog.show()
         binding.tvInvite.setOnClickListener {
-            sendInviteViaEmail(getString(R.string.venue_share_link))
+            selectContactsForInvite()
+//            sendInviteViaEmail(getString(R.string.venue_share_link))
             bottomSheetDialog.dismiss()
         }
         binding.tvCancel.setOnClickListener { bottomSheetDialog.dismiss() }
@@ -253,6 +261,57 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
 
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun selectContactsForInvite() {
+        MultiContactPicker.Builder(this)
+                .setActivityAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                        android.R.anim.fade_in, android.R.anim.fade_out)
+                .showPickerForResult(AppConstants.REQ_CODE_SELECT_MULTIPLE_CONTACTS)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstants.REQ_CODE_SELECT_MULTIPLE_CONTACTS) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                val results = MultiContactPicker.obtainResult(data)
+                Timber.d("Selected Contacts ${gson.toJson(results)}")
+
+                val phoneNoArray = ArrayList<String>()
+                val emailArray = ArrayList<String>()
+                results.forEach {
+                    it.phoneNumbers.forEach { pNo -> phoneNoArray.add(pNo.number) }
+                    it.emails.forEach { email -> emailArray.add(email) }
+                }
+
+                Timber.d("Selected Phone Numbers ${gson.toJson(phoneNoArray)}")
+                Timber.d("Selected Emails ${gson.toJson(emailArray)}")
+
+                if (isNetworkActiveWithMessage()) {
+                    viewModel.inviteUsersApi(gson.toJson(emailArray), gson.toJson(phoneNoArray),
+                            venues.id ?: "")
+                }
+            }
+        }
+    }
+
+    private fun observeInviteUsersCallback() {
+        viewModel.inviteUsers.observe(this, Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    loadingDialog.setLoading(false)
+                    shortToast(getString(R.string.msg_invite_sent_successfully))
+                }
+                Status.ERROR -> {
+                    loadingDialog.setLoading(false)
+                    handleError(it.error)
+                }
+                Status.LOADING -> {
+                    loadingDialog.setLoading(true)
+                }
+            }
+        })
     }
 
     override fun onDestroy() {

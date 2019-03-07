@@ -2,7 +2,9 @@ package com.conversify.ui.main
 
 import android.content.Context
 import android.support.design.widget.TabLayout
+import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import com.conversify.R
@@ -30,9 +32,15 @@ class MainBottomTabs : TabLayout {
         addTab(exploreTab)
 
         val profileTab = newTab()
-        val customView = View.inflate(context, R.layout.item_custom_bottom_tab_icon, null)
-        profileTab.customView = customView
+        profileTab.customView = getTabCustomView()
 //        profileTab.setIcon(R.drawable.selector_tab_notification)
         addTab(profileTab)
+    }
+
+    private fun getTabCustomView(): View? {
+        val customView = LayoutInflater.from(context).inflate(com.conversify.R.layout.item_custom_bottom_tab_icon, null, false)
+        val ivNotification = customView.findViewById(R.id.ivNotification) as ImageView
+        ivNotification.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.selector_tab_notification))
+        return customView
     }
 }

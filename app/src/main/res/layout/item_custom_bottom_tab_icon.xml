@@ -20,11 +20,12 @@
     <TextView
         android:id="@+id/tvCount"
         android:layout_width="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         android:background="@drawable/drawable_circle_red"
         android:fontFamily="@font/roboto_text_regular"
         android:gravity="center"
-        android:layout_marginTop="4dp"
+        android:visibility="gone"
         android:maxLines="1"
         android:singleLine="true"
         android:text="3"

@@ -22,14 +22,17 @@ import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.databinding.BottomSheetDialogInviteVenueBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.sendInviteViaEmail
 import com.conversify.extensions.shareText
+import com.conversify.extensions.shortToast
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.venues.addparticipants.AddVenueParticipantsActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
+import com.google.gson.Gson
+import com.wafflecopter.multicontactpicker.MultiContactPicker
 import kotlinx.android.synthetic.main.activity_group_details.*
+import timber.log.Timber
 
 class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
     companion object {
@@ -48,6 +51,7 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
     private lateinit var group: GroupDto
     private lateinit var adapter: GroupDetailsAdapter
     private var flag = 0
+    private val gson by lazy { Gson() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +66,7 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
         callApi(groupId)
         observeChanges()
         setupGroupDetailsRecycler()
+        observeInviteUsersCallback()
     }
 
     private fun setupToolbar() {
@@ -180,7 +185,7 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
         binding.tvInvite.text = getString(R.string.dialog_group_label_invite)
         bottomSheetDialog.show()
         binding.tvInvite.setOnClickListener {
-            sendInviteViaEmail(getString(R.string.group_share_link))
+            selectContactsForInvite()
             bottomSheetDialog.dismiss()
         }
         binding.tvCancel.setOnClickListener { bottomSheetDialog.dismiss() }
@@ -258,6 +263,57 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
 
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun selectContactsForInvite() {
+        MultiContactPicker.Builder(this)
+                .setActivityAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                        android.R.anim.fade_in, android.R.anim.fade_out)
+                .showPickerForResult(AppConstants.REQ_CODE_SELECT_MULTIPLE_CONTACTS)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstants.REQ_CODE_SELECT_MULTIPLE_CONTACTS) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                val results = MultiContactPicker.obtainResult(data)
+                Timber.d("Selected Contacts ${gson.toJson(results)}")
+
+                val phoneNoArray = ArrayList<String>()
+                val emailArray = ArrayList<String>()
+                results.forEach {
+                    it.phoneNumbers.forEach { pNo -> phoneNoArray.add(pNo.number) }
+                    it.emails.forEach { email -> emailArray.add(email) }
+                }
+
+                Timber.d("Selected Phone Numbers ${gson.toJson(phoneNoArray)}")
+                Timber.d("Selected Emails ${gson.toJson(emailArray)}")
+
+                if (isNetworkActiveWithMessage()) {
+                    viewModel.inviteUsersApi(gson.toJson(emailArray), gson.toJson(phoneNoArray),
+                            group.id ?: "")
+                }
+            }
+        }
+    }
+
+    private fun observeInviteUsersCallback() {
+        viewModel.inviteUsers.observe(this, Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    loadingDialog.setLoading(false)
+                    shortToast(getString(R.string.msg_invite_sent_successfully))
+                }
+                Status.ERROR -> {
+                    loadingDialog.setLoading(false)
+                    handleError(it.error)
+                }
+                Status.LOADING -> {
+                    loadingDialog.setLoading(true)
+                }
+            }
+        })
     }
 
     override fun onDestroy() {

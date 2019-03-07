@@ -380,7 +380,7 @@
     <string name="search_user_label_select_location">Select location</string>
     <string name="search_user_label_select_range">Selected Range</string>
     <string name="search_user_label_go">Go</string>
-    <string name="search_user_label_finding_matches">Finding matches...</string>
+    <string name="search_user_label_finding_matches">Finding matches…</string>
 
     <string name="hide_info_private_account">Private account</string>
     <string name="hide_info_label_private_message">Only your followers will be able to see your photos and videos</string>
@@ -429,7 +429,8 @@
     <string name="hide_info_label_people_count">%d People</string>
     <string name="search_user_label_progress_count">%02d mi</string>
 
-    <string name="venue_share_link">Please open this link to join my conversify Venue.</string>
-    <string name="group_share_link">Please open this link to join my conversify Group.</string>
+    <string name="venue_share_link">Please open this link to join my Cheetahify Venue.</string>
+    <string name="group_share_link">Please open this link to join my Cheetahify Group.</string>
+    <string name="msg_invite_sent_successfully">Invite sent successfully</string>
 
 </resources>

@@ -4,9 +4,14 @@ import android.app.Application
 import android.location.Geocoder
 import android.location.Location
 import com.conversify.data.local.UserManager
+import com.conversify.data.remote.RetrofitClient
+import com.conversify.data.remote.models.ApiResponse
+import com.conversify.data.remote.models.RequestCountDto
 import com.conversify.data.remote.socket.SocketManager
 import com.conversify.data.repository.InterestsRepository
 import com.conversify.ui.base.BaseViewModel
+import com.conversify.utils.SingleLiveEvent
+import com.google.gson.Gson
 import io.socket.client.Ack
 import io.socket.emitter.Emitter
 import kotlinx.coroutines.CoroutineScope
@@ -14,6 +19,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
@@ -23,14 +31,24 @@ class MainViewModel(application: Application) : BaseViewModel(application), Coro
     private val ownUserId by lazy { UserManager.getUserId() }
     private val parentJob by lazy { Job() }
     private val geoCoder by lazy { Geocoder(application) }
+    val notificationCount = SingleLiveEvent<String>()
+    private val gson by lazy { Gson() }
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + parentJob
 
     private val requestCount = Emitter.Listener { args ->
         Timber.i("Request Count received:\n${args.firstOrNull()}")
+        val notificationData = args.firstOrNull()
+        if (notificationData is JSONObject) {
+            try {
+                val requestCountData = gson.fromJson(notificationData.toString(), RequestCountDto::class.java)
+                notificationCount.postValue(requestCountData.requestCount ?: "")
+            } catch (exception: Exception) {
+                Timber.w(exception)
+            }
+        }
     }
-
 
     init {
         // Get and cache interests. Callback is not required.
@@ -83,6 +101,20 @@ class MainViewModel(application: Application) : BaseViewModel(application), Coro
                 })
             }
         }
+    }
+
+    fun getNotificationCount() {
+        RetrofitClient.conversifyApi.getRequestCounts().enqueue(object : Callback<ApiResponse<RequestCountDto>> {
+            override fun onFailure(call: Call<ApiResponse<RequestCountDto>>, t: Throwable) {
+            }
+
+            override fun onResponse(call: Call<ApiResponse<RequestCountDto>>, response: Response<ApiResponse<RequestCountDto>>) {
+                if (response.isSuccessful) {
+                    notificationCount.value = response.body()?.data?.requestCount ?: ""
+                }
+            }
+
+        })
     }
 
     override fun onCleared() {

@@ -1,6 +1,7 @@
 package com.conversify.data.remote
 
 import com.conversify.data.remote.models.ApiResponse
+import com.conversify.data.remote.models.RequestCountDto
 import com.conversify.data.remote.models.chat.ChatListingDto
 import com.conversify.data.remote.models.chat.VenueDetailsResponse
 import com.conversify.data.remote.models.groups.*
@@ -314,5 +315,12 @@ interface ConversifyApi {
                            @Field("categoryIds") categoryIds: List<String>): Call<ApiResponse<List<ProfileDto>>>
 
     @GET("user/requestCounts")
-    fun getRequestCounts(): Call<ApiResponse<String>>
+    fun getRequestCounts(): Call<ApiResponse<RequestCountDto>>
+
+    @FormUrlEncoded
+    @POST("/user/groupInviteUsers")
+    fun groupInviteUsers(@Field("emailArray") emails: String? = null,
+                         @Field("phoneNumberArray") phoneNumbers: String? = null,
+                         @Field("venueId") venueId: String? = null,
+                         @Field("groupId") groupId: String? = null): Call<ApiResponse<Any>>
 }

@@ -1,5 +1,6 @@
 package com.conversify.ui.profile.settings
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -23,12 +24,15 @@ import com.conversify.ui.profile.settings.hideinfo.HidePersonalInfoActivity
 import com.conversify.ui.profile.settings.verification.VerificationActivity
 import com.conversify.ui.profile.settings.weblink.WebLinkActivity
 import com.conversify.utils.AppConstants
+import com.google.gson.Gson
+import com.wafflecopter.multicontactpicker.MultiContactPicker
 import kotlinx.android.synthetic.main.activity_settings.*
+import timber.log.Timber
 
 class SettingsActivity : BaseActivity(), View.OnClickListener {
-
     private val viewModel by lazy { ViewModelProviders.of(this)[SettingsViewModel::class.java] }
     private lateinit var loadingDialog: LoadingDialog
+    private val gson by lazy { Gson() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +45,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setData(profile: ProfileDto) {
-        if (profile.isAlertNotifications == true)
+        /*if (profile.isAlertNotifications == true)
             tvAlert.isChecked = profile.isAlertNotifications
-        else tvAlert.isChecked = profile.isAlertNotifications ?: false
+        else */tvAlert.isChecked = profile.isAlertNotifications ?: false
     }
 
     private fun setListener() {
@@ -114,7 +118,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         bottomSheetDialog.setContentView(binding.root)
         bottomSheetDialog.show()
         binding.tvMail.setOnClickListener {
-            sendInviteViaEmail(getString(R.string.invite_people_option_more_text_message))
+            selectContactsForInvite()
             bottomSheetDialog.dismiss()
         }
         binding.tvMessage.setOnClickListener {
@@ -209,10 +213,10 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     private fun notificationSettings() {
         val intent = Intent()
         intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
-//for Android 5-7
+        //for Android 5-7
         intent.putExtra("app_package", packageName)
         intent.putExtra("app_uid", applicationInfo.uid)
-// for Android 8 and above
+        // for Android 8 and above
         intent.putExtra("android.provider.extra.APP_PACKAGE", packageName)
         startActivity(intent)
     }
@@ -250,5 +254,39 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
             R.id.tvLogout -> showLogoutConfirmationDialog()
         }
+    }
+
+    private fun selectContactsForInvite() {
+        MultiContactPicker.Builder(this)
+                .setActivityAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                        android.R.anim.fade_in, android.R.anim.fade_out)
+                .showPickerForResult(AppConstants.REQ_CODE_SELECT_MULTIPLE_CONTACTS)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppConstants.REQ_CODE_SELECT_MULTIPLE_CONTACTS) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                val results = MultiContactPicker.obtainResult(data)
+                Timber.d("Selected Contacts ${gson.toJson(results)}")
+
+                val phoneNoArray = ArrayList<String>()
+                val emailArray = ArrayList<String>()
+                results.forEach {
+                    it.phoneNumbers.forEach { pNo -> phoneNoArray.add(pNo.number) }
+                    it.emails.forEach { email -> emailArray.add(email) }
+                }
+
+                Timber.d("Selected Phone Numbers ${gson.toJson(phoneNoArray)}")
+                Timber.d("Selected Emails ${gson.toJson(emailArray)}")
+
+                sendInviteViaEmailToMultipleContacts(getString(R.string.invite_people_option_more_text_message), emailArray)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        loadingDialog.setLoading(false)
     }
 }
