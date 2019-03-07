@@ -14,12 +14,12 @@ class VenueDetailsExitGroupViewHolder(itemView: View,
         itemView.btnArchiveVenue.setOnClickListener { callback.onArchiveVenueClicked() }
     }
 
-    private lateinit var venue: VenueDto
+    private lateinit var venue: String
 
-    fun bind(venue: VenueDto) {
-        this.venue = venue
+    fun bind(id: String) {
+        this.venue = id
 
-        itemView.btnExitVenue.text = if (venue.adminId == UserManager.getUserId()) {
+        itemView.btnExitVenue.text =  if (venue == UserManager.getUserId()) {
             itemView.context.getString(R.string.venue_details_btn_delete_venue)
         } else {
             itemView.context.getString(R.string.venue_details_btn_exit_venue)

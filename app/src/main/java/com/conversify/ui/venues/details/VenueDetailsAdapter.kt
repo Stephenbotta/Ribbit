@@ -56,7 +56,7 @@ class VenueDetailsAdapter(val glide: GlideRequests,
                 }
             }
             is VenueDetailsExitGroupViewHolder -> {
-                if (item is VenueDto) {
+                if (item is String) {
                     holder.bind(item)
                 }
             }

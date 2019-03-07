@@ -161,10 +161,10 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
         }
 
         binding.crossPath.text = when (notification.type) {
-            PushType.ALERT_CONVERSE_NEARBY_PUSH -> {
+            PushType.ALERT_LOOK_NEARBY_PUSH -> {
                 "${notification.sender?.userName} has crossed your path at ${notification.locationName}"
             }
-            PushType.ALERT_LOOK_NEARBY_PUSH -> {
+            PushType.ALERT_CONVERSE_NEARBY_PUSH -> {
                 activity?.getString(R.string.notifications_label_converse_nearby, notification.sender?.userName)
             }
             else -> {

@@ -181,6 +181,7 @@ class CreateVenueFragment : BaseFragment() {
             etVenueLocation?.text.isNullOrBlank() -> false
             etVenueTags?.text.isNullOrBlank() -> false
             etDateTime?.text.isNullOrBlank() -> false
+            request.dateTimeMillis ?: 0 < System.currentTimeMillis() -> false
             else -> true
         }
     }

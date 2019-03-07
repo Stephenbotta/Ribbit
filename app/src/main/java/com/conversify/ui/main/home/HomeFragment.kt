@@ -29,6 +29,8 @@ import com.conversify.ui.people.details.PeopleDetailsActivity
 import com.conversify.ui.post.details.PostDetailsActivity
 import com.conversify.ui.post.details.PostDetailsViewModel
 import com.conversify.ui.post.newpost.NewPostActivity
+import com.conversify.ui.profile.ProfileActivity
+import com.conversify.ui.profile.followerandfollowing.FollowerAndFollowingActivity
 import com.conversify.ui.search.SearchActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
@@ -216,6 +218,9 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onLikesCountClicked(post: GroupPostDto) {
         Timber.i("Likes count clicked")
+        val intent = FollowerAndFollowingActivity.getIntentStart(requireActivity(), AppConstants.REQ_CODE_POST_LIKE)
+        intent.putExtra(AppConstants.EXTRA_POST_ID, post.id)
+        startActivity(intent)
     }
 
     override fun onGroupClicked(group: GroupDto) {
@@ -228,8 +233,12 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         val data = UserCrossedDto()
         data.profile = profile
         PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, profile.id ?: "")
-        val intent = PeopleDetailsActivity.getStartIntent(requireContext(), data, AppConstants.REQ_CODE_BLOCK_USER)
-        startActivity(intent)
+        if (profile.id == UserManager.getUserId()) {
+            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+        } else {
+            val intent = PeopleDetailsActivity.getStartIntent(requireContext(), data, AppConstants.REQ_CODE_BLOCK_USER)
+            startActivity(intent)
+        }
     }
 
     override fun onHashtagClicked(tag: String) {

@@ -3,6 +3,8 @@ package com.conversify.ui.profile.followerandfollowing
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.extensions.gone
+import com.conversify.extensions.visible
 import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_top_search.view.*
 
@@ -20,6 +22,13 @@ class FollowerAndFollowingViewHolder(itemView: View,
         glide.load(profile.image?.thumbnail)
                 .into(itemView.ivProfilePic)
         itemView.tvUserName.text = profile.userName
+
+        if (profile.isAccountPrivate == true) {
+            itemView.ivPrivate.visible()
+        } else {
+            itemView.ivPrivate.gone()
+        }
+
     }
 
     interface Callback {

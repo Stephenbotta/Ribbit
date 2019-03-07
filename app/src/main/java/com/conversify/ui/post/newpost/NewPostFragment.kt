@@ -108,10 +108,13 @@ class NewPostFragment : BaseFragment() {
 
         groupPost?.let { groupPost ->
             etPostText.setText(groupPost.postText)
-            if (!groupPost.imageUrl?.thumbnail.isNullOrEmpty())
+            if (!groupPost.imageUrl?.thumbnail.isNullOrEmpty()) {
                 GlideApp.with(this)
                         .load(groupPost.imageUrl?.thumbnail)
                         .into(ivImage)
+                request.imageOriginal = groupPost.imageUrl?.original
+                request.imageThumbnail = groupPost.imageUrl?.thumbnail
+            }
             if (!groupPost.locationName.isNullOrEmpty())
                 tvSelectLocation.text = groupPost.locationName + " " + groupPost.locationAddress
         }

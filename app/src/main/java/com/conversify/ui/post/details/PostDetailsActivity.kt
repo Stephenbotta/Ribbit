@@ -12,17 +12,21 @@ import android.support.v7.widget.SimpleItemAnimator
 import android.view.MenuItem
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
 import com.conversify.data.local.UserManager
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.SocialEditText
+import com.conversify.ui.people.details.PeopleDetailsActivity
 import com.conversify.ui.post.newpost.NewPostActivity
+import com.conversify.ui.profile.ProfileActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_post_details.*
@@ -72,7 +76,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
 
         postType = groupPost.postType ?: ""
         postId = groupPost.id ?: ""
-        if (!groupName.isNullOrEmpty()) {
+        if (groupName.isNotBlank()) {
             btnBack.text = "$groupName $categoryName"
         }
 
@@ -368,6 +372,15 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     }
 
     override fun onUserProfileClicked(profile: ProfileDto) {
+        val data = UserCrossedDto()
+        data.profile = profile
+        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, profile.id ?: "")
+        if (profile.id == UserManager.getUserId()) {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        } else {
+            val intent = PeopleDetailsActivity.getStartIntent(this, data, AppConstants.REQ_CODE_BLOCK_USER)
+            startActivity(intent)
+        }
     }
 
     override fun onHashTagClicked(tag: String) {

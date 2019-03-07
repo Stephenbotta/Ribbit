@@ -56,6 +56,8 @@ object AppConstants {
     const val REQ_CODE_EDIT_POST = 138
     const val REQ_CODE_PENDING_INTENT = 139
 
+    const val REQ_CODE_POST_LIKE = 140
+
 
     const val EXTRA_VENUE_FILTERS = "EXTRA_VENUE_FILTERS"
     const val EXTRA_VENUE = "EXTRA_VENUE"
@@ -66,6 +68,7 @@ object AppConstants {
     const val EXTRA_PROFILE = "EXTRA_PROFILE"
     const val EXTRA_POST_DATA = "EXTRA_POST_DATA"
     const val EXTRA_FOLLOWERS = "EXTRA_FOLLOWERS"
+    const val EXTRA_POST_ID = "EXTRA_POST_ID"
 
     const val POST_TYPE_REGULAR = "REGULAR"
     const val POST_TYPE_CONVERSE_NEARBY = "CONVERSE_NEARBY"

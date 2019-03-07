@@ -61,6 +61,25 @@
                 tools:ignore="ContentDescription"
                 tools:src="@tools:sample/avatars" />
 
+            <ImageView
+                android:id="@+id/ivPrivate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:layout_marginStart="28dp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:background="@drawable/ic_lock_white"
+                android:paddingStart="12dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnMore"
+                tools:visibility="visible" />
+
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvFollowedStatus"
                 android:layout_width="120dp"
@@ -249,7 +268,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/roboto_text_bold"
-                android:text="@string/people_label_mutual_interest"
+                android:text="@string/people_label_interest"
                 android:textColor="@color/colorPrimary"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"

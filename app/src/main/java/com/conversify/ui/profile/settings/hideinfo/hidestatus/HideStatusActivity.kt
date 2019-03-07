@@ -32,7 +32,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     private val viewModel by lazy { ViewModelProviders.of(this)[HideStatusViewModel::class.java] }
     private var flag = 0
     private lateinit var adapter: HideStatusAdapter
-    private lateinit var items: List<Any>
+    private var items= listOf<Any>()
     private val selectedUserList by lazy { ArrayList<String>() }
 
     override fun onCreate(savedInstanceState: Bundle?) {

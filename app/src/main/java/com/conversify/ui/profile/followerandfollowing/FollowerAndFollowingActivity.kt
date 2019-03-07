@@ -9,6 +9,7 @@ import android.support.v7.widget.SearchView
 import android.view.View
 import com.conversify.R
 import com.conversify.data.local.PrefsManager
+import com.conversify.data.local.UserManager
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
@@ -17,6 +18,7 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.people.details.PeopleDetailsActivity
+import com.conversify.ui.profile.ProfileActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_follower_and_following.*
@@ -56,6 +58,7 @@ class FollowerAndFollowingActivity : BaseActivity(), View.OnClickListener, Follo
         when (flag) {
             ApiConstants.FLAG_FOLLOWERS -> tvUser.text = getString(R.string.follower_label_empty_list)
             ApiConstants.FLAG_FOLLOWINGS -> tvUser.text = getString(R.string.following_label_empty_list)
+            AppConstants.REQ_CODE_POST_LIKE -> tvUser.text = getString(R.string.post_like_label_empty_list)
         }
         tvUser.visibility = View.VISIBLE
         adapter = FollowerAndFollowingAdapter(GlideApp.with(this), this)
@@ -112,7 +115,16 @@ class FollowerAndFollowingActivity : BaseActivity(), View.OnClickListener, Follo
 
     private fun getUsers() {
         if (isNetworkActiveWithMessage()) {
-            viewModel.getUsers(flag)
+            when (flag) {
+                ApiConstants.FLAG_FOLLOWERS, ApiConstants.FLAG_FOLLOWINGS -> {
+                    viewModel.getUsers(flag)
+                }
+                AppConstants.REQ_CODE_POST_LIKE -> {
+                    viewModel.getLikeUserList(intent.getStringExtra(AppConstants.EXTRA_POST_ID))
+                }
+            }
+
+
         } else {
             swipeRefreshLayout.isRefreshing = false
         }
@@ -132,9 +144,13 @@ class FollowerAndFollowingActivity : BaseActivity(), View.OnClickListener, Follo
         if (item is ProfileDto) {
             val data = UserCrossedDto()
             data.profile = item
-            PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, item.id?:"")
-            val intent = PeopleDetailsActivity.getStartIntent(this, data, AppConstants.REQ_CODE_BLOCK_USER)
-            startActivity(intent)
+            PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, item.id ?: "")
+            if (profile.id == UserManager.getUserId()) {
+                startActivity(Intent(this, ProfileActivity::class.java))
+            } else {
+                val intent = PeopleDetailsActivity.getStartIntent(this, data, AppConstants.REQ_CODE_BLOCK_USER)
+                startActivity(intent)
+            }
         }
     }
 }

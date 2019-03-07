@@ -181,6 +181,12 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
             tvBio.text = profile?.bio
         }
 
+        if (profile?.isAccountPrivate==true){
+            ivPrivate.visible()
+        }else{
+            ivPrivate.gone()
+        }
+
         interestsAdapter.displayMutualInterests(profile?.interests ?: emptyList())
     }
 

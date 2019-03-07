@@ -191,7 +191,7 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         binding.tvPublicly.setOnClickListener {
             tvPostingIn.text = getString(R.string.converse_post_label_publicity)
             postingIn = false
-            tvPostingIn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_public, 0, 0, 0)
+            tvPostingIn.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_public, 0, 0, 0)
             bottomSheetDialog.dismiss()
         }
         binding.tvFollowers.setOnClickListener {
@@ -256,7 +256,7 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
             AppConstants.REQ_CODE_NEW_POST -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     postingIn = true
-                    tvPostingIn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_group, 0, 0, 0)
+                    tvPostingIn.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_group, 0, 0, 0)
                     selectedUserIdList.clear()
                     selectedUserIdList.addAll(data.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS))
                     if (selectedUserIdList.isNotEmpty()) {

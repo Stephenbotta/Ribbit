@@ -208,7 +208,7 @@
     <string name="profile_btn_logout">Logout</string>
 
     <string name="group_posts_label_no_posts">No posts found</string>
-    <string name="group_posts_label_leave_a_reply">Leave a reply</string>
+    <string name="group_posts_label_leave_a_reply">Leave a comment</string>
 
     <string name="notifications_btn_accept">Accept</string>
     <string name="notifications_btn_reject">Reject</string>
@@ -281,6 +281,7 @@
     <string name="people_label_crossed_paths">You crossed paths with</string>
     <string name="people_label_crossed_paths_message">Find people who crossed paths with you at places you went</string>
     <string name="people_label_mutual_interest">Mutual Interests</string>
+    <string name="people_label_interest">Interests</string>
 
     <string name="people_detail_button_follow">Follow</string>
     <string name="people_detail_button_un_follow">Unfollow</string>
@@ -401,6 +402,8 @@
 
     <string name="follower_label_empty_list">No follower user yet!!</string>
     <string name="following_label_empty_list">No following user yet!!</string>
+    <string name="post_like_label_empty_list">No user yet!!</string>
+
 
     <string name="post_label_delete_post">Delete post</string>
     <string name="post_label_edit_post">Edit post</string>
@@ -409,7 +412,7 @@
     <string name="home_label_create_new_post">Create new post</string>
 
     <string name="converse_near_label_someone_near_by">Converse with someone nearby</string>
-    <string name="converse_near_label_crossed_path">Find someone i crossed path with</string>
+    <string name="converse_near_label_crossed_path">Find someone I crossed path with</string>
 
     <string name="converse_post_label_thinking">What are you thinking?</string>
     <string name="converse_post_label_publicity">Publicly</string>

@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.support.design.widget.BottomSheetDialog
@@ -91,9 +90,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
                     val data = resource.data
-                    if (data?.isAlertNotifications==true)
+                    if (data?.isAlertNotifications == true)
                         tvAlert.isChecked = data.isAlertNotifications
-                    else tvAlert.isChecked = data?.isAlertNotifications?:false
+                    else tvAlert.isChecked = data?.isAlertNotifications ?: false
                 }
 
                 Status.ERROR -> {
@@ -163,6 +162,36 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
     private fun shareContactDetails() {
         val profile = viewModel.getProfile()
+        val name = if (!profile.fullName.isNullOrEmpty()) {
+            "${getString(R.string.edit_profile_label_name)} : ${profile.fullName}\n"
+        } else {
+            ""
+        }
+        val username = if (!profile.userName.isNullOrEmpty()) {
+            "${getString(R.string.welcome_label_username)} : ${profile.userName}\n"
+        } else {
+            ""
+        }
+        val bio = if (!profile.bio.isNullOrEmpty()) {
+            "${getString(R.string.profile_label_bio)} : ${profile.bio}\n"
+        } else {
+            ""
+        }
+        val email = if (!profile.email.isNullOrEmpty()) {
+            "${getString(R.string.edit_profile_label_email)} : ${profile.email}\n"
+        } else {
+            ""
+        }
+        val phone = if (!profile.fullPhoneNumber.isNullOrEmpty()) {
+            "${getString(R.string.edit_profile_label_phone)} : ${profile.fullPhoneNumber}\n"
+        } else {
+            ""
+        }
+        val gender = if (!profile.gender.isNullOrEmpty()) {
+            "${getString(R.string.edit_profile_label_gender)} : ${profile.gender}\n"
+        } else {
+            ""
+        }
         val details = "${getString(R.string.edit_profile_label_name)} : ${profile.fullName}\n${getString(R.string.welcome_label_username)} : ${profile.userName}\n" +
                 "${getString(R.string.profile_label_bio)} : ${profile.bio}\n${getString(R.string.edit_profile_label_private_info)}\n${getString(R.string.edit_profile_label_email)} : ${profile.email}\n" +
                 "${getString(R.string.edit_profile_label_phone)} : ${profile.fullPhoneNumber}\n${getString(R.string.edit_profile_label_gender)} : ${profile.gender}"
@@ -216,7 +245,8 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
             R.id.tvPush -> notificationSettings()
 
-            R.id.tvAlert -> viewModel.alertNotification(viewModel.getProfile().isAlertNotifications?.not()?:false)
+            R.id.tvAlert -> viewModel.alertNotification(viewModel.getProfile().isAlertNotifications?.not()
+                    ?: false)
 
             R.id.tvLogout -> showLogoutConfirmationDialog()
         }

@@ -98,15 +98,14 @@ class NormalDetailsViewHolder(itemView: View,
             notification.locationAddress
         } else ""
 
-
         val locationName = if (!notification.locationName.isNullOrEmpty()) {
             notification.locationName
         } else ""
         val completeText = when (notification.type) {
-            PushType.ALERT_CONVERSE_NEARBY_PUSH -> {
+            PushType.ALERT_LOOK_NEARBY_PUSH -> {
                 itemView.context.getString(R.string.notifications_label_cross_path, username, locationName, address)
             }
-            PushType.ALERT_LOOK_NEARBY_PUSH -> {
+            PushType.ALERT_CONVERSE_NEARBY_PUSH -> {
                 itemView.context.getString(R.string.notifications_label_converse_nearby, username)
             }
             PushType.LIKE -> {

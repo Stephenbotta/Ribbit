@@ -102,6 +102,7 @@ class MainActivity : BaseLocationActivity() {
                 }
                 else -> {
                     bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)?.select()
+
                     if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG))
                         fragmentSwitcher.addFragment(NotificationsFragment(), NotificationsFragment.TAG)
                 }
@@ -109,6 +110,7 @@ class MainActivity : BaseLocationActivity() {
 
         } else {
             fragmentSwitcher.addFragment(HomeFragment(), HomeFragment.TAG)
+
         }
 
     }
@@ -163,6 +165,7 @@ class MainActivity : BaseLocationActivity() {
                         if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG)) {
                             fragmentSwitcher.addFragment(NotificationsFragment(), NotificationsFragment.TAG)
                         }
+
                     }
                 }
             }

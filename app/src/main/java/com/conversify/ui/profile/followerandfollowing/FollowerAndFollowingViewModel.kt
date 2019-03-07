@@ -53,6 +53,39 @@ class FollowerAndFollowingViewModel(application: Application) : BaseViewModel(ap
                 })
     }
 
+    fun getLikeUserList(postId: String) {
+        followerList.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .getPostLikeList(postId)
+                .enqueue(object : Callback<ApiResponse<List<ProfileDto>>> {
+                    override fun onResponse(call: Call<ApiResponse<List<ProfileDto>>>, response: Response<ApiResponse<List<ProfileDto>>>) {
+                        if (response.isSuccessful) {
+                            val data = response.body()?.data ?: emptyList()
+
+                            this@FollowerAndFollowingViewModel.filteredList.clear()
+                            this@FollowerAndFollowingViewModel.filteredList.addAll(data)
+
+                            val items = if (searchQuery.isBlank()) {
+                                getItems(data)
+                            } else {
+                                getSearchResult(searchQuery)
+                            }
+
+                            followerList.value = Resource.success(items)
+                        } else {
+                            followerList.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<List<ProfileDto>>>, t: Throwable) {
+                        followerList.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
+
+
     fun searchUsername(query: String) {
         this.searchQuery = query
         val searchResult = getSearchResult(query)

@@ -163,7 +163,7 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         items.add(venues)    // Header
         items.add(AddParticipantsDto)    // Add participants
         items.addAll(members)   // Members
-        items.add(Any())    // Exit group
+        items.add(venues.adminId?:"")    // Exit group
 
         venueDetailsAdapter.displayItems(items)
     }

@@ -70,8 +70,8 @@ class NotificationsAdapter(private val glide: GlideRequests,
                 NOTIFICATION_TYPE_INVITE_REQUEST
             }
             else -> {
-//                throw IllegalArgumentException("invalid View type")
-                NOTIFICATION_TYPE_CROSSED_PATH
+                throw IllegalArgumentException("invalid View type")
+//                NOTIFICATION_TYPE_CROSSED_PATH
             }
         }
     }
