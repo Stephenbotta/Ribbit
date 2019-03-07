@@ -8,7 +8,6 @@ import com.conversify.data.remote.getAppError
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.groups.GroupDto
-import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,6 +19,7 @@ class GroupDetailsViewModel : ViewModel() {
     val changeVenueNotifications by lazy { SingleLiveEvent<Resource<Boolean>>() }
     val exitGroup by lazy { SingleLiveEvent<Resource<Any>>() }
     val archiveVenue by lazy { SingleLiveEvent<Resource<Any>>() }
+    val inviteUsers by lazy { SingleLiveEvent<Resource<Any>>() }
 
     fun getGroupDetails(groupId: String) {
         groupDetails.value = Resource.loading()
@@ -97,6 +97,26 @@ class GroupDetailsViewModel : ViewModel() {
 
                     override fun onFailure(call: Call<Any>, t: Throwable) {
                         archiveVenue.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
+    fun inviteUsersApi(emails: String, phoneNumbers: String, groupId: String) {
+        inviteUsers.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .groupInviteUsers(emails, phoneNumbers, groupId = groupId)
+                .enqueue(object : Callback<ApiResponse<Any>> {
+                    override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
+                        if (response.isSuccessful) {
+                            inviteUsers.value = Resource.success()
+                        } else {
+                            inviteUsers.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                        inviteUsers.value = Resource.error(t.failureAppError())
                     }
                 })
     }

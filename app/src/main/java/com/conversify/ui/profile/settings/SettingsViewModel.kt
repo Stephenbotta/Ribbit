@@ -15,9 +15,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-/**
- * Created by Manish Bhargav
- */
 class SettingsViewModel(application: Application) : BaseViewModel(application) {
 
     private var profile = UserManager.getProfile()
@@ -70,9 +67,8 @@ class SettingsViewModel(application: Application) : BaseViewModel(application) {
 
     fun getProfile() = profile
 
-   private fun updateProfile(): ProfileDto {
+    private fun updateProfile(): ProfileDto {
         profile = UserManager.getProfile()
         return profile
     }
-
 }

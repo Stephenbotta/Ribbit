@@ -55,6 +55,7 @@ object AppConstants {
     const val REQ_CODE_CROSSED_PATH = 137
     const val REQ_CODE_EDIT_POST = 138
     const val REQ_CODE_PENDING_INTENT = 139
+    const val REQ_CODE_SELECT_MULTIPLE_CONTACTS = 140
 
     const val REQ_CODE_POST_LIKE = 140
 

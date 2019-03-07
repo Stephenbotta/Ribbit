@@ -68,7 +68,6 @@ class NormalDetailsViewHolder(itemView: View,
     init {
         itemView.ivProfile.setOnClickListener(userProfileClickListener)
         itemView.setOnClickListener(itemClickListener)
-
     }
 
     private lateinit var notification: NotificationDto

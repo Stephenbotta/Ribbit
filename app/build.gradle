@@ -154,6 +154,6 @@ dependencies {
     // https://github.com/sannies/mp4parser
     implementation "com.googlecode.mp4parser:isoparser:$mp4ParserVersion"
 
+    implementation "com.github.broakenmedia:MultiContactPicker:$multiContactPicker"
 }
-
 apply plugin: 'com.google.gms.google-services'

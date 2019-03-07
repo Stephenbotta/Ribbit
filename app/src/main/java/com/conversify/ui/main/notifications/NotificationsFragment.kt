@@ -32,7 +32,6 @@ import com.conversify.utils.GlideApp
 import com.conversify.utils.MapUtils
 import kotlinx.android.synthetic.main.fragment_notifications.*
 
-
 class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
 
     companion object {
@@ -150,7 +149,16 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        /*val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window?.attributes)
+        val dialogHeight = lp.height
+        val MAX_HEIGHT = (resources.displayMetrics.heightPixels * 0.90).toInt()
+
+        if (dialogHeight > MAX_HEIGHT) {*/
+        dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, (resources.displayMetrics.heightPixels * 0.90).toInt())
+        /*} else {
+            dialog.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        }*/
         dialog.setContentView(binding.root)
         GlideApp.with(requireContext()).load(notification.sender?.image?.original).into(binding.ivProfilePic)
         if (notification.location != null) {

@@ -18,6 +18,7 @@ class VenueDetailsViewModel : ViewModel() {
     val exitVenue by lazy { SingleLiveEvent<Resource<Any>>() }
     val archiveVenue by lazy { SingleLiveEvent<Resource<Any>>() }
     val venueDetails by lazy { SingleLiveEvent<Resource<VenueDto>>() }
+    val inviteUsers by lazy { SingleLiveEvent<Resource<Any>>() }
 
     fun changeVenueNotifications(venueId: String, isEnabled: Boolean) {
         changeVenueNotifications.value = Resource.loading()
@@ -95,6 +96,26 @@ class VenueDetailsViewModel : ViewModel() {
 
                     override fun onFailure(call: Call<ApiResponse<VenueDto>>, t: Throwable) {
                         venueDetails.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
+    fun inviteUsersApi(emails: String, phoneNumbers: String, venueId: String) {
+        inviteUsers.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .groupInviteUsers(emails, phoneNumbers, venueId = venueId)
+                .enqueue(object : Callback<ApiResponse<Any>> {
+                    override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
+                        if (response.isSuccessful) {
+                            inviteUsers.value = Resource.success()
+                        } else {
+                            inviteUsers.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                        inviteUsers.value = Resource.error(t.failureAppError())
                     }
                 })
     }

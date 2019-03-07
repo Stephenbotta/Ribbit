@@ -1,9 +1,12 @@
 package com.conversify.ui.main
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.location.Location
 import android.os.Bundle
 import android.support.design.widget.TabLayout
+import android.widget.ImageView
+import android.widget.TextView
 import com.conversify.R
 import com.conversify.data.local.UserManager
 import com.conversify.data.remote.PushType
@@ -11,6 +14,9 @@ import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.data.remote.models.venues.VenueDto
+import com.conversify.extensions.gone
+import com.conversify.extensions.isNetworkActive
+import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseLocationActivity
 import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.main.chats.ChatsFragment
@@ -64,6 +70,15 @@ class MainActivity : BaseLocationActivity() {
             fragmentSwitcher.setCurrentFragmentTag(currentFragmentTag)
         }
         setupBottomTabs()
+        if (isNetworkActive())
+            viewModel.getNotificationCount()
+        observeNotificationCount()
+    }
+
+    private fun observeNotificationCount() {
+        viewModel.notificationCount.observe(this, Observer {
+            updateNotificationBadgeCount(it ?: "")
+        })
     }
 
     private fun checkPushNavigation() {
@@ -136,6 +151,7 @@ class MainActivity : BaseLocationActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab) {}
 
             override fun onTabSelected(tab: TabLayout.Tab) {
+                updateNotificationIcon(tab.position)
                 when (tab.position) {
                     TAB_INDEX_HOME -> {
                         if (!fragmentSwitcher.fragmentExist(HomeFragment.TAG)) {
@@ -165,7 +181,6 @@ class MainActivity : BaseLocationActivity() {
                         if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG)) {
                             fragmentSwitcher.addFragment(NotificationsFragment(), NotificationsFragment.TAG)
                         }
-
                     }
                 }
             }
@@ -182,5 +197,28 @@ class MainActivity : BaseLocationActivity() {
 
     override fun onLocationUpdated(location: Location) {
         viewModel.currentLocationUpdated(location)
+    }
+
+    private fun updateNotificationBadgeCount(notificationCount: String) {
+        val notificationTab = bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)
+        val tabView = notificationTab?.customView
+        val badgeText = tabView?.findViewById<TextView>(R.id.tvCount)
+        if (notificationCount.toInt() > 0) {
+            badgeText?.visible()
+            badgeText?.text = notificationCount
+        } else {
+            badgeText?.gone()
+        }
+    }
+
+    private fun updateNotificationIcon(tabCurrentPosition: Int) {
+        val notificationTab = bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)
+        val tabView = notificationTab?.customView
+        val ivNotification = tabView?.findViewById<ImageView>(R.id.ivNotification)
+        if (tabCurrentPosition == TAB_INDEX_NOTIFICATIONS) {
+            ivNotification?.setImageResource(R.drawable.ic_notification)
+        } else {
+            ivNotification?.setImageResource(R.drawable.ic_notification_gray)
+        }
     }
 }
