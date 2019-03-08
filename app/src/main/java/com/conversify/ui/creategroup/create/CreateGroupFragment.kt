@@ -19,10 +19,7 @@ import com.conversify.data.remote.models.groups.CreateEditGroupRequest
 import com.conversify.data.remote.models.groups.CreateGroupHeaderDto
 import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
-import com.conversify.extensions.handleError
-import com.conversify.extensions.hideKeyboard
-import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.longToast
+import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.creategroup.addparticipants.AddParticipantsActivity
 import com.conversify.ui.custom.LoadingDialog
@@ -113,6 +110,7 @@ class CreateGroupFragment : BaseFragment(), CreateGroupAdapter.Callback {
             when (resource.status) {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
+                    activity?.shortToast(getString(R.string.create_channel_successfully))
                     requireActivity().setResult(Activity.RESULT_OK)
                     requireActivity().finish()
                 }

@@ -6,13 +6,14 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.ChatListingDto
 import com.conversify.data.remote.models.people.UserCrossedDto
+import com.conversify.extensions.gone
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
+import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.main.chats.ChatListCallback
@@ -58,16 +59,18 @@ class GroupChatFragment : BaseFragment(), ChatListCallback {
                     swipeRefreshLayout.isRefreshing = false
                     items = resource.data ?: emptyList()
                     if (items.size != 0) {
-                        tvLabelEmptyChat.visibility = View.GONE
-                        rvGroupChat.visibility = View.VISIBLE
+                        tvLabelEmptyChat.gone()
+                        rvGroupChat.visible()
+                    } else {
+                        tvLabelEmptyChat.visible()
                     }
                     adapter.displayCategories(items)
                 }
 
                 Status.ERROR -> {
                     swipeRefreshLayout.isRefreshing = false
-                    tvLabelEmptyChat.visibility = View.VISIBLE
-                    rvGroupChat.visibility = View.GONE
+                    tvLabelEmptyChat.visible()
+                    rvGroupChat.gone()
                     handleError(resource.error)
                 }
 

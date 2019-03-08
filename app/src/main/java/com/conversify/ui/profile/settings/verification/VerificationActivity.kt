@@ -1,6 +1,7 @@
 package com.conversify.ui.profile.settings.verification
 
 import android.Manifest
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -14,6 +15,7 @@ import com.conversify.extensions.handleError
 import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
+import com.conversify.ui.loginsignup.verification.VerificationFragment
 import com.conversify.utils.*
 import com.conversify.utils.PermissionUtils
 import kotlinx.android.synthetic.main.activity_verification.*
@@ -29,6 +31,7 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mediaPicker: MediaPicker
     private lateinit var loadingDialog: LoadingDialog
     private var apiFlag = 0
+    private var isFragmentAdded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,13 +93,22 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
                     selectedImage = null
                     when (apiFlag) {
                         1 -> longToast(getString(R.string.verification_api_message_verify_email))
-                        2 -> longToast(getString(R.string.verification_api_message_verify_mobile))
+                        2 -> {
+                            longToast(getString(R.string.verification_api_message_verify_mobile))
+                            isFragmentAdded = true
+                            btnBack.text = getText(R.string.back)
+                            val fragment = VerificationFragment.newInstance(viewModel.getProfile(), true)
+//                            fragment.setTargetFragment(fragment, AppConstants.REQ_CODE_VERIFICATION)
+                            supportFragmentManager.beginTransaction()
+                                    .replace(R.id.flContainer, fragment, VerificationFragment.TAG)
+                                    .addToBackStack(VerificationFragment.TAG)
+                                    .commit()
+                        }
                         3 -> {
                             longToast(getString(R.string.verification_api_message_verify_passport))
                             tvUploadDocument.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_success, 0)
                         }
                     }
-
                 }
 
                 Status.ERROR -> {
@@ -126,7 +138,7 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
         if (profile.isMobileVerified == false) {
             apiFlag = 2
             val map = hashMapOf<String, String>()
-            map["phoneNumber"] = profile.fullPhoneNumber?:""
+            map["phoneNumber"] = profile.fullPhoneNumber ?: ""
             viewModel.settingsVerification(map, selectedImage)
         }
     }
@@ -158,7 +170,17 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        mediaPicker.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            AppConstants.REQ_CODE_VERIFICATION -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    finish()
+                }
+            }
+            else -> {
+                mediaPicker.onActivityResult(requestCode, resultCode, data)
+            }
+        }
+
     }
 
     override fun onClick(v: View?) {
@@ -172,6 +194,14 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
 
             R.id.tvUploadDocument -> showMediaPickerWithPermissionCheck()
         }
+    }
+
+    override fun onBackPressed() {
+        if (isFragmentAdded) {
+            isFragmentAdded = false
+            btnBack.text = getText(R.string.verification_label_verification)
+            supportFragmentManager.popBackStackImmediate()
+        } else super.onBackPressed()
     }
 
     override fun onDestroy() {

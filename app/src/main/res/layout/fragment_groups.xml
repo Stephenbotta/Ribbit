@@ -53,6 +53,7 @@
                 android:id="@+id/tvNoGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_groups"
                 android:layout_gravity="center"
                 android:text="@string/groups_label_no_channels_found"
                 android:textColor="@color/colorPrimary" />

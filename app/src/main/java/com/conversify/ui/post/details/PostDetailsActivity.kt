@@ -1,6 +1,7 @@
 package com.conversify.ui.post.details
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -292,6 +293,17 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
 //        m.setOptionalIconsVisible(true)
         popup.setOnMenuItemClickListener(this)
         popup.show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            AppConstants.REQ_CODE_EDIT_POST -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    getReplies()
+                }
+            }
+        }
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {

@@ -108,7 +108,7 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
                         items.add(group)   // Header
                         items.add(AddParticipantsDto)    // Add participants
                         items.addAll(members)   // Members
-                        items.add(Any())    // Exit group
+                        items.add(group.id ?: "")    // Exit group
                         setupToolbar()
                         adapter.displayItems(items)
                     }

@@ -55,7 +55,7 @@ class GroupDetailsAdapter(val glide: GlideRequests,
                 }
             }
             is GroupDetailsExitGroupViewHolder -> {
-                if (item is GroupDto) {
+                if (item is String) {
                     holder.bind(item)
                 }
             }

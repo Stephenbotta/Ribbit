@@ -16,19 +16,18 @@ class GroupDetailsExitGroupViewHolder(itemView: View,
         itemView.btnArchiveVenue.setOnClickListener { callback.onArchiveVenueClicked() }
     }
 
-    private lateinit var venue: GroupDto
+    private lateinit var group: String
 
-    fun bind(venue: GroupDto) {
-        this.venue = venue
+    fun bind(id: String) {
+        this.group = id
 
-        itemView.apply {
-            btnExitVenue.text = if (venue.adminId == UserManager.getUserId()) {
-                context.getString(R.string.group_details_label_delete_group)
-            } else {
-                context.getString(R.string.group_details_label_exit_group)
-            }
+        itemView.btnExitVenue.text =  if (group == UserManager.getUserId()) {
+            itemView.context.getString(R.string.group_details_label_delete_group)
+        } else {
+            itemView.context.getString(R.string.group_details_label_exit_group)
         }
     }
+
 
     interface Callback {
         fun onExitVenueClicked()

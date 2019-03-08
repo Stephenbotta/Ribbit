@@ -27,6 +27,7 @@
                 android:fontFamily="@font/roboto_text_bold"
                 android:maxLines="1"
                 android:text="@string/profile_label_profile"
+                android:textAllCaps="true"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
                 app:layout_constrainedWidth="true"

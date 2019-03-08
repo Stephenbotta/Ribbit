@@ -149,8 +149,10 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
         data.imageThumbnail = viewModel.getProfile().image?.thumbnail
         data.fullName = editName.text.toString()
         data.userName = editUserName.text.toString()
-        data.website = editWebsite.text.toString()
-        if (editBio.text.toString().isNullOrEmpty())
+        if (editWebsite.text.toString().isBlank())
+            editWebsite.setText(" ")
+            data.website = editWebsite.text.toString()
+        if (editBio.text.toString().isBlank())
             editBio.setText(" ")
         data.bio = editBio.text.toString()
         data.designation = editDesignation.text.toString()

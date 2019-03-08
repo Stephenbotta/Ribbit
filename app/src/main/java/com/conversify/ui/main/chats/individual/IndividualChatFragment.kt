@@ -8,8 +8,10 @@ import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.ChatListingDto
 import com.conversify.data.remote.models.people.UserCrossedDto
+import com.conversify.extensions.gone
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
+import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.main.chats.ChatListCallback
@@ -53,16 +55,18 @@ class IndividualChatFragment : BaseFragment(), ChatListCallback {
                     swipeRefreshLayout.isRefreshing = false
                     items = resource.data ?: emptyList()
                     if (items.size != 0) {
-                        tvLabelEmptyChat.visibility = View.GONE
-                        rvIndividualChat.visibility = View.VISIBLE
+                        tvLabelEmptyChat.gone()
+                        rvIndividualChat.visible()
+                    } else {
+                        tvLabelEmptyChat.visible()
                     }
                     adapter.displayCategories(items)
                 }
 
                 Status.ERROR -> {
                     swipeRefreshLayout.isRefreshing = false
-                    tvLabelEmptyChat.visibility = View.VISIBLE
-                    rvIndividualChat.visibility = View.GONE
+                    tvLabelEmptyChat.visible()
+                    rvIndividualChat.gone()
                     handleError(resource.error)
                 }
 

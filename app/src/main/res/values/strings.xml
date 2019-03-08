@@ -140,7 +140,7 @@
     <string name="venues_label_search_for_venues_by_name">Search for venues by name</string>
     <string name="venues_label_your_venues">YOUR VENUES</string>
     <string name="venues_label_suggested">SUGGESTED</string>
-    <string name="venues_label_no_venues_found">No venues found</string>
+    <string name="venues_label_no_venues_found">No venues yet!!</string>
     <string name="venues_label_pending">PENDING</string>
     <string name="venues_label_rejected">REJECTED</string>
     <string name="venues_message_notification_sent_to_admin">Notification sent to admin. Please wait for approval</string>
@@ -201,14 +201,14 @@
     <string name="groups_label_your_channels">YOUR CHANNELS</string>
     <string name="groups_label_no_channels_found">No channel yet!!</string><!--No channels found-->
 
-    <string name="create_group_label_channels">Channels</string>
+    <string name="create_group_label_channels">CHANNELS</string>
     <string name="create_group_label_create_a_channel">Create a Channel</string>
     <string name="create_group_label_create_channels_based_on_your_interest">Create channels based on your interest, location and invite your friends, family and colleagues to join.</string>
     <string name="create_group_label_channel_s_title">Channel\'s title</string>
 
     <string name="profile_btn_logout">Logout</string>
 
-    <string name="group_posts_label_no_posts">No posts found</string>
+    <string name="group_posts_label_no_posts">No post added yet</string>
     <string name="group_posts_label_leave_a_reply">Leave a comment</string>
 
     <string name="notifications_btn_accept">Accept</string>
@@ -294,8 +294,8 @@
 
     <string name="add_venue_participants_message_request_sent">Request has been sent to the participants. They will get added once they accept.</string>
 
-    <string name="chat_listing_label_individual">Individual</string>
-    <string name="chat_listing_label_group">Channel</string>
+    <string name="chat_listing_label_individual">INDIVIDUAL</string>
+    <string name="chat_listing_label_group">CHANNEL</string>
     <string name="chat_listing_label_empty">No Chat Found</string>
     <string name="chat_listing_hint_search_for_chat">Search</string>
     <string name="chat_listing_photo_last_message_for_chat">Photo</string>
@@ -365,7 +365,7 @@
 
     <string name="verification_label_email">Click here to verify email</string>
     <string name="verification_label_mobile">Click here to verify mobile number</string>
-    <string name="verification_label_verify_email">Email verified</string>
+    <string name="verification_label_verify_email">Email address verified</string>
     <string name="verification_label_verify_mobile">Mobile number verified</string>
     <string name="verification_btn_upload_document">Upload document (Passport Id)</string>
     <string name="verification_api_message_verify_email">We have sent verification email to your registered email id. Please verify your email.</string>
@@ -434,5 +434,7 @@
     <string name="group_share_link">Please open this link to join my Cheetahify Group.</string>
     <string name="msg_invite_sent_successfully">Invite sent successfully</string>
     <string name="follow_request_text">Follow request has already been sent to this user.</string>
+
+    <string name="create_channel_successfully">Channel is created successfully</string>
 
 </resources>

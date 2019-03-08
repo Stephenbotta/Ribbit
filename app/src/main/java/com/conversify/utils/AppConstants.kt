@@ -56,9 +56,8 @@ object AppConstants {
     const val REQ_CODE_EDIT_POST = 138
     const val REQ_CODE_PENDING_INTENT = 139
     const val REQ_CODE_SELECT_MULTIPLE_CONTACTS = 140
-
     const val REQ_CODE_POST_LIKE = 140
-
+    const val REQ_CODE_VERIFICATION = 141
 
     const val EXTRA_VENUE_FILTERS = "EXTRA_VENUE_FILTERS"
     const val EXTRA_VENUE = "EXTRA_VENUE"

@@ -52,6 +52,9 @@ class PeopleDetailsViewModel(application: Application) : BaseViewModel(applicati
                     override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
                         if (response.isSuccessful) {
                             followUnFollow.value = Resource.success(response.body()?.data)
+                            if (profile.isAccountPrivate == true) {
+                                profile.isRequestPending = true
+                            }
                         } else {
                             followUnFollow.value = Resource.error(response.getAppError())
                         }

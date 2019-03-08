@@ -73,7 +73,7 @@ class SearchUsersAdapter(private val glide: GlideRequests, private val callback:
                     .placeholder(R.color.greyImageBackground)
                     .into(itemView.ivProfilePic)
 
-            itemView.tvUserName.text = profile.fullName
+            itemView.tvUserName.text = profile.userName
 
             interestsAdapter.displayMutualInterests(profile.interests ?: emptyList())
         }

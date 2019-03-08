@@ -1,7 +1,9 @@
 package com.conversify.ui.loginsignup.verification
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
@@ -15,6 +17,7 @@ import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.loginsignup.createpassword.CreatePasswordFragment
+import com.conversify.utils.AppConstants
 import com.conversify.utils.ValidationUtils
 import kotlinx.android.synthetic.main.fragment_verification.*
 
@@ -22,16 +25,22 @@ class VerificationFragment : BaseFragment() {
     companion object {
         const val TAG = "VerificationFragment"
         private const val ARGUMENT_PROFILE = "ARGUMENT_PROFILE"
+        private const val ARGUMENT_STARTED_FOR_RESULT = "ARGUMENT_STARTED_FOR_RESULT"
 
-        fun newInstance(profile: ProfileDto): Fragment {
+        fun newInstance(profile: ProfileDto, startedForResult: Boolean = false): Fragment {
             val fragment = VerificationFragment()
             val arguments = Bundle()
+            arguments.putBoolean(ARGUMENT_STARTED_FOR_RESULT, startedForResult)
             arguments.putParcelable(ARGUMENT_PROFILE, profile)
             fragment.arguments = arguments
             return fragment
         }
     }
 
+
+    private val startedForResult: Boolean by lazy {
+        arguments?.getBoolean(VerificationFragment.ARGUMENT_STARTED_FOR_RESULT) ?: false
+    }
     private lateinit var viewModel: VerificationViewModel
     private lateinit var loadingDialog: LoadingDialog
 
@@ -43,7 +52,7 @@ class VerificationFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this)[VerificationViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())
         val profile = arguments?.getParcelable(ARGUMENT_PROFILE) as ProfileDto
-        viewModel.start(profile)
+        viewModel.start(profile, startedForResult)
 
         fabProceed.isEnabled = false
 
@@ -53,14 +62,21 @@ class VerificationFragment : BaseFragment() {
     }
 
     private fun displayVerificationDetails(profile: ProfileDto) {
-        if (viewModel.isRegisteredModePhone()) {
+        if (startedForResult) {
             tvLabelWeSentYou.setText(R.string.verification_label_we_sent_you_a_code_phone)
 
             val fullPhoneNumber = String.format("%s %s", profile.countryCode, profile.phoneNumber)
             tvLabelCodeSentTo.text = getString(R.string.verification_label_code_sent_to, fullPhoneNumber)
         } else {
-            tvLabelWeSentYou.setText(R.string.verification_label_we_sent_you_a_code_email)
-            tvLabelCodeSentTo.text = getString(R.string.verification_label_code_sent_to, profile.email)
+            if (viewModel.isRegisteredModePhone()) {
+                tvLabelWeSentYou.setText(R.string.verification_label_we_sent_you_a_code_phone)
+
+                val fullPhoneNumber = String.format("%s %s", profile.countryCode, profile.phoneNumber)
+                tvLabelCodeSentTo.text = getString(R.string.verification_label_code_sent_to, fullPhoneNumber)
+            } else {
+                tvLabelWeSentYou.setText(R.string.verification_label_we_sent_you_a_code_email)
+                tvLabelCodeSentTo.text = getString(R.string.verification_label_code_sent_to, profile.email)
+            }
         }
     }
 
@@ -114,14 +130,20 @@ class VerificationFragment : BaseFragment() {
                     loadingDialog.setLoading(false)
                     val profile = resource.data
                     if (profile != null) {
-                        val fragment = CreatePasswordFragment.newInstance(profile)
-                        fragmentManager?.apply {
-                            beginTransaction()
-                                    .setCustomAnimations(R.anim.parallax_right_in, R.anim.parallax_left_out,
-                                            R.anim.parallax_left_in, R.anim.parallax_right_out)
-                                    .add(R.id.flContainer, fragment, CreatePasswordFragment.TAG)
-                                    .addToBackStack(null)
-                                    .commit()
+                        if (startedForResult) {
+                            val intent = Intent()
+                            targetFragment?.onActivityResult(AppConstants.REQ_CODE_VERIFICATION, Activity.RESULT_OK, intent)
+                            requireActivity().onBackPressed()
+                        } else {
+                            val fragment = CreatePasswordFragment.newInstance(profile)
+                            fragmentManager?.apply {
+                                beginTransaction()
+                                        .setCustomAnimations(R.anim.parallax_right_in, R.anim.parallax_left_out,
+                                                R.anim.parallax_left_in, R.anim.parallax_right_out)
+                                        .add(R.id.flContainer, fragment, CreatePasswordFragment.TAG)
+                                        .addToBackStack(null)
+                                        .commit()
+                            }
                         }
                     }
                 }

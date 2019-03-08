@@ -22,12 +22,16 @@ class VerificationViewModel : ViewModel() {
     val verifyOtp by lazy { SingleLiveEvent<Resource<ProfileDto>>() }
     val resendOtp by lazy { SingleLiveEvent<Resource<Any>>() }
 
-    fun start(profile: ProfileDto) {
+    fun start(profile: ProfileDto, startForResult: Boolean) {
         this.profile = profile
-        registeredMode = if (profile.email.isNullOrBlank()) {
-            AppConstants.REGISTERED_MODE_PHONE
+        if (startForResult) {
+            registeredMode = AppConstants.REGISTERED_MODE_PHONE
         } else {
-            AppConstants.REGISTERED_MODE_EMAIL
+            registeredMode = if (profile.email.isNullOrBlank()) {
+                AppConstants.REGISTERED_MODE_PHONE
+            } else {
+                AppConstants.REGISTERED_MODE_EMAIL
+            }
         }
     }
 

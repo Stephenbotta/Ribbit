@@ -84,7 +84,7 @@
         android:text="@string/follower_label_empty_list"
         android:textColor="@color/colorPrimary"
         android:textSize="16sp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
