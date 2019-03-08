@@ -2,6 +2,7 @@ package com.conversify.ui.landing
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
@@ -14,17 +15,16 @@ import android.view.View
 import com.conversify.R
 import com.conversify.data.local.UserManager
 import com.conversify.data.remote.PushType
-import com.conversify.data.remote.models.groups.GroupDto
-import com.conversify.data.remote.models.loginsignup.ProfileDto
-import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.extensions.clickSpannable
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.loginsignup.LoginSignUpActivity
 import com.conversify.ui.main.MainActivity
+import com.conversify.ui.profile.settings.weblink.WebLinkActivity
 import com.conversify.utils.AppConstants
 import kotlinx.android.synthetic.main.activity_landing.*
 
 class LandingActivity : BaseActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,15 +48,15 @@ class LandingActivity : BaseActivity() {
                         intent.putExtra("id", intent.getStringExtra("id"))
                         when (type) {
                             PushType.CHAT -> {
-                                val data = intent.getParcelableExtra<ProfileDto>("data")
+                                val data = intent.getSerializableExtra("data")
                                 intent.putExtra("data", data)
                             }
                             PushType.GROUP_CHAT -> {
-                                val data = intent.getParcelableExtra<GroupDto>("data")
+                                val data = intent.getSerializableExtra("data")
                                 intent.putExtra("data", data)
                             }
                             PushType.VENUE_CHAT -> {
-                                val data = intent.getParcelableExtra<VenueDto>("data")
+                                val data = intent.getSerializableExtra("data")
                                 intent.putExtra("data", data)
                             }
                             else -> {
@@ -75,6 +75,7 @@ class LandingActivity : BaseActivity() {
                 }
             }
         } else {
+            window.decorView.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimary)))
             setTheme(R.style.AppTheme_Landing)
             setContentView(R.layout.activity_landing)
             setListeners()
@@ -118,6 +119,7 @@ class LandingActivity : BaseActivity() {
             }
 
             override fun onClick(widget: View) {
+                startWebLink(AppConstants.REQ_CODE_TERMS_AND_CONDITIONS)
             }
         }
 
@@ -130,6 +132,7 @@ class LandingActivity : BaseActivity() {
             }
 
             override fun onClick(widget: View) {
+                startWebLink(AppConstants.REQ_CODE_TERMS_AND_CONDITIONS)
             }
         }
 
@@ -141,5 +144,10 @@ class LandingActivity : BaseActivity() {
         tvLabelTermsAndPrivacy.movementMethod = LinkMovementMethod.getInstance()
         tvLabelTermsAndPrivacy.highlightColor = Color.TRANSPARENT
         tvLabelTermsAndPrivacy.text = termsAndPrivacySpannableString
+    }
+
+    private fun startWebLink(flag: Int) {
+        val intent = WebLinkActivity.getStartIntent(this, flag)
+        startActivity(intent)
     }
 }

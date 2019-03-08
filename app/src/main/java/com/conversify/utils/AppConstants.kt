@@ -86,4 +86,5 @@ object AppConstants {
     const val TITLE_SHARE_VIA = "Share via"
     const val PLAY_STORE_URL = "http://play.google.com/store/apps/details?id="
 
+    const val SPLASH_TIMEOUT: Long = 3000
 }

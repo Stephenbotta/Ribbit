@@ -29,6 +29,11 @@
             android:textSize="@dimen/back_navigation_header_text_size"/>
     </android.support.v7.widget.Toolbar>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/greyImageBackground" />
+
     <FrameLayout
         android:id="@+id/flContainer"
         android:layout_width="match_parent"

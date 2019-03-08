@@ -14,9 +14,6 @@ import com.conversify.R
 import com.conversify.data.local.PrefsManager
 import com.conversify.data.local.UserManager
 import com.conversify.data.remote.PushType
-import com.conversify.data.remote.models.groups.GroupDto
-import com.conversify.data.remote.models.loginsignup.ProfileDto
-import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.ui.main.MainActivity
 import com.conversify.utils.AppConstants
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -67,31 +64,31 @@ class MessagingService : FirebaseMessagingService() {
             }
             PushType.GROUP_CHAT -> {
                 val id = data[ID]
-                val group = data["groupDetails"] as GroupDto
+                val groupDetails = data["groupDetails"]
                 intent.putExtra(ID, id)
                 intent.putExtra(TYPE, type)
-                intent.putExtra("data", group)
+                intent.putExtra("data", groupDetails)
                 isChatOpen = PrefsManager.get().getBoolean(PrefsManager.PREF_IS_CHAT_OPEN, false)
             }
 
             PushType.VENUE_CHAT -> {
                 val id = data[ID]
-                val venue = data["groupDetails"] as VenueDto
+                val groupDetails = data["groupDetails"]
                 intent.putExtra(ID, id)
                 intent.putExtra(TYPE, type)
-                intent.putExtra("data", venue)
+                intent.putExtra("data", groupDetails)
                 isChatOpen = PrefsManager.get().getBoolean(PrefsManager.PREF_IS_CHAT_OPEN, false)
             }
 
             PushType.CHAT -> {
                 val id = data[ID]
-                val profile = data["senderDetails"] as ProfileDto
+                val senderDetails = data["senderDetails"]
+
                 intent.putExtra(ID, id)
                 intent.putExtra(TYPE, type)
-                intent.putExtra("data", profile)
+                intent.putExtra("data", senderDetails)
                 isChatOpen = PrefsManager.get().getBoolean(PrefsManager.PREF_IS_CHAT_OPEN, false)
             }
-
         }
 
         val pendingIntent = PendingIntent.getActivity(this, AppConstants.REQ_CODE_PENDING_INTENT,
