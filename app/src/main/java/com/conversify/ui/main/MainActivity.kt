@@ -206,7 +206,7 @@ class MainActivity : BaseLocationActivity() {
     }
 
     private fun updateNotificationBadgeCount(notificationCount: String) {
-        val notificationTab = bottomTabs.getTabAt(4)
+        val notificationTab = bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)
         val tabView = notificationTab?.customView
         val badgeText = tabView?.findViewById<TextView>(R.id.tvCount)
         if (notificationCount.toInt() > 0) {
@@ -218,10 +218,10 @@ class MainActivity : BaseLocationActivity() {
     }
 
     private fun updateNotificationIcon(tabCurrentPosition: Int) {
-        val notificationTab = bottomTabs.getTabAt(4)
+        val notificationTab = bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)
         val tabView = notificationTab?.customView
         val ivNotification = tabView?.findViewById<ImageView>(R.id.ivNotification)
-        if (tabCurrentPosition == 4) {
+        if (tabCurrentPosition == TAB_INDEX_NOTIFICATIONS) {
             ivNotification?.setImageResource(R.drawable.ic_notification)
         } else {
             ivNotification?.setImageResource(R.drawable.ic_notification_gray)

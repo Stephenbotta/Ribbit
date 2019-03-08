@@ -76,6 +76,7 @@
     <string name="error_add_profile_image">Please add profile image</string>
     <string name="error_invalid_otp">Please enter valid OTP</string>
     <string name="error_invalid_email">Please enter valid email</string>
+    <string name="error_invalid_website">Please enter valid website url</string>
     <string name="error_invalid_password_length">Password length must be 6 to 20 characters</string>
     <string name="error_invalid_new_password_length">New password length must be 6 to 20 characters</string>
     <string name="error_invalid_phone_number">Please enter valid phone number</string>
@@ -323,7 +324,7 @@
     <string name="group_more_options_label_channel_detail">Channel Detail</string>
     <string name="group_more_options_label_channel_delete">Delete</string>
 
-    <string name="edit_profile_label_save">Save</string>
+    <string name="edit_profile_label_save">SAVE</string>
     <string name="edit_profile_label_change_profile">Change Profile Photo</string>
     <string name="edit_profile_label_name">Name</string>
     <string name="edit_profile_label_website">Website</string>
@@ -432,5 +433,6 @@
     <string name="venue_share_link">Please open this link to join my Cheetahify Venue.</string>
     <string name="group_share_link">Please open this link to join my Cheetahify Group.</string>
     <string name="msg_invite_sent_successfully">Invite sent successfully</string>
+    <string name="follow_request_text">Follow request has already been sent to this user.</string>
 
 </resources>

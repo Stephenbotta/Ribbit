@@ -167,7 +167,7 @@ class NotificationsViewModel : ViewModel() {
     fun acceptFollowRequest(acceptRequest: Boolean, notification: NotificationDto) {
         joinVenueRequest.value = Resource.loading()
 
-        val acceptType = getAcceptType(notification)
+        val acceptType = "FOLLOW"
         val groupType = getGroupType(notification)
         val userId = notification.sender?.id ?: ""
         val groupId = if (AppUtils.isRequestForVenue(notification)) {
@@ -177,7 +177,7 @@ class NotificationsViewModel : ViewModel() {
         } ?: ""
 
         RetrofitClient.conversifyApi
-                .acceptFollowRequest(userId, acceptRequest)
+                .acceptFollowRequest(acceptType, userId, acceptRequest)
                 .enqueue(object : Callback<Any> {
                     override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         if (response.isSuccessful) {

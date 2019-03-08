@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Patterns
 import android.view.View
 import com.conversify.R
 import com.conversify.data.local.models.AppError
@@ -137,6 +138,12 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
         if (!validation())
             return
 
+        if (editWebsite.text.toString().isNotBlank())
+            if (!Patterns.WEB_URL.matcher(editWebsite.text.toString()).matches()) {
+                editWebsite.error = getString(R.string.error_invalid_website)
+                return
+            }
+
         val data = CreateEditProfileRequest()
         data.imageOriginal = viewModel.getProfile().image?.original
         data.imageThumbnail = viewModel.getProfile().image?.thumbnail
@@ -148,7 +155,8 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
         data.bio = editBio.text.toString()
         data.designation = editDesignation.text.toString()
         data.company = editCompany.text.toString()
-        data.gender = editGender.text.toString().toUpperCase()
+        if (editGender.text.toString().isNotBlank())
+            data.gender = editGender.text.toString().toUpperCase()
         data.email = editEmail.text.toString()
         if (isNetworkActiveWithMessage())
             viewModel.editProfile(data, selectedImage)
@@ -157,13 +165,14 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
     private fun validation(): Boolean {
         val fullName = editName.text.toString()
         val email = editEmail.text.toString()
+        val username = editUserName.text.toString()
 
         return when {
-            fullName.isNullOrEmpty() -> {
+            fullName.isEmpty() -> {
                 editName.error = getString(R.string.error_empty_full_name)
                 false
             }
-            email.isNullOrEmpty() -> {
+            email.isEmpty() -> {
                 editEmail.error = getString(R.string.error_empty_email)
                 false
             }
@@ -171,6 +180,26 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
                 editEmail.error = getString(R.string.error_invalid_email)
                 false
             }
+            username.isBlank() -> {
+                editUserName.error = getString(R.string.error_empty_user_name)
+                false
+            }
+
+            !ValidationUtils.isUsernameLengthValid(username) -> {
+                editUserName.error = getString(R.string.error_invalid_user_name_length)
+                false
+            }
+
+            username.contains(" ") -> {
+                editUserName.error = getString(R.string.error_user_name_contains_spaces)
+                false
+            }
+
+            !ValidationUtils.isUsernameCharactersValid(username) -> {
+                editUserName.error = getString(R.string.error_invalid_username_characters)
+                false
+            }
+
             else -> true
         }
     }

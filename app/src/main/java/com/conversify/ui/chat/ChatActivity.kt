@@ -378,7 +378,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         GlideApp.with(this)
                 .load(userCrossed.crossedUser?.image?.thumbnail)
                 .into(ivVenue)
-        tvVenueName.text = userCrossed.crossedUser?.fullName
+        tvVenueName.text = userCrossed.crossedUser?.userName
     }
 
     private fun setupToolbar(userCrossed: UserCrossedDto, flag: Int) {
@@ -386,7 +386,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                 .load(userCrossed.profile?.image?.thumbnail)
                 .into(ivVenue)
         if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
-            tvVenueName.text = userCrossed.profile?.fullName
+            tvVenueName.text = userCrossed.profile?.userName
         } else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
             tvVenueName.text = userCrossed.profile?.userName
         }
