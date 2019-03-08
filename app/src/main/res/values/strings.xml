@@ -127,7 +127,8 @@
 
     <string name="choose_interests_label_choose_interests">Tell us about your interests</string>
     <string name="choose_interests_label_choose_at_least">Choose at least 3 interests</string>
-    <string name="choose_interests_message_choose_at_least_3_interests">Please choose at least 3 interests</string>
+    <string name="choose_interests_message_choose_more_interests">Choose at least %d interests</string>
+    <string name="choose_interests_message_choose_one_interests">Choose at least %d interest</string>
     <string name="choose_interests_btn_continue">Continue</string>
 
     <string name="explore_tab_channels">CHANNELS</string>

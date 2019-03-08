@@ -104,6 +104,8 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
             when (resource.status) {
                 Status.SUCCESS -> {
                     // Ignored
+                    if (profile?.isAccountPrivate == true)
+                        getPeopleDetails(userId)
                 }
 
                 Status.ERROR -> {

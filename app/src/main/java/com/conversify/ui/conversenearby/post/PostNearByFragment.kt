@@ -294,7 +294,7 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     }
 
     override fun onEditInterestsClicked() {
-        val fragment = ChooseInterestsFragment.newInstance(true, updateInPref = false, interest = interest)
+        val fragment = ChooseInterestsFragment.newInstance(true, updateInPref = false, interest = interest, count = 1)
         fragment.setTargetFragment(this, AppConstants.REQ_CODE_CHOOSE_INTERESTS)
         fragmentManager?.apply {
             beginTransaction()

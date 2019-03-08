@@ -1,16 +1,16 @@
 package com.conversify.ui.images
 
 import android.support.v4.view.PagerAdapter
-import android.support.v7.widget.AppCompatImageView
 import android.view.View
 import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.utils.GlideRequests
+import com.conversify.utils.TouchImageView
 
 class ImagesAdapter(private val images: List<String>,
                     private val glide: GlideRequests) : PagerAdapter() {
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val imageView = AppCompatImageView(container.context)
+        val imageView = TouchImageView(container.context)
 
         glide.load(images[position])
                 .placeholder(R.color.black)

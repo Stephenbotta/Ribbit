@@ -305,7 +305,7 @@ public class MediaController {
                                 MediaCodecInfo codecInfo = selectCodec(MIME_TYPE);
                                 colorFormat = selectColorFormat(codecInfo, MIME_TYPE);
                                 if (colorFormat == 0) {
-                                    throw new RuntimeException("no supported color format");
+                                    throw new RuntimeException("no supported color formatForRecentTime");
                                 }
                                 String codecName = codecInfo.getName();
                                 if (codecName.contains("OMX.qcom.")) {

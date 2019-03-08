@@ -75,7 +75,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         setupGroupsFab()
         observeChanges()
         val token = UserManager.getDeviceToken()
-        if (!token.isNullOrEmpty())
+        if (token.isNotBlank())
             homeViewModel.updateDeviceToken(token)
     }
 

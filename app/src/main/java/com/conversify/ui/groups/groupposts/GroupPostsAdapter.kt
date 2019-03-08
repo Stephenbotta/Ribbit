@@ -122,7 +122,7 @@ class GroupPostsAdapter(private val glide: GlideRequests,
             glide.load(post.user?.image?.thumbnail)
                     .into(itemView.ivProfile)
             itemView.tvUserName.text = post.user?.userName
-            itemView.tvTime.text = DateTimeUtils.formatChatListingTime(post.createdOnDateTime, itemView.context)
+            itemView.tvTime.text = DateTimeUtils.formatForRecentTime(post.createdOnDateTime)
             itemView.tvMessage.text = post.postText
 
             updateLikeButtonState()

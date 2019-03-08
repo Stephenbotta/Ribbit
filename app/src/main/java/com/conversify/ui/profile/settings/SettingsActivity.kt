@@ -166,39 +166,54 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
     private fun shareContactDetails() {
         val profile = viewModel.getProfile()
-        val name = if (!profile.fullName.isNullOrEmpty()) {
+        val name = if (profile.fullName?.isNotBlank() == true) {
             "${getString(R.string.edit_profile_label_name)} : ${profile.fullName}\n"
         } else {
             ""
         }
-        val username = if (!profile.userName.isNullOrEmpty()) {
+        val username = if (profile.userName?.isNotBlank() == true) {
             "${getString(R.string.welcome_label_username)} : ${profile.userName}\n"
         } else {
             ""
         }
-        val bio = if (!profile.bio.isNullOrEmpty()) {
+        val website = if (profile.website?.isNotBlank() == true) {
+            "${getString(R.string.edit_profile_label_website)} : ${profile.website}\n"
+        } else {
+            ""
+        }
+        val company = if (profile.company?.isNotBlank() == true) {
+            "${getString(R.string.edit_profile_label_professional_info)}\n${getString(R.string.edit_profile_label_company_workplace)} : ${profile.company}\n"
+        } else {
+            ""
+        }
+        val designation = if (profile.designation?.isNotBlank() == true) {
+            "${getString(R.string.edit_profile_label_designation)} : ${profile.designation}\n"
+        } else {
+            ""
+        }
+
+        val bio = if (profile.bio?.isNotBlank() == true) {
             "${getString(R.string.profile_label_bio)} : ${profile.bio}\n"
         } else {
             ""
         }
-        val email = if (!profile.email.isNullOrEmpty()) {
+        val email = if (profile.email?.isNotBlank() == true) {
             "${getString(R.string.edit_profile_label_email)} : ${profile.email}\n"
         } else {
             ""
         }
-        val phone = if (!profile.fullPhoneNumber.isNullOrEmpty()) {
+        val phone = if (profile.fullPhoneNumber?.isNotBlank() == true) {
             "${getString(R.string.edit_profile_label_phone)} : ${profile.fullPhoneNumber}\n"
         } else {
             ""
         }
-        val gender = if (!profile.gender.isNullOrEmpty()) {
+        val gender = if (profile.gender?.isNotBlank() == true) {
             "${getString(R.string.edit_profile_label_gender)} : ${profile.gender}\n"
         } else {
             ""
         }
-        val details = "${getString(R.string.edit_profile_label_name)} : ${profile.fullName}\n${getString(R.string.welcome_label_username)} : ${profile.userName}\n" +
-                "${getString(R.string.profile_label_bio)} : ${profile.bio}\n${getString(R.string.edit_profile_label_private_info)}\n${getString(R.string.edit_profile_label_email)} : ${profile.email}\n" +
-                "${getString(R.string.edit_profile_label_phone)} : ${profile.fullPhoneNumber}\n${getString(R.string.edit_profile_label_gender)} : ${profile.gender}"
+        val details = "$name$username$website$bio$company$designation" +
+                "${getString(R.string.edit_profile_label_private_info)}\n$email$phone$gender"
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_TEXT, details)

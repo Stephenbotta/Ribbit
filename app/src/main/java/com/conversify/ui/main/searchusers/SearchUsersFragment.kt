@@ -18,6 +18,7 @@ import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.extensions.gone
 import com.conversify.extensions.isNetworkActiveWithMessage
+import com.conversify.extensions.shortToast
 import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.chat.ChatActivity
@@ -240,7 +241,7 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback, Se
     }
 
     override fun onEditInterestsClicked() {
-        val fragment = ChooseInterestsFragment.newInstance(startedForResult = true, updateInPref = false, interest = interest)
+        val fragment = ChooseInterestsFragment.newInstance(startedForResult = true, updateInPref = false, interest = interest, count = 1)
         fragment.setTargetFragment(this, AppConstants.REQ_CODE_CHOOSE_INTERESTS)
         fragmentManager?.apply {
             beginTransaction()
@@ -281,6 +282,7 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback, Se
                     goLarge.visible()
                     ivGo.visible()
                     tvFindingMatch.gone()
+                    activity?.shortToast("No user found")
                 }
                 Status.LOADING -> {
 

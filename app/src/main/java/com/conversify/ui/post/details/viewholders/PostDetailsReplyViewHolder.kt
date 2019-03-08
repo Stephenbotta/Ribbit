@@ -106,7 +106,7 @@ class PostDetailsReplyViewHolder(itemView: View,
         val profile = reply.commentBy ?: reply.replyBy
         glide.load(profile?.image?.thumbnail)
                 .into(itemView.ivProfile)
-        itemView.tvTime.text = DateTimeUtils.formatChatListingTime(reply.createdOnDateTime, itemView.context)
+        itemView.tvTime.text = DateTimeUtils.formatForRecentTime(reply.createdOnDateTime)
 
         updateLikesCount()
         updateLikeButtonState()

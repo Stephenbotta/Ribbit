@@ -11,10 +11,8 @@ import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.InterestDto
-import com.conversify.extensions.gone
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.visible
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.loginsignup.BackButtonEnabledListener
@@ -28,6 +26,7 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
         private const val ARGUMENT_STARTED_FOR_RESULT = "ARGUMENT_STARTED_FOR_RESULT"
         private const val ARGUMENT_UPDATE_PREF = "ARGUMENT_UPDATE_PREF"
         private const val ARGUMENT_EXTRA_LIST = "ARGUMENT_EXTRA_LIST"
+        private const val ARGUMENT_EXTRA_COUNT = "ARGUMENT_EXTRA_COUNT"
         const val TAG = "ChooseInterestsFragment"
 
         private const val CHILD_INTERESTS = 0
@@ -36,12 +35,13 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
 
         private const val MINIMUM_INTEREST_COUNT = 3
 
-        fun newInstance(startedForResult: Boolean = false, updateInPref: Boolean = true, interest: ArrayList<InterestDto>): Fragment {
+        fun newInstance(startedForResult: Boolean = false, updateInPref: Boolean = true, interest: ArrayList<InterestDto>, count: Int = MINIMUM_INTEREST_COUNT): Fragment {
             val fragment = ChooseInterestsFragment()
             val arguments = Bundle()
             arguments.putBoolean(ARGUMENT_STARTED_FOR_RESULT, startedForResult)
             arguments.putBoolean(ARGUMENT_UPDATE_PREF, updateInPref)
             arguments.putParcelableArrayList(ARGUMENT_EXTRA_LIST, interest)
+            arguments.putInt(ARGUMENT_EXTRA_COUNT, count)
             fragment.arguments = arguments
             return fragment
         }
@@ -55,6 +55,9 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
     }
     private val interest: ArrayList<InterestDto> by lazy {
         arguments?.getParcelableArrayList(ARGUMENT_EXTRA_LIST) ?: ArrayList<InterestDto>()
+    }
+    private val count: Int by lazy {
+        arguments?.getInt(ARGUMENT_EXTRA_COUNT) ?: MINIMUM_INTEREST_COUNT
     }
     private val selectedInterestIds by lazy { mutableListOf<String>() }
     private lateinit var viewModel: ChooseInterestsViewModel
@@ -81,6 +84,12 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
 
         interestsAdapter = ChooseInterestsAdapter(GlideApp.with(this), this)
         rvInterests.adapter = interestsAdapter
+
+        if (count == 1) {
+            tvLabelChooseAtLeast.text = getString(R.string.choose_interests_message_choose_one_interests, count)
+        } else {
+            tvLabelChooseAtLeast.text = getString(R.string.choose_interests_message_choose_more_interests, count)
+        }
 
         setListeners()
         observeChanges()
@@ -134,11 +143,12 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
                         }
 
                         // Update the continue button state
-                        if (selectedInterestIds.size < MINIMUM_INTEREST_COUNT) {
-                            btnContinue.gone()
-                        } else {
-                            btnContinue.visible()
-                        }
+                        btnContinue.isEnabled = continueStatus()
+//                        if (selectedInterestIds.size < count) {
+//                            btnContinue.gone()
+//                        } else {
+//                            btnContinue.visible()
+//                        }
                     }
                     interestsAdapter.displayInterests(interests)
                 }
@@ -198,10 +208,15 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
             }
         }
 
-        if (selectedInterestIds.size < MINIMUM_INTEREST_COUNT) {
-            btnContinue.gone()
+        btnContinue.isEnabled = continueStatus()
+
+    }
+
+    private fun continueStatus(): Boolean {
+        return if (selectedInterestIds.size < count) {
+            return false
         } else {
-            btnContinue.visible()
+            true
         }
     }
 

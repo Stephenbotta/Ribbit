@@ -12,6 +12,8 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 
 object DateTimeUtils {
     private val CHAT_MESSAGE_FULL_DATE_TIME_FORMATTER by lazy { DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a") }
@@ -111,4 +113,8 @@ object DateTimeUtils {
                 ?: 0L, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString()
     }
 
+    fun formatForRecentTime(zonedDateTime: ZonedDateTime?):String{
+        return DateUtils.getRelativeTimeSpanString(zonedDateTime?.toInstant()?.toEpochMilli()
+                ?: 0L,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString()
+    }
 }

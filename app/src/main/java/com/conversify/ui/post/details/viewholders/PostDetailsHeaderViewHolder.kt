@@ -66,8 +66,7 @@ class PostDetailsHeaderViewHolder(itemView: View,
 
         glide.load(post.user?.image?.thumbnail)
                 .into(itemView.ivProfile)
-        itemView.tvTime.text = DateTimeUtils.formatChatListingTime(post.createdOnDateTime, itemView.context)
-
+        itemView.tvTime.text = DateTimeUtils.formatForRecentTime(post.createdOnDateTime)
         if (post.postText.isNullOrBlank()) {
             itemView.tvMessage.gone()
         } else {
