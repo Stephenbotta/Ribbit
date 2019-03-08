@@ -81,7 +81,7 @@
     <string name="error_invalid_new_password_length">New password length must be 6 to 20 characters</string>
     <string name="error_invalid_phone_number">Please enter valid phone number</string>
 
-    <string name="login_sign_up_label_by_signing_in_you_are_agree">By Signing in you agree to Conversify’s Terms &amp; conditions and Privacy policy.</string>
+    <string name="login_sign_up_label_by_signing_in_you_are_agree">By Signing in you agree to Cheetahify’s Terms &amp; conditions and Privacy policy.</string>
     <string name="login_sign_up_label_terms_and_conditions">Terms &amp; conditions</string>
     <string name="login_sign_up_label_privacy_policy">Privacy policy</string>
     <string name="login_sign_up_label_already_a_member_sign_in">Already a member? Sign in</string>
@@ -140,7 +140,7 @@
     <string name="venues_label_search_for_venues_by_name">Search for venues by name</string>
     <string name="venues_label_your_venues">YOUR VENUES</string>
     <string name="venues_label_suggested">SUGGESTED</string>
-    <string name="venues_label_no_venues_found">No venues yet!!</string>
+    <string name="venues_label_no_venues_found">No venue</string>
     <string name="venues_label_pending">PENDING</string>
     <string name="venues_label_rejected">REJECTED</string>
     <string name="venues_message_notification_sent_to_admin">Notification sent to admin. Please wait for approval</string>

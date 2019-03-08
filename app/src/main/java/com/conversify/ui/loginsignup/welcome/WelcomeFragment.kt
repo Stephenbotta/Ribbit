@@ -76,7 +76,7 @@ class WelcomeFragment : BaseFragment() {
 
         // Hide email fields if email exists in profile
         if (!profile.email.isNullOrBlank()) {
-            tvLabelEmail.gone()
+            tvEmailLabel.gone()
             etEmail.gone()
         } else {
             etEmail.setText(profile.email)
@@ -101,9 +101,11 @@ class WelcomeFragment : BaseFragment() {
         countryCodePicker.setPhoneNumberValidityChangeListener { isValid ->
             val phoneNumber = etPhoneNumber.text?.toString()
             if (phoneNumber.isNullOrBlank()) {
-                viewModel.updateUsernameAvailability(false)
+//                viewModel.updateUsernameAvailability(false)
                 return@setPhoneNumberValidityChangeListener
             }
+
+            fabProceed.isEnabled = isFormValid()
 
             if (!ivPhoneVerify.isVisible()) {
                 ivPhoneVerify.visible()

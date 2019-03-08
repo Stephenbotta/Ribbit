@@ -25,7 +25,7 @@ class ChatsFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         binding = DataBindingUtil.inflate(inflater, getFragmentLayoutResId(), container, false)
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         binding.view = this
         return binding.root
 
@@ -45,9 +45,15 @@ class ChatsFragment : BaseFragment() {
         binding.searchChatView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(query: String?): Boolean {
                 if (binding.viewPager.currentItem == 0) {
-                    (viewPagerAdapter.fragments[0] as IndividualChatFragment).search(query ?: "")
+                    val fragment = (viewPagerAdapter.fragments[0] as IndividualChatFragment)
+                    if (fragment.isVisible) {
+                        fragment.search(query ?: "")
+                    }
                 } else if (binding.viewPager.currentItem == 1) {
-                    (viewPagerAdapter.fragments[1] as GroupChatFragment).search(query ?: "")
+                    val fragment = (viewPagerAdapter.fragments[1] as GroupChatFragment)
+                    if (fragment.isVisible) {
+                        fragment.search(query ?: "")
+                    }
                 }
                 return true
             }

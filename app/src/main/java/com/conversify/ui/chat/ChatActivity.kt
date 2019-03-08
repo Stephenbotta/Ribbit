@@ -35,6 +35,7 @@ import com.conversify.ui.chat.individual.ChatListIndividualViewModel
 import com.conversify.ui.custom.AppToast
 import com.conversify.ui.groups.details.GroupDetailsActivity
 import com.conversify.ui.images.ImagesActivity
+import com.conversify.ui.people.details.PeopleDetailsActivity
 import com.conversify.ui.venues.details.VenueDetailsActivity
 import com.conversify.ui.videoplayer.VideoPlayerActivity
 import com.conversify.utils.AppConstants
@@ -231,7 +232,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                     }
                 }
                 ivVenue.setOnClickListener { }
-                tvVenueName.setOnClickListener { }
+                tvVenueName.setOnClickListener {}
             }
             AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
                 mediaPicker.setImagePickerListener { imageFile ->
@@ -244,8 +245,10 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                         AppToast.longToast(applicationContext, R.string.message_select_smaller_video)
                     }
                 }
-                ivVenue.setOnClickListener { }
-                tvVenueName.setOnClickListener { }
+                ivVenue.setOnClickListener { openUserProfile() }
+                tvVenueName.setOnClickListener {
+                    openUserProfile()
+                }
             }
             AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
                 mediaPicker.setImagePickerListener { imageFile ->
@@ -276,6 +279,13 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                 tvVenueName.setOnClickListener { showGroupDetails(AppConstants.REQ_CODE_GROUP_DETAILS) }
             }
         }
+    }
+
+    private fun openUserProfile() {
+        val data = intent.getParcelableExtra<UserCrossedDto>(EXTRA_INDIVIDUAL_CHAT)
+        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, data?.profile?.id ?: "")
+        val intent = PeopleDetailsActivity.getStartIntent(this, data, AppConstants.REQ_CODE_BLOCK_USER)
+        startActivity(intent)
     }
 
     private fun observeChanges(flag: Int) {

@@ -144,7 +144,7 @@
                 app:layout_constraintTop_toBottomOf="@id/llUsername" />
 
             <TextView
-                android:id="@+id/tvLabelEmail"
+                android:id="@+id/tvEmailLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -175,7 +175,7 @@
                 android:singleLine="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvLabelEmail"
+                app:layout_constraintTop_toBottomOf="@id/tvEmailLabel"
                 tools:ignore="LabelFor"
                 tools:targetApi="o"
                 tools:text="user@abc.com" />

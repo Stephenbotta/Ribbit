@@ -28,6 +28,7 @@ import com.conversify.utils.AppConstants
 import com.conversify.utils.FragmentSwitcher
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
@@ -46,6 +47,8 @@ class MainActivity : BaseLocationActivity() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var fragmentSwitcher: FragmentSwitcher
+
+    private val gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,10 +89,11 @@ class MainActivity : BaseLocationActivity() {
         if (!type.isNullOrEmpty()) {
             when (type) {
                 PushType.CHAT -> {
-                    val data = intent.getParcelableExtra<ProfileDto>("data")
+                    val data = intent.getStringExtra("data")
+                    val profile = gson.fromJson(data, ProfileDto::class.java)
                     bottomTabs.getTabAt(TAB_INDEX_CHATS)?.select()
                     val userCrossed = UserCrossedDto()
-                    userCrossed.profile = data
+                    userCrossed.profile = profile
                     userCrossed.conversationId = intent.getStringExtra("id")
                     if (!fragmentSwitcher.fragmentExist(ChatsFragment.TAG))
                         fragmentSwitcher.addFragment(ChatsFragment(), ChatsFragment.TAG)
@@ -98,21 +102,23 @@ class MainActivity : BaseLocationActivity() {
                     startActivityForResult(intent, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
                 }
                 PushType.GROUP_CHAT -> {
-                    val data = intent.getParcelableExtra<GroupDto>("data")
+                    val data = intent.getStringExtra("data")
+                    val profile = gson.fromJson(data, GroupDto::class.java)
                     bottomTabs.getTabAt(TAB_INDEX_CHATS)?.select()
-                    data.conversationId = intent.getStringExtra("id")
+                    profile.conversationId = intent.getStringExtra("id")
                     if (!fragmentSwitcher.fragmentExist(ChatsFragment.TAG))
                         fragmentSwitcher.addFragment(ChatsFragment(), ChatsFragment.TAG)
-                    val intent = ChatActivity.getStartIntentForGroupChat(this, data, AppConstants.REQ_CODE_GROUP_CHAT)
+                    val intent = ChatActivity.getStartIntentForGroupChat(this, profile, AppConstants.REQ_CODE_GROUP_CHAT)
                     startActivityForResult(intent, AppConstants.REQ_CODE_GROUP_CHAT)
                 }
                 PushType.VENUE_CHAT -> {
                     bottomTabs.getTabAt(TAB_INDEX_EXPLORE)?.select()
-                    val data = intent.getParcelableExtra<VenueDto>("data")
-                    data.conversationId = intent.getStringExtra("id")
+                    val data = intent.getStringExtra("data")
+                    val profile = gson.fromJson(data, VenueDto::class.java)
+                    profile.conversationId = intent.getStringExtra("id")
                     if (!fragmentSwitcher.fragmentExist(ExploreFragment.TAG))
                         fragmentSwitcher.addFragment(ExploreFragment(), ExploreFragment.TAG)
-                    val intent = ChatActivity.getStartIntent(this, data, AppConstants.REQ_CODE_VENUE_CHAT)
+                    val intent = ChatActivity.getStartIntent(this, profile, AppConstants.REQ_CODE_VENUE_CHAT)
                     startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
                 }
                 else -> {

@@ -10,7 +10,7 @@
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="10dp"
         android:drawablePadding="6dp"
         android:drawableStart="@drawable/ic_back"
         android:fontFamily="@font/roboto_text_bold"
