@@ -70,7 +70,7 @@ class VenueViewHolder(itemView: View,
 
             ApiConstants.REQUEST_STATUS_REJECTED -> {
                 itemView.tvRequestStatus.visible()
-                itemView.tvRequestStatus.setText(R.string.venues_label_rejected)
+                itemView.tvRequestStatus.text = ""
                 itemView.tvRequestStatus.setTextColor(requestRejectedColor)
             }
 
@@ -86,7 +86,7 @@ class VenueViewHolder(itemView: View,
         itemView.tvVenueLocation.text = AppUtils.getFormattedAddress(venue.locationName, venue.locationAddress)
 
         val memberCount = venue.memberCount ?: 0
-        itemView.tvActiveMembers.text = itemView.context.resources.getQuantityString(R.plurals.members_with_count, memberCount, memberCount)
+        itemView.tvActiveMembers.text = itemView.context.resources.getQuantityString(R.plurals.members_with_count_venue, memberCount, memberCount)
     }
 
     interface Callback {

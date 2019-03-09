@@ -57,6 +57,7 @@ class CreateGroupAdapter(val glide: GlideRequests,
         return when (item) {
             is CreateGroupHeaderDto -> VIEW_TYPE_HEADER
             is AddParticipantsDto -> VIEW_TYPE_ADD_PARTICIPANTS
+            is ProfileDto-> VIEW_TYPE_MEMBER
             else -> VIEW_TYPE_MEMBER
         }
     }

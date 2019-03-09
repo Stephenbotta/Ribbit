@@ -12,8 +12,6 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import timber.log.Timber
-import java.text.SimpleDateFormat
-import java.util.*
 
 object DateTimeUtils {
     private val CHAT_MESSAGE_FULL_DATE_TIME_FORMATTER by lazy { DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a") }
@@ -24,6 +22,7 @@ object DateTimeUtils {
     private val CHAT_MESSAGE_OTHER_FORMATTER by lazy { DateTimeFormatter.ofPattern("dd/MM/yyyy") }
     private val VENUE_FILTERS_DATE_LOCAL by lazy { DateTimeFormatter.ofPattern("MMM dd, yyyy") }
     private val VENUE_FILTERS_DATE_SERVER by lazy { DateTimeFormatter.ofPattern("MM/dd/yyyy") }
+    private val VENUE_FULL_DATE_TIME_FORMATTER by lazy { DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm a") }
 
     fun formatMillisToDuration(input: Long): String {
         val seconds = input / 1000
@@ -96,6 +95,10 @@ object DateTimeUtils {
         return zonedDateTime?.format(CHAT_MESSAGE_FULL_DATE_TIME_FORMATTER) ?: ""
     }
 
+    fun formatVenueDetailsDateTime(zonedDateTime: ZonedDateTime?): String {
+        return zonedDateTime?.format(VENUE_FULL_DATE_TIME_FORMATTER) ?: ""
+    }
+
     fun formatVenueFiltersDate(dateTimeMillis: Long?): String {
         return formatServerToLocalTimeZone(dateTimeMillis, VENUE_FILTERS_DATE_LOCAL) ?: ""
     }
@@ -113,8 +116,8 @@ object DateTimeUtils {
                 ?: 0L, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString()
     }
 
-    fun formatForRecentTime(zonedDateTime: ZonedDateTime?):String{
+    fun formatForRecentTime(zonedDateTime: ZonedDateTime?): String {
         return DateUtils.getRelativeTimeSpanString(zonedDateTime?.toInstant()?.toEpochMilli()
-                ?: 0L,System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString()
+                ?: 0L, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString()
     }
 }

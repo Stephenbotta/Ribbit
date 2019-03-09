@@ -7,4 +7,5 @@ data class CreateGroupHeaderDto(val categoryName: String?,
                                 var groupTitle: String? = null,
                                 var selectedGroupImageFile: File? = null,
                                 var isPrivate: Boolean = false,
+                                var description:String?=null,
                                 var memberCount: Int = 0)

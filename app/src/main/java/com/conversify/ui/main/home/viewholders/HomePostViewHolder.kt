@@ -105,7 +105,7 @@ class HomePostViewHolder(itemView: View,
 
         glide.load(post.user?.image?.thumbnail)
                 .into(itemView.ivProfile)
-        itemView.tvTime.text = DateTimeUtils.formatChatListingTime(post.createdOnDateTime, itemView.context)
+        itemView.tvTime.text = DateTimeUtils.formatForRecentTime(post.createdOnDateTime)
 
         val message = post.postText
         if (message.isNullOrBlank()) {

@@ -27,6 +27,17 @@
             app:riv_corner_radius_top_right="8dp"
             tools:src="@tools:sample/backgrounds/scenic" />
 
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:scaleType="centerCrop"
+            android:src="@color/textGray8C"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius_top_left="8dp"
+            app:riv_corner_radius_top_right="8dp" />
+
         <TextView
             android:id="@+id/tvRequestStatus"
             android:layout_width="wrap_content"

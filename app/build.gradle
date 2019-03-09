@@ -155,5 +155,8 @@ dependencies {
     implementation "com.googlecode.mp4parser:isoparser:$mp4ParserVersion"
 
     implementation "com.github.broakenmedia:MultiContactPicker:$multiContactPicker"
+
+    // https://github.com/greenrobot/EventBus
+    implementation "org.greenrobot:eventbus:$eventBus"
 }
 apply plugin: 'com.google.gms.google-services'

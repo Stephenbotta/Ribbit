@@ -58,7 +58,11 @@ class AddVenueParticipantsActivity : BaseActivity() {
         btnBack.setOnClickListener { onBackPressed() }
         btnContinue.setOnClickListener {
             if (isNetworkActiveWithMessage()) {
-                viewModel.addVenueParticipants(venueId, selectedParticipantIds.toList(), flag)
+                when (flag) {
+                    AppConstants.REQ_CODE_VENUE_DETAILS -> viewModel.addVenueParticipants(venueId, selectedParticipantIds.toList())
+                    AppConstants.REQ_CODE_GROUP_DETAILS -> viewModel.addGroupParticipants(venueId, selectedParticipantIds.toList())
+                }
+
             }
         }
     }

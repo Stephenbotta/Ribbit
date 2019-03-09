@@ -7,6 +7,7 @@ import com.conversify.data.remote.failureAppError
 import com.conversify.data.remote.getAppError
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.Resource
+import com.conversify.data.remote.models.groups.AddGroupParticipantsRequest
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.venues.AddVenueParticipantsRequest
 import com.conversify.utils.AppConstants
@@ -40,11 +41,11 @@ class AddVenueParticipantsViewModel : ViewModel() {
                 })
     }
 
-    fun addVenueParticipants(venueId: String, participantIds: List<String>, flag: Int) {
+    fun addVenueParticipants(venueId: String, participantIds: List<String>) {
         addVenueParticipants.value = Resource.loading()
 
         RetrofitClient.conversifyApi
-                .addVenueParticipants(request(venueId, participantIds, flag))
+                .addVenueParticipants( AddVenueParticipantsRequest(venueId, participantIds))
                 .enqueue(object : Callback<Any> {
                     override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         if (response.isSuccessful) {
@@ -60,11 +61,24 @@ class AddVenueParticipantsViewModel : ViewModel() {
                 })
     }
 
-    private fun request(venueId: String, participantIds: List<String>, flag: Int): AddVenueParticipantsRequest {
-        return when (flag) {
-            AppConstants.REQ_CODE_VENUE_DETAILS -> AddVenueParticipantsRequest(venueId, "", participantIds)
-            AppConstants.REQ_CODE_GROUP_DETAILS -> AddVenueParticipantsRequest("", venueId, participantIds)
-            else -> AddVenueParticipantsRequest(venueId, "", participantIds)
-        }
+    fun addGroupParticipants(groupId: String, participantIds: List<String>) {
+        addVenueParticipants.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .addGroupParticipants( AddGroupParticipantsRequest(groupId, participantIds))
+                .enqueue(object : Callback<Any> {
+                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                        if (response.isSuccessful) {
+                            addVenueParticipants.value = Resource.success()
+                        } else {
+                            addVenueParticipants.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Any>, t: Throwable) {
+                        addVenueParticipants.value = Resource.error(t.failureAppError())
+                    }
+                })
     }
+
 }

@@ -20,7 +20,7 @@ class SearchTopAdapter(private val glide: GlideRequests,
         return when (viewType) {
             VIEW_TYPE_LABEL_YOUR_VENUES -> SearchTopLabelViewHolder(parent.inflate(R.layout.item_venue_your_venues_label))
 
-            VIEW_TYPE_MY_VENUE -> SearchTopViewHolder(parent.inflate(R.layout.item_top_search), glide, callback)
+            VIEW_TYPE_MY_VENUE -> SearchTopViewHolder(parent.inflate(R.layout.item_top_search_square), glide, callback)
 
             else -> throw IllegalArgumentException("Invalid view type")
         }

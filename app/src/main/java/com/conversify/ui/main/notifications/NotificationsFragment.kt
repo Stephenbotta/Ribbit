@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.Window
 import com.conversify.R
 import com.conversify.data.local.PrefsManager
+import com.conversify.data.local.models.MessageEvent
 import com.conversify.data.remote.PushType
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.groups.GroupDto
@@ -19,6 +20,7 @@ import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.notifications.NotificationDto
 import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.data.remote.models.venues.VenueDto
+import com.conversify.data.remote.socket.SocketManager
 import com.conversify.databinding.DialogConverseNearbyNavigateBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.isNetworkActiveWithMessage
@@ -31,6 +33,10 @@ import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
 import com.conversify.utils.MapUtils
 import kotlinx.android.synthetic.main.fragment_notifications.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+
 
 class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
 
@@ -49,6 +55,7 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loadingDialog = LoadingDialog(requireContext())
+        EventBus.getDefault().register(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,7 +64,18 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
         clearNotification.setOnClickListener { clearNotifications() }
         setupNotificationsRecycler()
         observeChanges()
+    }
+
+    override fun onStart() {
+        super.onStart()
         getNotifications()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: MessageEvent) {
+        if (event.type == SocketManager.EVENT_REQUEST_COUNT) {
+            getNotifications()
+        }
     }
 
     private fun setupNotificationsRecycler() {
@@ -258,6 +276,7 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
     override fun onDestroyView() {
         super.onDestroyView()
         loadingDialog.setLoading(false)
+        EventBus.getDefault().unregister(this)
     }
 
 }

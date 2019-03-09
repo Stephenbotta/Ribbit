@@ -3,15 +3,13 @@ package com.conversify.ui.main.chats.individual
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.conversify.R
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.ChatListingDto
 import com.conversify.data.remote.models.people.UserCrossedDto
-import com.conversify.extensions.gone
-import com.conversify.extensions.handleError
-import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.visible
+import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.chat.ChatActivity
 import com.conversify.ui.main.chats.ChatListCallback

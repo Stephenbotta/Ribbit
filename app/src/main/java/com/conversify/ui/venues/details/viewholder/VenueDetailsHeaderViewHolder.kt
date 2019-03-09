@@ -29,7 +29,7 @@ class VenueDetailsHeaderViewHolder(itemView: View,
 
         itemView.apply {
             updateNotificationsState(venue.notification ?: false)
-            tvDateAndTime.text = DateTimeUtils.formatVenueDateTime(venue.venueDateTime)
+            tvDateAndTime.text = DateTimeUtils.formatVenueDetailsDateTime(venue.venueDateTime)
             tvLocationName.text = venue.locationName
             tvLocationAddress.text = venue.locationAddress
             tvLabelMembers.text = context.getString(R.string.venue_details_label_members_with_count, venue.memberCount)

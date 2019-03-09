@@ -108,7 +108,7 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
                 .setLabel(R.string.groups_label_topics)
                 .setLabelColor(colorPrimary)
                 .create())
-
+//        fabGroups.setOnClickListener { fabOverlay.show() }
         fabGroups.setOnActionSelectedListener { item ->
             return@setOnActionSelectedListener when (item.id) {
                 R.id.fabAddGroup -> {
@@ -126,6 +126,7 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
 
                 else -> false
             }
+
         }
     }
 

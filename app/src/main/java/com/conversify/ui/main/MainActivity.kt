@@ -56,22 +56,8 @@ class MainActivity : BaseLocationActivity() {
         createDeviceToken()
         viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
         fragmentSwitcher = FragmentSwitcher(supportFragmentManager, R.id.flMainContainer)
-        if (savedInstanceState == null) {
-            // On first launch add home fragment
-//            fragmentSwitcher.addFragment(HomeFragment(), HomeFragment.TAG)
-            Timber.d("Saved instance state is null")
-            checkPushNavigation()
-        } else {
-            // Restore the tab state to the last selected if activity state is restored
-            val tabIndex = savedInstanceState.getInt(EXTRA_SELECTED_TAB_INDEX, TAB_INDEX_HOME)
-            if (tabIndex != -1) {
-                bottomTabs.getTabAt(tabIndex)?.select()
-                Timber.d("Saved instance state exist. Selected tab index : $tabIndex")
-            }
-
-            val currentFragmentTag = savedInstanceState.getString(EXTRA_SELECTED_FRAGMENT_TAG)
-            fragmentSwitcher.setCurrentFragmentTag(currentFragmentTag)
-        }
+        if (savedInstanceState == null)
+            checkPushNavigation(savedInstanceState)
         setupBottomTabs()
         if (isNetworkActive())
             viewModel.getNotificationCount()
@@ -84,7 +70,7 @@ class MainActivity : BaseLocationActivity() {
         })
     }
 
-    private fun checkPushNavigation() {
+    private fun checkPushNavigation(savedInstanceState: Bundle?) {
         val type = intent.getStringExtra("TYPE")
         if (!type.isNullOrEmpty()) {
             when (type) {
@@ -123,19 +109,30 @@ class MainActivity : BaseLocationActivity() {
                 }
                 else -> {
                     bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)?.select()
-
                     if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG))
                         fragmentSwitcher.addFragment(NotificationsFragment(), NotificationsFragment.TAG)
                 }
             }
 
         } else {
-            fragmentSwitcher.addFragment(HomeFragment(), HomeFragment.TAG)
+            if (savedInstanceState == null) {
+                // On first launch add home fragment
+                fragmentSwitcher.addFragment(HomeFragment(), HomeFragment.TAG)
+                Timber.d("Saved instance state is null")
+            } else {
+                // Restore the tab state to the last selected if activity state is restored
+                val tabIndex = savedInstanceState.getInt(EXTRA_SELECTED_TAB_INDEX, TAB_INDEX_HOME)
+                if (tabIndex != -1) {
+                    bottomTabs.getTabAt(tabIndex)?.select()
+                    Timber.d("Saved instance state exist. Selected tab index : $tabIndex")
+                }
 
+                val currentFragmentTag = savedInstanceState.getString(EXTRA_SELECTED_FRAGMENT_TAG)
+                fragmentSwitcher.setCurrentFragmentTag(currentFragmentTag)
+            }
         }
 
     }
-
 
     private fun createDeviceToken() {
         FirebaseInstanceId.getInstance().instanceId

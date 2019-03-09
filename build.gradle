@@ -32,7 +32,8 @@ buildscript {
         crashlyticsVersion = '2.9.9'
         flexboxVersion = '1.0.0'    // (1.1.0 and above is based on AndroidX)
         asymmetricGridView = '2.0.1'
-        multiContactPicker='1.8.5'
+        multiContactPicker = '1.8.5'
+        eventBus = '3.1.1'
     }
 
     repositories {

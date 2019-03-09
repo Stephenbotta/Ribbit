@@ -6,7 +6,9 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.SimpleItemAnimator
@@ -22,6 +24,7 @@ import com.conversify.data.remote.models.loginsignup.InterestDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.data.remote.models.post.PostReplyDto
+import com.conversify.databinding.BottomSheetDialogDeleteCommentBinding
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.SocialEditText
@@ -56,6 +59,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     private var replyingToTopLevelReply: PostReplyDto? = null
     private lateinit var postId: String
     private lateinit var postType: String
+    private lateinit var groupPostDto: GroupPostDto
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +69,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
 
         val groupPost = intent.getParcelableExtra<GroupPostDto>(EXTRA_POST)
         viewModel.start(groupPost)
-
+        groupPostDto = groupPost
         val groupName = groupPost.group?.name ?: ""
         val categoryName = String.format("[%s]", groupPost.category?.name ?: "")
 
@@ -156,7 +160,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
 
                     // By default views related to reply edit text are not visible.
                     if (!etReply.isVisible()) {
-                        dividerReplyEditText.visible()
+                        dividerReplyEditText.gone()
                         etReply.visible()
                         ivLikePost.visible()
                     }
@@ -277,6 +281,25 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
             }
         })
 
+        viewModel.deleteCommentReply.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    getReplies()
+                }
+
+                Status.ERROR -> {
+                    // Ignored
+                    handleError(resource.error)
+                }
+
+                Status.LOADING -> {
+                    // Ignored
+                }
+            }
+        })
+
     }
 
     @SuppressLint("RestrictedApi")
@@ -383,6 +406,33 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     override fun onGroupClicked(group: GroupDto) {
     }
 
+    override fun onLongPress(parentReply: PostReplyDto) {
+        if (parentReply.commentBy?.id == UserManager.getUserId()) {
+            bottomSheet(parentReply)
+        } else if (parentReply.replyBy?.id == UserManager.getUserId()) {
+            bottomSheet(parentReply)
+        }
+    }
+
+    private fun deleteComment(parentReply: PostReplyDto) {
+        val map = hashMapOf<String, String>()
+        map["commentId"] = parentReply.id ?: ""
+        viewModel.deleteCommentReply(map)
+    }
+
+    private fun bottomSheet(parentReply: PostReplyDto) {
+        val inflater = layoutInflater
+        val binding = DataBindingUtil.inflate<BottomSheetDialogDeleteCommentBinding>(inflater, R.layout.bottom_sheet_dialog_delete_comment, null, false)
+        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.setContentView(binding.root)
+        bottomSheetDialog.show()
+        binding.tvDelete.setOnClickListener {
+            deleteComment(parentReply)
+            bottomSheetDialog.dismiss()
+        }
+        binding.tvCancel.setOnClickListener { bottomSheetDialog.dismiss() }
+    }
+
     override fun onUserProfileClicked(profile: ProfileDto) {
         val data = UserCrossedDto()
         data.profile = profile
@@ -450,6 +500,29 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     override fun onUserMentionSuggestionClicked(user: ProfileDto) {
         etReply.updateMentionBeforeCursor(user.userName ?: "")
         viewFlipperUserMentions.gone()
+    }
+
+    override fun onUserMentionLongPressed(user: ProfileDto) {
+        shortToast(user.userName ?: "")
+    }
+
+    private fun bottomSheet(user: ProfileDto) {
+        val inflater = layoutInflater
+        val binding = DataBindingUtil.inflate<BottomSheetDialogDeleteCommentBinding>(inflater, R.layout.bottom_sheet_dialog_delete_comment, null, false)
+        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.setContentView(binding.root)
+        bottomSheetDialog.show()
+        binding.tvDelete.setOnClickListener {
+            deleteReply(user)
+            bottomSheetDialog.dismiss()
+        }
+        binding.tvCancel.setOnClickListener { bottomSheetDialog.dismiss() }
+    }
+
+    private fun deleteReply(user: ProfileDto) {
+        val map = hashMapOf<String, String>()
+        map["replyId"] = user.id ?: ""
+        viewModel.deleteCommentReply(map)
     }
 
     override fun onBackPressed() {

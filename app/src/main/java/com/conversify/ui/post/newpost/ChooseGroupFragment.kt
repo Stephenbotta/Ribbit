@@ -77,6 +77,7 @@ class ChooseGroupFragment : BaseFragment() {
     }
 
     private fun navigateToNewPostFragment(group: GroupDto? = null) {
+        (activity as NewPostActivity).changeBackButtonText(getString(R.string.back))
         val fragment = NewPostFragment.newInstance(group)
         fragmentManager?.apply {
             beginTransaction()

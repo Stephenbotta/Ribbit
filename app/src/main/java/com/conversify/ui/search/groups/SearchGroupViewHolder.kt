@@ -52,7 +52,7 @@ class SearchGroupViewHolder(itemView: View,
             }
 
             ApiConstants.REQUEST_STATUS_REJECTED -> {
-                itemView.tvRequestStatus.visible()
+                itemView.tvRequestStatus.gone()
                 itemView.tvRequestStatus.setText(R.string.venues_label_rejected)
             }
 

@@ -4,6 +4,7 @@ import android.app.Application
 import android.location.Geocoder
 import android.location.Location
 import com.conversify.data.local.UserManager
+import com.conversify.data.local.models.MessageEvent
 import com.conversify.data.remote.RetrofitClient
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.RequestCountDto
@@ -18,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,6 +27,7 @@ import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
+
 
 class MainViewModel(application: Application) : BaseViewModel(application), CoroutineScope {
     private val socketManager by lazy { SocketManager.getInstance() }
@@ -44,6 +47,7 @@ class MainViewModel(application: Application) : BaseViewModel(application), Coro
             try {
                 val requestCountData = gson.fromJson(notificationData.toString(), RequestCountDto::class.java)
                 notificationCount.postValue(requestCountData.requestCount ?: "")
+                EventBus.getDefault().post(MessageEvent(SocketManager.EVENT_REQUEST_COUNT))
             } catch (exception: Exception) {
                 Timber.w(exception)
             }

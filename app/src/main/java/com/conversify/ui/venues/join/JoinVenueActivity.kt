@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import com.conversify.R
 import com.conversify.data.local.PrefsManager
 import com.conversify.data.local.UserManager
@@ -57,10 +58,21 @@ class JoinVenueActivity : BaseActivity(), JoinVenueDetailsAdapter.Callback {
         btnBack.setOnClickListener { onBackPressed() }
 
         btnJoin.setOnClickListener {
-            if (isNetworkActiveWithMessage()) {
-                venuesViewModel.joinVenue(venue)
-            }
+            showAlertDialog()
         }
+    }
+
+    private fun showAlertDialog() {
+        AlertDialog.Builder(this)
+                .setMessage(R.string.join_venue_request_msg)
+                .setPositiveButton(R.string.join_venue_request_btn_agree) { _, _ ->
+                    if (isNetworkActiveWithMessage()) {
+                        venuesViewModel.joinVenue(venue)
+                    }
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+                .show()
     }
 
     private fun setupVenueDetailsRecycler(venue: VenueDto) {

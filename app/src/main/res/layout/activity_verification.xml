@@ -36,7 +36,7 @@
     <TextView
         android:id="@+id/tvEmailVerified"
         android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="40dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
@@ -46,7 +46,7 @@
         android:paddingEnd="8dp"
         android:text="@string/verification_label_email"
         android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider_1" />
@@ -54,14 +54,14 @@
     <TextView
         android:id="@+id/tvLabelEmail"
         android:layout_width="wrap_content"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="40dp"
         android:layout_marginStart="32dp"
         android:fontFamily="@font/roboto_text_regular"
         android:gravity="center"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:textColor="@color/textGray"
-        android:textSize="16sp"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvEmailVerified"
         tools:text="example@domain.com" />
@@ -69,7 +69,7 @@
     <TextView
         android:id="@+id/tvMobileVerified"
         android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="40dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/roboto_text_bold"
@@ -78,7 +78,7 @@
         android:paddingEnd="8dp"
         android:text="@string/verification_label_mobile"
         android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvLabelEmail" />
@@ -86,7 +86,7 @@
     <TextView
         android:id="@+id/tvLabelMobile"
         android:layout_width="wrap_content"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="40dp"
         android:layout_marginStart="32dp"
         android:fontFamily="@font/roboto_text_regular"
         android:gravity="center"
@@ -94,7 +94,7 @@
         android:paddingEnd="8dp"
         android:text="@string/settings_profile_label_invite_people"
         android:textColor="@color/textGray"
-        android:textSize="16sp"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvMobileVerified"
         tools:text="9876543210" />
@@ -102,8 +102,9 @@
     <TextView
         android:id="@+id/tvUploadDocument"
         android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="50dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/background_create_venue_upload_document"
         android:drawableStart="@drawable/ic_attachment"
@@ -115,7 +116,7 @@
         android:paddingEnd="8dp"
         android:text="@string/verification_btn_upload_document"
         android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelMobile" />

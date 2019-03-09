@@ -22,10 +22,7 @@ import com.conversify.data.remote.models.groups.AddParticipantsDto
 import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.databinding.BottomSheetDialogInviteVenueBinding
-import com.conversify.extensions.handleError
-import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.shareText
-import com.conversify.extensions.shortToast
+import com.conversify.extensions.*
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.people.details.PeopleDetailsActivity
@@ -51,12 +48,13 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         }
     }
 
-    private val venues by lazy { intent.getParcelableExtra<VenueDto>(EXTRA_VENUE) }
-    private val members by lazy { intent.getParcelableArrayListExtra<MemberDto>(EXTRA_VENUE_MEMBERS) }
+    //    private val venues by lazy { intent.getParcelableExtra<VenueDto>(EXTRA_VENUE) }
+//    private val members by lazy { intent.getParcelableArrayListExtra<MemberDto>(EXTRA_VENUE_MEMBERS) }
     private lateinit var viewModel: VenueDetailsViewModel
     private lateinit var loadingDialog: LoadingDialog
-    private lateinit var venue: VenueDto
-    private lateinit var member: MemberDto
+    private lateinit var venues: VenueDto
+    private lateinit var venueDetailsAdapter: VenueDetailsAdapter
+    private lateinit var members: ArrayList<MemberDto>
     private val gson by lazy { Gson() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,12 +63,14 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
 
         viewModel = ViewModelProviders.of(this)[VenueDetailsViewModel::class.java]
         loadingDialog = LoadingDialog(this)
-        setupToolbar()
+        venues = intent.getParcelableExtra(EXTRA_VENUE)
+        members = intent.getParcelableArrayListExtra(EXTRA_VENUE_MEMBERS)
         observeChanges()
+        setupRecyclerView()
         setupVenueDetailsRecycler()
         callApi(venues.id ?: "")
-
         observeInviteUsersCallback()
+        setListener()
     }
 
     private fun setupToolbar() {
@@ -80,16 +80,51 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
             setHomeAsUpIndicator(R.drawable.ic_back_white)
         }
 
-        val boldTypeface = ResourcesCompat.getFont(this, R.font.roboto_text_bold)
-        collapsingToolbar.setExpandedTitleTypeface(boldTypeface)
-        collapsingToolbar.setCollapsedTitleTypeface(boldTypeface)
-        collapsingToolbar.title = venues.name
+        setVenueTitle(venues.name ?: "")
 
         val thumbnail = GlideApp.with(this).load(venues.imageUrl?.thumbnail)
         GlideApp.with(this)
                 .load(venues.imageUrl?.original)
                 .thumbnail(thumbnail)
                 .into(ivVenue)
+
+        if (venues.adminId == UserManager.getUserId()) {
+            ivEdit.visible()
+        } else {
+            ivEdit.gone()
+        }
+    }
+
+    private fun setListener() {
+        ivEdit.setOnClickListener {
+            ivEdit.gone()
+            ivSave.visible()
+            etVenueTitle.visible()
+            setVenueTitle(" ")
+        }
+        ivSave.setOnClickListener {
+            val title = etVenueTitle.text.toString()
+            if (title.isNotBlank()) {
+                shortToast(title)
+                setVenueTitle(title)
+                ivEdit.visible()
+                ivSave.gone()
+                etVenueTitle.setText("")
+                etVenueTitle.gone()
+            } else {
+                ivEdit.visible()
+                ivSave.gone()
+                etVenueTitle.gone()
+                setVenueTitle(venues.name ?: "")
+            }
+        }
+    }
+
+    private fun setVenueTitle(title: String) {
+        val boldTypeface = ResourcesCompat.getFont(this, R.font.roboto_text_bold)
+        collapsingToolbar.setExpandedTitleTypeface(boldTypeface)
+        collapsingToolbar.setCollapsedTitleTypeface(boldTypeface)
+        collapsingToolbar.title = title
     }
 
     private fun callApi(venueId: String) {
@@ -104,8 +139,11 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
             when (resource.status) {
                 Status.SUCCESS -> {
                     resource.data?.let { venue ->
-
-
+                        this.venues = venue
+                        val member = venue.members ?: arrayListOf()
+                        this.members.clear()
+                        this.members = member
+                        setupVenueDetailsRecycler()
                     }
 
                 }
@@ -166,9 +204,12 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         viewModel.archiveVenue.observe(this, exitOrArchiveVenueObserver)
     }
 
-    private fun setupVenueDetailsRecycler() {
-        val venueDetailsAdapter = VenueDetailsAdapter(GlideApp.with(this), this)
+    private fun setupRecyclerView() {
+        venueDetailsAdapter = VenueDetailsAdapter(GlideApp.with(this), this)
         rvVenueDetails.adapter = venueDetailsAdapter
+    }
+
+    private fun setupVenueDetailsRecycler() {
 
         val items = mutableListOf<Any>()
         items.add(venues)    // Header
@@ -177,6 +218,7 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         items.add(venues.adminId ?: "")    // Exit group
 
         venueDetailsAdapter.displayItems(items)
+        setupToolbar()
     }
 
     private fun invitePeopleToVenue() {

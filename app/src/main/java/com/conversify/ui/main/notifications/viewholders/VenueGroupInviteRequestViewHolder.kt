@@ -104,7 +104,7 @@ class VenueGroupInviteRequestViewHolder(itemView: View,
                 itemView.context.getString(R.string.notifications_label_send_request_to_join, username, venueName)
             }
             PushType.REQUEST_VENUE -> {
-                itemView.context.getString(R.string.notifications_label_accept_invite_venue, username, venueName)
+                itemView.context.getString(R.string.notifications_label_send_request_to_join_venue, username, venueName)
             }
             PushType.INVITE_VENUE -> {
                 itemView.context.getString(R.string.notifications_label_invite_venue, username, venueName)

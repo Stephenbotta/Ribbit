@@ -68,6 +68,7 @@ class NewPostActivity : BaseActivity() {
                                 .add(R.id.flContainer, NewPostFragment(), NewPostFragment.TAG)
                                 .commit()
                     } else {
+                        changeBackButtonText(getString(R.string.home))
                         supportFragmentManager.beginTransaction()
                                 .add(R.id.flContainer, ChooseGroupFragment(), ChooseGroupFragment.TAG)
                                 .commit()
@@ -87,5 +88,9 @@ class NewPostActivity : BaseActivity() {
         supportFragmentManager.beginTransaction()
                 .add(R.id.flContainer, NewPostFragment.newInstance(groupId), NewPostFragment.TAG)
                 .commit()
+    }
+
+    fun changeBackButtonText(text: String) {
+        btnBack.text = text
     }
 }

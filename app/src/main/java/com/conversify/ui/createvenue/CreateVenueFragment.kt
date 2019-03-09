@@ -22,6 +22,8 @@ import com.conversify.data.remote.models.venues.CreateEditVenueRequest
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.creategroup.addparticipants.AddParticipantsActivity
+import com.conversify.ui.creategroup.create.CreateGroupAdapter
+import com.conversify.ui.custom.AppToast
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.utils.*
 import com.conversify.utils.PermissionUtils
@@ -32,7 +34,7 @@ import timber.log.Timber
 import java.io.File
 
 @RuntimePermissions
-class CreateVenueFragment : BaseFragment() {
+class CreateVenueFragment : BaseFragment(), CreateGroupAdapter.Callback {
     companion object {
         const val TAG = "CreateVenueFragment"
         private const val ARGUMENT_CATEGORY = "ARGUMENT_CATEGORY"
@@ -52,6 +54,7 @@ class CreateVenueFragment : BaseFragment() {
     private lateinit var mediaPicker: MediaPicker
     private lateinit var createVenueMenuItem: MenuItem
     private var memberCount = 0
+    private lateinit var createGroupAdapter: CreateGroupAdapter
 
     private var getSampledImage: GetSampledImage? = null
     private var selectedVenueImageFile: File? = null
@@ -79,24 +82,35 @@ class CreateVenueFragment : BaseFragment() {
         observeChanges()
         tvCategory.text = category?.name
         tvLabelMembers.text = context?.getString(R.string.venue_details_label_members_with_count, memberCount)
+        setupCreateGroupRecycler()
+    }
+
+    private fun setupCreateGroupRecycler() {
+        createGroupAdapter = CreateGroupAdapter(GlideApp.with(this), this)
+        rvParticipants.adapter = createGroupAdapter
     }
 
     private fun setListeners() {
         mediaPicker.setImagePickerListener { imageFile ->
-            getSampledImage?.removeListener()
-            getSampledImage?.cancel(true)
+            if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
+                getSampledImage?.removeListener()
+                getSampledImage?.cancel(true)
 
-            getSampledImage = GetSampledImage()
-            getSampledImage?.setListener { sampledImage ->
-                selectedVenueImageFile = sampledImage
-                GlideApp.with(this)
-                        .load(sampledImage)
-                        .placeholder(R.color.greyImageBackground)
-                        .error(R.color.greyImageBackground)
-                        .into(ivVenue)
+                getSampledImage = GetSampledImage()
+                getSampledImage?.setListener { sampledImage ->
+                    selectedVenueImageFile = sampledImage
+                    GlideApp.with(this)
+                            .load(sampledImage)
+                            .placeholder(R.color.greyImageBackground)
+                            .error(R.color.greyImageBackground)
+                            .into(ivVenue)
+                }
+                val imageDirectory = FileUtils.getAppCacheDirectoryPath(requireActivity())
+                getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
+            } else {
+                AppToast.longToast(requireContext(), getString(R.string.message_select_smaller_image))
+                return@setImagePickerListener
             }
-            val imageDirectory = FileUtils.getAppCacheDirectoryPath(requireActivity())
-            getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
         }
 
         ivVenue.setOnClickListener { showImagePickerWithPermissionCheck() }
@@ -156,6 +170,7 @@ class CreateVenueFragment : BaseFragment() {
 
             when (resource.status) {
                 Status.SUCCESS -> {
+                    activity?.shortToast(getString(R.string.venue_created_successfully))
                     loadingDialog.setLoading(false)
                     requireActivity().setResult(Activity.RESULT_OK)
                     requireActivity().finish()
@@ -332,6 +347,7 @@ class CreateVenueFragment : BaseFragment() {
                     // Display the selected participants and update the member count
                     memberCount = request.participantIds?.size ?: 0
                     tvLabelMembers.text = context?.getString(R.string.venue_details_label_members_with_count, memberCount)
+                    createGroupAdapter.displayMembers(participants)
                 }
             }
 
@@ -339,6 +355,18 @@ class CreateVenueFragment : BaseFragment() {
                 mediaPicker.onActivityResult(requestCode, resultCode, data)
             }
         }
+    }
+
+    override fun onGroupImageClicked() {
+    }
+
+    override fun onGroupTitleTextChanged() {
+    }
+
+    override fun onGroupDescriptionTextChanged() {
+    }
+
+    override fun onAddParticipantsClicked() {
     }
 
     override fun onDestroyView() {

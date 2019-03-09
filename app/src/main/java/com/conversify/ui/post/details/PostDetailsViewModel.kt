@@ -31,6 +31,7 @@ class PostDetailsViewModel : ViewModel() {
     val likeUnlikeReply by lazy { SingleLiveEvent<Resource<Any>>() }
     val mentionSuggestions by lazy { SingleLiveEvent<Resource<List<ProfileDto>>>() }
     val deletePost by lazy { SingleLiveEvent<Resource<Any>>() }
+    val deleteCommentReply by lazy { SingleLiveEvent<Resource<Any>>() }
 
     /*
     * Contains replyId as key and its respective api call as value.
@@ -365,6 +366,28 @@ class PostDetailsViewModel : ViewModel() {
                     }
                 })
     }
+
+
+    fun deleteCommentReply(hashMap: HashMap<String, String>?) {
+        deleteCommentReply.value = Resource.loading()
+
+        RetrofitClient.conversifyApi
+                .deleteCommentReply(hashMap)
+                .enqueue(object : Callback<ApiResponse<Any>> {
+                    override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
+                        if (response.isSuccessful) {
+                            deleteCommentReply.value = Resource.success(response.body()?.data)
+                        } else {
+                            deleteCommentReply.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                        deleteCommentReply.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
 
     fun cancelGetMentionSuggestions() {
         mentionSuggestionsCall?.cancel()

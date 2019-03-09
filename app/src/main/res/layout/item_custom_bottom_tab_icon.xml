@@ -28,7 +28,6 @@
         android:visibility="gone"
         android:maxLines="1"
         android:singleLine="true"
-        android:text="3"
         android:textColor="@color/white"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"

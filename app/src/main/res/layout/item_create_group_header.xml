@@ -5,6 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <View
+        android:id="@+id/dividerBelowPrivate"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/greyImageBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tvCategory"
         android:layout_width="wrap_content"
@@ -99,15 +108,28 @@
         app:layout_constraintTop_toBottomOf="@id/tilGroupTitle"
         app:switchPadding="8dp" />
 
-    <View
-        android:id="@+id/dividerBelowPrivate"
+    <EditText
+        android:id="@+id/etDescription"
+        style="@style/AppTheme.EditText"
         android:layout_width="0dp"
-        android:layout_height="4dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:background="@color/greyImageBackground"
+        android:layout_marginEnd="16dp"
+        android:gravity="start|top"
+        android:hint="@string/description"
+        android:fontFamily="@font/roboto_text_regular"
+        android:importantForAutofill="no"
+        android:imeOptions="actionNone"
+        android:inputType="textPersonName|textCapWords|textMultiLine"
+        android:padding="4dp"
+        android:singleLine="false"
+        android:textColor="@color/textGray"
+        android:textColorHint="@color/textGrayMedium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/switchPrivateGroup" />
+        app:layout_constraintTop_toBottomOf="@id/switchPrivateGroup"
+        tools:ignore="UnusedAttribute" />
 
     <TextView
         android:id="@+id/tvLabelMembers"
@@ -124,6 +146,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dividerBelowPrivate"
+        app:layout_constraintTop_toBottomOf="@id/etDescription"
         tools:text="Members · 7" />
+
 </android.support.constraint.ConstraintLayout>

@@ -21,7 +21,9 @@ import com.conversify.databinding.BottomSheetDialogConverseNearbyBinding
 import com.conversify.extensions.handleError
 import com.conversify.extensions.hideKeyboard
 import com.conversify.extensions.longToast
+import com.conversify.extensions.shortToast
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.custom.AppToast
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.loginsignup.chooseinterests.ChooseInterestsFragment
 import com.conversify.ui.profile.ProfileInterestsAdapter
@@ -103,17 +105,22 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         tvPostingIn.setOnClickListener { getPublicly() }
         ivImage.setOnClickListener { postPic() }
         mediaPicker.setImagePickerListener { imageFile ->
-            getSampledImage?.removeListener()
-            getSampledImage?.cancel(true)
-            getSampledImage = GetSampledImage()
-            getSampledImage?.setListener { sampledImage ->
-                selectedImage = sampledImage
-                GlideApp.with(this)
-                        .load(sampledImage)
-                        .into(ivImage)
+            if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
+                getSampledImage?.removeListener()
+                getSampledImage?.cancel(true)
+                getSampledImage = GetSampledImage()
+                getSampledImage?.setListener { sampledImage ->
+                    selectedImage = sampledImage
+                    GlideApp.with(this)
+                            .load(sampledImage)
+                            .into(ivImage)
+                }
+                val imageDirectory = FileUtils.getAppCacheDirectoryPath(requireContext())
+                getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
+            } else {
+                AppToast.longToast(requireContext(), R.string.message_select_smaller_image)
+                return@setImagePickerListener
             }
-            val imageDirectory = FileUtils.getAppCacheDirectoryPath(requireContext())
-            getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
         }
 
         etPostDescription.addTextChangedListener(object : TextWatcher {
@@ -155,6 +162,7 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
 
             when (resource.status) {
                 Status.SUCCESS -> {
+                    activity?.shortToast(getString(R.string.post_upload_successfully))
                     loadingDialog.setLoading(false)
                     requireActivity().setResult(Activity.RESULT_OK)
                     requireActivity().finish()
@@ -262,7 +270,7 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
                     if (selectedUserIdList.isNotEmpty()) {
                         tvPostingIn.text = getString(R.string.hide_info_label_people_count, selectedUserIdList.size)
                     } else {
-                        tvPostingIn.text = getString(R.string.hide_info_my_followers)
+                        tvPostingIn.text = getString(R.string.converse_path_info_followers)
                     }
                 }
 

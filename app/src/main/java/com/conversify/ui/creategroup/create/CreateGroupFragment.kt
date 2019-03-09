@@ -22,6 +22,7 @@ import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
 import com.conversify.ui.creategroup.addparticipants.AddParticipantsActivity
+import com.conversify.ui.custom.AppToast
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.utils.*
 import com.conversify.utils.PermissionUtils
@@ -90,16 +91,21 @@ class CreateGroupFragment : BaseFragment(), CreateGroupAdapter.Callback {
 
     private fun setListeners() {
         mediaPicker.setImagePickerListener { imageFile ->
-            getSampledImage?.removeListener()
-            getSampledImage?.cancel(true)
+            if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
+                getSampledImage?.removeListener()
+                getSampledImage?.cancel(true)
 
-            getSampledImage = GetSampledImage()
-            getSampledImage?.setListener { sampledImage ->
-                createGroupHeader.selectedGroupImageFile = sampledImage
-                createGroupAdapter.updateHeader()
+                getSampledImage = GetSampledImage()
+                getSampledImage?.setListener { sampledImage ->
+                    createGroupHeader.selectedGroupImageFile = sampledImage
+                    createGroupAdapter.updateHeader()
+                }
+                val imageDirectory = FileUtils.getAppCacheDirectoryPath(requireActivity())
+                getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
+            } else {
+                AppToast.longToast(requireContext(), R.string.message_select_smaller_image)
+                return@setImagePickerListener
             }
-            val imageDirectory = FileUtils.getAppCacheDirectoryPath(requireActivity())
-            getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
         }
     }
 
@@ -147,6 +153,9 @@ class CreateGroupFragment : BaseFragment(), CreateGroupAdapter.Callback {
         startActivityForResult(intent, AppConstants.REQ_CODE_ADD_PARTICIPANTS)
     }
 
+    override fun onGroupDescriptionTextChanged() {
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_fragment_create_venue, menu)
 
@@ -167,7 +176,7 @@ class CreateGroupFragment : BaseFragment(), CreateGroupAdapter.Callback {
                 } else {
                     AppConstants.PRIVATE_FALSE
                 }
-
+                request.description = createGroupHeader.description
                 viewModel.createGroup(request, createGroupHeader.selectedGroupImageFile)
             }
             return true

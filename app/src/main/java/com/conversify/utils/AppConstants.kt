@@ -12,6 +12,7 @@ object AppConstants {
     const val PRIVATE_FALSE = 2
 
     const val VENUE_VERIFICATION_FILE_SIZE_LIMIT: Long = 5 * 1024 * 1024  // 5 MB
+    const val MAXIMUM_IMAGE_SIZE: Long = 25 * 1024 * 1024  // 25 MB
     const val MAXIMUM_VIDEO_SIZE: Long = 200 * 1024 * 1024    // 200 MB
     const val MINIMUM_FREE_SPACE: Long = 250 * 1024 * 1024    // 250 MB
 

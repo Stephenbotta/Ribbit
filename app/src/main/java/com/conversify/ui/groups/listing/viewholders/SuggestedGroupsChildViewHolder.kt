@@ -48,8 +48,8 @@ class SuggestedGroupsChildViewHolder(itemView: View,
             }
 
             ApiConstants.REQUEST_STATUS_REJECTED -> {
-                itemView.tvRequestStatus.visible()
-                itemView.tvRequestStatus.text = ""//(R.string.venues_label_rejected)
+                itemView.tvRequestStatus.gone()
+                itemView.tvRequestStatus.setText(R.string.venues_label_rejected)
             }
 
             else -> {

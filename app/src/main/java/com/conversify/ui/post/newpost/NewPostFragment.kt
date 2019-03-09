@@ -21,6 +21,7 @@ import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.post.CreatePostRequest
 import com.conversify.extensions.*
 import com.conversify.ui.base.BaseFragment
+import com.conversify.ui.custom.AppToast
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.utils.*
 import com.conversify.utils.PermissionUtils
@@ -131,22 +132,35 @@ class NewPostFragment : BaseFragment() {
             startActivityForResult(builder.build(activity), AppConstants.REQ_CODE_PLACE_PICKER)
         }
         mediaPicker.setImagePickerListener { imageFile ->
-            getSampledImage?.removeListener()
-            getSampledImage?.cancel(true)
+            if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
+                getSampledImage?.removeListener()
+                getSampledImage?.cancel(true)
 
-            getSampledImage = GetSampledImage()
-            getSampledImage?.setListener { sampledImage ->
-                selectedImage = sampledImage
-                GlideApp.with(this)
-                        .load(sampledImage)
-                        .into(ivImage)
-                createPostMenuItem.isEnabled = true
+                getSampledImage = GetSampledImage()
+                getSampledImage?.setListener { sampledImage ->
+                    selectedImage = sampledImage
+                    GlideApp.with(this)
+                            .load(sampledImage)
+                            .into(ivImage)
+                    createPostMenuItem.isEnabled = true
+                    ivDelete.visible()
+                }
+
+                val imageDirectory = FileUtils.getAppCacheDirectoryPath(requireActivity())
+                getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
+            } else {
+                AppToast.longToast(requireContext(), R.string.message_select_smaller_image)
+                return@setImagePickerListener
             }
 
-            val imageDirectory = FileUtils.getAppCacheDirectoryPath(requireActivity())
-            getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
         }
 
+        ivDelete.setOnClickListener {
+            ivDelete.gone()
+            createPostMenuItem.isEnabled = isValidPost()
+            selectedImage = null
+            ivImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_add_image))
+        }
         etPostText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -160,12 +174,19 @@ class NewPostFragment : BaseFragment() {
         })
     }
 
+    private fun isValidPost(): Boolean {
+        return if (etPostText.text.toString().isNotBlank())
+            return true
+        else false
+    }
+
     private fun observeChanges() {
         viewModel.createPost.observe(this, Observer { resource ->
             resource ?: return@Observer
 
             when (resource.status) {
                 Status.SUCCESS -> {
+                    activity?.shortToast(getString(R.string.post_upload_successfully))
                     loadingDialog.setLoading(false)
                     requireActivity().setResult(Activity.RESULT_OK)
                     requireActivity().finish()

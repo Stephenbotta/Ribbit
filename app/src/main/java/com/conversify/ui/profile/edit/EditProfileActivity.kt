@@ -23,6 +23,7 @@ import com.conversify.extensions.hideKeyboard
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseActivity
+import com.conversify.ui.custom.AppToast
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.utils.*
 import com.conversify.utils.PermissionUtils
@@ -85,19 +86,24 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
         tvChangeProfilePhoto.setOnClickListener(this)
 
         mediaPicker.setImagePickerListener { imageFile ->
-            getSampledImage?.removeListener()
-            getSampledImage?.cancel(true)
+            if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
+                getSampledImage?.removeListener()
+                getSampledImage?.cancel(true)
 
-            getSampledImage = GetSampledImage()
-            getSampledImage?.setListener { sampledImage ->
-                selectedImage = sampledImage
-                GlideApp.with(this)
-                        .load(sampledImage)
-                        .into(ivProfilePic)
+                getSampledImage = GetSampledImage()
+                getSampledImage?.setListener { sampledImage ->
+                    selectedImage = sampledImage
+                    GlideApp.with(this)
+                            .load(sampledImage)
+                            .into(ivProfilePic)
+                }
+
+                val imageDirectory = FileUtils.getAppCacheDirectoryPath(this)
+                getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
+            } else {
+                AppToast.longToast(this, R.string.message_select_smaller_image)
+                return@setImagePickerListener
             }
-
-            val imageDirectory = FileUtils.getAppCacheDirectoryPath(this)
-            getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
         }
 
         editUserName.addTextChangedListener(object : TextWatcher {
@@ -151,7 +157,7 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
         data.userName = editUserName.text.toString()
         if (editWebsite.text.toString().isBlank())
             editWebsite.setText(" ")
-            data.website = editWebsite.text.toString()
+        data.website = editWebsite.text.toString()
         if (editBio.text.toString().isBlank())
             editBio.setText(" ")
         data.bio = editBio.text.toString()

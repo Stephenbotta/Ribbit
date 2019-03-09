@@ -14,6 +14,7 @@ import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.handleError
 import com.conversify.extensions.longToast
 import com.conversify.ui.base.BaseActivity
+import com.conversify.ui.custom.AppToast
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.loginsignup.verification.VerificationFragment
 import com.conversify.utils.*
@@ -67,18 +68,23 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
         tvMobileVerified.setOnClickListener(this)
         tvUploadDocument.setOnClickListener(this)
         mediaPicker.setImagePickerListener { imageFile ->
-            getSampledImage?.removeListener()
-            getSampledImage?.cancel(true)
+            if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
+                getSampledImage?.removeListener()
+                getSampledImage?.cancel(true)
 
-            getSampledImage = GetSampledImage()
-            getSampledImage?.setListener { sampledImage ->
-                selectedImage = sampledImage
-                apiFlag = 3
-                viewModel.settingsVerification(hashMapOf(), selectedImage)
+                getSampledImage = GetSampledImage()
+                getSampledImage?.setListener { sampledImage ->
+                    selectedImage = sampledImage
+                    apiFlag = 3
+                    viewModel.settingsVerification(hashMapOf(), selectedImage)
+                }
+
+                val imageDirectory = FileUtils.getAppCacheDirectoryPath(this)
+                getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
+            } else {
+                AppToast.longToast(applicationContext, R.string.message_select_smaller_image)
+                return@setImagePickerListener
             }
-
-            val imageDirectory = FileUtils.getAppCacheDirectoryPath(this)
-            getSampledImage?.sampleImage(imageFile.absolutePath, imageDirectory, 600)
         }
     }
 

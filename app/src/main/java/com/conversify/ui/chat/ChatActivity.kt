@@ -208,7 +208,11 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         when (flag) {
             AppConstants.REQ_CODE_VENUE_CHAT -> {
                 mediaPicker.setImagePickerListener { imageFile ->
-                    viewModel.sendImageMessage(imageFile)
+                    if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
+                        viewModel.sendImageMessage(imageFile)
+                    } else {
+                        AppToast.longToast(applicationContext, R.string.message_select_smaller_image)
+                    }
                 }
                 mediaPicker.setVideoPickerListener { videoFile ->
                     if (videoFile.length() < AppConstants.MAXIMUM_VIDEO_SIZE) {
@@ -222,7 +226,11 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
             }
             AppConstants.REQ_CODE_INDIVIDUAL_CHAT -> {
                 mediaPicker.setImagePickerListener { imageFile ->
-                    viewModelIndividual.sendImageMessage(imageFile)
+                    if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
+                        viewModelIndividual.sendImageMessage(imageFile)
+                    } else {
+                        AppToast.longToast(applicationContext, R.string.message_select_smaller_image)
+                    }
                 }
                 mediaPicker.setVideoPickerListener { videoFile ->
                     if (videoFile.length() < AppConstants.MAXIMUM_VIDEO_SIZE) {
@@ -236,7 +244,11 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
             }
             AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
                 mediaPicker.setImagePickerListener { imageFile ->
-                    viewModelChatIndividual.sendImageMessage(imageFile)
+                    if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
+                        viewModelChatIndividual.sendImageMessage(imageFile)
+                    } else {
+                        AppToast.longToast(applicationContext, R.string.message_select_smaller_image)
+                    }
                 }
                 mediaPicker.setVideoPickerListener { videoFile ->
                     if (videoFile.length() < AppConstants.MAXIMUM_VIDEO_SIZE) {
@@ -252,7 +264,11 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
             }
             AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
                 mediaPicker.setImagePickerListener { imageFile ->
-                    viewModelChatGroup.sendImageMessage(imageFile)
+                    if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
+                        viewModelChatGroup.sendImageMessage(imageFile)
+                    } else {
+                        AppToast.longToast(applicationContext, R.string.message_select_smaller_image)
+                    }
                 }
                 mediaPicker.setVideoPickerListener { videoFile ->
                     if (videoFile.length() < AppConstants.MAXIMUM_VIDEO_SIZE) {
@@ -266,7 +282,11 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
             }
             AppConstants.REQ_CODE_GROUP_CHAT -> {
                 mediaPicker.setImagePickerListener { imageFile ->
-                    viewModelGroup.sendImageMessage(imageFile)
+                    if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
+                        viewModelGroup.sendImageMessage(imageFile)
+                    } else {
+                        AppToast.longToast(applicationContext, R.string.message_select_smaller_image)
+                    }
                 }
                 mediaPicker.setVideoPickerListener { videoFile ->
                     if (videoFile.length() < AppConstants.MAXIMUM_VIDEO_SIZE) {
@@ -435,7 +455,6 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                     ?: "", flag)
             startActivityForResult(intent, flag)
         }
-
     }
 
     override fun onImageMessageClicked(chatMessage: ChatMessageDto) {

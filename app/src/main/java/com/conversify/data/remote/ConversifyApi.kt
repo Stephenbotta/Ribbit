@@ -214,6 +214,9 @@ interface ConversifyApi {
     @POST("user/addParticipants")
     fun addVenueParticipants(@Body request: AddVenueParticipantsRequest): Call<Any>
 
+    @POST("user/addParticipants")
+    fun addGroupParticipants(@Body request: AddGroupParticipantsRequest): Call<Any>
+
     @POST("user/crossedPeople")
     fun getCrossedPeople(): Call<ApiResponse<List<GetPeopleResponse>>>
 
@@ -302,6 +305,10 @@ interface ConversifyApi {
     @POST("user/deletePost")
     @FormUrlEncoded
     fun deleteGroupPost(@Field("postId") postId: String): Call<ApiResponse<Any>>
+
+    @POST("user/deleteCommentReply")
+    @FormUrlEncoded
+    fun deleteCommentReply(@FieldMap map: HashMap<String, String>?): Call<ApiResponse<Any>>
 
     @POST("user/updateDeviceToken")
     @FormUrlEncoded

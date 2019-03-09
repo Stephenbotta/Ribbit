@@ -56,7 +56,8 @@ class MessagingService : FirebaseMessagingService() {
             PushType.ACCEPT_REQUEST_FOLLOW, PushType.ALERT_CONVERSE_NEARBY_PUSH,
             PushType.ALERT_LOOK_NEARBY_PUSH, PushType.JOINED_VENUE, PushType.JOINED_GROUP,
             PushType.ACCEPT_REQUEST_GROUP, PushType.ACCEPT_REQUEST_VENUE,
-            PushType.ACCEPT_INVITE_GROUP, PushType.ACCEPT_INVITE_VENUE -> {
+            PushType.ACCEPT_INVITE_GROUP, PushType.ACCEPT_INVITE_VENUE,
+            PushType.INVITE_VENUE, PushType.INVITE_GROUP -> {
                 val id = data[ID]
 //                val byId = data["byId"]
                 intent.putExtra(ID, id)

@@ -22,10 +22,7 @@ import com.conversify.data.remote.models.groups.AddParticipantsDto
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.databinding.BottomSheetDialogInviteVenueBinding
-import com.conversify.extensions.handleError
-import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.shareText
-import com.conversify.extensions.shortToast
+import com.conversify.extensions.*
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.people.details.PeopleDetailsActivity
@@ -73,6 +70,13 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
         observeInviteUsersCallback()
     }
 
+    private fun setVenueTitle(title: String) {
+        val boldTypeface = ResourcesCompat.getFont(this, R.font.roboto_text_bold)
+        collapsingToolbar.setExpandedTitleTypeface(boldTypeface)
+        collapsingToolbar.setCollapsedTitleTypeface(boldTypeface)
+        collapsingToolbar.title = title
+    }
+
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
@@ -80,16 +84,46 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
             setHomeAsUpIndicator(R.drawable.ic_back_white)
         }
 
-        val boldTypeface = ResourcesCompat.getFont(this, R.font.roboto_text_bold)
-        collapsingToolbar.setExpandedTitleTypeface(boldTypeface)
-        collapsingToolbar.setCollapsedTitleTypeface(boldTypeface)
-        collapsingToolbar.title = group.name
+        setVenueTitle(group.name ?: "")
 
         val thumbnail = GlideApp.with(this).load(group.imageUrl?.thumbnail)
         GlideApp.with(this)
                 .load(group.imageUrl?.original)
                 .thumbnail(thumbnail)
                 .into(ivVenue)
+
+        if (group.adminId == UserManager.getUserId()) {
+            ivEdit.visible()
+        } else {
+            ivEdit.gone()
+        }
+
+        setListener()
+    }
+
+    private fun setListener() {
+        ivEdit.setOnClickListener {
+            ivEdit.gone()
+            ivSave.visible()
+            etVenueTitle.visible()
+            setVenueTitle(" ")
+        }
+        ivSave.setOnClickListener {
+            val title = etVenueTitle.text.toString()
+            if (title.isNotBlank()) {
+                shortToast(title)
+                setVenueTitle(title)
+                ivEdit.visible()
+                ivSave.gone()
+                etVenueTitle.setText("")
+                etVenueTitle.gone()
+            } else {
+                ivEdit.visible()
+                ivSave.gone()
+                etVenueTitle.gone()
+                setVenueTitle(group.name ?: "")
+            }
+        }
     }
 
     private fun observeChanges() {

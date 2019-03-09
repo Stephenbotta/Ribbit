@@ -21,6 +21,18 @@
         app:riv_corner_radius="4dp"
         tools:src="@tools:sample/backgrounds/scenic" />
 
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerCrop"
+        android:src="@color/textGray8C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_corner_radius="4dp" />
+
     <ImageView
         android:id="@+id/ivPrivate"
         android:layout_width="wrap_content"

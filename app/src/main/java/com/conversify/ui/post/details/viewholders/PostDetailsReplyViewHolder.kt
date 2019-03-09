@@ -1,16 +1,20 @@
 package com.conversify.ui.post.details.viewholders
 
+import android.content.Intent
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
+import com.conversify.data.local.UserManager
+import com.conversify.data.remote.models.loginsignup.ProfileDto
+import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.data.remote.models.post.PostReplyDto
 import com.conversify.extensions.*
-import com.conversify.utils.AppUtils
-import com.conversify.utils.DateTimeUtils
-import com.conversify.utils.GlideRequests
-import com.conversify.utils.SpannableTextClickListener
+import com.conversify.ui.people.details.PeopleDetailsActivity
+import com.conversify.ui.profile.ProfileActivity
+import com.conversify.utils.*
 import kotlinx.android.synthetic.main.item_post_details_reply.view.*
 import timber.log.Timber
 
@@ -21,7 +25,19 @@ class PostDetailsReplyViewHolder(itemView: View,
     private val subLevelReplyStartMargin by lazy { itemView.context.pxFromDp(56) }
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
 
+    private lateinit var profile: ProfileDto
+
     private val userProfileClickListener = View.OnClickListener {
+        val data = UserCrossedDto()
+        data.profile = profile
+        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, profile.id ?: "")
+        if (profile.id == UserManager.getUserId()) {
+            itemView.context.startActivity(Intent(itemView.context, ProfileActivity::class.java))
+        } else {
+            val intent = PeopleDetailsActivity.getStartIntent(itemView.context, data, AppConstants.REQ_CODE_BLOCK_USER)
+            itemView.context.startActivity(intent)
+        }
+
     }
     private val hashtagClickListener = object : SpannableTextClickListener {
         override fun onSpannableTextClicked(text: String, view: View) {
@@ -29,6 +45,17 @@ class PostDetailsReplyViewHolder(itemView: View,
     }
     private val usernameClickListener = object : SpannableTextClickListener {
         override fun onSpannableTextClicked(text: String, view: View) {
+            val data = UserCrossedDto()
+            if (profile.userName == text.removeRange(0, 1)) {
+                itemView.context.startActivity(Intent(itemView.context, ProfileActivity::class.java))
+            } else {
+                data.profile = reply.replyBy
+                PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, reply.parentReplyOwnerId
+                        ?: "")
+                val intent = PeopleDetailsActivity.getStartIntent(itemView.context, data, AppConstants.REQ_CODE_BLOCK_USER)
+                itemView.context.startActivity(intent)
+            }
+
         }
     }
 
@@ -88,6 +115,11 @@ class PostDetailsReplyViewHolder(itemView: View,
             }
             Timber.i("Load replies clicked, pending replies : ${reply.pendingReplyCount}")
         }
+
+        itemView.setOnLongClickListener {
+            callback.onLongPress(reply)
+            true
+        }
     }
 
     private lateinit var reply: PostReplyDto
@@ -107,6 +139,7 @@ class PostDetailsReplyViewHolder(itemView: View,
         glide.load(profile?.image?.thumbnail)
                 .into(itemView.ivProfile)
         itemView.tvTime.text = DateTimeUtils.formatForRecentTime(reply.createdOnDateTime)
+        this.profile = profile ?: ProfileDto()
 
         updateLikesCount()
         updateLikeButtonState()
@@ -183,5 +216,6 @@ class PostDetailsReplyViewHolder(itemView: View,
         fun onShowAllRepliesClicked(parentReply: PostReplyDto)
         fun onHideAllRepliesClicked(parentReply: PostReplyDto)
         fun onLikeReplyClicked(reply: PostReplyDto, isLiked: Boolean, topLevelReply: Boolean)
+        fun onLongPress(parentReply: PostReplyDto)
     }
 }

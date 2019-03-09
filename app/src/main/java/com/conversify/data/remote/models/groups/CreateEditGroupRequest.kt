@@ -15,6 +15,9 @@ data class CreateEditGroupRequest(
         @field:SerializedName("isPrivate")
         var isPrivate: Int? = null,
 
+        @field:SerializedName("description")
+        var description: String? = null,
+
         @field:SerializedName("groupImageOriginal")
         var imageOriginalUrl: String? = null,
 

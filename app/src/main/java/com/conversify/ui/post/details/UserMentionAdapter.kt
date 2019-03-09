@@ -39,6 +39,10 @@ class UserMentionAdapter(private val glide: GlideRequests,
                     callback.onUserMentionSuggestionClicked(user)
                 }
             }
+            itemView.setOnLongClickListener {
+                callback.onUserMentionLongPressed(user)
+                true
+            }
         }
 
         private lateinit var user: ProfileDto
@@ -54,5 +58,6 @@ class UserMentionAdapter(private val glide: GlideRequests,
 
     interface Callback {
         fun onUserMentionSuggestionClicked(user: ProfileDto)
+        fun onUserMentionLongPressed(user: ProfileDto)
     }
 }
