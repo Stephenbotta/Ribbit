@@ -1,5 +1,6 @@
 package com.conversify.ui.groups.details
 
+import android.Manifest
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -30,11 +31,14 @@ import com.conversify.ui.profile.ProfileActivity
 import com.conversify.ui.venues.addparticipants.AddVenueParticipantsActivity
 import com.conversify.utils.AppConstants
 import com.conversify.utils.GlideApp
+import com.conversify.utils.PermissionUtils
 import com.google.gson.Gson
 import com.wafflecopter.multicontactpicker.MultiContactPicker
 import kotlinx.android.synthetic.main.activity_group_details.*
+import permissions.dispatcher.*
 import timber.log.Timber
 
+@RuntimePermissions
 class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
     companion object {
         private const val EXTRA_FLAG = "EXTRA_FLAG"
@@ -223,7 +227,7 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
         binding.tvInvite.text = getString(R.string.dialog_group_label_invite)
         bottomSheetDialog.show()
         binding.tvInvite.setOnClickListener {
-            selectContactsForInvite()
+            showreadContactWithPermissionCheck()
             bottomSheetDialog.dismiss()
         }
         binding.tvCancel.setOnClickListener { bottomSheetDialog.dismiss() }
@@ -312,12 +316,6 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
         }
     }
 
-    private fun selectContactsForInvite() {
-        MultiContactPicker.Builder(this)
-                .setActivityAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                        android.R.anim.fade_in, android.R.anim.fade_out)
-                .showPickerForResult(AppConstants.REQ_CODE_SELECT_MULTIPLE_CONTACTS)
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -342,6 +340,35 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
                 }
             }
         }
+    }
+
+
+    @NeedsPermission(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
+    fun showreadContact() {
+        MultiContactPicker.Builder(this)
+                .setActivityAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+                        android.R.anim.fade_in, android.R.anim.fade_out)
+                .showPickerForResult(AppConstants.REQ_CODE_SELECT_MULTIPLE_CONTACTS)
+    }
+
+    @OnShowRationale(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
+    fun showRationaleForContact(request: PermissionRequest) {
+        PermissionUtils.showRationalDialog(this, R.string.permission_rationale_contact, request)
+    }
+
+    @OnPermissionDenied(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
+    fun onContactDenied() {
+        longToast(R.string.permission_denied_read_contact)
+    }
+
+    @OnNeverAskAgain(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
+    fun onreadContactAskAgain() {
+        PermissionUtils.showAppSettingsDialog(this, R.string.permission_never_ask_contact, AppConstants.REQ_CODE_APP_SETTINGS)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        onRequestPermissionsResult(requestCode, grantResults)
     }
 
     private fun observeInviteUsersCallback() {

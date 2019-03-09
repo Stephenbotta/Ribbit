@@ -46,7 +46,9 @@ import kotlinx.android.synthetic.main.activity_chat.*
 import permissions.dispatcher.*
 
 @RuntimePermissions
-class ChatActivity : BaseActivity(), ChatAdapter.Callback {
+class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCallback {
+
+
     companion object {
         private const val EXTRA_FLAG = "EXTRA_FLAG"
 
@@ -345,7 +347,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
 
     private fun setupChatRecycler(flag: Int) {
         swipeRefreshLayout.isEnabled = false
-        adapter = ChatAdapter(this, this)
+        adapter = ChatAdapter(this, this, this)
         rvChat.adapter = adapter
         (rvChat.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         rvChat.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -613,5 +615,18 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
         removeObserver(flag)
         mediaPicker.clear()
     }
+
+    override fun onDeleteImage(position: Int) {
+        adapter.removeMsgPosition(position)
+    }
+
+    override fun onImageShow(position: Int) {
+        onImageMessageClicked(adapter.getMsgDetail(position))
+    }
+
+    override fun onVideoShow(position: Int) {
+        onVideoMessageClicked(adapter.getMsgDetail(position))
+    }
+
 
 }
