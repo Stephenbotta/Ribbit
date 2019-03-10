@@ -45,7 +45,7 @@ class GroupDetailsViewModel : ViewModel() {
         changeVenueNotifications.value = Resource.loading()
 
         RetrofitClient.conversifyApi
-                .changeVenueNotifications(groupId, isEnabled)
+                .changeGroupNotifications(groupId, isEnabled)
                 .enqueue(object : Callback<Any> {
                     override fun onResponse(call: Call<Any>, response: Response<Any>) {
                         if (response.isSuccessful) {

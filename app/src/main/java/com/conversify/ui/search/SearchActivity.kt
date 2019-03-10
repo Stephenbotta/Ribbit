@@ -11,12 +11,14 @@ import android.text.TextWatcher
 import android.view.View
 import com.conversify.R
 import com.conversify.databinding.ActivitySearchBinding
+import com.conversify.extensions.hideKeyboard
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.search.groups.SearchGroupFragment
 import com.conversify.ui.search.posts.SearchPostsFragment
 import com.conversify.ui.search.tag.SearchTagFragment
 import com.conversify.ui.search.top.SearchTopFragment
 import com.conversify.ui.search.venues.SearchVenueFragment
+import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : BaseActivity() {
 
@@ -52,7 +54,7 @@ class SearchActivity : BaseActivity() {
         viewPagerAdapter.addFragments(SearchGroupFragment())
         viewPagerAdapter.addFragments(SearchVenueFragment())
         binding.viewPagerSearch.adapter = viewPagerAdapter
-        binding.tabLayoutSearch.tabGravity=TabLayout.GRAVITY_CENTER
+        binding.tabLayoutSearch.tabGravity = TabLayout.GRAVITY_CENTER
         binding.tabLayoutSearch.tabMode = TabLayout.MODE_SCROLLABLE
         binding.tabLayoutSearch.setupWithViewPager(binding.viewPagerSearch)
         listener()
@@ -89,6 +91,11 @@ class SearchActivity : BaseActivity() {
         when (v.id) {
 
             R.id.ivBack -> onBackPressed()
+
+            R.id.tvCancel -> {
+                binding.etCredentials.setText("")
+                binding.tvCancel.hideKeyboard()
+            }
 
         }
     }

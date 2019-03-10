@@ -11,6 +11,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.FacebookLogin
 import com.conversify.data.remote.models.Status
@@ -244,6 +245,7 @@ class SignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginL
             }
         } else {
             // OTP Verification
+            PrefsManager.get().save("countryCode", profile.countryCode ?: "")
             val fragment = VerificationFragment.newInstance(profile)
             val tag = VerificationFragment.TAG
             navigateToFragment(fragment, tag)

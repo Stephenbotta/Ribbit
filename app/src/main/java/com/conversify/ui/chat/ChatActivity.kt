@@ -11,7 +11,9 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
+import android.widget.EditText
 import com.conversify.R
 import com.conversify.data.local.PrefsManager
 import com.conversify.data.local.models.AppError
@@ -23,10 +25,7 @@ import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.data.remote.models.groups.GroupDto
 import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.data.remote.models.venues.VenueDto
-import com.conversify.extensions.handleError
-import com.conversify.extensions.isNetworkActiveWithMessage
-import com.conversify.extensions.longToast
-import com.conversify.extensions.shortToast
+import com.conversify.extensions.*
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.chat.group.ChatGroupViewModel
 import com.conversify.ui.chat.group.ChatListGroupViewModel
@@ -606,6 +605,20 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback {
                 viewModelGroup.uploadFile.removeObserver(uploadFileObserver)
             }
         }
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val view = currentFocus
+        if (view != null && (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) && view is EditText && !view.javaClass.name.startsWith("android.webkit.")) {
+            val scrcoords = IntArray(2)
+            view.getLocationOnScreen(scrcoords)
+            val x = ev.rawX + view.left - scrcoords[0]
+            val y = ev.rawY + view.top - scrcoords[1]
+            if (x < view.left || x > view.right || y < view.top || y > view.bottom)
+            //  mAppUtils.hideSoftKeyboard(window.decorView.rootView)
+                window.decorView.rootView.hideKeyboard()
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     override fun onDestroy() {

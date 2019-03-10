@@ -22,6 +22,7 @@
             android:layout_height="match_parent"
             android:drawableStart="@drawable/ic_back"
             android:drawablePadding="6dp"
+            android:textAllCaps="true"
             android:fontFamily="@font/roboto_text_bold"
             android:gravity="center_vertical"
             android:text="@string/create_venue_label_venues"

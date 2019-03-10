@@ -32,7 +32,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     private val viewModel by lazy { ViewModelProviders.of(this)[HideStatusViewModel::class.java] }
     private var flag = 0
     private lateinit var adapter: HideStatusAdapter
-    private var items= listOf<Any>()
+    private var items = listOf<Any>()
     private val selectedUserList by lazy { ArrayList<String>() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -242,10 +242,11 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
 
             R.id.btnBack -> onBackPressed()
 
-            R.id.everyone -> {
+            R.id.everyone -> { adapter.displayCategories(arrayListOf())
             }
 
             R.id.yourFollowers -> {
+                adapter.displayCategories(arrayListOf())
             }
 
             R.id.selectedUser -> getFollower()

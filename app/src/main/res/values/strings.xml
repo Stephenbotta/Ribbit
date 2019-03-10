@@ -250,8 +250,8 @@
     <string name="notifications_label_post">%s has posted on your group %s</string>
     <string name="notifications_label_reply">%s replied on your comment</string>
 
-    <string name="notifications_label_public_joined_group">%s are now member of channel %s</string>
-    <string name="notifications_label_public_joined_venue">%s are now member of venue %s</string>
+    <string name="notifications_label_public_joined_group">%s has join your channel %s</string>
+    <string name="notifications_label_public_joined_venue">%s has join your venue %s</string>
 
     <string name="profile_label_profile">Profile</string>
     <string name="profile_label_followers">Followers</string>

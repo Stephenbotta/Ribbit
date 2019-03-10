@@ -157,9 +157,9 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
                 .into(ivProfile)
 
         tvNameAndAge.text = if (profile?.age == null) {
-            profile?.fullName
+            profile?.userName
         } else {
-            getString(R.string.profile_label_name_with_age, profile.fullName, profile.age)
+            getString(R.string.profile_label_name_with_age, profile.userName, profile.age)
         }
         if (profile?.designation.isNullOrBlank() || profile?.company.isNullOrBlank()) {
             tvDesignation.gone()

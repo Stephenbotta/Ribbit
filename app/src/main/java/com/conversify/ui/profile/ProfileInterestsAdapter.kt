@@ -72,8 +72,8 @@ class ProfileInterestsAdapter(private val callback: Callback) : RecyclerView.Ada
         }
     }
 
-    fun getCategoryIds(): List<String> {
-        return interests.map { it.id ?: "" }
+    fun getCategoryIds(): ArrayList<String> {
+        return interests.map { it.id ?: "" } as ArrayList<String>
     }
 
     interface Callback {

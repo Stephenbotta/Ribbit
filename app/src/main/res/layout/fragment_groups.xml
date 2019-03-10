@@ -53,8 +53,8 @@
                 android:id="@+id/tvNoGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/ic_groups"
                 android:layout_gravity="center"
+                android:drawableTop="@drawable/ic_groups"
                 android:drawablePadding="5dp"
                 android:text="@string/groups_label_no_channels_found"
                 android:textColor="@color/colorPrimary" />
@@ -66,11 +66,7 @@
         android:id="@+id/fabOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black44"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@color/black44" />
 
     <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/fabGroups"

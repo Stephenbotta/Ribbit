@@ -67,6 +67,7 @@ class PostDetailsAdapter(private val glide: GlideRequests,
     fun addItems(items: List<Any>) {
         val oldListSize = this.items.size
         this.items.addAll(items)
+
         notifyItemRangeInserted(oldListSize, items.size)
     }
 

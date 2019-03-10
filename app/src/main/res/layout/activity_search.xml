@@ -45,10 +45,27 @@
             android:maxLength="@integer/email_max_length"
             android:singleLine="true"
             android:text="@={viewModel.search}"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvCancel"
             app:layout_constraintStart_toEndOf="@id/ivBack"
             app:layout_constraintTop_toTopOf="parent"
             tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/tvCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:fontFamily="@font/roboto_text_bold"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/cancel"
+            android:textSize="@dimen/back_navigation_header_text_size"
+            android:textColor="@color/selector_contact_select_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/cancel" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayoutSearch"

@@ -11,6 +11,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.PrefsManager
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.extensions.*
@@ -70,8 +71,12 @@ class VerificationFragment : BaseFragment() {
         } else {
             if (viewModel.isRegisteredModePhone()) {
                 tvLabelWeSentYou.setText(R.string.verification_label_we_sent_you_a_code_phone)
-
-                val fullPhoneNumber = String.format("%s %s", profile.countryCode, profile.phoneNumber)
+                val fullPhoneNumber = if (profile.countryCode == null) {
+                    String.format("%s %s", PrefsManager.get().getString("countryCode", ""), profile.phoneNumber)
+                } else {
+                    String.format("%s %s", profile.countryCode, profile.phoneNumber)
+                }
+//                val fullPhoneNumber = String.format("%s %s", profile.countryCode, profile.phoneNumber)
                 tvLabelCodeSentTo.text = getString(R.string.verification_label_code_sent_to, fullPhoneNumber)
             } else {
                 tvLabelWeSentYou.setText(R.string.verification_label_we_sent_you_a_code_email)

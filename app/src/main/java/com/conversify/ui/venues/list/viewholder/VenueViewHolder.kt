@@ -81,8 +81,8 @@ class VenueViewHolder(itemView: View,
 
         glide.load(venue.imageUrl?.thumbnail)
                 .into(itemView.ivVenue)
-
-        itemView.tvVenueName.text = venue.name
+        val name = venue.name?.substring(0, 1)?.toUpperCase() + venue.name?.substring(1)
+        itemView.tvVenueName.text = name
         itemView.tvVenueLocation.text = AppUtils.getFormattedAddress(venue.locationName, venue.locationAddress)
 
         val memberCount = venue.memberCount ?: 0

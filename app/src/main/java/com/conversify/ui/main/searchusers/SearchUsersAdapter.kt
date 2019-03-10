@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.conversify.R
+import com.conversify.data.local.UserManager
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.extensions.inflate
@@ -75,7 +76,8 @@ class SearchUsersAdapter(private val glide: GlideRequests, private val callback:
 
             itemView.tvUserName.text = profile.userName
 
-            interestsAdapter.displayMutualInterests(profile.interests ?: emptyList())
+            interestsAdapter.displayMutualInterests(UserManager.getProfile().interests
+                    ?: emptyList())
         }
     }
 

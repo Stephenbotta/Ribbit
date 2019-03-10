@@ -9,6 +9,7 @@ import com.conversify.data.remote.getAppError
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
+import com.conversify.data.remote.models.SearchUser
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.ui.base.BaseViewModel
 import retrofit2.Call
@@ -38,10 +39,11 @@ class SearchUsersViewModel(application: Application) : BaseViewModel(application
     }
 
     fun getMatchedResultsApi(latitude: Double, longitude: Double, range: Int, isFirstPage: Boolean,
-                             categoryIds: List<String>) {
+                             categoryIds: ArrayList<String>) {
         isLoading = true
-        val interestCall = RetrofitClient.conversifyApi.interestMatchUsers(longitude,
-                latitude, range, if (isFirstPage) 1 else page, categoryIds)
+        val request = SearchUser(locationLat = latitude, locationLong = longitude,
+                range = range, pageNo = if (isFirstPage) 1 else page, categoryIds = categoryIds)
+        val interestCall = RetrofitClient.conversifyApi.interestMatchUsers(request)
         call?.cancel()
         call = interestCall
         interestCall.enqueue(object : Callback<ApiResponse<List<ProfileDto>>> {

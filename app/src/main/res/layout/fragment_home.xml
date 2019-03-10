@@ -48,8 +48,7 @@
         android:id="@+id/fabOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black44"
-        android:layout_gravity="center" />
+        android:background="@color/black44" />
 
     <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/fabGroups"

@@ -33,15 +33,23 @@ class NormalDetailsViewHolder(itemView: View,
     }
 
     private val venueGroupClickListener = View.OnClickListener {
-        if (isRequestForVenue) {
-            Timber.i("Venue name clicked : ${notification.venue?.name}")
-            notification.venue?.let { venue ->
-                callback.onVenueClicked(venue)
+
+        when (notification.type) {
+
+            PushType.ALERT_CONVERSE_NEARBY_PUSH, PushType.ALERT_LOOK_NEARBY_PUSH -> {
+                callback.onCrossedPathClicked(notification)
             }
-        } else {
-            Timber.i("Group name clicked : ${notification.group?.name}")
-            notification.group?.let { group ->
-                callback.onGroupClicked(group)
+            PushType.ACCEPT_INVITE_VENUE, PushType.ACCEPT_REQUEST_VENUE, PushType.JOINED_VENUE, PushType.VENUE -> {
+                Timber.i("Venue name clicked : ${notification.venue?.name}")
+                notification.venue?.let { venue ->
+                    callback.onVenueClicked(venue)
+                }
+            }
+            PushType.ACCEPT_INVITE_GROUP, PushType.ACCEPT_REQUEST_GROUP, PushType.JOINED_GROUP, PushType.GROUP -> {
+                Timber.i("Group name clicked : ${notification.group?.name}")
+                notification.group?.let { group ->
+                    callback.onGroupClicked(group)
+                }
             }
         }
     }
@@ -83,10 +91,15 @@ class NormalDetailsViewHolder(itemView: View,
         itemView.tvTime.text = DateTimeUtils.formatChatListingTime(notification.createdOnDateTime, itemView.context)
 
         val username = sender?.userName ?: ""
-        val venueName = if (isRequestForVenue) {
+        val groupName = if (!notification.group?.name.isNullOrEmpty()) {
+            notification.group?.name
+        } else {
+            ""
+        } ?: ""
+        val venueName = if (!notification.venue?.name.isNullOrEmpty()) {
             notification.venue?.name
         } else {
-            notification.group?.name
+            ""
         } ?: ""
 
         val comment = if (!notification.commentId?.comment.isNullOrEmpty()) {
@@ -135,13 +148,13 @@ class NormalDetailsViewHolder(itemView: View,
                 itemView.context.getString(R.string.notifications_label_accept_invite_venue, username, venueName)
             }
             PushType.ACCEPT_INVITE_GROUP -> {
-                itemView.context.getString(R.string.notifications_label_accept_invite, username, venueName)
+                itemView.context.getString(R.string.notifications_label_accept_invite, username, groupName)
             }
             PushType.ACCEPT_REQUEST_VENUE -> {
                 itemView.context.getString(R.string.notifications_label_accept_request_venue, username, venueName)
             }
             PushType.ACCEPT_REQUEST_GROUP -> {
-                itemView.context.getString(R.string.notifications_label_accept_request_channel, username, venueName)
+                itemView.context.getString(R.string.notifications_label_accept_request_channel, username, groupName)
             }
             PushType.ACCEPT_REQUEST_FOLLOW -> {
                 itemView.context.getString(R.string.notifications_label_accept_request_follow, username)
@@ -150,10 +163,10 @@ class NormalDetailsViewHolder(itemView: View,
                 itemView.context.getString(R.string.notifications_label_joined_venue, username, venueName)
             }
             PushType.JOINED_GROUP -> {
-                itemView.context.getString(R.string.notifications_label_joined_group, username, venueName)
+                itemView.context.getString(R.string.notifications_label_joined_group, username, groupName)
             }
             PushType.GROUP -> {
-                itemView.context.getString(R.string.notifications_label_public_joined_group, username, venueName)
+                itemView.context.getString(R.string.notifications_label_public_joined_group, username, groupName)
             }
             PushType.VENUE -> {
                 itemView.context.getString(R.string.notifications_label_public_joined_venue, username, venueName)
@@ -191,7 +204,11 @@ class NormalDetailsViewHolder(itemView: View,
                     textColorRes = R.color.colorPrimary,
                     textTypeface = boldTypeface,
                     clickListener = venueGroupClickListener)
-
+        if (completeText.contains(groupName))
+            itemView.tvTitle.clickSpannable(spannableText = groupName,
+                    textColorRes = R.color.colorPrimary,
+                    textTypeface = boldTypeface,
+                    clickListener = venueGroupClickListener)
     }
 
     interface Callback {

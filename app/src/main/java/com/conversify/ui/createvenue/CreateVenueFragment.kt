@@ -123,7 +123,7 @@ class CreateVenueFragment : BaseFragment(), CreateGroupAdapter.Callback {
         etDateTime.setOnClickListener {
             DateTimePicker(requireActivity(),
                     minDateMillis = System.currentTimeMillis()) { selectedDateTime ->
-                etDateTime.setText(DateTimeUtils.formatVenueDateTime(selectedDateTime))
+                etDateTime.setText(DateTimeUtils.formatVenueDetailsDateTime(selectedDateTime))
                 request.dateTimeMillis = selectedDateTime.toInstant().toEpochMilli()
                 updateCreateVenueMenuState()
             }.show()

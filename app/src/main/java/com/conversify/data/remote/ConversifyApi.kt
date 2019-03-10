@@ -2,6 +2,7 @@ package com.conversify.data.remote
 
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.RequestCountDto
+import com.conversify.data.remote.models.SearchUser
 import com.conversify.data.remote.models.chat.ChatListingDto
 import com.conversify.data.remote.models.chat.VenueDetailsResponse
 import com.conversify.data.remote.models.groups.*
@@ -86,6 +87,12 @@ interface ConversifyApi {
     @POST("user/configNotification")
     @FormUrlEncoded
     fun changeVenueNotifications(@Field("venueId") venueId: String,
+                                 @Field(ACTION) isEnabled: Boolean): Call<Any>
+
+
+    @POST("user/configNotification")
+    @FormUrlEncoded
+    fun changeGroupNotifications(@Field("groupId") venueId: String,
                                  @Field(ACTION) isEnabled: Boolean): Call<Any>
 
     @POST("user/exitGroup")
@@ -315,12 +322,7 @@ interface ConversifyApi {
     fun updateDeviceToken(@Field("deviceToken") deviceToken: String): Call<ApiResponse<Any>>
 
     @POST("user/interestMatchUsers")
-    @FormUrlEncoded
-    fun interestMatchUsers(@Field("locationLong") locationLong: Double,
-                           @Field("locationLat") locationLat: Double,
-                           @Field("range") range: Int,
-                           @Field("pageNo") pageNo: Int,
-                           @Field("categoryIds") categoryIds: List<String>): Call<ApiResponse<List<ProfileDto>>>
+    fun interestMatchUsers(@Body user: SearchUser): Call<ApiResponse<List<ProfileDto>>>
 
     @GET("user/requestCounts")
     fun getRequestCounts(): Call<ApiResponse<RequestCountDto>>
