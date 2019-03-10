@@ -64,110 +64,182 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivVenue" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tilVenueTitle"
-            android:layout_width="0dp"
+
+        <TextView
+            android:id="@+id/tvLabelVenueTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_text_bold"
+            android:text="@string/create_venue_label_venue_s_title"
+            android:textColor="@color/textGray"
+            app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLabelTapToAdd">
+            app:layout_constraintTop_toBottomOf="@id/tvLabelTapToAdd" />
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/etVenueTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/create_venue_label_venue_s_title"
-                android:inputType="textCapSentences"
-                android:maxLength="@integer/venue_title_max_length"
-                android:singleLine="true"
-                android:textColor="@color/textGray"
-                android:theme="@style/AppTheme.EditTextCreateVenue"
-                tools:text="Starbucks Fans" />
 
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tilVenueLocation"
+        <EditText
+            android:id="@+id/etVenueTitle"
+            style="@style/HomeSearchEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="12dp"
+            android:background="@drawable/shape_create_venue_editext_2dp"
+            android:hint="@string/create_venue_label_venue_s_title"
+            android:importantForAutofill="no"
+            android:inputType="textCapSentences"
+            android:maxLength="@integer/venue_title_max_length"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp"
+            android:singleLine="true"
+            android:textColor="@color/textGray"
+            android:textColorHint="@color/textGrayMedium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilVenueTitle">
+            app:layout_constraintTop_toBottomOf="@id/tvLabelVenueTitle"
+            tools:targetApi="o"
+            tools:text="Starbucks Fans" />
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/etVenueLocation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:hint="@string/create_venue_label_venue_location"
-                android:inputType="textNoSuggestions"
-                android:longClickable="false"
-                android:selectAllOnFocus="false"
-                android:singleLine="true"
-                android:textColor="@color/textGray"
-                android:textIsSelectable="false"
-                android:theme="@style/AppTheme.EditTextCreateVenue"
-                tools:text="@tools:sample/cities" />
 
-        </android.support.design.widget.TextInputLayout>
+        <TextView
+            android:id="@+id/tvLabelVenueLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_text_bold"
+            android:text="@string/create_venue_label_venue_location"
+            android:textColor="@color/textGray"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etVenueTitle" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tilVenueTags"
+
+        <EditText
+            android:id="@+id/etVenueLocation"
+            style="@style/HomeSearchEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="12dp"
+            android:background="@drawable/shape_create_venue_editext_2dp"
+            android:focusable="false"
+            android:hint="@string/create_venue_label_venue_location"
+            android:importantForAutofill="no"
+            android:inputType="textNoSuggestions"
+            android:longClickable="false"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp"
+            android:selectAllOnFocus="false"
+            android:singleLine="true"
+            android:textColor="@color/textGray"
+            android:textIsSelectable="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilVenueLocation">
+            app:layout_constraintTop_toBottomOf="@id/tvLabelVenueLocation"
+            tools:targetApi="o"
+            tools:text="@tools:sample/cities" />
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/etVenueTags"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/create_venue_label_tags"
-                android:inputType="text"
-                android:singleLine="true"
-                android:textColor="@color/textGray"
-                android:theme="@style/AppTheme.EditTextCreateVenue"
-                tools:text="#movies #action" />
 
-        </android.support.design.widget.TextInputLayout>
+        <TextView
+            android:id="@+id/tvLabelVenueTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_text_bold"
+            android:text="@string/create_venue_label_tags"
+            android:textColor="@color/textGray"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etVenueLocation" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tilDateTime"
-            android:layout_width="0dp"
+
+        <EditText
+            android:id="@+id/etVenueTags"
+            style="@style/HomeSearchEditText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="12dp"
+            android:background="@drawable/shape_create_venue_editext_2dp"
+            android:hint="@string/create_venue_label_tags"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp"
+            android:singleLine="true"
+            android:textColor="@color/textGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilVenueTags">
+            app:layout_constraintTop_toBottomOf="@id/tvLabelVenueTag"
+            tools:targetApi="o"
+            tools:text="#movies #action" />
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/etDateTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:hint="@string/create_venue_label_date_and_time"
-                android:inputType="textNoSuggestions"
-                android:longClickable="false"
-                android:selectAllOnFocus="false"
-                android:singleLine="true"
-                android:textColor="@color/textGray"
-                android:textIsSelectable="false"
-                android:theme="@style/AppTheme.EditTextCreateVenue"
-                tools:text="12 Nov 2018, 06:25 PM" />
 
-        </android.support.design.widget.TextInputLayout>
+        <TextView
+            android:id="@+id/tvLabelVenueDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_text_bold"
+            android:text="@string/create_venue_label_date_and_time"
+            android:textColor="@color/textGray"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etVenueTags" />
+
+
+        <EditText
+            android:id="@+id/etDateTime"
+            style="@style/HomeSearchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/shape_create_venue_editext_2dp"
+            android:focusable="false"
+            android:hint="@string/create_venue_label_date_and_time"
+            android:inputType="textNoSuggestions"
+            android:longClickable="false"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="8dp"
+            android:selectAllOnFocus="false"
+            android:singleLine="true"
+            android:textColor="@color/textGray"
+            android:textIsSelectable="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelVenueDate"
+            tools:text="12 Nov 2018, 06:25 PM" />
+
 
         <View
             android:id="@+id/dividerAdditionalDetailsTop"
@@ -175,19 +247,19 @@
             android:layout_height="4dp"
             android:layout_marginTop="16dp"
             android:background="@color/greyImageBackground"
-            app:layout_constraintTop_toBottomOf="@id/tilDateTime" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etDateTime" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/switchPrivateVenue"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:text="@string/create_venue_label_private"
             android:textColor="@color/textGray"
             android:theme="@style/AppTheme.SwitchCompat"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dividerAdditionalDetailsTop"
             app:switchPadding="8dp" />
@@ -201,7 +273,7 @@
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/roboto_text_bold"
             android:text="@string/create_venue_label_additional_details"
-            android:textColor="@color/textGrayMedium"
+            android:textColor="@color/textGray"
             app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
@@ -228,7 +300,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/shape_create_venue_upload_document_2dp"
+            android:background="@drawable/shape_create_venue_editext_2dp"
             android:hint="@string/create_venue_label_your_name"
             android:importantForAutofill="no"
             android:inputType="textPersonName|textCapWords"
@@ -240,7 +312,7 @@
             android:singleLine="true"
             android:textColor="@color/textGray"
             android:textColorHint="@color/textGrayMedium"
-            android:theme="@style/AppTheme.EditTextCreateVenue"
+            android:theme="@style/HomeSearchEditText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvLabelIfYouAreOwner"

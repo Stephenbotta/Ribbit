@@ -7,13 +7,15 @@ import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.extensions.gone
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.extensions.visible
+import com.conversify.ui.chat.ChatActionCallback
 import com.conversify.ui.chat.ResendMessageCallback
+import com.conversify.utils.DialogsUtil
 import com.conversify.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_chat_video_left.view.*
 
 class ViewHolderChatVideo(itemView: View,
                           private val glide: GlideRequests,
-                          private val callback: Callback) : ViewHolderChat(itemView) {
+                          private val callback: Callback, private val actionCallback: ActionCallback) : ViewHolderChat(itemView) {
     init {
         itemView.btnResend.setOnClickListener {
             if (adapterPosition != RecyclerView.NO_POSITION && itemView.context.isNetworkActiveWithMessage()) {
@@ -27,6 +29,12 @@ class ViewHolderChatVideo(itemView: View,
             if (adapterPosition != RecyclerView.NO_POSITION) {
                 callback.onVideoMessageClicked(chatMessage)
             }
+        }
+
+        itemView.ivThumbnail.setOnLongClickListener {
+
+            DialogsUtil.openAlertDialog(itemView.context, "video", actionCallback, adapterPosition)
+            true
         }
     }
 
@@ -76,4 +84,6 @@ class ViewHolderChatVideo(itemView: View,
     interface Callback : ResendMessageCallback {
         fun onVideoMessageClicked(chatMessage: ChatMessageDto)
     }
+
+    interface ActionCallback : ChatActionCallback
 }

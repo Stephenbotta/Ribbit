@@ -14,8 +14,8 @@
         <item name="android:fontFamily">@font/roboto_text_regular</item>
     </style>
 
-    <style name="AppTheme.Splash">
-        <item name="android:windowBackground">@drawable/splash</item>
+    <style name="AppTheme.Splash" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
     <style name="AppTheme.Landing">

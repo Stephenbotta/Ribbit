@@ -14,7 +14,7 @@ import com.conversify.ui.chat.viewholders.ViewHolderChatVideo
 import com.conversify.utils.GlideApp
 
 class ChatAdapter(context: Context,
-                  private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                  private val callback: Callback, private val actionCallback: ActionCallback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val TYPE_TEXT_LEFT = 0
         private const val TYPE_TEXT_RIGHT = 1
@@ -31,27 +31,27 @@ class ChatAdapter(context: Context,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_TEXT_LEFT -> {
-                ViewHolderChatText(inflater.inflate(R.layout.item_chat_text_left, parent, false), glide)
+                ViewHolderChatText(inflater.inflate(R.layout.item_chat_text_left, parent, false), glide, actionCallback)
             }
 
             TYPE_TEXT_RIGHT -> {
-                ViewHolderChatText(inflater.inflate(R.layout.item_chat_text_right, parent, false), glide)
+                ViewHolderChatText(inflater.inflate(R.layout.item_chat_text_right, parent, false), glide, actionCallback)
             }
 
             TYPE_IMAGE_LEFT -> {
-                ViewHolderChatImage(inflater.inflate(R.layout.item_chat_image_left, parent, false), glide, callback)
+                ViewHolderChatImage(inflater.inflate(R.layout.item_chat_image_left, parent, false), glide, callback, actionCallback)
             }
 
             TYPE_IMAGE_RIGHT -> {
-                ViewHolderChatImage(inflater.inflate(R.layout.item_chat_image_right, parent, false), glide, callback)
+                ViewHolderChatImage(inflater.inflate(R.layout.item_chat_image_right, parent, false), glide, callback, actionCallback)
             }
 
             TYPE_VIDEO_LEFT -> {
-                ViewHolderChatVideo(inflater.inflate(R.layout.item_chat_video_left, parent, false), glide, callback)
+                ViewHolderChatVideo(inflater.inflate(R.layout.item_chat_video_left, parent, false), glide, callback, actionCallback)
             }
 
             TYPE_VIDEO_RIGHT -> {
-                ViewHolderChatVideo(inflater.inflate(R.layout.item_chat_video_right, parent, false), glide, callback)
+                ViewHolderChatVideo(inflater.inflate(R.layout.item_chat_video_right, parent, false), glide, callback, actionCallback)
             }
 
             else -> throw IllegalArgumentException("Invalid view type")
@@ -121,6 +121,16 @@ class ChatAdapter(context: Context,
         notifyItemChanged(messages.size)
     }
 
+    fun removeMsgPosition(position: Int): List<ChatMessageDto> {
+        this.messages.removeAt(position)
+        notifyItemRemoved(position)
+        return this.messages
+    }
+
+    fun getMsgDetail(position: Int): ChatMessageDto {
+        return this.messages[position]
+    }
+
     fun updateMessageStatus(localId: String, messageStatus: MessageStatus) {
         val totalMessages = messages.size
         if (totalMessages == 0) return
@@ -136,4 +146,6 @@ class ChatAdapter(context: Context,
     }
 
     interface Callback : ViewHolderChatImage.Callback, ViewHolderChatVideo.Callback
+
+    interface ActionCallback : ViewHolderChatText.ActionCallback, ViewHolderChatImage.ActionCallback, ViewHolderChatVideo.ActionCallback
 }

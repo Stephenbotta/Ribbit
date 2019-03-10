@@ -2,7 +2,6 @@ package com.conversify.ui.landing
 
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
@@ -26,7 +25,11 @@ import kotlinx.android.synthetic.main.activity_landing.*
 class LandingActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_landing)
+        setListeners()
 
         val isLoggedIn = UserManager.isLoggedIn()
         if (isLoggedIn) {
@@ -68,18 +71,18 @@ class LandingActivity : BaseActivity() {
                     finishAffinity()
                 }
 
-                else -> {
-                    setTheme(R.style.AppTheme_Landing)
-                    setContentView(R.layout.activity_landing)
-                    setListeners()
-                }
+                /*   else -> {
+                       setTheme(R.style.AppTheme_Landing)
+                       setContentView(R.layout.activity_landing)
+                       setListeners()
+                   }*/
             }
-        } else {
+        } /*else {
             window.decorView.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimary)))
             setTheme(R.style.AppTheme_Landing)
             setContentView(R.layout.activity_landing)
             setListeners()
-        }
+        }*/
     }
 
     private fun setListeners() {

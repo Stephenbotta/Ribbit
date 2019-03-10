@@ -40,12 +40,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/background_venues_map_filters"
         android:elevation="2dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@id/fabCreateVenue"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/fabCreateVenue">
+        app:layout_constraintTop_toBottomOf="@+id/searchView">
 
         <TextView
             android:id="@+id/btnListVenues"
@@ -87,23 +87,13 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabCreateVenue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_plus_white"
-        app:backgroundTint="@color/colorPrimary"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvVenues"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:clipToPadding="false"
         android:orientation="horizontal"
         android:overScrollMode="never"
         android:paddingTop="8dp"
@@ -112,4 +102,17 @@
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_venue" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabCreateVenue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:elevation="6dp"
+        android:src="@drawable/ic_plus_white"
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

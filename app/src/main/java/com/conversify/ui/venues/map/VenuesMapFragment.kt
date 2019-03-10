@@ -142,8 +142,8 @@ class VenuesMapFragment : BaseFragment(), VenuesMapHelper.Callback, VenuesListAd
         searchView.clearFocus()
         searchView.hideKeyboard()
         rvVenues.visible()
-        fabCreateVenue.hide()
-        llListFilters.gone()
+/*        fabCreateVenue.hide()
+        llListFilters.gone()*/
     }
 
     override fun onMapVenueDeselected() {

@@ -211,7 +211,9 @@ class NewPostFragment : BaseFragment() {
     }
 
     private fun updateCreatePostMenuState() {
-        createPostMenuItem.isEnabled = isPostValid()
+        if (request.postId.isNullOrEmpty()) {
+            createPostMenuItem.isEnabled = isPostValid()
+        }
     }
 
     @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
