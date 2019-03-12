@@ -60,6 +60,7 @@ object AppConstants {
     const val REQ_CODE_POST_LIKE = 140
     const val REQ_CODE_VERIFICATION = 141
 
+    const val EVENT_PUSH_NOTIFICATION="EVENT_PUSH_NOTIFICATION"
     const val EXTRA_VENUE_FILTERS = "EXTRA_VENUE_FILTERS"
     const val EXTRA_VENUE = "EXTRA_VENUE"
     const val EXTRA_INTEREST = "EXTRA_INTEREST"

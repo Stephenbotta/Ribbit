@@ -112,7 +112,7 @@ data class ProfileDto(
         val isMobileVerified: Boolean? = null,
 
         @field:SerializedName("isEmailVerified")
-        val isEmailVerified: Boolean? = null,
+        var isEmailVerified: Boolean? = null,
 
         @field:SerializedName("alertNotifications")
         val isAlertNotifications: Boolean? = null,
@@ -121,7 +121,7 @@ data class ProfileDto(
         val isAccountPrivate: Boolean? = null,
 
         @field:SerializedName("isPassportVerified")
-        val isPassportVerified: Boolean? = null,
+        var isPassportVerified: Boolean? = null,
 
         @field:SerializedName("groupFollowed")
         val groupFollowed: MutableList<String>? = null,

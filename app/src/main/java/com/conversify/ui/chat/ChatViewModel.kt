@@ -74,10 +74,19 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
         }
     }
 
+    private val deleteMessageListener = Emitter.Listener { args ->
+        val chatMessage = chatMessageBuilder.getChatMessageFromSocketArgument(args.firstOrNull())
+        Timber.i("Delete message confirmation:\n$chatMessage")
+        if (chatMessage != null && chatMessage.conversationId == venue.conversationId) {
+            chatMessage.id
+        }
+    }
+
     fun start(venue: VenueDto) {
         updateVenue(venue)
         venueDetailsLoaded = false
         lastMessageId = null
+        socketManager.on(SocketManager.EVENT_DELETE_MESSAGE, deleteMessageListener)
         socketManager.on(SocketManager.EVENT_NEW_MESSAGE, newMessageListener)
         socketManager.connect()
     }
@@ -249,7 +258,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
         oldMessages.value = Resource.loading()
         isChatLoading = true
         val firstPage = lastMessageId == null
-        val call = RetrofitClient.conversifyApi.getVenueDetailsForChat(venue.id, lastMessageId)
+        val call = RetrofitClient.conversifyApi.getVenueDetailsForChat(venue.id, lastMessageId)//getVenueDetailsForChat
         apiCalls.add(call)
         call.enqueue(object : Callback<ApiResponse<VenueDetailsResponse>> {
             override fun onResponse(call: Call<ApiResponse<VenueDetailsResponse>>,
@@ -344,9 +353,31 @@ class ChatViewModel(application: Application) : AndroidViewModel(application), C
         return jsonObject
     }
 
+    fun deleteMessage(message: ChatMessageDto) {
+        val arguments = deleteMessageJsonObject(message)
+        socketManager.emit(SocketManager.EVENT_DELETE_MESSAGE, arguments, Ack {
+            val acknowledgement = it.firstOrNull()
+            if (acknowledgement != null && acknowledgement is JSONObject) {
+                val acknowledgeMessage = chatMessageBuilder.getChatMessageFromSocketArgument(acknowledgement)
+                Timber.i("Send message acknowledge\n$acknowledgement")
+                message.id = acknowledgeMessage?.id
+            }
+        })
+    }
+
+    private fun deleteMessageJsonObject(message: ChatMessageDto): JSONObject {
+        val jsonObject = JSONObject()
+        jsonObject.putOpt("senderId", ownUserId)
+        jsonObject.putOpt("groupId", venue.id)
+        jsonObject.putOpt("type", "VENUE")
+        jsonObject.putOpt("messageId", message.id)
+        return jsonObject
+    }
+
     override fun onCleared() {
         super.onCleared()
         socketManager.off(SocketManager.EVENT_NEW_MESSAGE, newMessageListener)
+        socketManager.off(SocketManager.EVENT_DELETE_MESSAGE, deleteMessageListener)
         apiCalls.forEach { it.cancel() }
         parentJob.cancel()
         s3ImageUploader.clear()

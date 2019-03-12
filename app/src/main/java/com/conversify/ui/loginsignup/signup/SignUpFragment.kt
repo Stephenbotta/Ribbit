@@ -66,11 +66,15 @@ class SignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginL
         viewModel = ViewModelProviders.of(this)[LoginSignUpViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())
         facebookLogin = FacebookLogin(this)
-
         setupGoogleSignInClient()
         setupViews()
         setListeners()
         observeChanges()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        registeredMode = AppConstants.REGISTERED_MODE_PHONE
     }
 
     private fun setupGoogleSignInClient() {

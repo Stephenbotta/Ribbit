@@ -115,6 +115,7 @@ class NewPostFragment : BaseFragment() {
                         .into(ivImage)
                 request.imageOriginal = groupPost.imageUrl?.original
                 request.imageThumbnail = groupPost.imageUrl?.thumbnail
+                ivDelete.visible()
             }
             if (!groupPost.locationName.isNullOrEmpty())
                 tvSelectLocation.text = groupPost.locationName + " " + groupPost.locationAddress
@@ -159,6 +160,8 @@ class NewPostFragment : BaseFragment() {
             ivDelete.gone()
             createPostMenuItem.isEnabled = isValidPost()
             selectedImage = null
+            request.imageOriginal = ""
+            request.imageThumbnail = ""
             ivImage.setImageDrawable(activity?.getDrawable(R.drawable.ic_add_image))
         }
         etPostText.addTextChangedListener(object : TextWatcher {

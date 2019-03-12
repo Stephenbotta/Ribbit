@@ -16,6 +16,7 @@ import android.view.MenuItem
 import com.conversify.R
 import com.conversify.data.local.PrefsManager
 import com.conversify.data.local.UserManager
+import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.MemberDto
@@ -108,9 +109,9 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         ivSave.setOnClickListener {
             val title = etVenueTitle.text.toString()
             if (title.isNotBlank()) {
-                shortToast(title)
                 setVenueTitle(title)
                 ivEdit.visible()
+                viewModel.editVenueName(title, venues.id ?: "")
                 ivSave.gone()
                 etVenueTitle.setText("")
                 etVenueTitle.gone()
@@ -202,6 +203,28 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
                 }
             }
         }
+
+        viewModel.editVenueName.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    loadingDialog.setLoading(false)
+                    setVenueTitle(resource.data?.name ?: "")
+                }
+
+                Status.ERROR -> {
+                    loadingDialog.setLoading(false)
+                    if (resource.error != AppError.WaitingForNetwork) {
+                        handleError(resource.error)
+                    }
+                }
+
+                Status.LOADING -> {
+                    loadingDialog.setLoading(true)
+                }
+            }
+        })
 
         viewModel.exitVenue.observe(this, exitOrArchiveVenueObserver)
         viewModel.archiveVenue.observe(this, exitOrArchiveVenueObserver)

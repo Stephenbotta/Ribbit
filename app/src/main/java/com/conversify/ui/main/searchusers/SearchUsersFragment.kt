@@ -308,8 +308,7 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback, Se
             val intent = PeopleDetailsActivity.getStartIntent(requireContext(), user, AppConstants.REQ_CODE_PEOPLE)
             activity?.startActivity(intent)
         } else {
-            val intent = ChatActivity.getStartIntentForIndividualChat(requireContext(),
-                    user, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
+            val intent = ChatActivity.getStartIntentForIndividualChat(requireContext(), user, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
             startActivity(intent)
         }
     }

@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.widget.PopupMenu
@@ -98,7 +99,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
         postDetailsAdapter = PostDetailsAdapter(GlideApp.with(this), this)
         rvPostDetails.adapter = postDetailsAdapter
         (rvPostDetails.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        postDetailsAdapter.displayItems(listOf(viewModel.getPostDetailsHeader()))
+        postDetailsAdapter.displayHeader(listOf(viewModel.getPostDetailsHeader()))
     }
 
     private fun setupUserMentionRecycler() {
@@ -158,6 +159,8 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
                         postDetailsAdapter.notifyHeaderChanged()
                     }
 
+                    Handler().postDelayed({ rvPostDetails?.smoothScrollToPosition(postDetailsAdapter.itemCount-1 )
+                    },500)
                     // By default views related to reply edit text are not visible.
                     if (!etReply.isVisible()) {
                         dividerReplyEditText.gone()

@@ -8,6 +8,7 @@ import com.conversify.data.remote.getAppError
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.groups.GroupDto
+import com.conversify.data.remote.models.venues.VenueDto
 import com.conversify.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,7 +21,7 @@ class GroupDetailsViewModel : ViewModel() {
     val exitGroup by lazy { SingleLiveEvent<Resource<Any>>() }
     val archiveVenue by lazy { SingleLiveEvent<Resource<Any>>() }
     val inviteUsers by lazy { SingleLiveEvent<Resource<Any>>() }
-
+    val editGroupName by lazy { SingleLiveEvent<Resource<Any>>() }
     fun getGroupDetails(groupId: String) {
         groupDetails.value = Resource.loading()
 
@@ -117,6 +118,25 @@ class GroupDetailsViewModel : ViewModel() {
 
                     override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
                         inviteUsers.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
+    fun editGroupName(title:String, id:String) {
+        RetrofitClient.conversifyApi
+                .editGroupName(id,title)
+                .enqueue(object : Callback<ApiResponse<Any>> {
+                    override fun onResponse(call: Call<ApiResponse<Any>>,
+                                            response: Response<ApiResponse<Any>>) {
+                        if (response.isSuccessful) {
+                            editGroupName.value = Resource.success(response.body()?.data)
+                        } else {
+                            editGroupName.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                        editGroupName.value = Resource.error(t.failureAppError())
                     }
                 })
     }

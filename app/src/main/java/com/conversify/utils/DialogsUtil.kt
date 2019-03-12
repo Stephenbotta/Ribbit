@@ -17,13 +17,10 @@ import kotlinx.android.synthetic.main.bottom_sheet_dialog_delete_post.view.*
  */
 object DialogsUtil {
 
-
     fun openAlertDialog(context: Context, type: String,
                         listener: ChatActionCallback, adapterPosition: Int) {
 
         val contentView = View.inflate(context, R.layout.bottom_sheet_dialog_delete_post, null)
-
-
         val bottomSheetDialog = BottomSheetDialog(context)
         bottomSheetDialog.setContentView(contentView)
 
@@ -31,12 +28,15 @@ object DialogsUtil {
             "video" -> {
                 contentView.groupShowPost.visibility = View.VISIBLE
                 contentView.tvActionShow.text = context.getString(R.string.show_video)
+                contentView.tvDelete.text = context.getString(R.string.delete_video)
             }
             "image" -> {
                 contentView.groupShowPost.visibility = View.VISIBLE
                 contentView.tvActionShow.text = context.getString(R.string.show_image)
+                contentView.tvDelete.text = context.getString(R.string.delete_image)
             }
             "text" -> {
+                contentView.tvDelete.text = context.getString(R.string.delete_message)
                 contentView.groupShowPost.visibility = View.GONE
             }
         }
@@ -44,8 +44,21 @@ object DialogsUtil {
         bottomSheetDialog.show()
 
         contentView.tvDelete.setOnClickListener {
-            listener.onDeleteImage(adapterPosition)
-            bottomSheetDialog.dismiss()
+            when (type) {
+                "video" -> {
+                    bottomSheetDialog.dismiss()
+                    openDeleteMessageDialog(context, type, listener, adapterPosition)
+                }
+                "image" -> {
+                    bottomSheetDialog.dismiss()
+                    openDeleteMessageDialog(context, type, listener, adapterPosition)
+                }
+                "text" -> {
+                    listener.onDeleteImage(adapterPosition)
+                    bottomSheetDialog.dismiss()
+                }
+            }
+
         }
 
         contentView.tvActionShow.setOnClickListener {
@@ -64,10 +77,47 @@ object DialogsUtil {
         contentView.tvCancel.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
-
-
     }
 
+
+    private fun openDeleteMessageDialog(context: Context, type: String,
+                                        listener: ChatActionCallback, adapterPosition: Int) {
+
+        val contentView = View.inflate(context, R.layout.bottom_sheet_dialog_delete_post, null)
+        val bottomSheetDialog = BottomSheetDialog(context)
+        bottomSheetDialog.setContentView(contentView)
+
+        when (type) {
+            "video" -> {
+                contentView.groupShowPost.visibility = View.GONE
+                contentView.tvDelete.text = context.getString(R.string.delete_message)
+            }
+            "image" -> {
+                contentView.groupShowPost.visibility = View.GONE
+                contentView.tvDelete.text = context.getString(R.string.delete_message)
+            }
+        }
+
+        bottomSheetDialog.show()
+
+        contentView.tvDelete.setOnClickListener {
+            when (type) {
+                "video" -> {
+                    bottomSheetDialog.dismiss()
+                    listener.onDeleteImage(adapterPosition)
+                }
+                "image" -> {
+                    bottomSheetDialog.dismiss()
+                    listener.onDeleteImage(adapterPosition)
+                }
+            }
+
+        }
+
+        contentView.tvCancel.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+    }
 
     fun showDialog(context: Context, layout: Int): Dialog {
         val dialog = Dialog(context)

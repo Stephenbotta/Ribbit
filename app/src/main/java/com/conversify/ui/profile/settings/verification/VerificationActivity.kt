@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.conversify.R
+import com.conversify.data.local.UserManager
 import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.loginsignup.ProfileDto
@@ -98,7 +99,14 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
                     loadingDialog.setLoading(false)
                     selectedImage = null
                     when (apiFlag) {
-                        1 -> longToast(getString(R.string.verification_api_message_verify_email))
+                        1 -> {
+                            longToast(getString(R.string.verification_api_message_verify_email))
+                            val profile = UserManager.getProfile()
+                            profile.isEmailVerified = true
+                            if (profile != null) {
+                                UserManager.saveProfile(profile)
+                            }
+                        }
                         2 -> {
                             longToast(getString(R.string.verification_api_message_verify_mobile))
                             isFragmentAdded = true
@@ -111,6 +119,11 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
                                     .commit()
                         }
                         3 -> {
+                            val profile = UserManager.getProfile()
+                            profile.isPassportVerified = true
+                            if (profile != null) {
+                                UserManager.saveProfile(profile)
+                            }
                             longToast(getString(R.string.verification_api_message_verify_passport))
                             tvUploadDocument.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_success, 0)
                         }

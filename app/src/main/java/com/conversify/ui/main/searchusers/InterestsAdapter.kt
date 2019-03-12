@@ -37,16 +37,25 @@ class InterestsAdapter(private val context: Context) : RecyclerView.Adapter<Inte
 
         fun bindInterests(interest: InterestDto) {
             itemView.tvInterest.text = interest.name
-
+//            for (index in userInterests.indices) {
+//                if (userInterests[index].id == interest.id) {
+//                    setSelectedForMutualInterests(true)
+//                }
+//            }
+//                if (interest.id == userInterests[position].id) {
+//                    setSelectedForMutualInterests(true)
+//                } else {
+//                    setSelectedForMutualInterests(false)
+//                }
             val position = userInterests.indexOfFirst { it.id == interest.id }
             if (position != -1) {
                 setSelectedForMutualInterests(true)
-            } else {
+            }/* else {
                 setSelectedForMutualInterests(false)
-            }
+            }*/
         }
 
-        fun setSelectedForMutualInterests(isMutualInterest: Boolean) {
+        private fun setSelectedForMutualInterests(isMutualInterest: Boolean) {
             if (isMutualInterest) {
                 itemView.tvInterest.setTextColor(mutualInterestColor)
                 itemView.tvInterest.setBackgroundResource(R.drawable.background_profile_edit_interest)

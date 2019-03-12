@@ -13,11 +13,13 @@ import android.support.v4.content.ContextCompat
 import com.conversify.R
 import com.conversify.data.local.PrefsManager
 import com.conversify.data.local.UserManager
+import com.conversify.data.local.models.MessageEvent
 import com.conversify.data.remote.PushType
 import com.conversify.ui.main.MainActivity
 import com.conversify.utils.AppConstants
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import org.greenrobot.eventbus.EventBus
 
 /**
  * Created by Manish Bhargav
@@ -29,6 +31,8 @@ class MessagingService : FirebaseMessagingService() {
         const val TYPE = "TYPE"
         const val MESSAGE = "msg"
     }
+
+    private var chatType = ""
 
     override fun onNewToken(token: String?) {
         super.onNewToken(token)
@@ -65,6 +69,7 @@ class MessagingService : FirebaseMessagingService() {
             }
             PushType.GROUP_CHAT -> {
                 val id = data[ID]
+                chatType = "GROUP"
                 val groupDetails = data["groupDetails"]
                 intent.putExtra(ID, id)
                 intent.putExtra(TYPE, type)
@@ -74,6 +79,7 @@ class MessagingService : FirebaseMessagingService() {
 
             PushType.VENUE_CHAT -> {
                 val id = data[ID]
+                chatType = "VENUE"
                 val groupDetails = data["groupDetails"]
                 intent.putExtra(ID, id)
                 intent.putExtra(TYPE, type)
@@ -83,8 +89,8 @@ class MessagingService : FirebaseMessagingService() {
 
             PushType.CHAT -> {
                 val id = data[ID]
+                chatType = "INDIVIDUAL"
                 val senderDetails = data["senderDetails"]
-
                 intent.putExtra(ID, id)
                 intent.putExtra(TYPE, type)
                 intent.putExtra("data", senderDetails)
@@ -94,8 +100,17 @@ class MessagingService : FirebaseMessagingService() {
 
         val pendingIntent = PendingIntent.getActivity(this, AppConstants.REQ_CODE_PENDING_INTENT,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
         if (!isChatOpen)
             sendNotification(notificationTitle, msg, pendingIntent, "11", AppConstants.REQ_CODE_PENDING_INTENT)
+        else {
+            if (chatType == PrefsManager.get().getString(PrefsManager.PREF_IS_CHAT_TYPE, "")) {
+
+            } else {
+                sendNotification(notificationTitle, msg, pendingIntent, "11", AppConstants.REQ_CODE_PENDING_INTENT)
+            }
+        }
+        EventBus.getDefault().post(MessageEvent(AppConstants.EVENT_PUSH_NOTIFICATION))
     }
 
     @TargetApi(Build.VERSION_CODES.O)

@@ -117,7 +117,7 @@ class PostDetailsReplyViewHolder(itemView: View,
         }
 
         itemView.setOnLongClickListener {
-            callback.onLongPress(reply)
+//            callback.onLongPress(reply)
             true
         }
     }

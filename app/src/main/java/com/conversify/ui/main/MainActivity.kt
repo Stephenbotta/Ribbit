@@ -183,7 +183,10 @@ class MainActivity : BaseLocationActivity() {
                     TAB_INDEX_NOTIFICATIONS -> {
                         if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG)) {
                             fragmentSwitcher.addFragment(NotificationsFragment(), NotificationsFragment.TAG)
-                        }
+                        }/* else {
+                            val fragment = fragmentManager.findFragmentByTag(NotificationsFragment.TAG) as NotificationsFragment
+                            fragment.refreshData()
+                        }*/
                     }
                 }
             }

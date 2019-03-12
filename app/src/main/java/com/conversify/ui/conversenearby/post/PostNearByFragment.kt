@@ -99,7 +99,8 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
     private fun setListener() {
         btnBack.setOnClickListener { activity?.onBackPressed() }
         btnNext.setOnClickListener {
-            val intent = SubmitPostActivity.getStartIntent(requireContext(), flag)
+            val intent = SubmitPostActivity.getStartIntent(requireContext(), flag, requestData(), selectedImage?.absolutePath
+                    ?: "")
             startActivityForResult(intent, flag)
         }
         tvPostingIn.setOnClickListener { getPublicly() }
@@ -241,14 +242,18 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
 
         when (requestCode) {
             AppConstants.REQ_CODE_CONVERSE_NEARBY -> {
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    requestData(data.getParcelableExtra(AppConstants.EXTRA_POST_DATA), ApiConstants.CONVERSE_NEARBY)
+                if (resultCode == Activity.RESULT_OK) {
+                    activity?.setResult(Activity.RESULT_OK)
+                    activity?.finish()
+//                    requestData(data.getParcelableExtra(AppConstants.EXTRA_POST_DATA), ApiConstants.CONVERSE_NEARBY)
                 }
             }
 
             AppConstants.REQ_CODE_CROSSED_PATH -> {
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    requestData(data.getParcelableExtra(AppConstants.EXTRA_POST_DATA), ApiConstants.LOOK_NEARBY)
+                if (resultCode == Activity.RESULT_OK) {
+                    activity?.setResult(Activity.RESULT_OK)
+                    activity?.finish()
+//                    requestData(data.getParcelableExtra(AppConstants.EXTRA_POST_DATA), ApiConstants.LOOK_NEARBY)
                 }
             }
 
@@ -280,13 +285,10 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
         }
     }
 
-    private fun requestData(createPostRequest: CreatePostRequest, postType: String) {
+    private fun requestData(): CreatePostRequest {
+        val createPostRequest = CreatePostRequest()
         createPostRequest.postType = postType
         createPostRequest.postText = etPostDescription.text.toString()
-//        val list = mutableSetOf<String>()
-//        for (i in interest.indices) {
-//            list.add(interest[i].id.toString())
-//        }
         createPostRequest.selectInterests = interest.mapNotNull { it.id }.toSet().toList()
         if (postingIn) {
             if (selectedUserIdList.size > 0) {
@@ -298,7 +300,7 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
             createPostRequest.postingIn = AppConstants.POST_IN_PUBLICILY
         }
         createPostRequest.selectedPeople = selectedUserIdList
-        viewModel.createPost(createPostRequest, selectedImage)
+        return createPostRequest
     }
 
     override fun onEditInterestsClicked() {

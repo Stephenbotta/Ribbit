@@ -51,6 +51,12 @@ class CreateGroupHeaderViewHolder(itemView: View,
             }
         })
 
+        itemView.etDescription.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                view.hideKeyboard()
+            }
+        }
+
         itemView.switchPrivateGroup.setOnCheckedChangeListener(this)
     }
 
@@ -66,6 +72,7 @@ class CreateGroupHeaderViewHolder(itemView: View,
                         .into(ivGroup)
             }
             etGroupTitle.setText(header.groupTitle)
+            etDescription.setText(header.description)
             switchPrivateGroup.isChecked = header.isPrivate
             tvLabelMembers.text = context.getString(R.string.venue_details_label_members_with_count, header.memberCount)
         }

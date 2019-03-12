@@ -24,8 +24,8 @@ data class VenueDto(
         @field:SerializedName("conversationId")
         var conversationId: String? = null,
 
-        @field:SerializedName("_id")
-        val id: String? = null,
+        @field:SerializedName(value = "_id", alternate = ["venueId"])
+        var id: String? = null,
 
         @field:SerializedName("venueTitle")
         val name: String? = null,

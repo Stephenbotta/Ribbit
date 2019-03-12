@@ -2,6 +2,7 @@ package com.conversify.ui.chat.viewholders
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.conversify.data.local.UserManager
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.extensions.gone
@@ -32,8 +33,8 @@ class ViewHolderChatVideo(itemView: View,
         }
 
         itemView.ivThumbnail.setOnLongClickListener {
-
-            DialogsUtil.openAlertDialog(itemView.context, "video", actionCallback, adapterPosition)
+            if (chatMessage.sender?.id == UserManager.getUserId())
+                DialogsUtil.openAlertDialog(itemView.context, "video", actionCallback, adapterPosition)
             true
         }
     }

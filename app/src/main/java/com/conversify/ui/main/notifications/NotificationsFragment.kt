@@ -60,7 +60,7 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        swipeRefreshLayout.setOnRefreshListener { getNotifications() }
+        swipeRefreshLayout.setOnRefreshListener { refreshData() }
         clearNotification.setOnClickListener { clearNotifications() }
         setupNotificationsRecycler()
         observeChanges()
@@ -68,14 +68,18 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
 
     override fun onStart() {
         super.onStart()
-        getNotifications()
+        refreshData()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: MessageEvent) {
-        if (event.type == SocketManager.EVENT_REQUEST_COUNT) {
-            getNotifications()
+        when (event.type) {
+            SocketManager.EVENT_REQUEST_COUNT, AppConstants.EVENT_PUSH_NOTIFICATION -> refreshData()
         }
+    }
+
+    fun refreshData() {
+        getNotifications()
     }
 
     private fun setupNotificationsRecycler() {

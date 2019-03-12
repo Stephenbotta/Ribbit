@@ -23,7 +23,7 @@ data class GroupDto(
         @field:SerializedName("adminId")
         val adminId: String? = null,
 
-        @field:SerializedName("_id")//, alternate = ["groupId"]
+        @field:SerializedName(value = "_id", alternate = ["groupId"])
         var id: String? = null,
 
         @field:SerializedName("requestStatus")

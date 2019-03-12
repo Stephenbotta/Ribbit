@@ -16,6 +16,7 @@ import android.view.MenuItem
 import com.conversify.R
 import com.conversify.data.local.PrefsManager
 import com.conversify.data.local.UserManager
+import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.Status
 import com.conversify.data.remote.models.chat.MemberDto
@@ -115,9 +116,9 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
         ivSave.setOnClickListener {
             val title = etVenueTitle.text.toString()
             if (title.isNotBlank()) {
-                shortToast(title)
                 setVenueTitle(title)
                 ivEdit.visible()
+                viewModel.editGroupName(title, group.id ?: "")
                 ivSave.gone()
                 etVenueTitle.setText("")
                 etVenueTitle.gone()
@@ -204,6 +205,27 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
                 }
             }
         }
+
+        viewModel.editGroupName.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    loadingDialog.setLoading(false)
+                }
+
+                Status.ERROR -> {
+                    loadingDialog.setLoading(false)
+                    if (resource.error != AppError.WaitingForNetwork) {
+                        handleError(resource.error)
+                    }
+                }
+
+                Status.LOADING -> {
+                    loadingDialog.setLoading(true)
+                }
+            }
+        })
 
         viewModel.exitGroup.observe(this, exitOrArchiveVenueObserver)
         viewModel.archiveVenue.observe(this, exitOrArchiveVenueObserver)

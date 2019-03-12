@@ -59,6 +59,16 @@ interface ConversifyApi {
     @POST("user/addEditVenueGroup")
     fun createVenue(@Body request: CreateEditVenueRequest): Call<ApiResponse<VenueDto>>
 
+    @POST("user/addEditVenueGroup")
+    @FormUrlEncoded
+    fun editVenueName(@Field("venueGroupId") venueGroupId: String,
+                      @Field("venueTitle") venueTitle: String): Call<ApiResponse<VenueDto>>
+
+    @POST("user/addEditPostGroup")
+    @FormUrlEncoded
+    fun editGroupName(@Field("postGroupId") venueGroupId: String,
+                      @Field("groupName") venueTitle: String): Call<ApiResponse<Any>>
+
     @POST("user/getData")
     @FormUrlEncoded
     fun getVenues(@Field(FLAG) flag: Int = ApiConstants.FLAG_GET_VENUES,
@@ -83,6 +93,11 @@ interface ConversifyApi {
     @FormUrlEncoded
     fun getVenueDetailsForChat(@Field("groupId") venueId: String?,
                                @Field("chatId") lastMessageId: String?): Call<ApiResponse<VenueDetailsResponse>>
+
+    @POST("user/chatConversation")
+    @FormUrlEncoded
+    fun getVenueChat(@Field("conversationId") conversationId: String?,
+                          @Field("chatId") chatId: String?): Call<ApiResponse<VenueDetailsResponse>>
 
     @POST("user/configNotification")
     @FormUrlEncoded

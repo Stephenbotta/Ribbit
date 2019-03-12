@@ -76,7 +76,7 @@ class SearchUsersAdapter(private val glide: GlideRequests, private val callback:
 
             itemView.tvUserName.text = profile.userName
 
-            interestsAdapter.displayMutualInterests(UserManager.getProfile().interests
+            interestsAdapter.displayMutualInterests(profile.interests
                     ?: emptyList())
         }
     }

@@ -79,12 +79,21 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
     private lateinit var adapter: ChatAdapter
     private lateinit var mediaPicker: MediaPicker
     private var flag = 0
+    private var type = ""
     private lateinit var viewModelIndividual: ChatIndividualViewModel
     private lateinit var viewModelChatIndividual: ChatListIndividualViewModel
     private lateinit var viewModelChatGroup: ChatListGroupViewModel
     private lateinit var viewModelGroup: ChatGroupViewModel
 
     private val newMessageObserver = Observer<ChatMessageDto> {
+        it ?: return@Observer
+        setResult(Activity.RESULT_OK)
+        tvLabelEmptyChat.visibility = View.GONE
+        adapter.addNewMessage(it)
+        rvChat.scrollToPosition(adapter.itemCount - 1)
+    }
+
+    private val deleteMessageObserver = Observer<ChatMessageDto> {
         it ?: return@Observer
         setResult(Activity.RESULT_OK)
         tvLabelEmptyChat.visibility = View.GONE
@@ -168,30 +177,35 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                 val venue = intent.getParcelableExtra<VenueDto>(EXTRA_VENUE)
                 viewModel = ViewModelProviders.of(this)[ChatViewModel::class.java]
                 viewModel.start(venue)
+                type = "VENUE"
                 setupToolbar(venue)
             }
             AppConstants.REQ_CODE_INDIVIDUAL_CHAT -> {
                 val userCrossed = intent.getParcelableExtra<UserCrossedDto>(EXTRA_INDIVIDUAL_CHAT)
                 viewModelIndividual = ViewModelProviders.of(this)[ChatIndividualViewModel::class.java]
                 viewModelIndividual.start(userCrossed)
+                type = "INDIVIDUAL"
                 setupToolbar(userCrossed)
             }
             AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
                 val userCrossed = intent.getParcelableExtra<UserCrossedDto>(EXTRA_INDIVIDUAL_CHAT)
                 viewModelChatIndividual = ViewModelProviders.of(this)[ChatListIndividualViewModel::class.java]
                 viewModelChatIndividual.start(userCrossed)
+                type = "INDIVIDUAL"
                 setupToolbar(userCrossed, flag)
             }
             AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
                 val userCrossed = intent.getParcelableExtra<UserCrossedDto>(EXTRA_INDIVIDUAL_CHAT)
                 viewModelChatGroup = ViewModelProviders.of(this)[ChatListGroupViewModel::class.java]
                 viewModelChatGroup.start(userCrossed)
+                type = "GROUP"
                 setupToolbar(userCrossed, flag)
             }
             AppConstants.REQ_CODE_GROUP_CHAT -> {
                 val group = intent.getParcelableExtra<GroupDto>(EXTRA_GROUP_CHAT)
                 viewModelGroup = ViewModelProviders.of(this)[ChatGroupViewModel::class.java]
                 viewModelGroup.start(group)
+                type = "GROUP"
                 setupToolbar(group)
             }
         }
@@ -526,10 +540,12 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
     override fun onResume() {
         super.onResume()
         PrefsManager.get().save(PrefsManager.PREF_IS_CHAT_OPEN, true)
+        PrefsManager.get().save(PrefsManager.PREF_IS_CHAT_TYPE, type)
     }
 
     override fun onPause() {
         super.onPause()
+        PrefsManager.get().remove(PrefsManager.PREF_IS_CHAT_TYPE)
         PrefsManager.get().save(PrefsManager.PREF_IS_CHAT_OPEN, false)
     }
 
@@ -608,16 +624,15 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
             }
         }
     }
-
+    // Screen touch keyboard close
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         val view = currentFocus
         if (view != null && (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) && view is EditText && !view.javaClass.name.startsWith("android.webkit.")) {
-            val scrcoords = IntArray(2)
-            view.getLocationOnScreen(scrcoords)
-            val x = ev.rawX + view.left - scrcoords[0]
-            val y = ev.rawY + view.top - scrcoords[1]
+            val scrooges = IntArray(2)
+            view.getLocationOnScreen(scrooges)
+            val x = ev.rawX + view.left - scrooges[0]
+            val y = ev.rawY + view.top - scrooges[1]
             if (x < view.left || x > view.right || y < view.top || y > view.bottom)
-            //  mAppUtils.hideSoftKeyboard(window.decorView.rootView)
                 window.decorView.rootView.hideKeyboard()
         }
         return super.dispatchTouchEvent(ev)
@@ -630,6 +645,28 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
     }
 
     override fun onDeleteImage(position: Int) {
+        when (flag) {
+            AppConstants.REQ_CODE_VENUE_CHAT -> {
+                viewModel.deleteMessage(adapter.getMsgDetail(position))
+            }
+            AppConstants.REQ_CODE_INDIVIDUAL_CHAT -> {
+                viewModelIndividual.deleteMessage(adapter.getMsgDetail(position))
+            }
+            AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
+                viewModelChatIndividual.deleteMessage(adapter.getMsgDetail(position))
+            }
+            AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
+                val type = if (PrefsManager.get().getBoolean(PrefsManager.PREF_CHAT_TYPE, false)) {
+                    "GROUP"
+                } else {
+                    "INDIVIDUAL"
+                }
+                viewModelChatGroup.deleteMessage(adapter.getMsgDetail(position), type)
+            }
+            AppConstants.REQ_CODE_GROUP_CHAT -> {
+                viewModelGroup.deleteMessage(adapter.getMsgDetail(position))
+            }
+        }
         adapter.removeMsgPosition(position)
     }
 
@@ -640,6 +677,4 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
     override fun onVideoShow(position: Int) {
         onVideoMessageClicked(adapter.getMsgDetail(position))
     }
-
-
 }

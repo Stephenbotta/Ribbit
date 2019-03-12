@@ -29,9 +29,10 @@ class HomePostViewHolder(itemView: View,
         }
     }
     private val groupNameClickListener = View.OnClickListener {
-        post.group?.let { group ->
-            callback.onGroupClicked(group)
-        }
+//        post.group?.let { group ->
+//            callback.onGroupClicked(group)
+//        }
+        callback.onPostClicked(post, true)
     }
     private val categoryNameClickListener = View.OnClickListener {
         post.category?.let { category ->

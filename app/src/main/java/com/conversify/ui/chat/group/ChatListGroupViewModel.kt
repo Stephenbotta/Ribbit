@@ -72,10 +72,19 @@ class ChatListGroupViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
+    private val deleteMessageListener = Emitter.Listener { args ->
+        val chatMessage = chatMessageBuilder.getChatMessageFromSocketArgument(args.firstOrNull())
+        Timber.i("Delete message confirmation:\n$chatMessage")
+        if (chatMessage != null) {
+
+        }
+    }
+
     fun start(venue: UserCrossedDto) {
         updateGroup(venue)
         venueDetailsLoaded = false
         lastMessageId = null
+        socketManager.on(SocketManager.EVENT_DELETE_MESSAGE, deleteMessageListener)
         socketManager.on(SocketManager.EVENT_NEW_MESSAGE, newMessageListener)
         socketManager.connect()
     }
@@ -329,9 +338,33 @@ class ChatListGroupViewModel(application: Application) : AndroidViewModel(applic
         return jsonObject
     }
 
+    fun deleteMessage(message: ChatMessageDto, type: String) {
+        val arguments = deleteMessageJsonObject(message, type)
+        socketManager.emit(SocketManager.EVENT_DELETE_MESSAGE, arguments, Ack {
+            val acknowledgement = it.firstOrNull()
+            if (acknowledgement != null && acknowledgement is JSONObject) {
+                val acknowledgeMessage = chatMessageBuilder.getChatMessageFromSocketArgument(acknowledgement)
+                Timber.i("Send message acknowledge\n$acknowledgement")
+                message.id = acknowledgeMessage?.id
+            }
+        })
+    }
+
+    private fun deleteMessageJsonObject(message: ChatMessageDto, type: String): JSONObject {
+        val jsonObject = JSONObject()
+        jsonObject.putOpt("senderId", ownUserId)
+        if (type == "INDIVIDUAL")
+            jsonObject.putOpt("receiverId", venue.profile?.id)
+        else jsonObject.putOpt("groupId", venue.id)
+        jsonObject.putOpt("type", type)
+        jsonObject.putOpt("messageId", message.id)
+        return jsonObject
+    }
+
     override fun onCleared() {
         super.onCleared()
         socketManager.off(SocketManager.EVENT_NEW_MESSAGE, newMessageListener)
+        socketManager.off(SocketManager.EVENT_DELETE_MESSAGE, deleteMessageListener)
         apiCalls.forEach { it.cancel() }
         parentJob.cancel()
         s3ImageUploader.clear()

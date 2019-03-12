@@ -23,6 +23,8 @@ class PostDetailsAdapter(private val glide: GlideRequests,
 
     private val items by lazy { mutableListOf<Any>() }
 
+   private val itemHeader by lazy {  mutableListOf<Any>() }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_HEADER -> PostDetailsHeaderViewHolder(parent.inflate(R.layout.item_post_details_header), glide, callback)
@@ -64,11 +66,22 @@ class PostDetailsAdapter(private val glide: GlideRequests,
         notifyDataSetChanged()
     }
 
-    fun addItems(items: List<Any>) {
-        val oldListSize = this.items.size
+    fun displayHeader(items: List<Any>) {
+        this.items.clear()
+        itemHeader.clear()
+        itemHeader.addAll(items)
         this.items.addAll(items)
+        notifyDataSetChanged()
+    }
 
-        notifyItemRangeInserted(oldListSize, items.size)
+
+    fun addItems(items: List<Any>) {
+      //  val oldListSize = this.items.size
+        this.items.clear()
+        this.items.addAll(itemHeader)
+        this.items.addAll(items)
+        notifyDataSetChanged()
+       // notifyItemRangeInserted(0, this.items.size)
     }
 
     fun addReply(newReply: PostReplyDto) {

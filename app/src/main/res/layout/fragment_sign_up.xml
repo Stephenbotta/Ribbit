@@ -102,7 +102,6 @@
             android:paddingStart="0dp"
             android:paddingEnd="4dp"
             android:singleLine="true"
-            android:text="098766"
             app:layout_constraintBottom_toBottomOf="@id/countryCodePicker"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/countryCodePicker"

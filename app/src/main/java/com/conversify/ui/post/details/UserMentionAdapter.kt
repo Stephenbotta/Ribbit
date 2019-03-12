@@ -40,7 +40,7 @@ class UserMentionAdapter(private val glide: GlideRequests,
                 }
             }
             itemView.setOnLongClickListener {
-                callback.onUserMentionLongPressed(user)
+//                callback.onUserMentionLongPressed(user)
                 true
             }
         }
