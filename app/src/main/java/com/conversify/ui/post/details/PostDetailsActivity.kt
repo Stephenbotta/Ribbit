@@ -159,8 +159,9 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
                         postDetailsAdapter.notifyHeaderChanged()
                     }
 
-                    Handler().postDelayed({ rvPostDetails?.smoothScrollToPosition(postDetailsAdapter.itemCount-1 )
-                    },500)
+                    Handler().postDelayed({
+                        rvPostDetails?.smoothScrollToPosition(postDetailsAdapter.itemCount - 1)
+                    }, 500)
                     // By default views related to reply edit text are not visible.
                     if (!etReply.isVisible()) {
                         dividerReplyEditText.gone()

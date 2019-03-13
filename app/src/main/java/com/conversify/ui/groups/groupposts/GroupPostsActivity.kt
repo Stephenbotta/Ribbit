@@ -15,7 +15,9 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.view.menu.MenuBuilder
 import android.support.v7.widget.*
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
+import android.widget.EditText
 import com.conversify.R
 import com.conversify.data.local.PrefsManager
 import com.conversify.data.local.UserManager
@@ -25,10 +27,12 @@ import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import com.conversify.data.remote.models.people.UserCrossedDto
 import com.conversify.extensions.handleError
+import com.conversify.extensions.hideKeyboard
 import com.conversify.extensions.isNetworkActive
 import com.conversify.extensions.isNetworkActiveWithMessage
 import com.conversify.ui.base.BaseActivity
 import com.conversify.ui.chat.ChatActivity
+import com.conversify.ui.custom.LoadingDialog
 import com.conversify.ui.groups.PostCallback
 import com.conversify.ui.groups.details.GroupDetailsActivity
 import com.conversify.ui.people.details.PeopleDetailsActivity
@@ -59,6 +63,7 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
     private val group by lazy { intent.getParcelableExtra<GroupDto>(EXTRA_GROUP) }
     private lateinit var postsAdapter: GroupPostsAdapter
     private var groupPostsLoadedOnce = false
+    private lateinit var loadingDialog: LoadingDialog
 
     private val postUpdatedReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -74,8 +79,11 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         setContentView(R.layout.activity_group_posts)
 
         groupPostsViewModel.start(group)
-
-        swipeRefreshLayout.setOnRefreshListener { getGroupPosts() }
+        loadingDialog = LoadingDialog(this)
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = false
+            getGroupPosts()
+        }
         registerPostUpdatedReceiver()
         setupPostsRecycler()
         displayGroupDetails(group)
@@ -132,7 +140,8 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
             when (resource.status) {
                 Status.SUCCESS -> {
                     sendGroupPostsLoadedBroadcast()
-                    swipeRefreshLayout.isRefreshing = false
+//                    swipeRefreshLayout.isRefreshing = false
+                    loadingDialog.setLoading(false)
                     val posts = resource.data?.result ?: emptyList()
                     val firstPage = resource.data?.isFirstPage ?: true
                     if (firstPage) {
@@ -149,12 +158,14 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
                 }
 
                 Status.ERROR -> {
-                    swipeRefreshLayout.isRefreshing = false
+                    loadingDialog.setLoading(false)
+//                    swipeRefreshLayout.isRefreshing = false
                     handleError(resource.error)
                 }
 
                 Status.LOADING -> {
-                    swipeRefreshLayout.isRefreshing = true
+//                    swipeRefreshLayout.isRefreshing = true
+                    loadingDialog.setLoading(true)
                 }
             }
         })
@@ -164,7 +175,8 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
 
             when (resource.status) {
                 Status.SUCCESS -> {
-                    swipeRefreshLayout.isRefreshing = false
+                    loadingDialog.setLoading(false)
+//                    swipeRefreshLayout.isRefreshing = false
                     group.isMember = false
                     val data = Intent()
                     data.putExtra(AppConstants.EXTRA_GROUP, group)
@@ -173,15 +185,39 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
                 }
 
                 Status.ERROR -> {
-                    swipeRefreshLayout.isRefreshing = false
+                    loadingDialog.setLoading(false)
+//                    swipeRefreshLayout.isRefreshing = false
                     handleError(resource.error)
                 }
 
                 Status.LOADING -> {
-                    swipeRefreshLayout.isRefreshing = true
+                    loadingDialog.setLoading(true)
+//                    swipeRefreshLayout.isRefreshing = true
                 }
             }
         })
+
+
+        postDetailsViewModel.addPostReply.observe(this, Observer { resource ->
+            resource ?: return@Observer
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    loadingDialog.setLoading(false)
+                    groupPostsViewModel.getGroupPosts(true)
+                }
+
+                Status.ERROR -> {
+                    handleError(resource.error)
+                    loadingDialog.setLoading(false)
+                }
+
+                Status.LOADING -> {
+                    loadingDialog.setLoading(true)
+                }
+            }
+        })
+
 
     }
 
@@ -347,9 +383,33 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         Timber.i("Username mention clicked : $username")
     }
 
+    override fun onAddCommentClicked(post: GroupPostDto, comment: String) {
+        Timber.i("Add the comment : $comment")
+//        shortToast(comment)
+        postDetailsViewModel.start(post)
+        postDetailsViewModel.addPostReply(comment)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(this)
                 .unregisterReceiver(postUpdatedReceiver)
     }
+
+    // Screen touch keyboard close
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val view = currentFocus
+        if (view != null && (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) && view is EditText && !view.javaClass.name.startsWith("android.webkit.")) {
+            val scrooges = IntArray(2)
+            view.getLocationOnScreen(scrooges)
+            val x = ev.rawX + view.left - scrooges[0]
+            val y = ev.rawY + view.top - scrooges[1]
+            if (x < view.left || x > view.right || y < view.top || y > view.bottom) {
+                window.decorView.rootView.hideKeyboard()
+                window.decorView.rootView.clearFocus()
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
 }

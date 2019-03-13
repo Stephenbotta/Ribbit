@@ -10,4 +10,5 @@ interface PostCallback {
     fun onUserProfileClicked(profile: ProfileDto)
     fun onHashtagClicked(tag: String)
     fun onUsernameMentionClicked(username: String)
+    fun onAddCommentClicked(post: GroupPostDto, comment: String)
 }

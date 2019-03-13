@@ -20,6 +20,7 @@ import com.conversify.data.local.models.AppError
 import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
 import com.conversify.data.remote.models.Status
+import com.conversify.data.remote.models.chat.ChatDeleteDto
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.data.remote.models.groups.GroupDto
@@ -93,11 +94,15 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
         rvChat.scrollToPosition(adapter.itemCount - 1)
     }
 
-    private val deleteMessageObserver = Observer<ChatMessageDto> {
+    private val deleteMessageObserver = Observer<ChatDeleteDto> {
         it ?: return@Observer
         setResult(Activity.RESULT_OK)
-        tvLabelEmptyChat.visibility = View.GONE
-        adapter.addNewMessage(it)
+        adapter.removeMessage(it)
+        if (adapter.itemCount == 0) {
+            tvLabelEmptyChat.visible()
+        } else {
+            tvLabelEmptyChat.gone()
+        }
         rvChat.scrollToPosition(adapter.itemCount - 1)
     }
 
@@ -330,30 +335,35 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                 viewModel.oldMessages.observeForever(oldMessagesObserver)
                 viewModel.sendMessage.observeForever(sendMessageObserver)
                 viewModel.uploadFile.observeForever(uploadFileObserver)
+                viewModel.deleteMessage.observeForever(deleteMessageObserver)
             }
             AppConstants.REQ_CODE_INDIVIDUAL_CHAT -> {
                 viewModelIndividual.newMessage.observeForever(newMessageObserver)
                 viewModelIndividual.oldMessages.observeForever(oldMessagesObserver)
                 viewModelIndividual.sendMessage.observeForever(sendMessageObserver)
                 viewModelIndividual.uploadFile.observeForever(uploadFileObserver)
+                viewModelIndividual.deleteMessage.observeForever(deleteMessageObserver)
             }
             AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
                 viewModelChatIndividual.newMessage.observeForever(newMessageObserver)
                 viewModelChatIndividual.oldMessages.observeForever(oldMessagesObserver)
                 viewModelChatIndividual.sendMessage.observeForever(sendMessageObserver)
                 viewModelChatIndividual.uploadFile.observeForever(uploadFileObserver)
+                viewModelChatIndividual.deleteMessage.observeForever(deleteMessageObserver)
             }
             AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
                 viewModelChatGroup.newMessage.observeForever(newMessageObserver)
                 viewModelChatGroup.oldMessages.observeForever(oldMessagesObserver)
                 viewModelChatGroup.sendMessage.observeForever(sendMessageObserver)
                 viewModelChatGroup.uploadFile.observeForever(uploadFileObserver)
+                viewModelChatGroup.deleteMessage.observeForever(deleteMessageObserver)
             }
             AppConstants.REQ_CODE_GROUP_CHAT -> {
                 viewModelGroup.newMessage.observeForever(newMessageObserver)
                 viewModelGroup.oldMessages.observeForever(oldMessagesObserver)
                 viewModelGroup.sendMessage.observeForever(sendMessageObserver)
                 viewModelGroup.uploadFile.observeForever(uploadFileObserver)
+                viewModelGroup.deleteMessage.observeForever(deleteMessageObserver)
             }
         }
     }
@@ -597,33 +607,39 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                 viewModel.oldMessages.removeObserver(oldMessagesObserver)
                 viewModel.sendMessage.removeObserver(sendMessageObserver)
                 viewModel.uploadFile.removeObserver(uploadFileObserver)
+                viewModel.deleteMessage.removeObserver(deleteMessageObserver)
             }
             AppConstants.REQ_CODE_INDIVIDUAL_CHAT -> {
                 viewModelIndividual.newMessage.removeObserver(newMessageObserver)
                 viewModelIndividual.oldMessages.removeObserver(oldMessagesObserver)
                 viewModelIndividual.sendMessage.removeObserver(sendMessageObserver)
                 viewModelIndividual.uploadFile.removeObserver(uploadFileObserver)
+                viewModelIndividual.deleteMessage.removeObserver(deleteMessageObserver)
             }
             AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
                 viewModelChatIndividual.newMessage.removeObserver(newMessageObserver)
                 viewModelChatIndividual.oldMessages.removeObserver(oldMessagesObserver)
                 viewModelChatIndividual.sendMessage.removeObserver(sendMessageObserver)
                 viewModelChatIndividual.uploadFile.removeObserver(uploadFileObserver)
+                viewModelChatIndividual.deleteMessage.removeObserver(deleteMessageObserver)
             }
             AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
                 viewModelChatGroup.newMessage.removeObserver(newMessageObserver)
                 viewModelChatGroup.oldMessages.removeObserver(oldMessagesObserver)
                 viewModelChatGroup.sendMessage.removeObserver(sendMessageObserver)
                 viewModelChatGroup.uploadFile.removeObserver(uploadFileObserver)
+                viewModelChatGroup.deleteMessage.removeObserver(deleteMessageObserver)
             }
             AppConstants.REQ_CODE_GROUP_CHAT -> {
                 viewModelGroup.newMessage.removeObserver(newMessageObserver)
                 viewModelGroup.oldMessages.removeObserver(oldMessagesObserver)
                 viewModelGroup.sendMessage.removeObserver(sendMessageObserver)
                 viewModelGroup.uploadFile.removeObserver(uploadFileObserver)
+                viewModelGroup.deleteMessage.removeObserver(deleteMessageObserver)
             }
         }
     }
+
     // Screen touch keyboard close
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         val view = currentFocus
@@ -641,6 +657,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
     override fun onDestroy() {
         super.onDestroy()
         removeObserver(flag)
+        PrefsManager.get().save(PrefsManager.PREF_CHAT_TYPE, false)
         mediaPicker.clear()
     }
 

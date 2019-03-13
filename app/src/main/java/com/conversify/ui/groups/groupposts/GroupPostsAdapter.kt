@@ -9,6 +9,7 @@ import com.conversify.R
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.models.groups.GroupPostDto
 import com.conversify.extensions.*
+import com.conversify.ui.custom.SocialEditText
 import com.conversify.ui.groups.PostCallback
 import com.conversify.utils.AppUtils
 import com.conversify.utils.DateTimeUtils
@@ -54,10 +55,18 @@ class GroupPostsAdapter(private val glide: GlideRequests,
                      private val glide: GlideRequests,
                      private val callback: PostCallback) : RecyclerView.ViewHolder(itemView) {
         private val postClickListener = View.OnClickListener {
-            callback.onPostClicked(post, false)
+            callback.onPostClicked(post, true)
         }
         private val likesCountClickListener = View.OnClickListener {
             callback.onLikesCountClicked(post)
+        }
+        private val addCommentClickListener = View.OnClickListener {
+            val comment = itemView.etReply.text.toString()
+            if (comment.isNotBlank())
+                callback.onAddCommentClicked(post, comment)
+            itemView.etReply.setText("")
+            itemView.etReply.clearFocus()
+            itemView.etReply.hideKeyboard()
         }
         private val userProfileClickListener = View.OnClickListener {
             post.user?.let { profile ->
@@ -89,7 +98,7 @@ class GroupPostsAdapter(private val glide: GlideRequests,
                 return@setOnTouchListener false
             }
 
-            itemView.ivLike.setOnClickListener {
+            itemView.ivLikePost.setOnClickListener {
                 if (isValidPosition() && itemView.context.isNetworkActive()) {
                     val isLiked = !(post.isLiked ?: false)     // toggle liked state
                     post.isLiked = isLiked
@@ -106,9 +115,32 @@ class GroupPostsAdapter(private val glide: GlideRequests,
                 }
             }
 
+            itemView.fabSendReply.setOnClickListener(addCommentClickListener)
+            itemView.etReply.setTextChangedListener(object : SocialEditText.OnTextChangedListener {
+                override fun onTextChanged(text: String) {
+                    if (text.isBlank()) {
+                        itemView.ivLikePost.visible()
+                        itemView.fabSendReply.hide()
+                    } else {
+                        itemView.ivLikePost.gone()
+                        itemView.fabSendReply.show()
+                    }
+                }
+            })
+            itemView.etReply.setOnFocusChangeListener { v, hasFocus ->
+                if (!hasFocus) {
+                    itemView.etReply.setSelectAllOnFocus(false)
+                    val comment = itemView.etReply.text.toString()
+                    if (comment.isNotBlank())
+                        callback.onAddCommentClicked(post, comment)
+                    itemView.etReply.setText("")
+                }
+            }
+/*
             itemView.ivReply.setOnClickListener {
                 callback.onPostClicked(post, true)
             }
+*/
 
             itemView.ivProfile.setOnClickListener(userProfileClickListener)
             itemView.tvUserName.setOnClickListener(userProfileClickListener)
@@ -153,7 +185,7 @@ class GroupPostsAdapter(private val glide: GlideRequests,
 
         private fun updateLikeButtonState() {
             val isLiked = post.isLiked ?: false
-            itemView.ivLike.setImageResource(if (isLiked) {
+            itemView.ivLikePost.setImageResource(if (isLiked) {
                 R.drawable.ic_heart_selected
             } else {
                 R.drawable.ic_heart_normal
@@ -179,7 +211,11 @@ class GroupPostsAdapter(private val glide: GlideRequests,
 
             itemView.tvRepliesLikes.clickSpannable(spannableText = formattedLikes,
                     textColorRes = R.color.textGrayMedium,
-                    clickListener = likesCountClickListener)
+                    clickListener = postClickListener)
         }
+    }
+
+    fun hasFocusRemove(state: Boolean) {
+
     }
 }

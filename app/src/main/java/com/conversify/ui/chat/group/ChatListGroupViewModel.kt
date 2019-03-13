@@ -14,6 +14,7 @@ import com.conversify.data.remote.getAppError
 import com.conversify.data.remote.models.ApiResponse
 import com.conversify.data.remote.models.PagingResult
 import com.conversify.data.remote.models.Resource
+import com.conversify.data.remote.models.chat.ChatDeleteDto
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.data.remote.models.people.UserCrossedDto
@@ -41,6 +42,7 @@ class ChatListGroupViewModel(application: Application) : AndroidViewModel(applic
     val oldMessages by lazy { SingleLiveEvent<Resource<PagingResult<List<ChatMessageDto>>>>() }
     val uploadFile by lazy { SingleLiveEvent<Resource<String>>() }
     val sendMessage by lazy { SingleLiveEvent<Resource<ChatMessageDto>>() }
+    val deleteMessage by lazy { SingleLiveEvent<ChatDeleteDto>() }
 
     private val apiCalls by lazy { mutableListOf<Call<*>>() }   // Containing all on-going api calls that needs to be canceled when viewModel is cleared
     private val parentJob by lazy { Job() }
@@ -73,10 +75,10 @@ class ChatListGroupViewModel(application: Application) : AndroidViewModel(applic
     }
 
     private val deleteMessageListener = Emitter.Listener { args ->
-        val chatMessage = chatMessageBuilder.getChatMessageFromSocketArgument(args.firstOrNull())
+        val chatMessage = chatMessageBuilder.getChatDeleteMessageFromSocketArgument(args.firstOrNull())
         Timber.i("Delete message confirmation:\n$chatMessage")
         if (chatMessage != null) {
-
+            deleteMessage.postValue(chatMessage)
         }
     }
 
@@ -355,7 +357,7 @@ class ChatListGroupViewModel(application: Application) : AndroidViewModel(applic
         jsonObject.putOpt("senderId", ownUserId)
         if (type == "INDIVIDUAL")
             jsonObject.putOpt("receiverId", venue.profile?.id)
-        else jsonObject.putOpt("groupId", venue.id)
+        else jsonObject.putOpt("groupId", venue.profile?.id)
         jsonObject.putOpt("type", type)
         jsonObject.putOpt("messageId", message.id)
         return jsonObject

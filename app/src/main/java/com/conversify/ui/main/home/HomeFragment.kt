@@ -257,6 +257,9 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         //startActivity(TopicGroupsActivity.getStartIntent(requireActivity(), category))
     }
 
+    override fun onAddCommentClicked(post: GroupPostDto, comment: String) {
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {

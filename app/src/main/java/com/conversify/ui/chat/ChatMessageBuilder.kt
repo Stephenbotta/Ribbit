@@ -2,10 +2,7 @@ package com.conversify.ui.chat
 
 import com.conversify.data.remote.ApiConstants
 import com.conversify.data.remote.RetrofitClient
-import com.conversify.data.remote.models.chat.ChatMessageDetailsDto
-import com.conversify.data.remote.models.chat.ChatMessageDto
-import com.conversify.data.remote.models.chat.MessageStatus
-import com.conversify.data.remote.models.chat.VideoUrlDto
+import com.conversify.data.remote.models.chat.*
 import com.conversify.data.remote.models.loginsignup.ImageUrlDto
 import com.conversify.data.remote.models.loginsignup.ProfileDto
 import org.json.JSONObject
@@ -55,6 +52,19 @@ class ChatMessageBuilder(private val ownUserId: String) {
         return if (argument is JSONObject) {
             try {
                 RetrofitClient.GSON.fromJson(argument.toString(), ChatMessageDto::class.java)
+            } catch (exception: Exception) {
+                Timber.w(exception)
+                null
+            }
+        } else {
+            null
+        }
+    }
+
+    fun getChatDeleteMessageFromSocketArgument(argument: Any?): ChatDeleteDto? {
+        return if (argument is JSONObject) {
+            try {
+                RetrofitClient.GSON.fromJson(argument.toString(), ChatDeleteDto::class.java)
             } catch (exception: Exception) {
                 Timber.w(exception)
                 null

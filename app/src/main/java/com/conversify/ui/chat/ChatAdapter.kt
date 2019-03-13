@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.conversify.R
 import com.conversify.data.remote.ApiConstants
+import com.conversify.data.remote.models.chat.ChatDeleteDto
 import com.conversify.data.remote.models.chat.ChatMessageDto
 import com.conversify.data.remote.models.chat.MessageStatus
 import com.conversify.ui.chat.viewholders.ViewHolderChatImage
@@ -142,6 +143,14 @@ class ChatAdapter(context: Context,
                 notifyItemChanged(index)
                 break
             }
+        }
+    }
+
+    fun removeMessage(message: ChatDeleteDto){
+        val position = messages.indexOfFirst { it.id == message.messageId }
+        if (position != -1) {
+            messages.removeAt(position)
+            notifyItemRemoved(position)
         }
     }
 
