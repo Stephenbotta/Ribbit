@@ -58,9 +58,8 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     private lateinit var postDetailsAdapter: PostDetailsAdapter
     private lateinit var userMentionAdapter: UserMentionAdapter
     private var replyingToTopLevelReply: PostReplyDto? = null
-    private lateinit var postId: String
-    private lateinit var postType: String
-    private lateinit var groupPostDto: GroupPostDto
+    private lateinit var groupPost: GroupPostDto
+    private val ownUserId by lazy { UserManager.getUserId() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,22 +67,18 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
 
         btnBack.setOnClickListener { onBackPressed() }
 
-        val groupPost = intent.getParcelableExtra<GroupPostDto>(EXTRA_POST)
+        groupPost = intent.getParcelableExtra(EXTRA_POST)
         viewModel.start(groupPost)
-        groupPostDto = groupPost
         val groupName = groupPost.group?.name ?: ""
         val categoryName = String.format("[%s]", groupPost.category?.name ?: "")
 
-        if (groupPost.user?.id == (UserManager.getUserId())) {
+        if (groupPost.user?.id == ownUserId) {
             btnMore.visible()
         } else {
             btnMore.gone()
         }
-
-        postType = groupPost.postType ?: ""
-        postId = groupPost.id ?: ""
         if (groupName.isNotBlank()) {
-            btnBack.text = "$groupName $categoryName"
+            btnBack.text = String.format("%s %s", groupName, categoryName)
         }
 
         updatePostLikedState(groupPost.isLiked ?: false)
@@ -310,12 +305,11 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     private fun optionMenu(v: View) {
         val popup = PopupMenu(this, v)
         popup.inflate(R.menu.menu_post_more)
-        when (postType) {
+        when (groupPost.postType ?: "") {
             AppConstants.POST_TYPE_REGULAR -> {
                 popup.menu.getItem(1).isVisible = true
             }
         }
-
 //        val m = popup.menu as MenuBuilder     //  visible the icon for menu
 //        m.setOptionalIconsVisible(true)
         popup.setOnMenuItemClickListener(this)
@@ -337,7 +331,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
         when (item?.itemId) {
 
             R.id.deletePost -> {
-                viewModel.deletePost(postId)
+                viewModel.deletePost(groupPost.id ?: "")
                 return true
             }
             R.id.editPost -> {
@@ -411,27 +405,38 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     }
 
     override fun onLongPress(parentReply: PostReplyDto) {
-        if (parentReply.commentBy?.id == UserManager.getUserId()) {
-            bottomSheet(parentReply)
-        } else if (parentReply.replyBy?.id == UserManager.getUserId()) {
-            bottomSheet(parentReply)
-        }
-    }
-
-    private fun deleteComment(parentReply: PostReplyDto) {
         val map = hashMapOf<String, String>()
-        map["commentId"] = parentReply.id ?: ""
-        viewModel.deleteCommentReply(map)
+        when (ownUserId) {
+            groupPost.user?.id -> {
+                if (parentReply.comment == null) {
+                    map["replyId"] = parentReply.id ?: ""
+                } else if (parentReply.reply == null) {
+                    map["commentId"] = parentReply.id ?: ""
+                }
+            }
+            parentReply.commentBy?.id -> {
+                map["commentId"] = parentReply.id ?: ""
+            }
+            parentReply.replyBy?.id -> {
+                map["replyId"] = parentReply.id ?: ""
+            }
+        }
+        if (map.isNotEmpty())
+            bottomSheet(map)
     }
 
-    private fun bottomSheet(parentReply: PostReplyDto) {
+    private fun deleteComment(hashMap: HashMap<String, String>?) {
+        viewModel.deleteCommentReply(hashMap)
+    }
+
+    private fun bottomSheet(hashMap: HashMap<String, String>?) {
         val inflater = layoutInflater
         val binding = DataBindingUtil.inflate<BottomSheetDialogDeleteCommentBinding>(inflater, R.layout.bottom_sheet_dialog_delete_comment, null, false)
         val bottomSheetDialog = BottomSheetDialog(this)
         bottomSheetDialog.setContentView(binding.root)
         bottomSheetDialog.show()
         binding.tvDelete.setOnClickListener {
-            deleteComment(parentReply)
+            deleteComment(hashMap)
             bottomSheetDialog.dismiss()
         }
         binding.tvCancel.setOnClickListener { bottomSheetDialog.dismiss() }
@@ -441,7 +446,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
         val data = UserCrossedDto()
         data.profile = profile
         PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, profile.id ?: "")
-        if (profile.id == UserManager.getUserId()) {
+        if (profile.id == ownUserId) {
             startActivity(Intent(this, ProfileActivity::class.java))
         } else {
             val intent = PeopleDetailsActivity.getStartIntent(this, data, AppConstants.REQ_CODE_BLOCK_USER)

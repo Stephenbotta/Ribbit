@@ -74,7 +74,6 @@ class PostDetailsAdapter(private val glide: GlideRequests,
         notifyDataSetChanged()
     }
 
-
     fun addItems(items: List<Any>) {
       //  val oldListSize = this.items.size
         this.items.clear()
