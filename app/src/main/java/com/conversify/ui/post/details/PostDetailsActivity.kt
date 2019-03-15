@@ -77,6 +77,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
         } else {
             btnMore.gone()
         }
+
         if (groupName.isNotBlank()) {
             btnBack.text = String.format("%s %s", groupName, categoryName)
         }

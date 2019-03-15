@@ -61,36 +61,6 @@ class PostDetailsViewModel : ViewModel() {
 
     fun isPostLiked() = postDetailsHeader.groupPost.isLiked ?: false
 
-    fun getPostWithReplies(firstPage: Boolean = true) {
-        replies.value = Resource.loading()
-        RetrofitClient.conversifyApi
-                .getPostWithReplies(postDetailsHeader.groupPost.id ?: "")
-                .enqueue(object : Callback<ApiResponse<GroupPostDto>> {
-                    override fun onResponse(call: Call<ApiResponse<GroupPostDto>>,
-                                            response: Response<ApiResponse<GroupPostDto>>) {
-                        if (response.isSuccessful) {
-                            val receivedGroupPost = response.body()?.data
-                            if (receivedGroupPost != null) {
-                                postDetailsHeader.groupPost = receivedGroupPost   // Update group post
-                                val receivedReplies = receivedGroupPost.replies ?: emptyList()
-                                receivedReplies.forEach { reply ->
-                                    reply.pendingReplyCount = reply.replyCount ?: 0
-                                }
-                                replies.value = Resource.success(PagingResult(firstPage, receivedReplies))
-                            } else {
-                                replies.value = Resource.success(PagingResult(firstPage, emptyList()))
-                            }
-                        } else {
-                            replies.value = Resource.error(response.getAppError())
-                        }
-                    }
-
-                    override fun onFailure(call: Call<ApiResponse<GroupPostDto>>, t: Throwable) {
-                        replies.value = Resource.error(t.failureAppError())
-                    }
-                })
-    }
-
     fun getSubReplies(parentReply: PostReplyDto) {
         parentReply.subRepliesLoading = true
         subReplies.value = Resource(Status.LOADING,
@@ -141,6 +111,36 @@ class PostDetailsViewModel : ViewModel() {
                         subReplies.value = Resource(Status.ERROR,
                                 SubReplyDto(parentReply, emptyList()),
                                 t.failureAppError())
+                    }
+                })
+    }
+
+    fun getPostWithReplies(firstPage: Boolean = true) {
+        replies.value = Resource.loading()
+        RetrofitClient.conversifyApi
+                .getPostWithReplies(postDetailsHeader.groupPost.id ?: "")
+                .enqueue(object : Callback<ApiResponse<GroupPostDto>> {
+                    override fun onResponse(call: Call<ApiResponse<GroupPostDto>>,
+                                            response: Response<ApiResponse<GroupPostDto>>) {
+                        if (response.isSuccessful) {
+                            val receivedGroupPost = response.body()?.data
+                            if (receivedGroupPost != null) {
+                                postDetailsHeader.groupPost = receivedGroupPost   // Update group post
+                                val receivedReplies = receivedGroupPost.replies ?: emptyList()
+                                receivedReplies.forEach { reply ->
+                                    reply.pendingReplyCount = reply.replyCount ?: 0
+                                }
+                                replies.value = Resource.success(PagingResult(firstPage, receivedReplies))
+                            } else {
+                                replies.value = Resource.success(PagingResult(firstPage, emptyList()))
+                            }
+                        } else {
+                            replies.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<GroupPostDto>>, t: Throwable) {
+                        replies.value = Resource.error(t.failureAppError())
                     }
                 })
     }
