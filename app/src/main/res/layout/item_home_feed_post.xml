@@ -26,10 +26,10 @@
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:includeFontPadding="false"
-        android:lineSpacingMultiplier="0.85"
         android:maxLines="2"
         android:textColor="@color/textGray"
         app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/tvLocationAddress"
         app:layout_constraintEnd_toStartOf="@id/tvTime"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/ivProfile"
@@ -52,30 +52,45 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:textColor="@color/textGray"
         android:textSize="@dimen/item_people_tv_address_text_size"
-        android:visibility="visible"
         app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/ivProfile"
         app:layout_constraintEnd_toStartOf="@id/tvTime"
         app:layout_constraintStart_toEndOf="@id/ivProfile"
         app:layout_constraintTop_toBottomOf="@+id/tvUserName"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="14, Hahn Garsaasasden Street. 917, NY" />
 
-    <ImageView
-        android:id="@+id/ivImage"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpMedias"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:scaleType="centerCrop"
-        android:visibility="visible"
-        app:layout_goneMarginTop="48dp"
         app:layout_constraintDimensionRatio="1.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvLocationAddress"
-        tools:ignore="ContentDescription"
-        tools:src="@tools:sample/backgrounds/scenic" />
+        app:layout_constraintTop_toBottomOf="@+id/ivProfile"
+        app:layout_goneMarginTop="28dp" />
+
+    <com.rd.PageIndicatorView
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vpMedias"
+        app:piv_animationType="scale"
+        app:piv_dynamicCount="true"
+        app:piv_radius="4dp"
+        app:piv_selectedColor="?attr/colorPrimary"
+        app:piv_unselectedColor="@color/disableTextView"
+        app:piv_viewPager="@+id/vpMedias" />
 
     <TextView
         android:id="@+id/tvMessage"
@@ -86,12 +101,12 @@
         android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:maxLines="2"
-        app:layout_goneMarginTop="32dp"
         android:textColor="@color/textGray"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivImage"
+        app:layout_constraintTop_toBottomOf="@id/indicator"
+        app:layout_goneMarginTop="32dp"
         tools:text="Test message #hello #world" />
 
     <TextView
@@ -155,8 +170,8 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
-        android:visibility="gone"
         android:background="@color/greyImageBackground"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

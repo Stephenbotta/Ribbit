@@ -6,7 +6,7 @@
 
         <variable
             name="view"
-            type="com.conversify.ui.venues.details.VenueDetailsActivity" />
+            type="com.pulse.ui.venues.details.VenueDetailsActivity" />
     </data>
 
     <android.support.constraint.ConstraintLayout

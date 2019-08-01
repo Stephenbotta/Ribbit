@@ -140,4 +140,9 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:fontFamily">@font/roboto_text_bold</item>
     </style>
+
+    <style name="AppToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
 </resources>

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <View
-        android:id="@+id/dividerTitle"
+        android:id="@+id/divider_1"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/greyImageBackground"
@@ -15,22 +15,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvLabelThinking"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/roboto_text_bold"
-        android:includeFontPadding="false"
-        android:maxLines="1"
-        android:text="@string/new_post_label_new_post"
+        android:fontFamily="@font/roboto_text_regular"
+        android:gravity="center"
+        android:text="@string/converse_post_label_thinking"
         android:textColor="@color/textGray"
-        android:textSize="@dimen/all_screen_header_text_size"
-        android:visibility="gone"
+        android:textSize="@dimen/all_labels_and_others_text_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/divider_1" />
 
     <EditText
         android:id="@+id/etPostText"
@@ -49,7 +45,7 @@
         android:textColorHint="@color/textGrayMedium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelThinking"
         tools:ignore="UnusedAttribute" />
 
     <com.makeramen.roundedimageview.RoundedImageView
@@ -57,7 +53,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_add_image"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,18 +75,94 @@
         tools:ignore="ContentDescription"
         tools:visibility="visible" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvMedias"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="@id/ivImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivImage"
+        app:layout_constraintTop_toTopOf="@id/ivImage"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_selected_media" />
+
     <TextView
-        android:id="@+id/tvLabelTapToAdd"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvLabelPostingIn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/create_venue_label_tap_to_add_a_picture"
-        android:textColor="@color/textGray7F"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/ivImage"
-        app:layout_constraintStart_toEndOf="@id/ivImage"
-        app:layout_constraintTop_toTopOf="@id/ivImage" />
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_text_regular"
+        android:text="@string/new_post_label_posting_in"
+        android:textColor="@color/colorPrimary"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivImage" />
+
+    <TextView
+        android:id="@+id/tvPostingIn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@drawable/ic_public"
+        android:drawablePadding="8dp"
+        android:fontFamily="@font/roboto_text_regular"
+        android:text="@string/converse_post_label_publicity"
+        android:textColor="@color/textGray"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelPostingIn" />
+
+    <View
+        android:id="@+id/divider_2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/greyImageBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPostingIn" />
+
+    <TextView
+        android:id="@+id/tvLabelInterest"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_text_regular"
+        android:text="@string/converse_post_label_select_interest"
+        android:textColor="@color/colorPrimary"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_2" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvConnection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelInterest"
+        tools:layoutManager="android.support.v7.widget.GridLayoutManager"
+        tools:listitem="@layout/item_profile_interest"
+        tools:orientation="horizontal"
+        tools:spanCount="2" />
 
     <TextView
         android:id="@+id/tvSelectLocation"
@@ -109,10 +181,10 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivImage" />
+        app:layout_constraintTop_toBottomOf="@id/rvConnection" />
 
     <TextView
-        android:id="@+id/tvLabelPostingIn"
+        android:id="@+id/tvLabelPostingInGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -137,7 +209,7 @@
         android:scaleType="centerCrop"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLabelPostingIn"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelPostingInGroup"
         app:riv_corner_radius="4dp"
         tools:src="@tools:sample/backgrounds/scenic"
         tools:visibility="visible" />

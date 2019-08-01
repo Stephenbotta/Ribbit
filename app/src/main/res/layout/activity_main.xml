@@ -23,7 +23,7 @@
         android:background="@color/greyImageBackground"
         app:layout_constraintBottom_toTopOf="@id/bottomTabs" />
 
-    <com.conversify.ui.main.MainBottomTabs
+    <com.pulse.ui.main.MainBottomTabs
         android:id="@+id/bottomTabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

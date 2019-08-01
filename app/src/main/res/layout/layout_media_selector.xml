@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/btnTakePhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:drawablePadding="12dp"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/media_selector_take_photo"
+        android:textColor="@color/textGray"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/textGray" />
+
+    <TextView
+        android:id="@+id/btnTakeVideo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:drawablePadding="12dp"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/media_selector_take_video"
+        android:textColor="@color/textGray"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/textGray" />
+
+    <TextView
+        android:id="@+id/btnSelectFromGallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:drawablePadding="12dp"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/media_selector_select_from_gallery"
+        android:textColor="@color/textGray"
+        android:textSize="16sp" />
+</LinearLayout>

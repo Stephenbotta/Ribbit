@@ -1,0 +1,232 @@
+package com.pulse.ui.main
+
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
+import android.os.Bundle
+import android.support.design.widget.TabLayout
+import android.widget.ImageView
+import android.widget.TextView
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.gson.Gson
+import com.pulse.R
+import com.pulse.data.local.UserManager
+import com.pulse.data.remote.PushType
+import com.pulse.data.remote.models.groups.GroupDto
+import com.pulse.data.remote.models.loginsignup.ProfileDto
+import com.pulse.data.remote.models.people.UserCrossedDto
+import com.pulse.data.remote.models.venues.VenueDto
+import com.pulse.extensions.gone
+import com.pulse.extensions.isNetworkActive
+import com.pulse.extensions.visible
+import com.pulse.ui.base.BaseActivity
+import com.pulse.ui.chat.ChatActivity
+import com.pulse.ui.main.chats.ChatsFragment
+import com.pulse.ui.main.explore.ExploreFragment
+import com.pulse.ui.main.home.HomeFragment
+import com.pulse.ui.main.notifications.NotificationsFragment
+import com.pulse.ui.profile.ProfileFragment
+import com.pulse.utils.AppConstants
+import com.pulse.utils.FragmentSwitcher
+import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
+
+class MainActivity : BaseActivity() {
+    companion object {
+        private const val TAB_INDEX_HOME = 0
+        private const val TAB_INDEX_CHATS = 1
+        //        private const val TAB_INDEX_SEARCH_USERS = 2
+        private const val TAB_INDEX_EXPLORE = 2
+        private const val TAB_INDEX_NOTIFICATIONS = 3
+        private const val TAB_INDEX_PROFILE = 4
+
+        private const val EXTRA_SELECTED_TAB_INDEX = "EXTRA_SELECTED_TAB_INDEX"
+        private const val EXTRA_SELECTED_FRAGMENT_TAG = "EXTRA_SELECTED_FRAGMENT_TAG"
+    }
+
+    private lateinit var viewModel: MainViewModel
+    private lateinit var fragmentSwitcher: FragmentSwitcher
+
+    private val gson = Gson()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        createDeviceToken()
+        viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
+        fragmentSwitcher = FragmentSwitcher(supportFragmentManager, R.id.flMainContainer)
+        if (savedInstanceState == null)
+            checkPushNavigation(savedInstanceState)
+        setupBottomTabs()
+        if (isNetworkActive())
+            viewModel.getNotificationCount()
+        observeNotificationCount()
+    }
+
+    private fun observeNotificationCount() {
+        viewModel.notificationCount.observe(this, Observer {
+            updateNotificationBadgeCount(it ?: "")
+        })
+    }
+
+    private fun checkPushNavigation(savedInstanceState: Bundle?) {
+        val type = intent.getStringExtra("TYPE")
+        if (!type.isNullOrEmpty()) {
+            when (type) {
+                PushType.CHAT -> {
+                    val data = intent.getStringExtra("data")
+                    val profile = gson.fromJson(data, ProfileDto::class.java)
+                    bottomTabs.getTabAt(TAB_INDEX_CHATS)?.select()
+                    val userCrossed = UserCrossedDto()
+                    userCrossed.profile = profile
+                    userCrossed.conversationId = intent.getStringExtra("id")
+                    if (!fragmentSwitcher.fragmentExist(ChatsFragment.TAG))
+                        fragmentSwitcher.addFragment(ChatsFragment(), ChatsFragment.TAG)
+
+                    val intent = ChatActivity.getStartIntentForIndividualChat(this, userCrossed, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
+                    startActivityForResult(intent, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
+                }
+                PushType.GROUP_CHAT -> {
+                    val data = intent.getStringExtra("data")
+                    val profile = gson.fromJson(data, GroupDto::class.java)
+                    bottomTabs.getTabAt(TAB_INDEX_CHATS)?.select()
+                    profile.conversationId = intent.getStringExtra("id")
+                    if (!fragmentSwitcher.fragmentExist(ChatsFragment.TAG))
+                        fragmentSwitcher.addFragment(ChatsFragment(), ChatsFragment.TAG)
+                    val intent = ChatActivity.getStartIntentForGroupChat(this, profile, AppConstants.REQ_CODE_GROUP_CHAT)
+                    startActivityForResult(intent, AppConstants.REQ_CODE_GROUP_CHAT)
+                }
+                PushType.VENUE_CHAT -> {
+                    bottomTabs.getTabAt(TAB_INDEX_EXPLORE)?.select()
+                    val data = intent.getStringExtra("data")
+                    val profile = gson.fromJson(data, VenueDto::class.java)
+                    profile.conversationId = intent.getStringExtra("id")
+                    if (!fragmentSwitcher.fragmentExist(ExploreFragment.TAG))
+                        fragmentSwitcher.addFragment(ExploreFragment(), ExploreFragment.TAG)
+                    val intent = ChatActivity.getStartIntent(this, profile, AppConstants.REQ_CODE_VENUE_CHAT)
+                    startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
+                }
+                else -> {
+                    bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)?.select()
+                    if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG))
+                        fragmentSwitcher.addFragment(NotificationsFragment(), NotificationsFragment.TAG)
+                }
+            }
+
+        } else {
+            if (savedInstanceState == null) {
+                // On first launch add home fragment
+                fragmentSwitcher.addFragment(HomeFragment(), HomeFragment.TAG)
+                Timber.d("Saved instance state is null")
+            } else {
+                // Restore the tab state to the last selected if activity state is restored
+                val tabIndex = savedInstanceState.getInt(EXTRA_SELECTED_TAB_INDEX, TAB_INDEX_HOME)
+                if (tabIndex != -1) {
+                    bottomTabs.getTabAt(tabIndex)?.select()
+                    Timber.d("Saved instance state exist. Selected tab index : $tabIndex")
+                }
+
+                val currentFragmentTag = savedInstanceState.getString(EXTRA_SELECTED_FRAGMENT_TAG)
+                fragmentSwitcher.setCurrentFragmentTag(currentFragmentTag)
+            }
+        }
+
+    }
+
+    private fun createDeviceToken() {
+        FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Timber.d("getInstanceId failed : ${task.exception}")
+                        return@OnCompleteListener
+                    }
+                    // Get new Instance ID token
+                    val token = task.result?.token
+                    UserManager.saveDeviceToken(token.toString())
+                })
+    }
+
+    private fun setupBottomTabs() {
+        bottomTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                updateNotificationIcon(tab.position)
+                when (tab.position) {
+                    TAB_INDEX_HOME -> {
+                        if (!fragmentSwitcher.fragmentExist(HomeFragment.TAG)) {
+                            fragmentSwitcher.addFragment(HomeFragment(), HomeFragment.TAG)
+                        }
+                    }
+
+                    TAB_INDEX_CHATS -> {
+                        if (!fragmentSwitcher.fragmentExist(ChatsFragment.TAG)) {
+                            fragmentSwitcher.addFragment(ChatsFragment(), ChatsFragment.TAG)
+                        }
+                    }
+
+                    /* TAB_INDEX_SEARCH_USERS -> {
+                         if (!fragmentSwitcher.fragmentExist(SearchUsersFragment.TAG)) {
+                             fragmentSwitcher.addFragment(SearchUsersFragment(), SearchUsersFragment.TAG)
+                         }
+                     }*/
+
+                    TAB_INDEX_EXPLORE -> {
+                        if (!fragmentSwitcher.fragmentExist(ExploreFragment.TAG)) {
+                            fragmentSwitcher.addFragment(ExploreFragment(), ExploreFragment.TAG)
+                        }
+                    }
+
+                    TAB_INDEX_NOTIFICATIONS -> {
+                        if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG)) {
+                            fragmentSwitcher.addFragment(NotificationsFragment(), NotificationsFragment.TAG)
+                        }
+                    }
+
+                    TAB_INDEX_PROFILE -> {
+                        if (!fragmentSwitcher.fragmentExist(ProfileFragment.TAG)) {
+                            fragmentSwitcher.addFragment(ProfileFragment(), ProfileFragment.TAG)
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val selectedTabIndex = bottomTabs.selectedTabPosition
+        outState.putInt(EXTRA_SELECTED_TAB_INDEX, selectedTabIndex)
+        outState.putString(EXTRA_SELECTED_FRAGMENT_TAG, fragmentSwitcher.getCurrentFragmentTag())
+        Timber.d("Saving instance state. Selected tab index : $selectedTabIndex")
+    }
+
+    /*override fun onLocationUpdated(location: Location) {
+        viewModel.currentLocationUpdated(location)
+    }*/
+
+    private fun updateNotificationBadgeCount(notificationCount: String) {
+        val notificationTab = bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)
+        val tabView = notificationTab?.customView
+        val badgeText = tabView?.findViewById<TextView>(R.id.tvCount)
+        if (notificationCount.toInt() > 0) {
+            badgeText?.visible()
+            badgeText?.text = notificationCount
+        } else {
+            badgeText?.gone()
+        }
+    }
+
+    private fun updateNotificationIcon(tabCurrentPosition: Int) {
+        val notificationTab = bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)
+        val tabView = notificationTab?.customView
+        val ivNotification = tabView?.findViewById<ImageView>(R.id.ivNotification)
+        if (tabCurrentPosition == TAB_INDEX_NOTIFICATIONS) {
+            ivNotification?.setImageResource(R.drawable.ic_notification)
+        } else {
+            ivNotification?.setImageResource(R.drawable.ic_notification_gray)
+        }
+    }
+}

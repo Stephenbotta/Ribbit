@@ -7,11 +7,11 @@
 
         <variable
             name="view"
-            type="com.conversify.ui.people.PeopleFragment" />
+            type="com.pulse.ui.people.PeopleFragment" />
 
         <variable
             name="viewModel"
-            type="com.conversify.ui.people.PeopleViewModel" />
+            type="com.pulse.ui.people.PeopleViewModel" />
 
     </data>
 

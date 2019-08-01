@@ -13,11 +13,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="fill"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabIndicatorFullWidth="false"
-        app:tabMode="fixed"
-        app:tabPaddingEnd="0dp"
-        app:tabPaddingStart="0dp"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="scrollable"
+        app:tabPaddingEnd="16dp"
+        app:tabPaddingStart="16dp"
         app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextAppearance="@style/ExploreTabTextAppearance"
         app:tabTextColor="@color/textGray">
@@ -27,7 +26,7 @@
             android:layout_height="wrap_content"
             android:text="@string/explore_tab_channels" />
 
-        <android.support.design.widget.TabItem
+        <!--<android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/explore_tab_venues" />
@@ -35,7 +34,7 @@
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/explore_tab_people" />
+            android:text="@string/explore_tab_people" />-->
 
     </android.support.design.widget.TabLayout>
 
@@ -43,10 +42,10 @@
         android:id="@+id/btnNotification"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
         android:background="?attr/selectableItemBackground"
         android:scaleType="center"
         android:src="@drawable/ic_notification"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/tabLayout"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintEnd_toEndOf="parent"

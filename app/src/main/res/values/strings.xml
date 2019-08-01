@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cheetahify</string>
+    <string name="app_name">Pulse</string>
 
     <string name="facebook_app_id" translatable="false">1875226609239116</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb1875226609239116</string>
@@ -65,7 +65,7 @@
     <string name="permission_never_ask_storage">You previously selected to never ask again for Storage permission. You have to manually grant it from the app settings.</string>
 
     <string name="permission_rationale_contact">Read Contact permission is required to access contacts for invite.</string>
-    <string name="permission_denied_read_contact">Without the Read Conatct permission read conatct will not work.</string>
+    <string name="permission_denied_read_contact">Without the Read Contact permission read contact will not work.</string>
     <string name="permission_never_ask_contact">You previously selected to never ask again for Read Contact permission. You have to manually grant them from the app settings.</string>
 
     <string name="error_check_internet_connection">Please check your internet connection</string>
@@ -91,7 +91,7 @@
     <string name="error_invalid_new_password_length">New password length must be 6 to 20 characters</string>
     <string name="error_invalid_phone_number">Please enter valid phone number</string>
 
-    <string name="login_sign_up_label_by_signing_in_you_are_agree">By Signing in you agree to Cheetahify’s Terms &amp; conditions and Privacy policy.</string>
+    <string name="login_sign_up_label_by_signing_in_you_are_agree">By Signing in you agree to Pulse’s Terms &amp; conditions and Privacy policy.</string>
     <string name="login_sign_up_label_terms_and_conditions">Terms &amp; conditions</string>
     <string name="login_sign_up_label_privacy_policy">Privacy policy</string>
     <string name="login_sign_up_label_already_a_member_sign_in">Already a member? Sign in</string>
@@ -141,7 +141,7 @@
     <string name="choose_interests_message_choose_one_interests">Choose at least %d interest</string>
     <string name="choose_interests_btn_continue">Continue</string>
 
-    <string name="explore_tab_channels">CHANNELS</string>
+    <string name="explore_tab_channels">NETWORKS</string>
     <string name="explore_tab_venues">VENUES</string>
     <string name="explore_tab_people">PEOPLE</string>
 
@@ -205,17 +205,17 @@
     <string name="venue_details_btn_exit">Exit</string>
     <string name="venue_details_btn_archive">Archive</string>
 
-    <string name="groups_label_search_for_channels">Search for channels</string>
-    <string name="groups_label_add_new_channel">Add New Channel</string>
+    <string name="groups_label_search_for_channels">Search for networks</string>
+    <string name="groups_label_add_new_channel">Add New Network</string>
     <string name="groups_label_topics">Topics</string>
-    <string name="groups_label_suggested_channels">SUGGESTED CHANNELS</string>
-    <string name="groups_label_your_channels">YOUR CHANNELS</string>
-    <string name="groups_label_no_channels_found">No channel yet!!</string><!--No channels found-->
+    <string name="groups_label_suggested_channels">SUGGESTED NETWORKS</string>
+    <string name="groups_label_your_channels">YOUR NETWORKS</string>
+    <string name="groups_label_no_channels_found">No network yet!!</string>
 
-    <string name="create_group_label_channels">CHANNELS</string>
-    <string name="create_group_label_create_a_channel">Create a Channel</string>
-    <string name="create_group_label_create_channels_based_on_your_interest">Create channels based on your interest, location and invite your friends, family and colleagues to join!!!</string>
-    <string name="create_group_label_channel_s_title">Channel\'s title</string>
+    <string name="create_group_label_channels">NETWORKS</string>
+    <string name="create_group_label_create_a_channel">Create a Network</string>
+    <string name="create_group_label_create_channels_based_on_your_interest">Create network based on your interest, location and invite your friends, family and colleagues to join!!!</string>
+    <string name="create_group_label_channel_s_title">Network\'s title</string>
 
     <string name="profile_btn_logout">Logout</string>
 
@@ -225,7 +225,7 @@
     <string name="notifications_btn_accept">Accept</string>
     <string name="notifications_btn_reject">Reject</string>
     <string name="notifications_label_no_notifications_found">No Notifications Found</string>
-    <string name="notifications_label_send_request_to_join">%s send request to join channel %s</string>
+    <string name="notifications_label_send_request_to_join">%s send request to join network %s</string>
     <string name="notifications_label_send_request_to_join_venue">%s send request to join venue %s</string>
     <string name="notifications_btn_clear">CLEAR</string>
 
@@ -239,22 +239,22 @@
     <string name="notifications_label_comment">%s commented: %s</string>
     <string name="notifications_label_tag_comment">%s mentioned you in comment</string>
     <string name="notifications_label_tag_reply">%s mentioned you in reply</string>
-    <string name="notifications_label_accept_invite">%s  has accepted your invite for channel %s</string>
+    <string name="notifications_label_accept_invite">%s  has accepted your invite for network %s</string>
     <string name="notifications_label_accept_invite_venue">%s  has accepted your invite for venue %s</string>
-    <string name="notifications_label_invite">%s  has invited for channel %s</string>
+    <string name="notifications_label_invite">%s  has invited for network %s</string>
     <string name="notifications_label_invite_venue">%s  has invited for venue %s</string>
-    <string name="notifications_label_accept_request_channel">%s has accepted your request for channel. Now you are the member of group %s</string>
+    <string name="notifications_label_accept_request_channel">%s has accepted your request for network. Now you are the member of group %s</string>
     <string name="notifications_label_accept_request_venue">%s has accepted your request for venue. Now you are the member of venue %s</string>
     <string name="notifications_label_accept_request_follow">%s has accepted your follow request</string>
 
-    <string name="notifications_label_joined_group">%s you are now member of channel %s</string>
+    <string name="notifications_label_joined_group">%s you are now member of network %s</string>
     <string name="notifications_label_joined_venue">%s you are now member of venue %s</string>
     <string name="notifications_msg_requestFollow">%s has started following you </string>
     <string name="notifications_msg_requestFollowPrivate">%s has requested to follow you</string>
     <string name="notifications_label_post">%s has posted on your group %s</string>
     <string name="notifications_label_reply">%s replied on your comment</string>
 
-    <string name="notifications_label_public_joined_group">%s has join your channel %s</string>
+    <string name="notifications_label_public_joined_group">%s has join your network %s</string>
     <string name="notifications_label_public_joined_venue">%s has join your venue %s</string>
 
     <string name="profile_label_profile">Profile</string>
@@ -277,7 +277,7 @@
     <string name="home_label_group_and_category_name">in %s %s</string>
 
     <string name="new_post_label_new_post">New Post</string>
-    <string name="new_post_label_choose_a_channel_you_want_to_post_into">Choose a channel you want to post into</string>
+    <string name="new_post_label_choose_a_channel_you_want_to_post_into">Choose a network you want to post into</string>
     <string name="new_post_label_skip">SKIP</string>
     <string name="new_post_label_post">POST</string>
     <string name="new_post_label_type_here">Type here</string>
@@ -306,23 +306,23 @@
     <string name="add_venue_participants_message_request_sent">Request has been sent to the participants. They will get added once they accept.</string>
 
     <string name="chat_listing_label_individual">INDIVIDUAL</string>
-    <string name="chat_listing_label_group">CHANNEL</string>
+    <string name="chat_listing_label_group">NETWORKS</string>
     <string name="chat_listing_label_empty">No Chat Found</string>
     <string name="chat_listing_hint_search_for_chat">Search</string>
     <string name="chat_listing_photo_last_message_for_chat">Photo</string>
     <string name="chat_listing_video_last_message_for_chat">Video</string>
 
-    <string name="group_details_label_delete_group">Delete channel</string>
-    <string name="group_details_label_exit_group">Exit channel</string>
-    <string name="group_details_label_archive_group">Archive channel</string>
-    <string name="group_details_label_delete_group_question">Are you sure you want to delete this channel?</string>
-    <string name="group_details_label_exit_group_question">Are you sure you want to exit this channel?</string>
-    <string name="group_details_label_archive_group_question">Are you sure you want to archive this channel?</string>
+    <string name="group_details_label_delete_group">Delete network</string>
+    <string name="group_details_label_exit_group">Exit network</string>
+    <string name="group_details_label_archive_group">Archive network</string>
+    <string name="group_details_label_delete_group_question">Are you sure you want to delete this network?</string>
+    <string name="group_details_label_exit_group_question">Are you sure you want to exit this network?</string>
+    <string name="group_details_label_archive_group_question">Are you sure you want to archive this network?</string>
 
     <string name="search_title_top">TOP</string>
     <string name="search_title_tags">TAGS</string>
     <string name="search_title_posts">POSTS</string>
-    <string name="search_title_groups">CHANNELS</string>
+    <string name="search_title_groups">NETWORKS</string>
     <string name="search_title_venues">VENUES</string>
     <string name="search_top_label_recent">Recent</string>
     <string name="search_top_label_suggested">Suggested</string>
@@ -330,9 +330,9 @@
 
     <string name="group_more_options_label_exit">Exit</string>
     <string name="group_more_options_label_share">Share</string>
-    <string name="group_more_options_label_channel_chat">Channel Chat</string>
+    <string name="group_more_options_label_channel_chat">Network Chat</string>
     <string name="group_more_options_label_create_post">Create a new post</string>
-    <string name="group_more_options_label_channel_detail">Channel Detail</string>
+    <string name="group_more_options_label_channel_detail">Network Detail</string>
     <string name="group_more_options_label_channel_delete">Delete</string>
 
     <string name="edit_profile_label_save">SAVE</string>
@@ -355,7 +355,7 @@
     <string name="dialog_post_label_publicly">Publicly</string>
     <string name="dialog_post_label_follower_selected_people">Followers/Selected People</string>
     <string name="dialog_venue_label_invite">Invite to Venue</string>
-    <string name="dialog_group_label_invite">Invite to Channel</string>
+    <string name="dialog_group_label_invite">Invite to Network</string>
 
     <string name="dialog_notification_label_okay">Okay!!</string>
     <string name="dialog_notification_label_show_post">Show Post</string>
@@ -443,12 +443,12 @@
     <string name="hide_info_label_people_count">%d People</string>
     <string name="search_user_label_progress_count">%02d mi</string>
 
-    <string name="venue_share_link">Please open this link to join my Cheetahify Venue.</string>
-    <string name="group_share_link">Please open this link to join my Cheetahify Group.</string>
+    <string name="venue_share_link">Please open this link to join my Pulse Venue.</string>
+    <string name="group_share_link">Please open this link to join my Pulse Group.</string>
     <string name="msg_invite_sent_successfully">Invite sent successfully</string>
     <string name="follow_request_text">Follow request has already been sent to this user.</string>
 
-    <string name="create_channel_successfully">Channel is created successfully</string>
+    <string name="create_channel_successfully">Network is created successfully</string>
     <string name="join_venue_request_msg">Do you want to join this venue?</string>
     <string name="join_venue_request_btn_agree">Yes</string>
     <string name="post_upload_successfully">Post uploaded successfully</string>
@@ -456,7 +456,7 @@
     <string name="description">Description</string>
 
     <string name="venue_details_label_venue_title">Enter Venue Name</string>
-    <string name="group_details_label_group_title">Enter Channel Name</string>
+    <string name="group_details_label_group_title">Enter Network Name</string>
 
     <string name="venue_error_label_venue_title">Please enter venue name</string>
     <string name="post_delete_label_comment">Delete Comment</string>
@@ -465,5 +465,19 @@
     <string name="delete_message">Delete Message</string>
     <string name="delete_video">Delete Video</string>
     <string name="delete_image">Delete Image</string>
+    <string name="welcome_label_student">Student</string>
+    <string name="welcome_label_mentor">Mentor</string>
+
+    <string name="image_picker_btn_send">Send (%d)</string>
+    <string name="image_picker_title_albums">Albums</string>
+
+    <string name="media_selector_take_photo">Take Photo</string>
+    <string name="media_selector_take_video">Take Video</string>
+    <string name="media_selector_select_from_gallery">Select From Gallery</string>
+    <string name="placeholder_no_album_found">No Album Found</string>
+    <string name="placeholder_no_media_found">No Media Found</string>
+    <string name="placeholder_no_result_found">Result not found</string>
+
+    <string name="error_msg_you_can_upload_max_6_files">You can select maximum %d files</string>
 
 </resources>

@@ -75,6 +75,22 @@
         tools:ignore="ContentDescription"
         tools:src="@tools:sample/backgrounds/scenic" />
 
+    <TextView
+        android:id="@+id/tvPostCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_chat_message_progress_bar"
+        android:fontFamily="@font/roboto_text_medium"
+        android:gravity="center"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintCircle="@id/ivImage"
+        tools:text="+9" />
+
     <android.support.constraint.Barrier
         android:id="@+id/barrierMessage"
         android:layout_width="wrap_content"
@@ -125,7 +141,7 @@
         app:layout_constraintTop_toBottomOf="@id/barrierMessage"
         tools:ignore="ContentDescription" />
 -->
-    <com.conversify.ui.custom.SocialEditText
+    <com.pulse.ui.custom.SocialEditText
         android:id="@+id/etReply"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

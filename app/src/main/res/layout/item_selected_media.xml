@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="6dp"
+        android:layout_marginBottom="10dp"
+        android:scaleType="centerCrop"
+        tools:ignore="ContentDescription"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/ivRemoveMedia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:background="?selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_remove"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/ivVideo"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_video_play"
+        tools:ignore="ContentDescription" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:theme="@style/ProgressBarChatMessage"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/btnResend"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:background="@drawable/background_chat_message_progress_bar"
+        android:scaleType="center"
+        android:src="@drawable/ic_share_white"
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
+
+</FrameLayout>

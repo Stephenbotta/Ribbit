@@ -6,7 +6,7 @@
 
         <variable
             name="view"
-            type="com.conversify.ui.conversenearby.post.PostNearByActivity" />
+            type="com.pulse.ui.conversenearby.post.PostNearByActivity" />
     </data>
 
     <android.support.constraint.ConstraintLayout

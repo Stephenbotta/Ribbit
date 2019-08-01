@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.conversify">
+    package="com.pulse">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
     <application
-        android:name=".ConversifyApp"
+        android:name="com.pulse.PulseApp"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -26,7 +26,7 @@
         tools:replace="android:allowBackup">
 
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name="com.pulse.ui.splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
@@ -35,63 +35,63 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.landing.LandingActivity"
+            android:name="com.pulse.ui.landing.LandingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name="com.pulse.ui.main.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".ui.loginsignup.LoginSignUpActivity"
+            android:name="com.pulse.ui.loginsignup.LoginSignUpActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.createvenue.CreateVenueActivity"
+            android:name="com.pulse.ui.createvenue.CreateVenueActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.chat.ChatActivity"
+            android:name="com.pulse.ui.chat.ChatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.venues.filters.VenueFiltersActivity"
+            android:name="com.pulse.ui.venues.filters.VenueFiltersActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.venues.details.VenueDetailsActivity"
+            android:name="com.pulse.ui.venues.details.VenueDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.groups.details.GroupDetailsActivity"
+            android:name="com.pulse.ui.groups.details.GroupDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.images.ImagesActivity"
+            android:name="com.pulse.ui.images.ImagesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Images" />
         <activity
-            android:name=".ui.videoplayer.VideoPlayerActivity"
+            android:name="com.pulse.ui.videoplayer.VideoPlayerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Images" />
         <activity
-            android:name=".ui.creategroup.create.CreateGroupActivity"
+            android:name="com.pulse.ui.creategroup.create.CreateGroupActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.groups.topicgroups.TopicGroupsActivity"
+            android:name="com.pulse.ui.groups.topicgroups.TopicGroupsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.groups.groupposts.GroupPostsActivity"
+            android:name="com.pulse.ui.groups.groupposts.GroupPostsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.creategroup.addparticipants.AddParticipantsActivity"
+            android:name="com.pulse.ui.creategroup.addparticipants.AddParticipantsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.post.newpost.NewPostActivity"
+            android:name="com.pulse.ui.post.newpost.NewPostActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.post.details.PostDetailsActivity"
+            android:name="com.pulse.ui.post.details.PostDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.venues.join.JoinVenueActivity"
+            android:name="com.pulse.ui.venues.join.JoinVenueActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.venues.addparticipants.AddVenueParticipantsActivity"
+            android:name="com.pulse.ui.venues.addparticipants.AddVenueParticipantsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -111,47 +111,50 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.people.details.PeopleDetailsActivity"
+            android:name="com.pulse.ui.people.details.PeopleDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.profile.ProfileActivity"
+            android:name="com.pulse.ui.profile.ProfileActivity"
             android:screenOrientation="portrait" /> <!-- https://developers.google.com/maps/documentation/android-sdk/config#specify_requirement_for_apache_http_legacy_library -->
         <activity
-            android:name=".ui.search.SearchActivity"
+            android:name="com.pulse.ui.search.SearchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.profile.edit.EditProfileActivity"
+            android:name="com.pulse.ui.profile.edit.EditProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.profile.settings.SettingsActivity"
+            android:name="com.pulse.ui.profile.settings.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.profile.settings.verification.VerificationActivity"
+            android:name="com.pulse.ui.profile.settings.verification.VerificationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.profile.settings.blockusers.BlockUsersListActivity"
+            android:name="com.pulse.ui.profile.settings.blockusers.BlockUsersListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.profile.settings.weblink.WebLinkActivity"
+            android:name="com.pulse.ui.profile.settings.weblink.WebLinkActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.profile.settings.hideinfo.HidePersonalInfoActivity"
+            android:name="com.pulse.ui.profile.settings.hideinfo.HidePersonalInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.profile.settings.hideinfo.hidestatus.HideStatusActivity"
+            android:name="com.pulse.ui.profile.settings.hideinfo.hidestatus.HideStatusActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.profile.followerandfollowing.FollowerAndFollowingActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:name="com.pulse.ui.profile.followerandfollowing.FollowerAndFollowingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.pulse.ui.conversenearby.SelectNearByActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.conversenearby.SelectNearByActivity"
+            android:name="com.pulse.ui.conversenearby.post.PostNearByActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.conversenearby.post.PostNearByActivity"
+            android:name="com.pulse.ui.conversenearby.post.SubmitPostActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.conversenearby.post.SubmitPostActivity"
+            android:name=".ui.picker.PickerActivity"
             android:screenOrientation="portrait" />
 
         <uses-library
@@ -173,7 +176,7 @@
             android:enabled="true" />
 
         <service
-            android:name=".services.MessagingService"
+            android:name="com.pulse.services.MessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -182,7 +185,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/cheetahify_b" />
+            android:resource="@drawable/ic_logo_header" />
         <!--
  Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message. See README(https://goo.gl/6BKBk7) for more.

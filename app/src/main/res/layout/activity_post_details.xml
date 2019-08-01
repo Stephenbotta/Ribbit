@@ -133,7 +133,7 @@
         app:layout_constraintBottom_toTopOf="@id/etReply"
         tools:visibility="visible" />
 
-    <com.conversify.ui.custom.SocialEditText
+    <com.pulse.ui.custom.SocialEditText
         android:id="@+id/etReply"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

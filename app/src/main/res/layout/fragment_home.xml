@@ -27,24 +27,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
         android:layout_margin="16dp"
+        android:gravity="center"
         android:text="@string/home_label_no_posts_found"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:visibility="gone" />
 
     <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fabPost"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:layout_margin="16dp"-->
-        <!--android:src="@drawable/ic_plus_white"-->
-        <!--app:backgroundTint="@color/colorPrimary"-->
-        <!--app:fabSize="normal" />-->
+    <!--android:id="@+id/fabPost"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom|end"-->
+    <!--android:layout_margin="16dp"-->
+    <!--android:src="@drawable/ic_plus_white"-->
+    <!--app:backgroundTint="@color/colorPrimary"-->
+    <!--app:fabSize="normal" />-->
     <!---->
-    <com.leinardi.android.speeddial.SpeedDialOverlayLayout
+    <!--<com.leinardi.android.speeddial.SpeedDialOverlayLayout
         android:id="@+id/fabOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -59,6 +59,15 @@
         app:sdMainFabClosedSrc="@drawable/ic_plus_white"
         app:sdMainFabOpenedSrc="@drawable/ic_close_white_24dp"
         app:sdOverlayLayout="@id/fabOverlay"
-        app:sdUseReverseAnimationOnClose="true" />
+        app:sdUseReverseAnimationOnClose="true" />-->
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_plus_white"
+        android:theme="@style/AppTheme.FabGroups" />
 
 </FrameLayout>

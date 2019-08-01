@@ -88,6 +88,7 @@
                 android:text="@string/verification_label_verification"
                 android:textColor="@color/textGray"
                 android:textSize="@dimen/all_labels_and_others_text_size"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvLabelProfile" />
@@ -291,6 +292,7 @@
                 android:textColor="@color/textGray"
                 android:textSize="@dimen/all_labels_and_others_text_size"
                 android:theme="@style/AppTheme.SwitchCompat"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvPush"

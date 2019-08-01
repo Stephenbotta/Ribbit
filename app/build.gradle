@@ -158,5 +158,8 @@ dependencies {
 
     // https://github.com/greenrobot/EventBus
     implementation "org.greenrobot:eventbus:$eventBus"
+
+    // https://github.com/romandanylyk/PageIndicatorView
+    implementation "com.romandanylyk:pageindicatorview:$pageIndicatorViewVersion"
 }
 apply plugin: 'com.google.gms.google-services'

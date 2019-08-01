@@ -252,11 +252,79 @@
                     tools:src="@drawable/ic_verify_success" />
             </LinearLayout>
 
+            <android.support.design.card.MaterialCardView
+                android:id="@+id/cvStudent"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
+                android:layout_marginTop="28dp"
+                app:cardCornerRadius="48dp"
+                app:layout_constraintEnd_toStartOf="@id/cvMentor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llPhoneNumber">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:src="@drawable/ic_student"
+                    tools:ignore="ContentDescription" />
+
+            </android.support.design.card.MaterialCardView>
+
+            <android.support.design.card.MaterialCardView
+                android:id="@+id/cvMentor"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
+                android:layout_marginTop="28dp"
+                app:cardCornerRadius="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/cvStudent"
+                app:layout_constraintTop_toBottomOf="@id/llPhoneNumber">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:src="@drawable/ic_teacher"
+                    tools:ignore="ContentDescription" />
+
+            </android.support.design.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tvStudent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_text_medium"
+                android:gravity="center"
+                android:text="@string/welcome_label_student"
+                android:textColor="@color/textGray"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/cvStudent"
+                app:layout_constraintStart_toStartOf="@id/cvStudent"
+                app:layout_constraintTop_toBottomOf="@id/cvStudent" />
+
+            <TextView
+                android:id="@+id/tvMentor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_text_medium"
+                android:gravity="center"
+                android:text="@string/welcome_label_mentor"
+                android:textColor="@color/textGray"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/cvMentor"
+                app:layout_constraintStart_toStartOf="@id/cvMentor"
+                app:layout_constraintTop_toBottomOf="@id/cvMentor" />
+
             <Space
                 android:id="@+id/spaceBottom"
                 android:layout_width="wrap_content"
                 android:layout_height="88dp"
-                app:layout_constraintTop_toBottomOf="@id/llPhoneNumber" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvStudent" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
