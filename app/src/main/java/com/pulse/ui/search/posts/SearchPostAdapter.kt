@@ -9,21 +9,11 @@ import com.pulse.utils.GlideRequests
 
 class SearchPostAdapter(private val glide: GlideRequests,
                         private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    companion object {
-        private const val VIEW_TYPE_MY_VENUE = 0
-    }
-
-    private val items = mutableListOf<Any>()
+    private val items = mutableListOf<GroupPostDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-
-            VIEW_TYPE_MY_VENUE -> SearchPostViewHolder(parent.inflate(R.layout.item_post_search), glide, callback)
-
-            else -> throw IllegalArgumentException("Invalid view type")
-        }
+        return SearchPostViewHolder(parent.inflate(R.layout.item_post_search), glide, callback)
     }
-
 
     override fun getItemCount(): Int = items.size
 
@@ -32,35 +22,24 @@ class SearchPostAdapter(private val glide: GlideRequests,
 
         when (holder) {
             is SearchPostViewHolder -> {
-                if (item is GroupPostDto) {
-                    holder.bind(item)
-                }
+                holder.bind(item)
             }
         }
-
     }
 
-    override fun getItemViewType(position: Int): Int {
-        val item = items[position]
-        if (item is GroupPostDto) {
-            return VIEW_TYPE_MY_VENUE
-        }
-        return VIEW_TYPE_MY_VENUE
-    }
-
-    fun displayItems(items: List<Any>) {
+    fun displayItems(items: List<GroupPostDto>) {
         this.items.clear()
         this.items.addAll(items)
         notifyDataSetChanged()
     }
 
-    fun addMoreItems(item: List<Any>) {
+    fun addMoreItems(item: List<GroupPostDto>) {
         val oldListSize = this.items.size
         this.items.addAll(item)
         notifyItemRangeInserted(oldListSize, item.size)
     }
 
-    fun getUpdatedList(): MutableList<Any> {
+    fun getUpdatedList(): MutableList<GroupPostDto> {
         return items
     }
 

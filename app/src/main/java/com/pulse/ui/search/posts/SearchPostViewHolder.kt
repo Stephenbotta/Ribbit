@@ -19,7 +19,7 @@ class SearchPostViewHolder(itemView: View,
 
     fun bind(post: GroupPostDto) {
         this.post = post
-        glide.load(post.imageUrl?.original)
+        glide.load(post.media.first().original)
                 .into(itemView.ivThumbnail)
         if (post.type.equals(ApiConstants.GROUP_POST_TYPE_VIDEO)) {
             itemView.ivPlay.visible()

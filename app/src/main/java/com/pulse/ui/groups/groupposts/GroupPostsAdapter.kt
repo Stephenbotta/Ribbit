@@ -10,6 +10,7 @@ import com.pulse.data.remote.models.groups.GroupPostDto
 import com.pulse.extensions.*
 import com.pulse.ui.custom.SocialEditText
 import com.pulse.ui.groups.PostCallback
+import com.pulse.ui.preview.PreviewActivity
 import com.pulse.utils.AppUtils
 import com.pulse.utils.DateTimeUtils
 import com.pulse.utils.GlideRequests
@@ -85,6 +86,17 @@ class GroupPostsAdapter(private val glide: GlideRequests,
 
         init {
             itemView.setOnClickListener(postClickListener)
+
+            itemView.ivImage.setOnClickListener {
+                val mediaSize = post.media.size
+                if (mediaSize > 1) {
+                    PreviewActivity.start(itemView.context, post.media, 0)
+                }
+            }
+
+            itemView.tvPostCount.setOnClickListener {
+                PreviewActivity.start(itemView.context, post.media, 0)
+            }
 
             itemView.tvMessage.setOnTouchListener { view, event ->
                 if (event.action == MotionEvent.ACTION_UP) {

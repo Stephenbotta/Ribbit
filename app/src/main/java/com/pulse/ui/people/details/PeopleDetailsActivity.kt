@@ -13,6 +13,7 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.pulse.R
 import com.pulse.data.local.PrefsManager
+import com.pulse.data.remote.ApiConstants
 import com.pulse.data.remote.models.Status
 import com.pulse.data.remote.models.loginsignup.ProfileDto
 import com.pulse.data.remote.models.people.UserCrossedDto
@@ -161,6 +162,9 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
         } else {
             getString(R.string.profile_label_name_with_age, profile.userName, profile.age)
         }
+        tvNameAndAge.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                if (profile?.userType == ApiConstants.TYPE_STUDENT) R.drawable.ic_student_symbol
+                else R.drawable.ic_teacher_symbol, 0)
         if (profile?.designation.isNullOrBlank() || profile?.company.isNullOrBlank()) {
             tvDesignation.gone()
         } else {

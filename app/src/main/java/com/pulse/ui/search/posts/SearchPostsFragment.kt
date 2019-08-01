@@ -30,20 +30,13 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
 
     private lateinit var viewModel: SearchPostViewModel
     private lateinit var adapter: SearchPostAdapter
-    private var manager: SpannedGridLayoutManager? = null
+    //    private var manager: SpannedGridLayoutManager? = null
     //    private lateinit var loadingDialog: LoadingDialog
     private var search = ""
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SearchPostViewModel::class.java)
-        adapter = SearchPostAdapter(GlideApp.with(this), this)
-//        loadingDialog = LoadingDialog(requireContext())
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel = ViewModelProviders.of(this).get(SearchPostViewModel::class.java)
         observeChanges()
         setupHomeRecycler()
         getPostSearch()
@@ -58,13 +51,11 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
 //                    loadingDialog.setLoading(false)
                     val data = resource.data?.result ?: emptyList()
                     val firstPage = resource.data?.isFirstPage ?: true
-                    val items = mutableListOf<Any>()
-//                    items.add(YourVenuesDto)
-                    items.addAll(data)
+
                     if (firstPage) {
-                        adapter.displayItems(items)
+                        adapter.displayItems(data)
                     } else {
-                        adapter.addMoreItems(items)
+                        adapter.addMoreItems(data)
                     }
                 }
 
@@ -78,7 +69,6 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
                 }
             }
         })
-
     }
 
     private fun getPostSearch(showLoading: Boolean = true) {
@@ -88,16 +78,20 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
     }
 
     private fun setupHomeRecycler() {
-        manager = SpannedGridLayoutManager(
-                SpannedGridLayoutManager.GridSpanLookup { position ->
-                    return@GridSpanLookup when (position % 12) {
-                        10, 3 -> SpannedGridLayoutManager.SpanInfo(2, 2)
-                        else -> SpannedGridLayoutManager.SpanInfo(1, 1)
+        adapter = SearchPostAdapter(GlideApp.with(this), this)
+
+        val manager = SpannedGridLayoutManager(
+                object : SpannedGridLayoutManager.GridSpanLookup {
+                    override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
+                        return if (position % 6 == 0 || position % 6 == 4) {
+                            SpannedGridLayoutManager.SpanInfo(2, 2)
+                        } else {
+                            SpannedGridLayoutManager.SpanInfo(1, 1)
+                        }
                     }
                 },
-                3,
-                1f
-        )
+                3 /* Three columns */,
+                1f /* We want our items to be 1:1 ratio */)
 
         rvPostSearch.layoutManager = manager
         rvPostSearch.adapter = adapter
@@ -105,7 +99,8 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
         rvPostSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1) && viewModel.validForPaging() && isNetworkActive()) {
+                if (!recyclerView.canScrollVertically(1) && viewModel.validForPaging()
+                        && isNetworkActive()) {
                     viewModel.getPostSearch(false, search)
                 }
             }
@@ -120,9 +115,7 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
     override fun onClick(position: Int, post: GroupPostDto) {
         val items = adapter.getUpdatedList()
         val item = items[position]
-        if (item is GroupPostDto) {
-            val intent = PostDetailsActivity.getStartIntent(requireActivity(), item, true)
-            startActivityForResult(intent, AppConstants.REQ_CODE_POST_DETAILS)
-        }
+        val intent = PostDetailsActivity.getStartIntent(requireActivity(), item, true)
+        startActivityForResult(intent, AppConstants.REQ_CODE_POST_DETAILS)
     }
 }

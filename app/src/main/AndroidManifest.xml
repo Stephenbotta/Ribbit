@@ -156,6 +156,9 @@
         <activity
             android:name=".ui.picker.PickerActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.preview.PreviewActivity"
+            android:screenOrientation="portrait" />
 
         <uses-library
             android:name="org.apache.http.legacy"

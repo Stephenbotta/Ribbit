@@ -33,6 +33,9 @@ data class ProfileDto(
         @field:SerializedName("bio")
         val bio: String? = null,
 
+        @field:SerializedName("userType")
+        val userType: String? = null,
+
         @field:SerializedName("age")
         val age: Int? = null,
 

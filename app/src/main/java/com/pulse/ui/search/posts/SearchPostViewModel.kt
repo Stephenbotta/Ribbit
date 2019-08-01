@@ -42,7 +42,7 @@ class SearchPostViewModel(application: Application) : BaseViewModel(application)
         else
             hashMap["pageNo"] = page.toString()
 
-        if (!search.isNullOrEmpty()) {
+        if (search.isNotEmpty()) {
             hashMap["search"] = search
         }
         RetrofitClient.conversifyApi

@@ -68,6 +68,10 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.O
         } else {
             getString(R.string.profile_label_name_with_age, profile.fullName, profile.age)
         }
+
+        tvNameAndAge.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                if (profile.userType == ApiConstants.TYPE_STUDENT) R.drawable.ic_student_symbol
+                else R.drawable.ic_teacher_symbol, 0)
 //        if (profile.designation.isNullOrBlank() || profile.company.isNullOrBlank()) {
         if (profile.designation.isNullOrBlank()) {
             tvDesignation.gone()
