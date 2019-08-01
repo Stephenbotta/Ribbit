@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">Pulse</string>
 
-    <string name="facebook_app_id" translatable="false">1875226609239116</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb1875226609239116</string>
-    <string name="app_google_api_key" translatable="false">AIzaSyBqwIX2rq8pjlqJec8LBfDrlE673Im5pBM</string>
-    <string name="server_client_id" translatable="false">327229537398-5eg6hd30pi66li2joafo0eoqab4020be.apps.googleusercontent.com</string>
+    <!--<string name="facebook_app_id" translatable="false">1875226609239116</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1875226609239116</string>-->
+    <string name="facebook_app_id" translatable="false">461846814475578</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb461846814475578</string>
+    <!--<string name="app_google_api_key" translatable="false">AIzaSyBqwIX2rq8pjlqJec8LBfDrlE673Im5pBM</string>-->
+    <string name="app_google_api_key" translatable="false">AIzaSyCF3iY77eHwqqG34MR6A-MR2DJ-p8muOWw</string>
+    <!--<string name="server_client_id" translatable="false">327229537398-5eg6hd30pi66li2joafo0eoqab4020be.apps.googleusercontent.com</string>-->
+    <string name="server_client_id" translatable="false">430643584169-ir3m4el79kmlt1n41j3u2pru207moug8.apps.googleusercontent.com</string>
 
     <string name="default_notification_channel_id">11</string>
 

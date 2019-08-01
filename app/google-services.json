@@ -1,59 +1,45 @@
 {
   "project_info": {
-    "project_number": "327229537398",
-    "firebase_url": "https://conversify-1539244176555.firebaseio.com",
-    "project_id": "conversify-1539244176555",
-    "storage_bucket": "conversify-1539244176555.appspot.com"
+    "project_number": "430643584169",
+    "firebase_url": "https://pulse-d5b2a.firebaseio.com",
+    "project_id": "pulse-d5b2a",
+    "storage_bucket": "pulse-d5b2a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:327229537398:android:29affbf70f015d88",
+        "mobilesdk_app_id": "1:430643584169:android:eb3ac079e991d297",
         "android_client_info": {
-          "package_name": "com.conversify"
+          "package_name": "com.pulse"
         }
       },
       "oauth_client": [
         {
-          "client_id": "327229537398-ouvnetj1u1q93hnd1q9g4eq8objcpuc7.apps.googleusercontent.com",
+          "client_id": "430643584169-ir3m4el79kmlt1n41j3u2pru207moug8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.conversify",
+            "package_name": "com.pulse",
             "certificate_hash": "d04135f9f770cb41e989c114140bad3942cdfa8f"
           }
         },
         {
-          "client_id": "327229537398-nk4tli62n6manvj4qbi35vet1e0gn1nj.apps.googleusercontent.com",
+          "client_id": "430643584169-9kulcdb806odsd338f9eqh11r8544jbl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCIrLhEUILpj1XEAdfB6tg1SIzJiCIzweg"
+          "current_key": "AIzaSyCF3iY77eHwqqG34MR6A-MR2DJ-p8muOWw"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "327229537398-nk4tli62n6manvj4qbi35vet1e0gn1nj.apps.googleusercontent.com",
+              "client_id": "430643584169-9kulcdb806odsd338f9eqh11r8544jbl.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "327229537398-nu9pah2m819on9dfom8etebkgmrv1l76.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.Conversify"
-              }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
