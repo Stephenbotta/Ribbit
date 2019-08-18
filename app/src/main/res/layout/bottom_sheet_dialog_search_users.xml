@@ -7,7 +7,7 @@
 
         <variable
             name="view"
-            type="com.pulse.ui.main.searchusers.SearchUsersFragment" />
+            type="com.checkIt.ui.main.searchusers.SearchUsersFragment" />
     </data>
 
     <android.support.constraint.ConstraintLayout

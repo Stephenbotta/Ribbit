@@ -141,7 +141,7 @@
         app:layout_constraintTop_toBottomOf="@id/barrierMessage"
         tools:ignore="ContentDescription" />
 -->
-    <com.pulse.ui.custom.SocialEditText
+    <com.checkIt.ui.custom.SocialEditText
         android:id="@+id/etReply"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

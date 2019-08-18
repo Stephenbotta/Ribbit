@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.pulse.ui.search.SearchViewModel" />
+            type="com.checkIt.ui.search.SearchViewModel" />
 
         <variable
             name="view"
-            type="com.pulse.ui.search.SearchActivity" />
+            type="com.checkIt.ui.search.SearchActivity" />
     </data>
 
     <android.support.constraint.ConstraintLayout

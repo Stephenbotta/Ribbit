@@ -1,16 +1,12 @@
 <resources>
-    <string name="app_name">Pulse</string>
+    <string name="app_name">Check It</string>
 
-    <!--<string name="facebook_app_id" translatable="false">1875226609239116</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb1875226609239116</string>-->
     <string name="facebook_app_id" translatable="false">461846814475578</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb461846814475578</string>
-    <!--<string name="app_google_api_key" translatable="false">AIzaSyBqwIX2rq8pjlqJec8LBfDrlE673Im5pBM</string>-->
     <string name="app_google_api_key" translatable="false">AIzaSyCF3iY77eHwqqG34MR6A-MR2DJ-p8muOWw</string>
-    <!--<string name="server_client_id" translatable="false">327229537398-5eg6hd30pi66li2joafo0eoqab4020be.apps.googleusercontent.com</string>-->
     <string name="server_client_id" translatable="false">430643584169-ir3m4el79kmlt1n41j3u2pru207moug8.apps.googleusercontent.com</string>
 
-    <string name="default_notification_channel_id">11</string>
+    <string name="default_notification_channel_id">default_notification_channel_id</string>
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -95,7 +91,7 @@
     <string name="error_invalid_new_password_length">New password length must be 6 to 20 characters</string>
     <string name="error_invalid_phone_number">Please enter valid phone number</string>
 
-    <string name="login_sign_up_label_by_signing_in_you_are_agree">By Signing in you agree to Pulse’s Terms &amp; conditions and Privacy policy.</string>
+    <string name="login_sign_up_label_by_signing_in_you_are_agree">By Signing in you agree to Check It’s Terms &amp; conditions and Privacy policy.</string>
     <string name="login_sign_up_label_terms_and_conditions">Terms &amp; conditions</string>
     <string name="login_sign_up_label_privacy_policy">Privacy policy</string>
     <string name="login_sign_up_label_already_a_member_sign_in">Already a member? Sign in</string>
@@ -447,8 +443,8 @@
     <string name="hide_info_label_people_count">%d People</string>
     <string name="search_user_label_progress_count">%02d mi</string>
 
-    <string name="venue_share_link">Please open this link to join my Pulse Venue.</string>
-    <string name="group_share_link">Please open this link to join my Pulse Group.</string>
+    <string name="venue_share_link">Please open this link to join my Check It Venue.</string>
+    <string name="group_share_link">Please open this link to join my Check It Group.</string>
     <string name="msg_invite_sent_successfully">Invite sent successfully</string>
     <string name="follow_request_text">Follow request has already been sent to this user.</string>
 

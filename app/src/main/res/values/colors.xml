@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#D0313A</color>
-    <color name="colorPrimaryDark">#B32A32</color>
-    <color name="colorAccent">#D0313A</color>
+    <color name="colorPrimary">#FF612C</color>
+    <color name="colorPrimaryDark">#CF491B</color>
+    <color name="colorAccent">#FF612C</color>
 
     <color name="greyImageBackground">#E0E0E0</color>
     <color name="peopleLine">#1F4A566C</color>
-    disableTextView
     <color name="fabDisabledBackground">#B0BEC5</color>
 
     <color name="transparent">#00000000</color>
@@ -19,7 +18,7 @@
     <color name="black80">#80000000</color>
 
     <color name="red">#FF0000</color>
-    <color name="disableTextView">#55D0313A</color>
+    <color name="disableTextView">#55FF612C</color>
 
     <color name="textGray">#4A566C</color>
     <color name="textGrayDE">#DE4A566C</color>

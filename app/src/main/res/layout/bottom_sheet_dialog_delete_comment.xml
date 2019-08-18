@@ -6,7 +6,7 @@
 
         <variable
             name="view"
-            type="com.pulse.ui.post.details.PostDetailsActivity" />
+            type="com.checkIt.ui.post.details.PostDetailsActivity" />
     </data>
 
     <android.support.constraint.ConstraintLayout

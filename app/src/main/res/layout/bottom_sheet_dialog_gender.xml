@@ -6,7 +6,7 @@
 
         <variable
             name="view"
-            type="com.pulse.ui.profile.edit.EditProfileActivity" />
+            type="com.checkIt.ui.profile.edit.EditProfileActivity" />
     </data>
 
     <android.support.constraint.ConstraintLayout

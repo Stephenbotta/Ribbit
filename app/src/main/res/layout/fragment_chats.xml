@@ -6,7 +6,7 @@
 
         <variable
             name="view"
-            type="com.pulse.ui.main.chats.ChatsFragment" />
+            type="com.checkIt.ui.main.chats.ChatsFragment" />
     </data>
 
     <android.support.constraint.ConstraintLayout
