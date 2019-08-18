@@ -28,7 +28,7 @@ data class SignUpRequest(
         val googleId: String? = null,
 
         @field:SerializedName("password")
-        val password: String? = null,
+        val password: String? = null/*,
 
         @field:SerializedName("userType")
-        val userType: String? = null)
+        val userType: String? = null*/)

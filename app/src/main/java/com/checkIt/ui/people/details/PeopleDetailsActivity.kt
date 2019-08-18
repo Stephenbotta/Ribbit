@@ -9,11 +9,7 @@ import android.os.Bundle
 import android.support.v7.widget.PopupMenu
 import android.view.MenuItem
 import android.view.View
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.checkIt.R
 import com.checkIt.data.local.PrefsManager
-import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.data.remote.models.people.UserCrossedDto
@@ -22,6 +18,8 @@ import com.checkIt.ui.base.BaseActivity
 import com.checkIt.ui.chat.ChatActivity
 import com.checkIt.utils.AppConstants
 import com.checkIt.utils.GlideApp
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.activity_people_details.*
 
 class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.OnMenuItemClickListener {
@@ -162,9 +160,9 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
         } else {
             getString(R.string.profile_label_name_with_age, profile.userName, profile.age)
         }
-        tvNameAndAge.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+        /*tvNameAndAge.setCompoundDrawablesWithIntrinsicBounds(0, 0,
                 if (profile?.userType == ApiConstants.TYPE_STUDENT) R.drawable.ic_student_symbol
-                else R.drawable.ic_teacher_symbol, 0)
+                else R.drawable.ic_teacher_symbol, 0)*/
         if (profile?.designation.isNullOrBlank() || profile?.company.isNullOrBlank()) {
             tvDesignation.gone()
         } else {

@@ -479,5 +479,6 @@
     <string name="placeholder_no_result_found">Result not found</string>
 
     <string name="error_msg_you_can_upload_max_6_files">You can select maximum %d files</string>
+    <string name="you_can_not_remove_media_while_its_uploading_please_wait">You can not remove media file while it\'s uploading.Please wait.</string>
 
 </resources>

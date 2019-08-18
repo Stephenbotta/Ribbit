@@ -15,10 +15,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.gms.location.places.ui.PlacePicker
-import com.checkIt.R
 import com.checkIt.data.local.models.AppError
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.groups.GroupDto
@@ -32,12 +28,16 @@ import com.checkIt.ui.custom.LoadingDialog
 import com.checkIt.ui.loginsignup.chooseinterests.ChooseInterestsFragment
 import com.checkIt.ui.picker.MediaFragment
 import com.checkIt.ui.picker.models.MediaSelected
+import com.checkIt.ui.picker.models.UploadStatus
 import com.checkIt.ui.profile.ProfileInterestsAdapter
 import com.checkIt.ui.profile.settings.hideinfo.hidestatus.HideStatusActivity
 import com.checkIt.utils.AppConstants
 import com.checkIt.utils.AppUtils
 import com.checkIt.utils.GlideApp
 import com.checkIt.utils.PermissionUtils
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.gms.location.places.ui.PlacePicker
 import kotlinx.android.synthetic.main.fragment_new_post.*
 import permissions.dispatcher.*
 
@@ -461,7 +461,11 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
     }
 
     override fun removeMedia(media: MediaSelected) {
-        adapter.removeMediaFile(media)
+        if (media.status != UploadStatus.SENDING) {
+            adapter.removeMediaFile(media)
+        } else {
+            context?.shortToast(R.string.you_can_not_remove_media_while_its_uploading_please_wait)
+        }
     }
 
     override fun resendMedia(media: MediaSelected) {

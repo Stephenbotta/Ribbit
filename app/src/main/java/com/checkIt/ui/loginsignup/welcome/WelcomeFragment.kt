@@ -4,13 +4,10 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.CardView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import com.checkIt.R
 import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
@@ -43,7 +40,7 @@ class WelcomeFragment : BaseFragment() {
     private lateinit var viewModel: WelcomeViewModel
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var profile: ProfileDto
-    private var userType = ""
+    /*private var userType = ""*/
 
     private val commonTextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
@@ -232,15 +229,15 @@ class WelcomeFragment : BaseFragment() {
                                 profile.facebookId
                             } else {
                                 null
-                            },
-                            userType = userType)
+                            }/*,
+                            userType = userType*/)
 
                     viewModel.signUp(request)
                 }
             }
         }
 
-        cvStudent.setOnClickListener {
+        /*cvStudent.setOnClickListener {
             userType = ApiConstants.TYPE_STUDENT
             updateUserType(cvStudent)
         }
@@ -248,16 +245,16 @@ class WelcomeFragment : BaseFragment() {
         cvMentor.setOnClickListener {
             userType = ApiConstants.TYPE_MENTOR
             updateUserType(cvMentor)
-        }
+        }*/
     }
 
-    private fun updateUserType(cardView: CardView) {
+    /*private fun updateUserType(cardView: CardView) {
         cvMentor.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
         cvStudent.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
         cardView.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
 
         fabProceed.isEnabled = isFormValid()
-    }
+    }*/
 
     private fun observeChanges() {
         viewModel.signUp.observe(this, Observer { resource ->
@@ -331,7 +328,7 @@ class WelcomeFragment : BaseFragment() {
             etPhoneNumber.isVisible() &&
                     (phoneNumber.isEmpty() || !countryCodePicker.isValidFullNumber) -> false
 
-            userType.isEmpty() -> false
+            /*userType.isEmpty() -> false*/
 
             else -> true
         }

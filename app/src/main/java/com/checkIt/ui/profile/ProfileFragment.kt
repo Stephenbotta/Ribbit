@@ -6,9 +6,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.checkIt.R
 import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
@@ -23,6 +20,8 @@ import com.checkIt.ui.profile.followerandfollowing.FollowerAndFollowingActivity
 import com.checkIt.ui.profile.settings.SettingsActivity
 import com.checkIt.utils.AppConstants
 import com.checkIt.utils.GlideApp
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.OnClickListener {
@@ -69,9 +68,9 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.O
             getString(R.string.profile_label_name_with_age, profile.fullName, profile.age)
         }
 
-        tvNameAndAge.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+        /*tvNameAndAge.setCompoundDrawablesWithIntrinsicBounds(0, 0,
                 if (profile.userType == ApiConstants.TYPE_STUDENT) R.drawable.ic_student_symbol
-                else R.drawable.ic_teacher_symbol, 0)
+                else R.drawable.ic_teacher_symbol, 0)*/
 //        if (profile.designation.isNullOrBlank() || profile.company.isNullOrBlank()) {
         if (profile.designation.isNullOrBlank()) {
             tvDesignation.gone()

@@ -47,7 +47,7 @@
         android:id="@+id/ivPin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_pin"
+        android:src="@drawable/ic_location"
         app:layout_constraintEnd_toEndOf="@id/lineGuideline"
         app:layout_constraintStart_toStartOf="@id/lineGuideline"
         app:layout_constraintTop_toTopOf="parent"

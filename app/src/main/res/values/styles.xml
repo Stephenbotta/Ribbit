@@ -15,7 +15,7 @@
     </style>
 
     <style name="AppTheme.Splash" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
     <style name="AppTheme.Landing">
