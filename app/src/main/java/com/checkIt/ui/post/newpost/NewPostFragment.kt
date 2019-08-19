@@ -15,6 +15,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import com.checkIt.R
 import com.checkIt.data.local.models.AppError
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.groups.GroupDto

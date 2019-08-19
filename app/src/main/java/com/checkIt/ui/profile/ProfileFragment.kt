@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.checkIt.R
 import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.loginsignup.ProfileDto

@@ -78,7 +78,7 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
         }
     }
 
-    fun refreshData() {
+    private fun refreshData() {
         getNotifications()
     }
 

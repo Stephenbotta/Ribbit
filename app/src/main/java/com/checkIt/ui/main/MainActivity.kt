@@ -6,9 +6,6 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.widget.ImageView
 import android.widget.TextView
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.gson.Gson
 import com.checkIt.R
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.PushType
@@ -28,6 +25,9 @@ import com.checkIt.ui.main.notifications.NotificationsFragment
 import com.checkIt.ui.profile.ProfileFragment
 import com.checkIt.utils.AppConstants
 import com.checkIt.utils.FragmentSwitcher
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
@@ -211,7 +211,7 @@ class MainActivity : BaseActivity() {
         val notificationTab = bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)
         val tabView = notificationTab?.customView
         val badgeText = tabView?.findViewById<TextView>(R.id.tvCount)
-        if (notificationCount.toInt() > 0) {
+        if (notificationCount.isNotEmpty() && notificationCount.toInt() > 0) {
             badgeText?.visible()
             badgeText?.text = notificationCount
         } else {
@@ -223,10 +223,10 @@ class MainActivity : BaseActivity() {
         val notificationTab = bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)
         val tabView = notificationTab?.customView
         val ivNotification = tabView?.findViewById<ImageView>(R.id.ivNotification)
-        if (tabCurrentPosition == TAB_INDEX_NOTIFICATIONS) {
-            ivNotification?.setImageResource(R.drawable.ic_notification)
+        ivNotification?.setImageResource(if (tabCurrentPosition == TAB_INDEX_NOTIFICATIONS) {
+            R.drawable.ic_notification
         } else {
-            ivNotification?.setImageResource(R.drawable.ic_notification_gray)
-        }
+            R.drawable.ic_notification_gray
+        })
     }
 }

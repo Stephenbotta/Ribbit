@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Check It</string>
 
-    <string name="facebook_app_id" translatable="false">461846814475578</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb461846814475578</string>
-    <string name="app_google_api_key" translatable="false">AIzaSyCF3iY77eHwqqG34MR6A-MR2DJ-p8muOWw</string>
-    <string name="server_client_id" translatable="false">430643584169-ir3m4el79kmlt1n41j3u2pru207moug8.apps.googleusercontent.com</string>
+    <string name="facebook_app_id" translatable="false">2767141076649146</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb2767141076649146</string>
+    <string name="app_google_api_key" translatable="false">AIzaSyA9BLiHtZIj50SWfgefJqK6TNQLQbgvyak</string>
+    <string name="server_client_id" translatable="false">895640925777-cnrufoi4t8cvi029cgabcs8qtu29pjt0.apps.googleusercontent.com</string>
 
     <string name="default_notification_channel_id">default_notification_channel_id</string>
 

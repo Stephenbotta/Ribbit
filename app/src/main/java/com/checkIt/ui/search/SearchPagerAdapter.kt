@@ -6,17 +6,8 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.checkIt.R
 
-/**
- * Created by Manish Bhargav
- */
-class SearchPagerAdapter(context: Context, manager: FragmentManager) : FragmentPagerAdapter(manager) {
-
-    val fragments = ArrayList<Fragment>()
-    private val context: Context
-
-    init {
-        this.context = context
-    }
+class SearchPagerAdapter(private val context: Context, manager: FragmentManager) : FragmentPagerAdapter(manager) {
+    private val fragments = ArrayList<Fragment>()
 
     override fun getItem(position: Int): Fragment {
         return fragments[position]

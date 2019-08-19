@@ -1,8 +1,8 @@
 package com.checkIt.data.remote
 
-import com.google.gson.*
 import com.checkIt.BuildConfig
 import com.checkIt.data.local.UserManager
+import com.google.gson.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -25,7 +25,7 @@ object RetrofitClient {
 
     private val LOGGING_INTERCEPTOR by lazy {
         HttpLoggingInterceptor().setLevel(if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor.Level.NONE
+            HttpLoggingInterceptor.Level.BODY
         } else {
             HttpLoggingInterceptor.Level.NONE
         })

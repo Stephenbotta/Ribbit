@@ -8,6 +8,7 @@ import android.support.v4.content.res.ResourcesCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import com.checkIt.R
 import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.loginsignup.ProfileDto

@@ -44,11 +44,11 @@ class FacebookLogin(private val listener: FacebookLoginListener) {
     }
 
     fun performLogin(activity: AppCompatActivity) {
-        LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("email", "public_profile"))
+        LoginManager.getInstance().logInWithReadPermissions(activity, listOf("email", "public_profile"))
     }
 
     fun performLogin(fragment: Fragment) {
-        LoginManager.getInstance().logInWithReadPermissions(fragment, Arrays.asList("email", "public_profile"))
+        LoginManager.getInstance().logInWithReadPermissions(fragment, listOf("email", "public_profile"))
     }
 
     fun getUserProfile() {

@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
+import com.arasthel.spannedgridlayoutmanager.SpanSize
+import com.arasthel.spannedgridlayoutmanager.SpannedGridLayoutManager
 import com.checkIt.R
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.groups.GroupPostDto
@@ -16,9 +18,7 @@ import com.checkIt.ui.base.BaseFragment
 import com.checkIt.ui.post.details.PostDetailsActivity
 import com.checkIt.utils.AppConstants
 import com.checkIt.utils.GlideApp
-import com.checkIt.utils.SpannedGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_search_posts.*
-
 
 class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
 
@@ -80,7 +80,7 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
     private fun setupHomeRecycler() {
         adapter = SearchPostAdapter(GlideApp.with(this), this)
 
-        val manager = SpannedGridLayoutManager(
+        /*val manager = SpannedGridLayoutManager(
                 object : SpannedGridLayoutManager.GridSpanLookup {
                     override fun getSpanInfo(position: Int): SpannedGridLayoutManager.SpanInfo {
                         return if (position % 6 == 0 || position % 6 == 4) {
@@ -90,12 +90,25 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
                         }
                     }
                 },
-                3 /* Three columns */,
-                1f /* We want our items to be 1:1 ratio */)
+                3 *//* Three columns *//*,
+                1f *//* We want our items to be 1:1 ratio *//*)*/
+
+        val manager = SpannedGridLayoutManager(
+                orientation = SpannedGridLayoutManager.Orientation.VERTICAL,
+                spans = 3)
+
+        manager.spanSizeLookup = SpannedGridLayoutManager.SpanSizeLookup { position ->
+            if (position % 6 == 0 || position % 6 == 4) {
+                SpanSize(2, 2)
+            } else {
+                SpanSize(1, 1)
+            }
+        }
 
         rvPostSearch.layoutManager = manager
         rvPostSearch.adapter = adapter
         (rvPostSearch.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
         rvPostSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)

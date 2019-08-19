@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.support.v7.widget.PopupMenu
 import android.view.MenuItem
 import android.view.View
+import com.checkIt.R
 import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.loginsignup.ProfileDto

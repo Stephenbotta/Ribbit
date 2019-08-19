@@ -6,6 +6,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.TabLayout
+import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -55,6 +56,7 @@ class SearchActivity : BaseActivity() {
         binding.tabLayoutSearch.tabGravity = TabLayout.GRAVITY_CENTER
         binding.tabLayoutSearch.tabMode = TabLayout.MODE_SCROLLABLE
         binding.tabLayoutSearch.setupWithViewPager(binding.viewPagerSearch)
+        binding.viewPagerSearch.offscreenPageLimit = 4
         listener()
     }
 
@@ -65,16 +67,40 @@ class SearchActivity : BaseActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(search: CharSequence?, start: Int, before: Int, count: Int) {
-                when {
-                    binding.viewPagerSearch.currentItem == 0 -> (viewPagerAdapter.fragments[0] as SearchTopFragment).search(search.toString())
-                    binding.viewPagerSearch.currentItem == 1 -> (viewPagerAdapter.fragments[1] as SearchTagFragment).search(search.toString())
-                    binding.viewPagerSearch.currentItem == 2 -> (viewPagerAdapter.fragments[2] as SearchPostsFragment).search(search.toString())
-                    binding.viewPagerSearch.currentItem == 3 -> (viewPagerAdapter.fragments[3] as SearchGroupFragment).search(search.toString())
-//                    binding.viewPagerSearch.currentItem == 4 -> (viewPagerAdapter.fragments[4] as SearchVenueFragment).search(search.toString())
-                }
+                val fragment = viewPagerAdapter.getItem(binding.viewPagerSearch.currentItem)
+                val query = search.toString().trim()
+                searchInFragment(fragment, query)
             }
         })
 
+        binding.tabLayoutSearch.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                val fragment = viewPagerAdapter.getItem(tab.position)
+                val query = binding.etCredentials.text.toString().trim()
+                searchInFragment(fragment, query)
+            }
+        })
+    }
+
+    private fun searchInFragment(fragment: Fragment, query: String) {
+        when (fragment) {
+            is SearchTopFragment -> {
+                fragment.search(query)
+            }
+            is SearchTagFragment -> {
+                fragment.search(query)
+            }
+            is SearchPostsFragment -> {
+                fragment.search(query)
+            }
+            is SearchGroupFragment -> {
+                fragment.search(query)
+            }
+        }
     }
 
     fun onClick(v: View) {
