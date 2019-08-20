@@ -8,8 +8,8 @@ import com.amazonaws.services.s3.AmazonS3Client
 import com.checkIt.CheckItApp
 
 object S3Utils {
-    private const val BUCKET_NAME = "pulses3bucket"
-    private const val IDENTITY_POOL_ID = "us-west-2:d669ec93-b551-4c89-8ffc-5855a10cff2d"
+    private const val BUCKET_NAME = "checkits3bucket"
+    private const val IDENTITY_POOL_ID = "us-west-2:507740a2-4e72-40da-be87-a6fca04c6146"
     private val REGION = Regions.US_WEST_2
 
     /**

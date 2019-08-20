@@ -9,9 +9,7 @@ import timber.log.Timber
 
 class SocketManager(private val userManager: UserManager) {
     companion object {
-        private const val SOCKET_URL_CLIENT = "http://52.35.234.66:8001"
-        //        private const val SOCKET_URL_DEV = "http://52.35.234.66:8000"
-        private const val BASE_URL_DEV = "http://35.161.59.237:8000/"
+        private const val BASE_URL_DEV = "http://54.186.97.138:8005/"
 
         private const val SOCKET_URL = BASE_URL_DEV
 

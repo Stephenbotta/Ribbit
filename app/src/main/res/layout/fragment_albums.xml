@@ -27,7 +27,7 @@
         android:orientation="vertical"
         android:padding="2dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="4"
+        app:spanCount="3"
         tools:listitem="@layout/item_picker_album" />
 
 </ViewFlipper>
