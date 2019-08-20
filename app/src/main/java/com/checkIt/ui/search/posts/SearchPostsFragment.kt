@@ -1,11 +1,9 @@
 package com.checkIt.ui.search.posts
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.arasthel.spannedgridlayoutmanager.SpanSize
 import com.arasthel.spannedgridlayoutmanager.SpannedGridLayoutManager
 import com.checkIt.R
@@ -107,10 +105,10 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
 
         rvPostSearch.layoutManager = manager
         rvPostSearch.adapter = adapter
-        (rvPostSearch.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        (rvPostSearch.itemAnimator as androidx.recyclerview.widget.SimpleItemAnimator).supportsChangeAnimations = false
 
-        rvPostSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        rvPostSearch.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1) && viewModel.validForPaging()
                         && isNetworkActive()) {

@@ -1,6 +1,5 @@
 package com.checkIt.ui.search.tag
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.checkIt.R
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
@@ -9,7 +8,7 @@ import kotlinx.android.synthetic.main.item_tag_search.view.*
 
 class SearchTagViewHolder(itemView: View,
                           private val glide: GlideRequests,
-                          private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                          private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     init {
         itemView.tvFollowedStatus.setOnClickListener { callback.onClick(adapterPosition,profile) }
     }

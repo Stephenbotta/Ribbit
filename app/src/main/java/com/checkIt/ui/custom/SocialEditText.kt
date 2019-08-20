@@ -1,10 +1,10 @@
 package com.checkIt.ui.custom
 
 import android.content.Context
-import android.support.v7.widget.AppCompatEditText
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatEditText
 
 class SocialEditText : AppCompatEditText, TextWatcher {
     companion object {

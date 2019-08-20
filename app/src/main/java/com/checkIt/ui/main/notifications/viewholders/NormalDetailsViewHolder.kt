@@ -1,9 +1,8 @@
 package com.checkIt.ui.main.notifications.viewholders
 
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import com.checkIt.R
 import com.checkIt.data.remote.PushType
 import com.checkIt.data.remote.models.groups.GroupDto
@@ -22,7 +21,7 @@ import timber.log.Timber
 
 class NormalDetailsViewHolder(itemView: View,
                               private val glide: GlideRequests,
-                              private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                              private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
 
     private val userProfileClickListener = View.OnClickListener {

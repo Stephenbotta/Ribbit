@@ -2,11 +2,11 @@ package com.checkIt.ui.profile.settings.verification
 
 import android.Manifest
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.local.models.AppError
@@ -121,9 +121,7 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
                         3 -> {
                             val profile = UserManager.getProfile()
                             profile.isPassportVerified = true
-                            if (profile != null) {
-                                UserManager.saveProfile(profile)
-                            }
+                            UserManager.saveProfile(profile)
                             longToast(getString(R.string.verification_api_message_verify_passport))
                             tvUploadDocument.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_verify_success, 0)
                         }

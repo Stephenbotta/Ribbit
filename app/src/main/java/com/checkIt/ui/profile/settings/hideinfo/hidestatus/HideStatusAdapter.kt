@@ -1,9 +1,8 @@
 package com.checkIt.ui.profile.settings.hideinfo.hidestatus
 
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.checkIt.R
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.data.remote.models.venues.VenueCategoriesHeader
@@ -11,17 +10,17 @@ import com.checkIt.extensions.inflate
 import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_top_search.view.*
 
-class HideStatusAdapter(private val glide: GlideRequests, private val callback: Callback, private val ownProfile: ProfileDto, private val flag: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HideStatusAdapter(private val glide: GlideRequests, private val callback: Callback, private val ownProfile: ProfileDto, private val flag: Int) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
     private val items = mutableListOf<Any>(VenueCategoriesHeader)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return ViewHolder(parent.inflate(R.layout.item_top_search), glide, callback, ownProfile)
     }
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
         when (holder) {
             is ViewHolder -> {
@@ -39,7 +38,7 @@ class HideStatusAdapter(private val glide: GlideRequests, private val callback: 
     }
 
     class ViewHolder(itemView: View, private val glide: GlideRequests,
-                     private val callback: Callback, private val ownProfile: ProfileDto) : RecyclerView.ViewHolder(itemView) {
+                     private val callback: Callback, private val ownProfile: ProfileDto) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         private val selectedUser by lazy { ContextCompat.getColor(itemView.context, R.color.colorPrimary) }
         private val unselectedUser by lazy { ContextCompat.getColor(itemView.context, R.color.textGray) }

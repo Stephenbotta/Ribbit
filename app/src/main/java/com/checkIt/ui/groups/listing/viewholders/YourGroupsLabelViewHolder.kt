@@ -1,6 +1,5 @@
 package com.checkIt.ui.groups.listing.viewholders
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 
-class YourGroupsLabelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+class YourGroupsLabelViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView)

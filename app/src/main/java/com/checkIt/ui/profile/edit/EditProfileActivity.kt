@@ -2,16 +2,15 @@ package com.checkIt.ui.profile.edit
 
 import android.Manifest
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.design.widget.BottomSheetDialog
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
 import android.view.View
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.local.models.AppError
 import com.checkIt.data.remote.models.Status
@@ -27,6 +26,7 @@ import com.checkIt.ui.custom.AppToast
 import com.checkIt.ui.custom.LoadingDialog
 import com.checkIt.utils.*
 import com.checkIt.utils.PermissionUtils
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 import permissions.dispatcher.*
 import java.io.File

@@ -1,15 +1,14 @@
 package com.checkIt.ui.search
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.databinding.ActivitySearchBinding
 import com.checkIt.extensions.hideKeyboard
@@ -18,6 +17,7 @@ import com.checkIt.ui.search.groups.SearchGroupFragment
 import com.checkIt.ui.search.posts.SearchPostsFragment
 import com.checkIt.ui.search.tag.SearchTagFragment
 import com.checkIt.ui.search.top.SearchTopFragment
+import com.google.android.material.tabs.TabLayout
 
 class SearchActivity : BaseActivity() {
 

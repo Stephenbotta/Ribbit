@@ -1,8 +1,8 @@
 package com.checkIt.ui.venues.map
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.checkIt.R
 import com.checkIt.data.local.models.MapVenue
 import com.checkIt.data.remote.models.venues.VenueDto

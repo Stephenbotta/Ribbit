@@ -1,10 +1,10 @@
 package com.checkIt.ui.loginsignup.createpassword
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.checkIt.R
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.extensions.shortToast

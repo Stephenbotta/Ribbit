@@ -1,16 +1,15 @@
 package com.checkIt.ui.main.searchusers
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.SeekBar
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.remote.models.Status
@@ -193,8 +192,8 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback, Se
         searchUsersAdapter = SearchUsersAdapter(GlideApp.with(requireActivity()), this)
         rvMatchedResults.adapter = searchUsersAdapter
 
-        rvMatchedResults.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        rvMatchedResults.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!rvMatchedResults.canScrollVertically(1) && viewModel.validForPaging()) {
                     getMatchedUsersList(false)

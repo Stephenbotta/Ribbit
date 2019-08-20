@@ -1,6 +1,5 @@
 package com.checkIt.ui.groups.details
 
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.checkIt.R
 import com.checkIt.data.remote.models.chat.MemberDto
@@ -14,7 +13,7 @@ import com.checkIt.ui.groups.details.viewholder.GroupDetailsMemberViewHolder
 import com.checkIt.utils.GlideRequests
 
 class GroupDetailsAdapter(val glide: GlideRequests,
-                          private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                          private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
     companion object {
         private const val VIEW_TYPE_HEADER = 0
         private const val VIEW_TYPE_ADD_PARTICIPANTS = 1
@@ -24,7 +23,7 @@ class GroupDetailsAdapter(val glide: GlideRequests,
 
     private val items = mutableListOf<Any>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_HEADER -> GroupDetailsHeaderViewHolder(parent.inflate(R.layout.item_group_details_header), callback)
 
@@ -40,7 +39,7 @@ class GroupDetailsAdapter(val glide: GlideRequests,
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
 
         when (holder) {

@@ -1,7 +1,6 @@
 package com.checkIt.ui.post.newpost
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,7 @@ import com.checkIt.utils.GlideApp
 import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_selected_media.view.*
 
-class MediaAdapter(context: Context, private val callback: Callback) : RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
+class MediaAdapter(context: Context, private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
     private val inflater = LayoutInflater.from(context)
     private val medias = ArrayList<MediaSelected>()
     private val glide = GlideApp.with(context)
@@ -30,7 +29,7 @@ class MediaAdapter(context: Context, private val callback: Callback) : RecyclerV
         holder.bindMedia(medias[position])
     }
 
-    class ViewHolder(itemView: View, private val glide: GlideRequests, callback: Callback) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private val glide: GlideRequests, callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         init {
             itemView.ivRemoveMedia.setOnClickListener {
                 callback.removeMedia(media)

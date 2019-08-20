@@ -1,6 +1,5 @@
 package com.checkIt.ui.search.venues
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.checkIt.R
 import com.checkIt.data.local.UserManager
@@ -14,7 +13,7 @@ import kotlinx.android.synthetic.main.item_venue_search.view.*
 
 class SearchVenueViewHolder(itemView: View,
                             private val glide: GlideRequests,
-                            private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                            private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     init {
         itemView.setOnClickListener { callback.onClick(adapterPosition, venue) }
     }

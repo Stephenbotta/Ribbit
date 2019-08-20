@@ -3,17 +3,15 @@ package com.checkIt.ui.chat
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SimpleItemAnimator
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.local.models.AppError
@@ -372,9 +370,9 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
         swipeRefreshLayout.isEnabled = false
         adapter = ChatAdapter(this, this, this)
         rvChat.adapter = adapter
-        (rvChat.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        rvChat.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        (rvChat.itemAnimator as androidx.recyclerview.widget.SimpleItemAnimator).supportsChangeAnimations = false
+        rvChat.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (flag == AppConstants.REQ_CODE_VENUE_CHAT) {
                     if (!rvChat.canScrollVertically(-1) && viewModel.isValidForPaging())

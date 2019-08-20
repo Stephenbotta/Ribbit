@@ -1,19 +1,17 @@
 package com.checkIt.ui.post.details
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.os.Handler
-import android.support.design.widget.BottomSheetDialog
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.widget.PopupMenu
-import android.support.v7.widget.SimpleItemAnimator
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.widget.PopupMenu
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.checkIt.R
 import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.local.UserManager
@@ -32,6 +30,7 @@ import com.checkIt.ui.people.details.PeopleDetailsActivity
 import com.checkIt.ui.profile.ProfileActivity
 import com.checkIt.utils.AppConstants
 import com.checkIt.utils.GlideApp
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_post_details.*
 import timber.log.Timber
 
@@ -92,7 +91,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     private fun setupPostRecycler() {
         postDetailsAdapter = PostDetailsAdapter(GlideApp.with(this), this)
         rvPostDetails.adapter = postDetailsAdapter
-        (rvPostDetails.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        (rvPostDetails.itemAnimator as androidx.recyclerview.widget.SimpleItemAnimator).supportsChangeAnimations = false
         postDetailsAdapter.displayHeader(listOf(viewModel.getPostDetailsHeader()))
     }
 

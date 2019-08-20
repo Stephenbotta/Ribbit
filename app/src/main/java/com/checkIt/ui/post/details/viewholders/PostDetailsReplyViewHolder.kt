@@ -1,10 +1,9 @@
 package com.checkIt.ui.post.details.viewholders
 
 import android.content.Intent
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import com.checkIt.R
 import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.local.UserManager
@@ -20,7 +19,7 @@ import timber.log.Timber
 
 class PostDetailsReplyViewHolder(itemView: View,
                                  private val glide: GlideRequests,
-                                 private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                                 private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     private val topLevelReplyStartMargin by lazy { itemView.context.pxFromDp(16) }
     private val subLevelReplyStartMargin by lazy { itemView.context.pxFromDp(56) }
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }

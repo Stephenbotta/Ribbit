@@ -1,6 +1,5 @@
 package com.checkIt.ui.groups.groupposts
 
-import android.support.v7.widget.RecyclerView
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import com.checkIt.utils.SpannableTextClickListener
 import kotlinx.android.synthetic.main.item_group_post.view.*
 
 class GroupPostsAdapter(private val glide: GlideRequests,
-                        private val callback: PostCallback) : RecyclerView.Adapter<GroupPostsAdapter.ViewHolder>() {
+                        private val callback: PostCallback) : androidx.recyclerview.widget.RecyclerView.Adapter<GroupPostsAdapter.ViewHolder>() {
     private val posts = mutableListOf<GroupPostDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -53,7 +52,7 @@ class GroupPostsAdapter(private val glide: GlideRequests,
 
     class ViewHolder(itemView: View,
                      private val glide: GlideRequests,
-                     private val callback: PostCallback) : RecyclerView.ViewHolder(itemView) {
+                     private val callback: PostCallback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         private val postClickListener = View.OnClickListener {
             callback.onPostClicked(post, true)
         }

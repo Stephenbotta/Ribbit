@@ -5,9 +5,9 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.app.AlertDialog
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
 import com.checkIt.R
 import com.checkIt.data.MemoryCache
 import com.checkIt.data.local.models.VenueFilters

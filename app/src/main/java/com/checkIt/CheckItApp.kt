@@ -1,11 +1,11 @@
 package com.checkIt
 
 import android.content.Context
-import android.support.multidex.MultiDexApplication
-import android.support.text.emoji.EmojiCompat
-import android.support.text.emoji.FontRequestEmojiCompatConfig
-import android.support.v4.provider.FontRequest
 import android.util.Log
+import androidx.core.provider.FontRequest
+import androidx.emoji.text.EmojiCompat
+import androidx.emoji.text.FontRequestEmojiCompatConfig
+import androidx.multidex.MultiDexApplication
 import com.checkIt.data.local.PrefsManager
 import com.crashlytics.android.Crashlytics
 import com.jakewharton.threetenabp.AndroidThreeTen

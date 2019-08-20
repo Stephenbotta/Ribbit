@@ -1,13 +1,11 @@
 package com.checkIt.ui.search.venues
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.venues.VenueDto
@@ -130,9 +128,9 @@ class SearchVenueFragment : BaseFragment(), SearchVenueAdapter.Callback {
 
     private fun setupHomeRecycler() {
         rvVenueSearch.adapter = adapter
-        (rvVenueSearch.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        rvVenueSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        (rvVenueSearch.itemAnimator as androidx.recyclerview.widget.SimpleItemAnimator).supportsChangeAnimations = false
+        rvVenueSearch.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1) && viewModel.validForPaging() && isNetworkActive()) {
                     viewModel.getVenueSearch(false, search)

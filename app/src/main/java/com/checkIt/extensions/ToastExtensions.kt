@@ -1,10 +1,10 @@
 package com.checkIt.extensions
 
-import android.support.annotation.ColorRes
-import android.support.annotation.DrawableRes
-import android.support.v4.content.ContextCompat
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import com.checkIt.R
 
 fun Toast.updateAndShow() {

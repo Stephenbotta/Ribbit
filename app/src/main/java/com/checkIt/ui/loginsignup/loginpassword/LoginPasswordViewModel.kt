@@ -1,6 +1,6 @@
 package com.checkIt.ui.loginsignup.loginpassword
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.RetrofitClient
 import com.checkIt.data.remote.failureAppError

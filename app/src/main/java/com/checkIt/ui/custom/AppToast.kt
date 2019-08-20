@@ -1,11 +1,11 @@
 package com.checkIt.ui.custom
 
 import android.content.Context
-import android.support.annotation.StringRes
-import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.core.content.res.ResourcesCompat
 import com.checkIt.R
 import timber.log.Timber
 

@@ -1,7 +1,7 @@
 package com.checkIt.ui.groups.listing
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.RetrofitClient

@@ -1,11 +1,9 @@
 package com.checkIt.ui.search.top
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.remote.models.Status
@@ -91,9 +89,9 @@ class SearchTopFragment : BaseFragment(), SearchTopAdapter.Callback {
 
     private fun setupHomeRecycler() {
         rvTopSearch.adapter = adapter
-        (rvTopSearch.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        rvTopSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        (rvTopSearch.itemAnimator as androidx.recyclerview.widget.SimpleItemAnimator).supportsChangeAnimations = false
+        rvTopSearch.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1) && viewModel.validForPaging() && isNetworkActive()) {
                     viewModel.getTopSearch(false, search)

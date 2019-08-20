@@ -1,6 +1,5 @@
 package com.checkIt.ui.post.details
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.checkIt.R
@@ -11,7 +10,7 @@ import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_user_mention.view.*
 
 class UserMentionAdapter(private val glide: GlideRequests,
-                         private val callback: Callback) : RecyclerView.Adapter<UserMentionAdapter.UserMentionViewHolder>() {
+                         private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<UserMentionAdapter.UserMentionViewHolder>() {
     private val users = mutableListOf<ProfileDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserMentionViewHolder {
@@ -32,7 +31,7 @@ class UserMentionAdapter(private val glide: GlideRequests,
 
     class UserMentionViewHolder(itemView: View,
                                 private val glide: GlideRequests,
-                                callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                                callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener {
                 if (isValidPosition()) {

@@ -1,7 +1,6 @@
 package com.checkIt.ui.chat
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.checkIt.R
@@ -15,7 +14,7 @@ import com.checkIt.ui.chat.viewholders.ViewHolderChatVideo
 import com.checkIt.utils.GlideApp
 
 class ChatAdapter(context: Context,
-                  private val callback: Callback, private val actionCallback: ActionCallback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                  private val callback: Callback, private val actionCallback: ActionCallback) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
     companion object {
         private const val TYPE_TEXT_LEFT = 0
         private const val TYPE_TEXT_RIGHT = 1
@@ -29,7 +28,7 @@ class ChatAdapter(context: Context,
     private val inflater = LayoutInflater.from(context)
     private val messages = mutableListOf<ChatMessageDto>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_TEXT_LEFT -> {
                 ViewHolderChatText(inflater.inflate(R.layout.item_chat_text_left, parent, false), glide, actionCallback)
@@ -93,7 +92,7 @@ class ChatAdapter(context: Context,
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val aboveMessage = messages.getOrNull(position - 1)
         val currentMessage = messages[position]
         ChatHelper.updateCurrentMessage(position, currentMessage, aboveMessage)

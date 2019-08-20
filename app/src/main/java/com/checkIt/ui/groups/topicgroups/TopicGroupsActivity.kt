@@ -1,12 +1,11 @@
 package com.checkIt.ui.groups.topicgroups
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.loginsignup.InterestDto
@@ -68,8 +67,8 @@ class TopicGroupsActivity : BaseActivity() {
             }
         }
         rvGroups.adapter = groupsAdapter
-        rvGroups.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        rvGroups.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!rvGroups.canScrollVertically(1) && topicGroupsViewModel.validForPaging() && isNetworkActive()) {
                     topicGroupsViewModel.getGroups(false)

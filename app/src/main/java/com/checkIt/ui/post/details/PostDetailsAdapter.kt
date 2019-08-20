@@ -1,6 +1,5 @@
 package com.checkIt.ui.post.details
 
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.checkIt.R
 import com.checkIt.data.remote.models.LoadingItem
@@ -14,7 +13,7 @@ import com.checkIt.ui.post.details.viewholders.PostDetailsReplyViewHolder
 import com.checkIt.utils.GlideRequests
 
 class PostDetailsAdapter(private val glide: GlideRequests,
-                         private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                         private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
     companion object {
         private const val TYPE_HEADER = 0
         private const val TYPE_REPLY = 1
@@ -25,7 +24,7 @@ class PostDetailsAdapter(private val glide: GlideRequests,
 
    private val itemHeader by lazy {  mutableListOf<Any>() }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_HEADER -> PostDetailsHeaderViewHolder(parent.inflate(R.layout.item_post_details_header), glide, callback)
             TYPE_REPLY -> PostDetailsReplyViewHolder(parent.inflate(R.layout.item_post_details_reply), glide, callback)
@@ -44,7 +43,7 @@ class PostDetailsAdapter(private val glide: GlideRequests,
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
         when (holder) {
             is PostDetailsHeaderViewHolder -> {

@@ -1,14 +1,13 @@
 package com.checkIt.ui.main.notifications
 
 import android.app.Dialog
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.local.models.MessageEvent
@@ -86,8 +85,8 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
         notificationsAdapter = NotificationsAdapter(GlideApp.with(this), this)
         rvNotifications.adapter = notificationsAdapter
 
-        rvNotifications.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        rvNotifications.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!rvNotifications.canScrollVertically(1) && viewModel.validForPaging())
                     getNotifications(false)

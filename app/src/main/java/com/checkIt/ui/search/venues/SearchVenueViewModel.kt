@@ -1,7 +1,7 @@
 package com.checkIt.ui.search.venues
 
 import android.app.Application
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.RetrofitClient
 import com.checkIt.data.remote.failureAppError

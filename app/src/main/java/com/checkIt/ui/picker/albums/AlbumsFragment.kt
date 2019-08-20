@@ -1,9 +1,9 @@
 package com.checkIt.ui.picker.albums
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.checkIt.R
 import com.checkIt.ui.base.BaseFragment

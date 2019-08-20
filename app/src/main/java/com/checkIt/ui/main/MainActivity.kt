@@ -1,11 +1,10 @@
 package com.checkIt.ui.main
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.design.widget.TabLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.PushType
@@ -26,6 +25,7 @@ import com.checkIt.ui.profile.ProfileFragment
 import com.checkIt.utils.AppConstants
 import com.checkIt.utils.FragmentSwitcher
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*

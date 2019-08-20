@@ -1,7 +1,7 @@
 package com.checkIt.ui.chat.viewholders
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.models.chat.ChatMessageDto
 import com.checkIt.data.remote.models.chat.MessageStatus
@@ -19,7 +19,7 @@ class ViewHolderChatImage(itemView: View,
                           private val callback: Callback, private val actionCallback: ActionCallback) : ViewHolderChat(itemView) {
     init {
         itemView.btnResend.setOnClickListener {
-            if (adapterPosition != RecyclerView.NO_POSITION && itemView.context.isNetworkActiveWithMessage()) {
+            if (adapterPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION && itemView.context.isNetworkActiveWithMessage()) {
                 chatMessage.messageStatus = MessageStatus.SENDING
                 updateMessageStatus(chatMessage.messageStatus)
                 callback.onResendMessageClicked(chatMessage)
@@ -27,7 +27,7 @@ class ViewHolderChatImage(itemView: View,
         }
 
         itemView.ivImage.setOnClickListener {
-            if (adapterPosition != RecyclerView.NO_POSITION) {
+            if (adapterPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
                 callback.onImageMessageClicked(chatMessage)
             }
         }

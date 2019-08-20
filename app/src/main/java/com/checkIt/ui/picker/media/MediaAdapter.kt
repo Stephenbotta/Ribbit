@@ -1,7 +1,6 @@
 package com.checkIt.ui.picker.media
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,7 @@ import kotlinx.android.synthetic.main.item_picker_media.view.*
 class MediaAdapter(context: Context,
                    private val allowMultipleSelection: Boolean,
                    private val glide: RequestManager,
-                   private val callback: Callback) : RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
+                   private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
     private val inflater = LayoutInflater.from(context)
     private val medias = mutableListOf<PickerMedia>()
 
@@ -35,7 +34,7 @@ class MediaAdapter(context: Context,
         notifyItemRangeInserted(0, medias.size)
     }
 
-    class ViewHolder(itemView: View, allowMultipleSelection: Boolean, private val glide: RequestManager, callback: Callback) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, allowMultipleSelection: Boolean, private val glide: RequestManager, callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         init {
             if (allowMultipleSelection) {
                 itemView.ivSelected.visible()

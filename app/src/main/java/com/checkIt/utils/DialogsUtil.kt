@@ -2,13 +2,13 @@ package com.checkIt.utils
 
 import android.app.Dialog
 import android.content.Context
-import android.support.design.widget.BottomSheetDialog
 import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import com.checkIt.R
 import com.checkIt.ui.chat.ChatActionCallback
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_delete_post.view.*
 
 

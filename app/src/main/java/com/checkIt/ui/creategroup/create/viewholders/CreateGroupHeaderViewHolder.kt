@@ -1,6 +1,5 @@
 package com.checkIt.ui.creategroup.create.viewholders
 
-import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -13,7 +12,7 @@ import kotlinx.android.synthetic.main.item_create_group_header.view.*
 
 class CreateGroupHeaderViewHolder(itemView: View,
                                   private val glide: GlideRequests,
-                                  private val callback: Callback) : RecyclerView.ViewHolder(itemView), CompoundButton.OnCheckedChangeListener {
+                                  private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView), CompoundButton.OnCheckedChangeListener {
     init {
         itemView.ivGroup.setOnClickListener {
             callback.onGroupImageClicked()

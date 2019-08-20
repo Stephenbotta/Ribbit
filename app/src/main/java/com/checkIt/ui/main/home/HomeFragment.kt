@@ -1,17 +1,15 @@
 package com.checkIt.ui.main.home
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.checkIt.R
 import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.local.UserManager
@@ -92,9 +90,9 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     private fun setupHomeRecycler() {
         rvHome.adapter = adapter
-        (rvHome.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        rvHome.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        (rvHome.itemAnimator as androidx.recyclerview.widget.SimpleItemAnimator).supportsChangeAnimations = false
+        rvHome.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1) && homeViewModel.validForPaging() && isNetworkActive()) {
                     homeViewModel.getHomeFeed(false)

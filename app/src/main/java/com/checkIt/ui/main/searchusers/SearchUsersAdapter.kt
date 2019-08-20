@@ -1,6 +1,5 @@
 package com.checkIt.ui.main.searchusers
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.checkIt.R
@@ -12,7 +11,7 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.item_search_user.view.*
 
-class SearchUsersAdapter(private val glide: GlideRequests, private val callback: Callback) : RecyclerView.Adapter<SearchUsersAdapter.ViewHolder>() {
+class SearchUsersAdapter(private val glide: GlideRequests, private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<SearchUsersAdapter.ViewHolder>() {
 
     private val userList = mutableListOf<ProfileDto>()
 
@@ -38,7 +37,7 @@ class SearchUsersAdapter(private val glide: GlideRequests, private val callback:
         notifyItemRangeInserted(oldSize, userList.size - 1)
     }
 
-    class ViewHolder(itemView: View, private val glide: GlideRequests, callback: Callback) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private val glide: GlideRequests, callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         private val context = itemView.context
         private val interestsAdapter = InterestsAdapter(context)
 

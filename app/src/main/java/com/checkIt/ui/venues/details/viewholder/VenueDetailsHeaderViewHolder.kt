@@ -1,6 +1,5 @@
 package com.checkIt.ui.venues.details.viewholder
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.CompoundButton
 import com.checkIt.R
@@ -12,7 +11,7 @@ import com.checkIt.utils.MapUtils
 import kotlinx.android.synthetic.main.item_venue_details_header.view.*
 
 class VenueDetailsHeaderViewHolder(itemView: View,
-                                   private val callback: Callback) : RecyclerView.ViewHolder(itemView), CompoundButton.OnCheckedChangeListener {
+                                   private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView), CompoundButton.OnCheckedChangeListener {
     init {
         itemView.btnDirections.setOnClickListener {
             val location = venue.venueLocation.toLatLng()

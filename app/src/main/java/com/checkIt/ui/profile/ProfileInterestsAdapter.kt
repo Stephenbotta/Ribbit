@@ -1,15 +1,14 @@
 package com.checkIt.ui.profile
 
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.checkIt.R
 import com.checkIt.data.remote.models.loginsignup.InterestDto
 import com.checkIt.extensions.inflate
 import kotlinx.android.synthetic.main.item_profile_interest.view.*
 
-class ProfileInterestsAdapter(private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ProfileInterestsAdapter(private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
     companion object {
         private const val VIEW_TYPE_INTEREST = 0
         private const val VIEW_TYPE_EDIT_INTERESTS = 1
@@ -17,7 +16,7 @@ class ProfileInterestsAdapter(private val callback: Callback) : RecyclerView.Ada
 
     private val interests = mutableListOf<InterestDto>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_INTEREST) {
             ViewHolder(parent.inflate(R.layout.item_profile_interest))
         } else {
@@ -28,7 +27,7 @@ class ProfileInterestsAdapter(private val callback: Callback) : RecyclerView.Ada
     // Add one for edit interests which will be at last position
     override fun getItemCount(): Int = interests.size + 1
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         if (holder is ViewHolder) {
             holder.bind(interests[position])
         }
@@ -48,7 +47,7 @@ class ProfileInterestsAdapter(private val callback: Callback) : RecyclerView.Ada
         notifyDataSetChanged()
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         private lateinit var interest: InterestDto
 
         fun bind(interest: InterestDto) {
@@ -58,7 +57,7 @@ class ProfileInterestsAdapter(private val callback: Callback) : RecyclerView.Ada
     }
 
     class EditInterestsViewHolder(itemView: View,
-                                  private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                                  private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         private val editColor by lazy { ContextCompat.getColor(itemView.context, R.color.colorPrimary) }
 
         init {

@@ -2,15 +2,14 @@ package com.checkIt.data.remote
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.checkIt.data.remote.models.social.FacebookProfile
 import com.checkIt.utils.SocialUtils
 import com.facebook.*
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import org.json.JSONObject
-import java.util.*
 
 class FacebookLogin(private val listener: FacebookLoginListener) {
     companion object {

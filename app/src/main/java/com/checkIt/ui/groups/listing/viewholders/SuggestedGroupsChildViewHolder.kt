@@ -1,7 +1,7 @@
 package com.checkIt.ui.groups.listing.viewholders
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.checkIt.R
 import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.models.groups.GroupDto
@@ -12,10 +12,10 @@ import kotlinx.android.synthetic.main.item_suggested_groups_child.view.*
 
 class SuggestedGroupsChildViewHolder(itemView: View,
                                      private val glide: GlideRequests,
-                                     private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                                     private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     init {
         itemView.setOnClickListener {
-            if (adapterPosition != RecyclerView.NO_POSITION) {
+            if (adapterPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
                 callback.onSuggestedGroupClicked(group)
             }
         }

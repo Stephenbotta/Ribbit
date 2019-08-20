@@ -1,13 +1,12 @@
 package com.checkIt.ui.groups.details.viewholder
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.checkIt.R
 import com.checkIt.data.local.UserManager
 import kotlinx.android.synthetic.main.item_venue_details_exit_group.view.*
 
 class GroupDetailsExitGroupViewHolder(itemView: View,
-                                      private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                                      private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     init {
         itemView.line.visibility = View.GONE
         itemView.btnArchiveVenue.text = itemView.context.getString(R.string.group_details_label_archive_group)

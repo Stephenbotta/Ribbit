@@ -1,8 +1,8 @@
 package com.checkIt.ui.images
 
-import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
+import androidx.viewpager.widget.PagerAdapter
 import com.checkIt.R
 import com.checkIt.utils.GlideRequests
 import com.checkIt.utils.TouchImageView

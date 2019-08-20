@@ -1,12 +1,12 @@
 package com.checkIt.extensions
 
 import android.content.Context
-import android.support.annotation.StringRes
-import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.StringRes
+import com.google.android.material.snackbar.Snackbar
 
 fun View.hideKeyboard() {
     val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

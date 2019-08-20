@@ -1,7 +1,6 @@
 package com.checkIt.ui.picker.albums
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import kotlinx.android.synthetic.main.item_picker_album.view.*
 
 class AlbumsAdapter(context: Context,
                     private val glide: RequestManager,
-                    private val callback: Callback) : RecyclerView.Adapter<AlbumsAdapter.ViewHolder>() {
+                    private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumsAdapter.ViewHolder>() {
     private val inflater = LayoutInflater.from(context)
     private val albums = mutableListOf<PickerAlbum>()
 
@@ -32,7 +31,7 @@ class AlbumsAdapter(context: Context,
     }
 
     class ViewHolder(itemView: View, private val glide: RequestManager,
-                     callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                     callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener { callback.onAlbumClicked(album) }
         }

@@ -1,6 +1,5 @@
 package com.checkIt.ui.venues.join
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.checkIt.R
@@ -18,7 +17,7 @@ import com.checkIt.utils.MapUtils
 import kotlinx.android.synthetic.main.item_join_venue_header.view.*
 
 class JoinVenueDetailsAdapter(val glide: GlideRequests,
-                              private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                              private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
     companion object {
         private const val VIEW_TYPE_HEADER = 0
         private const val VIEW_TYPE_MEMBER = 1
@@ -26,7 +25,7 @@ class JoinVenueDetailsAdapter(val glide: GlideRequests,
 
     private val items = mutableListOf<Any>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_HEADER -> JoinVenueHeaderViewHolder(parent.inflate(R.layout.item_join_venue_header), glide)
 
@@ -38,7 +37,7 @@ class JoinVenueDetailsAdapter(val glide: GlideRequests,
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
 
         when (holder) {
@@ -72,7 +71,7 @@ class JoinVenueDetailsAdapter(val glide: GlideRequests,
     }
 
     class JoinVenueHeaderViewHolder(itemView: View,
-                                    private val glide: GlideRequests) : RecyclerView.ViewHolder(itemView) {
+                                    private val glide: GlideRequests) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         init {
             itemView.btnDirections.setOnClickListener {
                 val location = venue.venueLocation.toLatLng()

@@ -7,9 +7,9 @@ import android.graphics.Point
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.Uri
-import android.support.annotation.StringRes
 import android.util.Patterns
 import android.view.WindowManager
+import androidx.annotation.StringRes
 import com.checkIt.R
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.local.models.AppError

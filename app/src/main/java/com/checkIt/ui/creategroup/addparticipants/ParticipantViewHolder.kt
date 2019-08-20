@@ -1,6 +1,5 @@
 package com.checkIt.ui.creategroup.addparticipants
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.extensions.gone
@@ -11,7 +10,7 @@ import kotlinx.android.synthetic.main.item_group_participant.view.*
 class ParticipantViewHolder(itemView: View,
                             private val glide: GlideRequests,
                             clickableParticipants: Boolean,
-                            callback: Callback? = null) : RecyclerView.ViewHolder(itemView) {
+                            callback: Callback? = null) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     init {
         if (clickableParticipants) {
             itemView.setOnClickListener {

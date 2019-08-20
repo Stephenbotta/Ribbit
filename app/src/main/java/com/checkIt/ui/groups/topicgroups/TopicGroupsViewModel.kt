@@ -1,7 +1,7 @@
 package com.checkIt.ui.groups.topicgroups
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.checkIt.data.remote.RetrofitClient
 import com.checkIt.data.remote.failureAppError
 import com.checkIt.data.remote.getAppError

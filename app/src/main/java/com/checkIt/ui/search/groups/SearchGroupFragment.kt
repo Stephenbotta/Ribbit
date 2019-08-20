@@ -1,13 +1,11 @@
 package com.checkIt.ui.search.groups
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.groups.GroupDto
@@ -141,9 +139,9 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
 
     private fun setupHomeRecycler() {
         rvGroupSearch.adapter = adapter
-        (rvGroupSearch.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        rvGroupSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        (rvGroupSearch.itemAnimator as androidx.recyclerview.widget.SimpleItemAnimator).supportsChangeAnimations = false
+        rvGroupSearch.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1) && viewModel.validForPaging() && isNetworkActive()) {
                     viewModel.getGroupSearch(false, search)

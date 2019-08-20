@@ -1,6 +1,6 @@
 package com.checkIt.ui.creategroup.create
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.checkIt.data.local.models.AppError
 import com.checkIt.data.remote.RetrofitClient
 import com.checkIt.data.remote.aws.S3Uploader

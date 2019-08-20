@@ -1,6 +1,5 @@
 package com.checkIt.ui.creategroup.categories
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.checkIt.R
@@ -11,7 +10,7 @@ import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_create_group_venue_category.view.*
 
 class GroupCategoriesAdapter(private val glide: GlideRequests,
-                             private val callback: (InterestDto) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                             private val callback: (InterestDto) -> Unit) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
     companion object {
         private const val TYPE_HEADER = 0
         private const val TYPE_CATEGORY = 1
@@ -19,7 +18,7 @@ class GroupCategoriesAdapter(private val glide: GlideRequests,
 
     private val items = mutableListOf<Any>(GroupCategoriesHeader)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return if (viewType == TYPE_HEADER) {
             ViewHolderHeader(parent.inflate(R.layout.item_create_group_categories_header))
         } else {
@@ -29,7 +28,7 @@ class GroupCategoriesAdapter(private val glide: GlideRequests,
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
         if (holder is ViewHolderCategory && item is InterestDto) {
             holder.bind(item)
@@ -50,11 +49,11 @@ class GroupCategoriesAdapter(private val glide: GlideRequests,
         notifyDataSetChanged()
     }
 
-    class ViewHolderHeader(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class ViewHolderHeader(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView)
 
     class ViewHolderCategory(itemView: View,
                              private val glide: GlideRequests,
-                             callback: (InterestDto) -> Unit) : RecyclerView.ViewHolder(itemView) {
+                             callback: (InterestDto) -> Unit) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         private lateinit var category: InterestDto
 
         init {

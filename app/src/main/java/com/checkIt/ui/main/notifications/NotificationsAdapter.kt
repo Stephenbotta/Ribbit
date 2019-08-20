@@ -1,6 +1,5 @@
 package com.checkIt.ui.main.notifications
 
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.checkIt.R
 import com.checkIt.data.remote.PushType
@@ -12,7 +11,7 @@ import com.checkIt.ui.main.notifications.viewholders.VenueGroupInviteRequestView
 import com.checkIt.utils.GlideRequests
 
 class NotificationsAdapter(private val glide: GlideRequests,
-                           private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                           private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
     companion object {
         private const val NOTIFICATION_TYPE_VENUE = 0
         private const val NOTIFICATION_TYPE_INVITE_REQUEST = 1
@@ -21,7 +20,7 @@ class NotificationsAdapter(private val glide: GlideRequests,
 
     private val notifications = mutableListOf<NotificationDto>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return when (viewType) {
             NOTIFICATION_TYPE_VENUE ->
                 NormalDetailsViewHolder(parent.inflate(R.layout.item_notification_normal_with_detail), glide, callback)
@@ -33,7 +32,7 @@ class NotificationsAdapter(private val glide: GlideRequests,
 
     override fun getItemCount(): Int = notifications.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val notification = notifications[position]
 
         when (holder) {

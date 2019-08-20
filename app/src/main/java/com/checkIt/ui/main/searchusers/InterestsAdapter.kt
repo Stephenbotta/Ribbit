@@ -1,17 +1,16 @@
 package com.checkIt.ui.main.searchusers
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.checkIt.R
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.models.loginsignup.InterestDto
 import com.checkIt.extensions.inflate
 import kotlinx.android.synthetic.main.item_profile_interest.view.*
 
-class InterestsAdapter(private val context: Context) : RecyclerView.Adapter<InterestsAdapter.ViewHolder>() {
+class InterestsAdapter(private val context: Context) : androidx.recyclerview.widget.RecyclerView.Adapter<InterestsAdapter.ViewHolder>() {
     private val interests = ArrayList<InterestDto>()
     private val userInterests by lazy {
         ArrayList<InterestDto>().also {
@@ -31,7 +30,7 @@ class InterestsAdapter(private val context: Context) : RecyclerView.Adapter<Inte
         holder.bindInterests(interests[position])
     }
 
-    class ViewHolder(itemView: View, private val context: Context, private val userInterests: ArrayList<InterestDto>) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, private val context: Context, private val userInterests: ArrayList<InterestDto>) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         private val mutualInterestColor by lazy { ContextCompat.getColor(context, R.color.colorPrimary) }
         private val defaultInterestColor by lazy { ContextCompat.getColor(context, R.color.textGray) }
 

@@ -9,9 +9,9 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.webkit.MimeTypeMap
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import timber.log.Timber
 import java.io.File
 

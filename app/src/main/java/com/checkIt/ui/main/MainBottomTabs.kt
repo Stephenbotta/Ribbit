@@ -1,13 +1,13 @@
 package com.checkIt.ui.main
 
 import android.content.Context
-import android.support.design.widget.TabLayout
-import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import com.checkIt.R
+import com.google.android.material.tabs.TabLayout
 
 class MainBottomTabs : TabLayout {
     constructor(context: Context) : super(context)

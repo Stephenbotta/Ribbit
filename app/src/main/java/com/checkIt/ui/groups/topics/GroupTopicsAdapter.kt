@@ -1,6 +1,5 @@
 package com.checkIt.ui.groups.topics
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.checkIt.R
@@ -10,7 +9,7 @@ import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_group_topic.view.*
 
 class GroupTopicsAdapter(private val glide: GlideRequests,
-                         private val callback: (InterestDto) -> Unit) : RecyclerView.Adapter<GroupTopicsAdapter.ViewHolderTopic>() {
+                         private val callback: (InterestDto) -> Unit) : androidx.recyclerview.widget.RecyclerView.Adapter<GroupTopicsAdapter.ViewHolderTopic>() {
     private val topics = mutableListOf<InterestDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderTopic {
@@ -30,7 +29,7 @@ class GroupTopicsAdapter(private val glide: GlideRequests,
 
     class ViewHolderTopic(itemView: View,
                           private val glide: GlideRequests,
-                          callback: (InterestDto) -> Unit) : RecyclerView.ViewHolder(itemView) {
+                          callback: (InterestDto) -> Unit) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         private lateinit var topic: InterestDto
 
         init {

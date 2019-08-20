@@ -1,6 +1,5 @@
 package com.checkIt.ui.search.posts
 
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.checkIt.R
 import com.checkIt.data.remote.models.groups.GroupPostDto
@@ -8,16 +7,16 @@ import com.checkIt.extensions.inflate
 import com.checkIt.utils.GlideRequests
 
 class SearchPostAdapter(private val glide: GlideRequests,
-                        private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                        private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
     private val items = mutableListOf<GroupPostDto>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return SearchPostViewHolder(parent.inflate(R.layout.item_post_search), glide, callback)
     }
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
 
         when (holder) {

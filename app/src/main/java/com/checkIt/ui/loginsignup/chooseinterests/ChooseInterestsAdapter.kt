@@ -1,6 +1,5 @@
 package com.checkIt.ui.loginsignup.chooseinterests
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.checkIt.R
@@ -10,7 +9,7 @@ import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_interest.view.*
 
 class ChooseInterestsAdapter(private val glide: GlideRequests,
-                             private val callback: Callback) : RecyclerView.Adapter<ChooseInterestsAdapter.ViewHolder>() {
+                             private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<ChooseInterestsAdapter.ViewHolder>() {
     private val interests = mutableListOf<InterestDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,7 +34,7 @@ class ChooseInterestsAdapter(private val glide: GlideRequests,
 
     class ViewHolder(itemView: View,
                      private val glide: GlideRequests,
-                     callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                     callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener {
                 interest.selected = !interest.selected

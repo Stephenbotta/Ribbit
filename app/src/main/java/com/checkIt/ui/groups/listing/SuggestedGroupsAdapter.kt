@@ -1,6 +1,5 @@
 package com.checkIt.ui.groups.listing
 
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.checkIt.R
 import com.checkIt.data.remote.models.groups.GroupDto
@@ -9,7 +8,7 @@ import com.checkIt.ui.groups.listing.viewholders.SuggestedGroupsChildViewHolder
 import com.checkIt.utils.GlideRequests
 
 class SuggestedGroupsAdapter(private val glide: GlideRequests,
-                             private val callback: Callback) : RecyclerView.Adapter<SuggestedGroupsChildViewHolder>() {
+                             private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<SuggestedGroupsChildViewHolder>() {
     private val groups = mutableListOf<GroupDto>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SuggestedGroupsChildViewHolder {

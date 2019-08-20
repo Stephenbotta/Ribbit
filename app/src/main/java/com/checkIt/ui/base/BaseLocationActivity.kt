@@ -9,7 +9,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import com.checkIt.R
 import com.checkIt.extensions.isGpsEnabled
 import com.checkIt.extensions.longToast

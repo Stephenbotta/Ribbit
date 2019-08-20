@@ -1,8 +1,7 @@
 package com.checkIt.ui.venues.list.viewholder
 
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.checkIt.R
 import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
@@ -15,7 +14,7 @@ import kotlinx.android.synthetic.main.item_venue.view.*
 
 class VenueViewHolder(itemView: View,
                       private val glide: GlideRequests,
-                      private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                      private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     init {
         itemView.setOnClickListener { callback.onVenueClicked(venue) }
 

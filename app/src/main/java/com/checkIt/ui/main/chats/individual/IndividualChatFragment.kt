@@ -1,14 +1,17 @@
 package com.checkIt.ui.main.chats.individual
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.chat.ChatListingDto
 import com.checkIt.data.remote.models.people.UserCrossedDto
-import com.checkIt.extensions.*
+import com.checkIt.extensions.gone
+import com.checkIt.extensions.handleError
+import com.checkIt.extensions.isNetworkActiveWithMessage
+import com.checkIt.extensions.visible
 import com.checkIt.ui.base.BaseFragment
 import com.checkIt.ui.chat.ChatActivity
 import com.checkIt.ui.main.chats.ChatListCallback

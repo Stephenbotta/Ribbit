@@ -1,7 +1,7 @@
 package com.checkIt.ui.base
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
+import androidx.lifecycle.AndroidViewModel
 
 /**
  * Created by Manish Bhargav

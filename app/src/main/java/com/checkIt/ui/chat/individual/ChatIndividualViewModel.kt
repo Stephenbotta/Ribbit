@@ -1,8 +1,8 @@
 package com.checkIt.ui.chat.individual
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
 import android.provider.MediaStore
+import androidx.lifecycle.AndroidViewModel
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.local.models.AppError
 import com.checkIt.data.remote.ApiConstants

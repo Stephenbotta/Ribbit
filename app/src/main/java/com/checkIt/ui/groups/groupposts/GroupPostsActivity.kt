@@ -2,22 +2,22 @@ package com.checkIt.ui.groups.groupposts
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.app.AlertDialog
-import android.support.v7.view.menu.MenuBuilder
-import android.support.v7.widget.*
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.checkIt.R
 import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.local.UserManager
@@ -106,16 +106,16 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
     private fun setupPostsRecycler() {
         postsAdapter = GroupPostsAdapter(GlideApp.with(this), this)
 
-        val dividerItemDecoration = DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
+        val dividerItemDecoration = androidx.recyclerview.widget.DividerItemDecoration(this, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL)
         val dividerDrawable = ContextCompat.getDrawable(this, R.drawable.divider_recycler)
         if (dividerDrawable != null) {
             dividerItemDecoration.setDrawable(dividerDrawable)
         }
         rvPosts.addItemDecoration(dividerItemDecoration)
-        (rvPosts.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        (rvPosts.itemAnimator as androidx.recyclerview.widget.SimpleItemAnimator).supportsChangeAnimations = false
         rvPosts.adapter = postsAdapter
-        rvPosts.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        rvPosts.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1) && groupPostsViewModel.validForPaging() && isNetworkActive()) {
                     groupPostsViewModel.getGroupPosts(false)

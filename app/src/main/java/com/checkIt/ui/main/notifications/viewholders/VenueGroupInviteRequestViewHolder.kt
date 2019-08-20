@@ -1,9 +1,9 @@
 package com.checkIt.ui.main.notifications.viewholders
 
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.checkIt.R
 import com.checkIt.data.remote.PushType
 import com.checkIt.data.remote.models.groups.GroupDto
@@ -20,7 +20,7 @@ import timber.log.Timber
 
 class VenueGroupInviteRequestViewHolder(itemView: View,
                                         private val glide: GlideRequests,
-                                        private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                                        private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
 
     private val userProfileClickListener = View.OnClickListener {
@@ -54,7 +54,7 @@ class VenueGroupInviteRequestViewHolder(itemView: View,
 
     init {
         itemView.btnAccept.setOnClickListener {
-            if (adapterPosition != RecyclerView.NO_POSITION) {
+            if (adapterPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
                 if (notification.type == PushType.REQUEST_FOLLOW) {
                     callback.onFollowRequestAction(true, notification)
                 } else {
@@ -64,7 +64,7 @@ class VenueGroupInviteRequestViewHolder(itemView: View,
         }
 
         itemView.btnReject.setOnClickListener {
-            if (adapterPosition != RecyclerView.NO_POSITION) {
+            if (adapterPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
                 if (notification.type == PushType.REQUEST_FOLLOW) {
                     callback.onFollowRequestAction(false, notification)
                 } else {

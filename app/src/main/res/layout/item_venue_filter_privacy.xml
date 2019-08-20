@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatCheckedTextView
+    <androidx.appcompat.widget.AppCompatCheckedTextView
         android:id="@+id/btnPublic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         android:text="@string/venue_filters_btn_public"
         android:textColor="@color/textGray" />
 
-    <android.support.v7.widget.AppCompatCheckedTextView
+    <androidx.appcompat.widget.AppCompatCheckedTextView
         android:id="@+id/btnPrivate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

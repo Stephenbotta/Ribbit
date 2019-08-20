@@ -1,8 +1,8 @@
 package com.checkIt.ui.post.details
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
-import android.support.v4.util.ArrayMap
+import androidx.collection.ArrayMap
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.RetrofitClient
 import com.checkIt.data.remote.failureAppError

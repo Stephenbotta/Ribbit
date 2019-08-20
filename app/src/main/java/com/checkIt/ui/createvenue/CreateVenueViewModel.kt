@@ -1,6 +1,6 @@
 package com.checkIt.ui.createvenue
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import com.checkIt.data.remote.RetrofitClient
 import com.checkIt.data.remote.aws.S3Uploader
 import com.checkIt.data.remote.aws.S3Utils

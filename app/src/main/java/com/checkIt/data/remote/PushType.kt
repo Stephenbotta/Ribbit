@@ -1,8 +1,5 @@
 package com.checkIt.data.remote
 
-/**
- * Created by Manish Bhargav
- */
 object PushType {
 
     const val LIKE = "LIKE"

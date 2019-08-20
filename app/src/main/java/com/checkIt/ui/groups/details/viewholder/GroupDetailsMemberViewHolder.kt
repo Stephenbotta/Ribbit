@@ -1,6 +1,5 @@
 package com.checkIt.ui.groups.details.viewholder
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.checkIt.data.remote.models.chat.MemberDto
 import com.checkIt.extensions.gone
@@ -10,7 +9,7 @@ import kotlinx.android.synthetic.main.item_venue_details_member.view.*
 
 class GroupDetailsMemberViewHolder(itemView: View,
                                    private val glide: GlideRequests,
-                                   private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
+                                   private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     init {
 
         itemView.setOnClickListener { callback.onMemberClicked(member) }

@@ -1,6 +1,5 @@
 package com.checkIt.ui.chat.viewholders
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.checkIt.data.remote.models.chat.ChatMessageDto
 import com.checkIt.extensions.gone
@@ -10,7 +9,7 @@ import com.checkIt.utils.DateTimeUtils
 import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_chat_text_left.view.*
 
-abstract class ViewHolderChat(itemView: View) : RecyclerView.ViewHolder(itemView) {
+abstract class ViewHolderChat(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     fun displayCommonValues(chatMessage: ChatMessageDto, glide: GlideRequests) {
         // Display profile image and username if message is of other user
         if (!chatMessage.ownMessage) {

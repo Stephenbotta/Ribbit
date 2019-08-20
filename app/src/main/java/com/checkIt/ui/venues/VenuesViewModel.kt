@@ -1,8 +1,8 @@
 package com.checkIt.ui.venues
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
+import androidx.lifecycle.AndroidViewModel
 import com.checkIt.R
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.local.models.VenueFilters

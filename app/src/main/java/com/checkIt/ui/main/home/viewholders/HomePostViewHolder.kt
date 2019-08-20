@@ -1,10 +1,9 @@
 package com.checkIt.ui.main.home.viewholders
 
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.RecyclerView
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import com.checkIt.R
 import com.checkIt.data.remote.models.groups.GroupPostDto
 import com.checkIt.extensions.*
@@ -16,7 +15,7 @@ import kotlinx.android.synthetic.main.item_home_feed_post.view.*
 
 class HomePostViewHolder(itemView: View,
                          private val glide: GlideRequests,
-                         callback: GroupPostCallback) : RecyclerView.ViewHolder(itemView), PostMediaAdapter.Callback {
+                         callback: GroupPostCallback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView), PostMediaAdapter.Callback {
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
     private val postClickListener = View.OnClickListener {
         callback.onPostClicked(post, true)

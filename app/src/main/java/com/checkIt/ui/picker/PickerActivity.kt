@@ -1,12 +1,12 @@
 package com.checkIt.ui.picker
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.extensions.gone
 import com.checkIt.extensions.visible

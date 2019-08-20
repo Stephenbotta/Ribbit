@@ -1,12 +1,12 @@
 package com.checkIt.ui.venues.list
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.SearchView
 import android.view.View
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.local.models.VenueFilters
 import com.checkIt.data.remote.models.Status

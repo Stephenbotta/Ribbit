@@ -1,6 +1,5 @@
 package com.checkIt.ui.groups.details.viewholder
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.CompoundButton
 import com.checkIt.R
@@ -9,7 +8,7 @@ import com.checkIt.extensions.isNetworkActiveWithMessage
 import kotlinx.android.synthetic.main.item_group_details_header.view.*
 
 class GroupDetailsHeaderViewHolder(itemView: View,
-                                   private val callback: Callback) : RecyclerView.ViewHolder(itemView), CompoundButton.OnCheckedChangeListener {
+                                   private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView), CompoundButton.OnCheckedChangeListener {
     init {
         itemView.switchNotifications.setOnCheckedChangeListener(this)
     }

@@ -1,6 +1,5 @@
 package com.checkIt.ui.main.chats
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.checkIt.R
@@ -15,17 +14,17 @@ import kotlinx.android.synthetic.main.item_chat_listing.view.*
 /**
  * Created by Manish Bhargav
  */
-class ChatListCommonAdapter(private val glide: GlideRequests, private val callback: ChatListCallback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatListCommonAdapter(private val glide: GlideRequests, private val callback: ChatListCallback) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
     private val items = mutableListOf<Any>(VenueCategoriesHeader)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return ViewHolderPeoples(parent.inflate(R.layout.item_chat_listing), glide, callback)
     }
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
         when (holder) {
             is ViewHolderPeoples -> {
@@ -43,7 +42,7 @@ class ChatListCommonAdapter(private val glide: GlideRequests, private val callba
     }
 
     class ViewHolderPeoples(itemView: View,
-                            private val glide: GlideRequests, private val callback: ChatListCallback) : RecyclerView.ViewHolder(itemView) {
+                            private val glide: GlideRequests, private val callback: ChatListCallback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         private lateinit var peoples: ChatListingDto
 
         init {

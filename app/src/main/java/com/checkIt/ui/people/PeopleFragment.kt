@@ -1,12 +1,12 @@
 package com.checkIt.ui.people
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.remote.models.Status
@@ -50,7 +50,7 @@ class PeopleFragment : BaseFragment(), PeopleCallback {
 
     private fun inItClasses() {
         viewModel = ViewModelProviders.of(this).get(PeopleViewModel::class.java)
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         binding.viewModel = viewModel
         adapter = PeopleAdapter(GlideApp.with(this), this)
         binding.rvPeople.adapter = adapter

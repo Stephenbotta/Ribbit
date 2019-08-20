@@ -1,6 +1,6 @@
 package com.checkIt.extensions
 
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.checkIt.data.local.models.AppError
 
 fun Fragment.isNetworkActive(): Boolean {

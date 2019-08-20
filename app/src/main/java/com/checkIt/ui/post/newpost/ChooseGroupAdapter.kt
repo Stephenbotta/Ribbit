@@ -1,6 +1,5 @@
 package com.checkIt.ui.post.newpost
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.checkIt.R
@@ -13,7 +12,7 @@ import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_new_post_group.view.*
 
 class ChooseGroupAdapter(private val glide: GlideRequests,
-                         private val callback: (GroupDto) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                         private val callback: (GroupDto) -> Unit) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
     companion object {
         private const val TYPE_HEADER = 0
         private const val TYPE_GROUP = 1
@@ -22,7 +21,7 @@ class ChooseGroupAdapter(private val glide: GlideRequests,
 
     private val items = mutableListOf<Any>(ChooseGroupHeader)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_HEADER -> ViewHolderHeader(parent.inflate(R.layout.item_new_post_choose_group_header))
 
@@ -34,7 +33,7 @@ class ChooseGroupAdapter(private val glide: GlideRequests,
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
         if (holder is ViewHolderGroup && item is GroupDto) {
             holder.bind(item)
@@ -68,11 +67,11 @@ class ChooseGroupAdapter(private val glide: GlideRequests,
         }
     }
 
-    class ViewHolderHeader(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class ViewHolderHeader(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView)
 
     class ViewHolderGroup(itemView: View,
                           private val glide: GlideRequests,
-                          callback: (GroupDto) -> Unit) : RecyclerView.ViewHolder(itemView) {
+                          callback: (GroupDto) -> Unit) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         private lateinit var group: GroupDto
 
         init {

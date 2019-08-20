@@ -1,6 +1,5 @@
 package com.checkIt.ui.venues.filters
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.checkIt.R
@@ -13,7 +12,7 @@ import kotlinx.android.synthetic.main.item_venue_filter_date.view.*
 import kotlinx.android.synthetic.main.item_venue_filter_location.view.*
 import kotlinx.android.synthetic.main.item_venue_filter_privacy.view.*
 
-class VenueFiltersAdapter(private val callback: Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class VenueFiltersAdapter(private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
     companion object {
         private const val VIEW_TYPE_CATEGORY = 0
         private const val VIEW_TYPE_DATE = 1
@@ -23,7 +22,7 @@ class VenueFiltersAdapter(private val callback: Callback) : RecyclerView.Adapter
 
     private val items = mutableListOf<Any>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_CATEGORY -> CategoryViewHolder(parent.inflate(R.layout.item_venue_filter_category))
 
@@ -39,7 +38,7 @@ class VenueFiltersAdapter(private val callback: Callback) : RecyclerView.Adapter
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
         when (holder) {
             is CategoryViewHolder -> {
@@ -83,7 +82,7 @@ class VenueFiltersAdapter(private val callback: Callback) : RecyclerView.Adapter
         notifyDataSetChanged()
     }
 
-    class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class CategoryViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         init {
             itemView.tvCategory.setOnClickListener {
                 val checked = !itemView.tvCategory.isChecked
@@ -102,7 +101,7 @@ class VenueFiltersAdapter(private val callback: Callback) : RecyclerView.Adapter
     }
 
     class DateViewHolder(itemView: View,
-                         private val callback: DateViewHolder.Callback) : RecyclerView.ViewHolder(itemView) {
+                         private val callback: DateViewHolder.Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener { callback.onSelectDateClicked() }
         }
@@ -116,7 +115,7 @@ class VenueFiltersAdapter(private val callback: Callback) : RecyclerView.Adapter
         }
     }
 
-    class PrivacyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class PrivacyViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         init {
             itemView.btnPublic.setOnClickListener {
                 val checked = !itemView.btnPublic.isChecked
@@ -140,7 +139,7 @@ class VenueFiltersAdapter(private val callback: Callback) : RecyclerView.Adapter
     }
 
     class LocationViewHolder(itemView: View,
-                             private val callback: LocationViewHolder.Callback) : RecyclerView.ViewHolder(itemView) {
+                             private val callback: LocationViewHolder.Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener { callback.onSelectLocationClicked() }
         }
