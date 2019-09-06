@@ -27,17 +27,14 @@ class PostMediaAdapter(private val context: Context,
                 .into(view.ivPostImage)
 
         when (media.mediaType) {
-            ApiConstants.POST_TYPE_IMAGE -> view.ivPlay.gone()
             ApiConstants.POST_TYPE_VIDEO -> view.ivPlay.visible()
-            ApiConstants.POST_TYPE_GIF -> view.ivPlay.gone()
+            else -> view.ivPlay.gone()
         }
 
-        view.setOnClickListener {
-            if (media.mediaType == ApiConstants.POST_TYPE_VIDEO)
-                callback.playVideo(media.videoUrl ?: "")
+        view.ivPostImage.setOnClickListener {
+            callback.openMediaDetail(media)
         }
         container.addView(view)
-
         return view
     }
 
@@ -60,6 +57,6 @@ class PostMediaAdapter(private val context: Context,
     }
 
     interface Callback {
-        fun playVideo(videoPath: String)
+        fun openMediaDetail(media: ImageUrlDto)
     }
 }

@@ -4,8 +4,8 @@ import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.checkIt.R
-import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.data.remote.models.people.UserCrossedDto
@@ -17,9 +17,8 @@ import com.checkIt.utils.*
 import kotlinx.android.synthetic.main.item_post_details_reply.view.*
 import timber.log.Timber
 
-class PostDetailsReplyViewHolder(itemView: View,
-                                 private val glide: GlideRequests,
-                                 private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+class PostDetailsReplyViewHolder(itemView: View, private val glide: GlideRequests,
+                                 private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
     private val topLevelReplyStartMargin by lazy { itemView.context.pxFromDp(16) }
     private val subLevelReplyStartMargin by lazy { itemView.context.pxFromDp(56) }
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
@@ -29,11 +28,11 @@ class PostDetailsReplyViewHolder(itemView: View,
     private val userProfileClickListener = View.OnClickListener {
         val data = UserCrossedDto()
         data.profile = profile
-        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, profile.id ?: "")
         if (profile.id == UserManager.getUserId()) {
             itemView.context.startActivity(Intent(itemView.context, ProfileActivity::class.java))
         } else {
-            val intent = PeopleDetailsActivity.getStartIntent(itemView.context, data, AppConstants.REQ_CODE_BLOCK_USER)
+            val intent = PeopleDetailsActivity.getStartIntent(itemView.context, data,
+                    AppConstants.REQ_CODE_BLOCK_USER, data.profile?.id ?: "")
             itemView.context.startActivity(intent)
         }
 
@@ -45,13 +44,13 @@ class PostDetailsReplyViewHolder(itemView: View,
     private val usernameClickListener = object : SpannableTextClickListener {
         override fun onSpannableTextClicked(text: String, view: View) {
             val data = UserCrossedDto()
-            if (profile.userName == text.removeRange(0, 1)) {
+            val userName = text.removeRange(0, 1)
+            if (UserManager.getProfile().userName == userName) {
                 itemView.context.startActivity(Intent(itemView.context, ProfileActivity::class.java))
             } else {
                 data.profile = reply.replyBy
-                PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, reply.parentReplyOwnerId
-                        ?: "")
-                val intent = PeopleDetailsActivity.getStartIntent(itemView.context, data, AppConstants.REQ_CODE_BLOCK_USER)
+                val intent = PeopleDetailsActivity.getStartIntent(itemView.context, data,
+                        AppConstants.REQ_CODE_BLOCK_USER, userName)
                 itemView.context.startActivity(intent)
             }
 

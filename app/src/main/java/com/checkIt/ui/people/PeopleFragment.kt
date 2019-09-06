@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
-import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.people.UserCrossedDto
 import com.checkIt.databinding.FragmentPeopleBinding
@@ -21,11 +20,9 @@ import com.checkIt.utils.AppConstants
 import com.checkIt.utils.GlideApp
 
 class PeopleFragment : BaseFragment(), PeopleCallback {
-
     private lateinit var viewModel: PeopleViewModel
     private lateinit var binding: FragmentPeopleBinding
     private lateinit var adapter: PeopleAdapter
-    private lateinit var items: List<Any>
 
     companion object {
         const val TAG = "PeopleFragment"
@@ -34,11 +31,9 @@ class PeopleFragment : BaseFragment(), PeopleCallback {
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_people
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         binding = DataBindingUtil.inflate(inflater, getFragmentLayoutResId(), container, false)
         binding.view = this
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,10 +62,9 @@ class PeopleFragment : BaseFragment(), PeopleCallback {
 
                 Status.SUCCESS -> {
                     binding.swipeRefreshLayout.isRefreshing = false
-                    items = resource.data ?: emptyList()
+                    val users = resource.data ?: emptyList()
                     binding.rvPeople.visibility = View.VISIBLE
-                    adapter.displayCategories(items)
-
+                    adapter.displayCategories(users)
                 }
 
                 Status.ERROR -> {
@@ -82,7 +76,6 @@ class PeopleFragment : BaseFragment(), PeopleCallback {
                     binding.swipeRefreshLayout.isRefreshing = true
                 }
             }
-
         })
     }
 
@@ -94,26 +87,14 @@ class PeopleFragment : BaseFragment(), PeopleCallback {
         }
     }
 
-    override fun onClickItem(position: Int, isDetailShow: Boolean) {
-        val item = items[position]
+    override fun onClickItem(user: UserCrossedDto, isDetailShow: Boolean) {
         if (isDetailShow) {
-            if (item is UserCrossedDto) {
-                PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, item.crossedUser?.id?:"")
-                val intent = PeopleDetailsActivity.getStartIntent(requireContext(), item, AppConstants.REQ_CODE_PEOPLE)
-                activity?.startActivity(intent)
-            }
+            val intent = PeopleDetailsActivity.getStartIntent(requireContext(), user,
+                    AppConstants.REQ_CODE_PEOPLE, user.crossedUser?.id ?: "")
+            activity?.startActivity(intent)
         } else {
-            if (item is UserCrossedDto) {
-                val intent = ChatActivity.getStartIntentForIndividualChat(requireActivity(), item, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
-                startActivityForResult(intent, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
-            }
+            val intent = ChatActivity.getStartIntentForIndividualChat(requireActivity(), user, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
+            startActivityForResult(intent, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
         }
     }
-
-    override fun onClickItem() {
-    }
-
-    override fun onClickItem(position: Int) {
-    }
-
 }

@@ -14,7 +14,7 @@ class SearchGroupViewHolder(itemView: View,
                             private val glide: GlideRequests,
                             private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
     init {
-        itemView.setOnClickListener { callback.onClick(adapterPosition, group) }
+        itemView.setOnClickListener { callback.onClick(group) }
     }
 
     private lateinit var group: GroupDto
@@ -62,6 +62,6 @@ class SearchGroupViewHolder(itemView: View,
     }
 
     interface Callback {
-        fun onClick(position: Int, group: GroupDto)
+        fun onClick(group: GroupDto)
     }
 }

@@ -27,7 +27,6 @@ class IndividualChatFragment : BaseFragment(), ChatListCallback {
 
     private val viewModel by lazy { ViewModelProviders.of(this)[IndividualChatViewModel::class.java] }
     private lateinit var adapter: ChatListCommonAdapter
-    private lateinit var items: List<Any>
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_individual_chat
 
@@ -53,14 +52,14 @@ class IndividualChatFragment : BaseFragment(), ChatListCallback {
 
                 Status.SUCCESS -> {
                     swipeRefreshLayout.isRefreshing = false
-                    items = resource.data ?: emptyList()
-                    if (items.size != 0) {
+                    val chats = resource.data ?: emptyList()
+                    if (chats.isNotEmpty()) {
                         tvLabelEmptyChat.gone()
                         rvIndividualChat.visible()
                     } else {
                         tvLabelEmptyChat.visible()
                     }
-                    adapter.displayCategories(items)
+                    adapter.displayCategories(chats)
                 }
 
                 Status.ERROR -> {
@@ -90,17 +89,11 @@ class IndividualChatFragment : BaseFragment(), ChatListCallback {
         }
     }
 
-    override fun onClickItem() {
-    }
-
-    override fun onClickItem(position: Int) {
-        val item = items[position]
-        if (item is ChatListingDto) {
-            val userCrossed = UserCrossedDto()
-            userCrossed.conversationId = item.conversationId
-            userCrossed.profile = item.profile
-            val intent = ChatActivity.getStartIntentForIndividualChat(requireContext(), userCrossed, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
-            startActivityForResult(intent, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
-        }
+    override fun onClickItem(chat: ChatListingDto) {
+        val userCrossed = UserCrossedDto()
+        userCrossed.conversationId = chat.conversationId
+        userCrossed.profile = chat.profile
+        val intent = ChatActivity.getStartIntentForIndividualChat(requireContext(), userCrossed, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
+        startActivityForResult(intent, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
     }
 }

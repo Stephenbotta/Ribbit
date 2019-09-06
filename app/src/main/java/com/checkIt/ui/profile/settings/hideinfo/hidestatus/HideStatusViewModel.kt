@@ -1,7 +1,6 @@
 package com.checkIt.ui.profile.settings.hideinfo.hidestatus
 
 import android.app.Application
-import com.google.gson.Gson
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.RetrofitClient
@@ -12,6 +11,7 @@ import com.checkIt.data.remote.models.Resource
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.ui.base.BaseViewModel
 import com.checkIt.utils.SingleLiveEvent
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,7 +19,7 @@ import retrofit2.Response
 class HideStatusViewModel(application: Application) : BaseViewModel(application) {
     private val gson by lazy { Gson() }
     private var profile = UserManager.getProfile()
-    val followerList by lazy { SingleLiveEvent<Resource<List<Any>>>() }
+    val followerList by lazy { SingleLiveEvent<Resource<List<ProfileDto>>>() }
     private val filteredList by lazy { mutableListOf<ProfileDto>() }
     val configSetting by lazy { SingleLiveEvent<Resource<ProfileDto>>() }
     private var searchQuery = ""
@@ -88,7 +88,7 @@ class HideStatusViewModel(application: Application) : BaseViewModel(application)
                             this@HideStatusViewModel.filteredList.addAll(data)
 
                             val items = if (searchQuery.isBlank()) {
-                                getItems(data)
+                                data
                             } else {
                                 getSearchResult(searchQuery)
                             }
@@ -114,26 +114,14 @@ class HideStatusViewModel(application: Application) : BaseViewModel(application)
     /**
      * Returns list items in correct order after applying the search filter
      * */
-    private fun getSearchResult(query: String): List<Any> {
+    private fun getSearchResult(query: String): List<ProfileDto> {
         // If query is blank then return the result with all username
         if (query.isBlank())
-            return getItems(filteredList)
+            return filteredList
 
-        val yourResult = filteredList.filter {
+        return filteredList.filter {
             (it.userName ?: "").toLowerCase().contains(query.toLowerCase())
         }
-
-        return getItems(yourResult)
-    }
-
-    /**
-     * Returns items in correct order
-     * */
-    private fun getItems(list: List<ProfileDto>): List<Any> {
-        val items = mutableListOf<Any>()
-        if (list.isNotEmpty())
-            items.addAll(list)
-        return items
     }
 
     fun getProfile() = profile

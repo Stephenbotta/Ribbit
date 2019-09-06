@@ -1,11 +1,11 @@
 package com.checkIt.data.remote.models.groups
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
 import com.checkIt.data.remote.models.loginsignup.ImageUrlDto
 import com.checkIt.data.remote.models.loginsignup.InterestDto
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.data.remote.models.post.PostReplyDto
+import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.ZonedDateTime
 
@@ -53,8 +53,18 @@ data class GroupPostDto(
         @field:SerializedName("postType")
         val postType: String? = null,
 
+        @field:SerializedName("postingIn")
+        val postingIn: String? = null,
+
         @field:SerializedName("commentCount")
         var repliesCount: Int? = null,
 
+        @field:SerializedName("selectedPeople")
+        var selectedPeople: ArrayList<String> = ArrayList(),
+
         @field:SerializedName("media")
-        var media: ArrayList<ImageUrlDto> = ArrayList()) : Parcelable
+        var media: ArrayList<ImageUrlDto> = ArrayList(),
+
+        @field:SerializedName("selectInterests")
+        val interests: ArrayList<InterestDto>? = null
+) : Parcelable

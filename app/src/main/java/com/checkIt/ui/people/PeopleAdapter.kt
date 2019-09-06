@@ -2,6 +2,7 @@ package com.checkIt.ui.people
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.checkIt.R
 import com.checkIt.data.remote.models.people.GetPeopleResponse
 import com.checkIt.data.remote.models.people.UserCrossedDto
@@ -14,7 +15,7 @@ import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_people.view.*
 import kotlinx.android.synthetic.main.item_people_location.view.*
 
-class PeopleAdapter(private val glide: GlideRequests, private val callback: PeopleCallback) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
+class PeopleAdapter(private val glide: GlideRequests, private val callback: PeopleCallback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val TYPE_PLACES = 0
         private const val TYPE_PEOPLES = 1
@@ -22,7 +23,7 @@ class PeopleAdapter(private val glide: GlideRequests, private val callback: Peop
 
     private val items = mutableListOf<Any>(VenueCategoriesHeader)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TYPE_PLACES) {
             ViewHolderPlaces(parent.inflate(R.layout.item_people_location), callback)
         } else {
@@ -32,7 +33,7 @@ class PeopleAdapter(private val glide: GlideRequests, private val callback: Peop
 
     override fun getItemCount(): Int = items.size
 
-    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
         when (holder) {
             is ViewHolderPeoples -> {
@@ -63,7 +64,7 @@ class PeopleAdapter(private val glide: GlideRequests, private val callback: Peop
         notifyDataSetChanged()
     }
 
-    class ViewHolderPlaces(itemView: View, private val callback: PeopleCallback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+    class ViewHolderPlaces(itemView: View, private val callback: PeopleCallback) : RecyclerView.ViewHolder(itemView) {
 
         private lateinit var places: GetPeopleResponse
 
@@ -81,12 +82,12 @@ class PeopleAdapter(private val glide: GlideRequests, private val callback: Peop
     }
 
     class ViewHolderPeoples(itemView: View,
-                            private val glide: GlideRequests, private val callback: PeopleCallback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+                            private val glide: GlideRequests, private val callback: PeopleCallback) : RecyclerView.ViewHolder(itemView) {
         private lateinit var peoples: UserCrossedDto
 
         init {
-            itemView.setOnClickListener { callback.onClickItem(adapterPosition, true) }
-            itemView.fabChat.setOnClickListener { callback.onClickItem(adapterPosition, false) }
+            itemView.setOnClickListener { callback.onClickItem(peoples, true) }
+            itemView.fabChat.setOnClickListener { callback.onClickItem(peoples, false) }
         }
 
         fun bind(category: UserCrossedDto) {

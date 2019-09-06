@@ -51,7 +51,7 @@ object RetrofitClient {
                 .create()
     }
 
-    val conversifyApi: ConversifyApi by lazy { RETROFIT.create(ConversifyApi::class.java) }
+    val conversifyApi: CheckItApi by lazy { RETROFIT.create(CheckItApi::class.java) }
 
     /**
      * Parse all received date to zoned date time in local time zone

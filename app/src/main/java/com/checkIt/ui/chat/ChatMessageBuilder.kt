@@ -27,6 +27,15 @@ class ChatMessageBuilder(private val ownUserId: String) {
         return message
     }
 
+    fun buildGifMessage(image: File): ChatMessageDto {
+        val details = ChatMessageDetailsDto(type = ApiConstants.MESSAGE_TYPE_GIF,
+                image = ImageUrlDto())
+        val message = getCommonChatMessage(details)
+        message.localFile = image
+        message.localFileThumbnail = image
+        return message
+    }
+
     fun buildVideoMessage(video: File, thumbnailImage: File): ChatMessageDto {
         val details = ChatMessageDetailsDto(type = ApiConstants.MESSAGE_TYPE_VIDEO,
                 image = ImageUrlDto(),

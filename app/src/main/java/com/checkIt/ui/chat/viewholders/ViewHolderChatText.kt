@@ -8,15 +8,15 @@ import com.checkIt.utils.DialogsUtil
 import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_chat_text_left.view.*
 
-class ViewHolderChatText(itemView: View,
-                         private val glide: GlideRequests, private val callback: ActionCallback) : ViewHolderChat(itemView) {
+class ViewHolderChatText(itemView: View, private val glide: GlideRequests,
+                         private val callback: ActionCallback) : ViewHolderChat(itemView) {
 
     private lateinit var chatMessage: ChatMessageDto
 
     init {
         itemView.setOnLongClickListener {
             if (chatMessage.sender?.id == UserManager.getUserId())
-                DialogsUtil.openAlertDialog(itemView.context, "text", callback, adapterPosition)
+                DialogsUtil.openAlertDialog(itemView.context, chatMessage, callback)
             true
         }
     }

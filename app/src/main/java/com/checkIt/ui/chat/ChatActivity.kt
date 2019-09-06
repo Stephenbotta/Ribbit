@@ -13,7 +13,7 @@ import android.widget.EditText
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
-import com.checkIt.data.local.PrefsManager
+import com.checkIt.data.local.UserManager
 import com.checkIt.data.local.models.AppError
 import com.checkIt.data.remote.models.PagingResult
 import com.checkIt.data.remote.models.Resource
@@ -34,19 +34,20 @@ import com.checkIt.ui.custom.AppToast
 import com.checkIt.ui.groups.details.GroupDetailsActivity
 import com.checkIt.ui.images.ImagesActivity
 import com.checkIt.ui.people.details.PeopleDetailsActivity
+import com.checkIt.ui.picker.MediaFragment
+import com.checkIt.ui.picker.models.MediaSelected
+import com.checkIt.ui.picker.models.MediaType
 import com.checkIt.ui.venues.details.VenueDetailsActivity
 import com.checkIt.ui.videoplayer.VideoPlayerActivity
 import com.checkIt.utils.AppConstants
 import com.checkIt.utils.GlideApp
-import com.checkIt.utils.MediaPicker
 import com.checkIt.utils.PermissionUtils
 import kotlinx.android.synthetic.main.activity_chat.*
 import permissions.dispatcher.*
+import java.io.File
 
 @RuntimePermissions
-class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCallback {
-
-
+class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCallback, MediaFragment.MediaCallback {
     companion object {
         private const val EXTRA_FLAG = "EXTRA_FLAG"
 
@@ -76,18 +77,19 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
 
     private lateinit var viewModel: ChatViewModel
     private lateinit var adapter: ChatAdapter
-    private lateinit var mediaPicker: MediaPicker
-    private var flag = 0
+    /*private lateinit var mediaPicker: MediaPicker*/
+    private val flag by lazy { intent.getIntExtra(EXTRA_FLAG, AppConstants.REQ_CODE_INDIVIDUAL_CHAT) }
     private var type = ""
     private lateinit var viewModelIndividual: ChatIndividualViewModel
     private lateinit var viewModelChatIndividual: ChatListIndividualViewModel
     private lateinit var viewModelChatGroup: ChatListGroupViewModel
     private lateinit var viewModelGroup: ChatGroupViewModel
+    private lateinit var conversationId: String
 
     private val newMessageObserver = Observer<ChatMessageDto> {
         it ?: return@Observer
         setResult(Activity.RESULT_OK)
-        tvLabelEmptyChat.visibility = View.GONE
+        tvLabelEmptyChat.gone()
         adapter.addNewMessage(it)
         rvChat.scrollToPosition(adapter.itemCount - 1)
     }
@@ -110,7 +112,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
             Status.SUCCESS -> {
                 swipeRefreshLayout.isRefreshing = false
                 val items = it.data?.result ?: emptyList()
-                if (items.size > 0)
+                if (items.isNotEmpty())
                     tvLabelEmptyChat.visibility = View.GONE
                 adapter.addOldMessages(items)
                 // Scroll to bottom for first page
@@ -168,12 +170,10 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
-
-        flag = intent.getIntExtra(EXTRA_FLAG, 0)
-        inItClasses(flag)
+        inItClasses()
     }
 
-    private fun inItClasses(flag: Int) {
+    private fun inItClasses() {
         toolbar()
         when (flag) {
             AppConstants.REQ_CODE_VENUE_CHAT -> {
@@ -182,6 +182,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                 viewModel.start(venue)
                 type = "VENUE"
                 setupToolbar(venue)
+                conversationId = venue.conversationId ?: ""
             }
             AppConstants.REQ_CODE_INDIVIDUAL_CHAT -> {
                 val userCrossed = intent.getParcelableExtra<UserCrossedDto>(EXTRA_INDIVIDUAL_CHAT)
@@ -189,20 +190,23 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                 viewModelIndividual.start(userCrossed)
                 type = "INDIVIDUAL"
                 setupToolbar(userCrossed)
+                conversationId = userCrossed.conversationId ?: ""
             }
             AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
                 val userCrossed = intent.getParcelableExtra<UserCrossedDto>(EXTRA_INDIVIDUAL_CHAT)
                 viewModelChatIndividual = ViewModelProviders.of(this)[ChatListIndividualViewModel::class.java]
                 viewModelChatIndividual.start(userCrossed)
                 type = "INDIVIDUAL"
-                setupToolbar(userCrossed, flag)
+                setupToolbarProfile(userCrossed)
+                conversationId = userCrossed.conversationId ?: ""
             }
             AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
                 val userCrossed = intent.getParcelableExtra<UserCrossedDto>(EXTRA_INDIVIDUAL_CHAT)
                 viewModelChatGroup = ViewModelProviders.of(this)[ChatListGroupViewModel::class.java]
                 viewModelChatGroup.start(userCrossed)
                 type = "GROUP"
-                setupToolbar(userCrossed, flag)
+                setupToolbarProfile(userCrossed)
+                conversationId = userCrossed.conversationId ?: ""
             }
             AppConstants.REQ_CODE_GROUP_CHAT -> {
                 val group = intent.getParcelableExtra<GroupDto>(EXTRA_GROUP_CHAT)
@@ -210,10 +214,13 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                 viewModelGroup.start(group)
                 type = "GROUP"
                 setupToolbar(group)
+                conversationId = group?.conversationId ?: ""
             }
         }
-        mediaPicker = MediaPicker(this)
-        mediaPicker.setAllowVideo(true)
+
+        UserManager.saveConversationId(conversationId)
+        /*mediaPicker = MediaPicker(this)
+        mediaPicker.setAllowVideo(true)*/
         setListeners(flag)
         observeChanges(flag)
         setupChatRecycler(flag)
@@ -225,7 +232,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
         fabSend.setOnClickListener { sendTextMessage(flag) }
         when (flag) {
             AppConstants.REQ_CODE_VENUE_CHAT -> {
-                mediaPicker.setImagePickerListener { imageFile ->
+                /*mediaPicker.setImagePickerListener { imageFile ->
                     if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
                         viewModel.sendImageMessage(imageFile)
                     } else {
@@ -238,12 +245,12 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                     } else {
                         AppToast.longToast(applicationContext, R.string.message_select_smaller_video)
                     }
-                }
+                }*/
                 ivVenue.setOnClickListener { showVenueDetails() }
                 tvVenueName.setOnClickListener { showVenueDetails() }
             }
             AppConstants.REQ_CODE_INDIVIDUAL_CHAT -> {
-                mediaPicker.setImagePickerListener { imageFile ->
+                /*mediaPicker.setImagePickerListener { imageFile ->
                     if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
                         viewModelIndividual.sendImageMessage(imageFile)
                     } else {
@@ -256,12 +263,12 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                     } else {
                         AppToast.longToast(applicationContext, R.string.message_select_smaller_video)
                     }
-                }
+                }*/
                 ivVenue.setOnClickListener { }
                 tvVenueName.setOnClickListener {}
             }
             AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
-                mediaPicker.setImagePickerListener { imageFile ->
+                /*mediaPicker.setImagePickerListener { imageFile ->
                     if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
                         viewModelChatIndividual.sendImageMessage(imageFile)
                     } else {
@@ -274,14 +281,14 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                     } else {
                         AppToast.longToast(applicationContext, R.string.message_select_smaller_video)
                     }
-                }
+                }*/
                 ivVenue.setOnClickListener { openUserProfile() }
                 tvVenueName.setOnClickListener {
                     openUserProfile()
                 }
             }
             AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
-                mediaPicker.setImagePickerListener { imageFile ->
+                /*mediaPicker.setImagePickerListener { imageFile ->
                     if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
                         viewModelChatGroup.sendImageMessage(imageFile)
                     } else {
@@ -294,12 +301,12 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                     } else {
                         AppToast.longToast(applicationContext, R.string.message_select_smaller_video)
                     }
-                }
+                }*/
                 ivVenue.setOnClickListener { showGroupDetails(AppConstants.REQ_CODE_LISTING_GROUP_DETAILS) }
                 tvVenueName.setOnClickListener { showGroupDetails(AppConstants.REQ_CODE_LISTING_GROUP_DETAILS) }
             }
             AppConstants.REQ_CODE_GROUP_CHAT -> {
-                mediaPicker.setImagePickerListener { imageFile ->
+                /*mediaPicker.setImagePickerListener { imageFile ->
                     if (imageFile.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
                         viewModelGroup.sendImageMessage(imageFile)
                     } else {
@@ -312,7 +319,7 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                     } else {
                         AppToast.longToast(applicationContext, R.string.message_select_smaller_video)
                     }
-                }
+                }*/
                 ivVenue.setOnClickListener { showGroupDetails(AppConstants.REQ_CODE_GROUP_DETAILS) }
                 tvVenueName.setOnClickListener { showGroupDetails(AppConstants.REQ_CODE_GROUP_DETAILS) }
             }
@@ -321,8 +328,8 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
 
     private fun openUserProfile() {
         val data = intent.getParcelableExtra<UserCrossedDto>(EXTRA_INDIVIDUAL_CHAT)
-        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, data?.profile?.id ?: "")
-        val intent = PeopleDetailsActivity.getStartIntent(this, data, AppConstants.REQ_CODE_BLOCK_USER)
+        val intent = PeopleDetailsActivity.getStartIntent(this, data,
+                AppConstants.REQ_CODE_BLOCK_USER, data.profile?.id ?: "")
         startActivity(intent)
     }
 
@@ -374,21 +381,27 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
         rvChat.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (flag == AppConstants.REQ_CODE_VENUE_CHAT) {
-                    if (!rvChat.canScrollVertically(-1) && viewModel.isValidForPaging())
-                        viewModel.getOldMessages()
-                } else if (flag == AppConstants.REQ_CODE_INDIVIDUAL_CHAT) {
-                    if (!rvChat.canScrollVertically(-1) && viewModelIndividual.isValidForPaging())
-                        viewModelIndividual.getOldMessages()
-                } else if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
-                    if (!rvChat.canScrollVertically(-1) && viewModelChatIndividual.isValidForPaging())
-                        viewModelChatIndividual.getOldMessages()
-                } else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
-                    if (!rvChat.canScrollVertically(-1) && viewModelChatGroup.isValidForPaging())
-                        viewModelChatGroup.getOldMessages()
-                } else if (flag == AppConstants.REQ_CODE_GROUP_CHAT) {
-                    if (!rvChat.canScrollVertically(-1) && viewModelGroup.isValidForPaging())
-                        viewModelGroup.getOldMessages()
+                when (flag) {
+                    AppConstants.REQ_CODE_VENUE_CHAT -> {
+                        if (!rvChat.canScrollVertically(-1) && viewModel.isValidForPaging())
+                            viewModel.getOldMessages()
+                    }
+                    AppConstants.REQ_CODE_INDIVIDUAL_CHAT -> {
+                        if (!rvChat.canScrollVertically(-1) && viewModelIndividual.isValidForPaging())
+                            viewModelIndividual.getOldMessages()
+                    }
+                    AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
+                        if (!rvChat.canScrollVertically(-1) && viewModelChatIndividual.isValidForPaging())
+                            viewModelChatIndividual.getOldMessages()
+                    }
+                    AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
+                        if (!rvChat.canScrollVertically(-1) && viewModelChatGroup.isValidForPaging())
+                            viewModelChatGroup.getOldMessages()
+                    }
+                    AppConstants.REQ_CODE_GROUP_CHAT -> {
+                        if (!rvChat.canScrollVertically(-1) && viewModelGroup.isValidForPaging())
+                            viewModelGroup.getOldMessages()
+                    }
                 }
             }
         })
@@ -424,15 +437,11 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
         tvVenueName.text = userCrossed.crossedUser?.userName
     }
 
-    private fun setupToolbar(userCrossed: UserCrossedDto, flag: Int) {
+    private fun setupToolbarProfile(userCrossed: UserCrossedDto) {
         GlideApp.with(this)
                 .load(userCrossed.profile?.image?.thumbnail)
                 .into(ivVenue)
-        if (flag == AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT) {
-            tvVenueName.text = userCrossed.profile?.userName
-        } else if (flag == AppConstants.REQ_CODE_LISTING_GROUP_CHAT) {
-            tvVenueName.text = userCrossed.profile?.userName
-        }
+        tvVenueName.text = userCrossed.profile?.userName
     }
 
     private fun getOldMessages(flag: Int) {
@@ -469,15 +478,15 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
     }
 
     private fun showGroupDetails(flag: Int) {
-        if (flag == AppConstants.REQ_CODE_LISTING_GROUP_DETAILS) {
-            val intent = GroupDetailsActivity.getStartIntent(this, viewModelChatGroup.getGroup().profile?.id
-                    ?: "", flag)
-            startActivityForResult(intent, flag)
-        } else if (flag == AppConstants.REQ_CODE_GROUP_DETAILS) {
-            val intent = GroupDetailsActivity.getStartIntent(this, viewModelGroup.getGroup().id
-                    ?: "", flag)
-            startActivityForResult(intent, flag)
+        val id = when (flag) {
+            AppConstants.REQ_CODE_LISTING_GROUP_DETAILS ->
+                viewModelChatGroup.getGroup().profile?.id ?: ""
+            AppConstants.REQ_CODE_GROUP_DETAILS ->
+                viewModelGroup.getGroup().id ?: ""
+            else -> ""
         }
+        val intent = GroupDetailsActivity.getStartIntent(this, id, flag)
+        startActivityForResult(intent, flag)
     }
 
     override fun onImageMessageClicked(chatMessage: ChatMessageDto) {
@@ -510,7 +519,10 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
 
     @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun showImagePicker() {
-        mediaPicker.show()
+        /*mediaPicker.show()*/
+        val mediaFragment = MediaFragment.newInstance(1)
+        mediaFragment.setListeners(this)
+        mediaFragment.show(supportFragmentManager, MediaFragment.TAG)
     }
 
     @OnShowRationale(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -547,24 +559,22 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
 
     override fun onResume() {
         super.onResume()
-        PrefsManager.get().save(PrefsManager.PREF_IS_CHAT_OPEN, true)
-        PrefsManager.get().save(PrefsManager.PREF_IS_CHAT_TYPE, type)
+        UserManager.saveConversationId(conversationId)
     }
 
     override fun onPause() {
         super.onPause()
-        PrefsManager.get().remove(PrefsManager.PREF_IS_CHAT_TYPE)
-        PrefsManager.get().save(PrefsManager.PREF_IS_CHAT_OPEN, false)
+        UserManager.removeConversationId()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-
-            AppConstants.REQ_CODE_VENUE_DETAILS -> {
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    val venue = data.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
-                    if (venue != null) {
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                AppConstants.REQ_CODE_VENUE_DETAILS -> {
+                    if (data != null && data.hasExtra(AppConstants.EXTRA_VENUE) &&
+                            data.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE) != null) {
+                        val venue = data.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
                         if (venue.isMember == false) {
                             // Will be false if user has exit the venue
                             setResult(Activity.RESULT_OK, data)
@@ -575,27 +585,22 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                         }
                     }
                 }
-            }
 
-            AppConstants.REQ_CODE_LISTING_GROUP_DETAILS -> {
-                if (resultCode == Activity.RESULT_OK /*&& data != null*/) {
+                AppConstants.REQ_CODE_LISTING_GROUP_DETAILS -> {
                     setResult(Activity.RESULT_OK, data)
                     finish()
                 }
-            }
 
-            AppConstants.REQ_CODE_GROUP_DETAILS -> {
-                if (resultCode == Activity.RESULT_OK /*&& data != null*/) {
+                AppConstants.REQ_CODE_GROUP_DETAILS -> {
                     setResult(Activity.RESULT_OK, data)
                     finish()
                 }
-            }
 
-            else -> {
+                /*else -> {
                 mediaPicker.onActivityResult(requestCode, resultCode, data)
+                }*/
             }
         }
-
     }
 
     private fun removeObserver(flag: Int) {
@@ -641,7 +646,8 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
     // Screen touch keyboard close
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         val view = currentFocus
-        if (view != null && (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) && view is EditText && !view.javaClass.name.startsWith("android.webkit.")) {
+        if (view != null && (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE)
+                && view is EditText && !view.javaClass.name.startsWith("android.webkit.")) {
             val scrooges = IntArray(2)
             view.getLocationOnScreen(scrooges)
             val x = ev.rawX + view.left - scrooges[0]
@@ -655,41 +661,118 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
     override fun onDestroy() {
         super.onDestroy()
         removeObserver(flag)
-        PrefsManager.get().save(PrefsManager.PREF_CHAT_TYPE, false)
-        mediaPicker.clear()
+        /*mediaPicker.clear()*/
     }
 
-    override fun onDeleteImage(position: Int) {
+    override fun onDeleteImage(chatMessage: ChatMessageDto) {
         when (flag) {
             AppConstants.REQ_CODE_VENUE_CHAT -> {
-                viewModel.deleteMessage(adapter.getMsgDetail(position))
+                viewModel.deleteMessage(chatMessage)
             }
             AppConstants.REQ_CODE_INDIVIDUAL_CHAT -> {
-                viewModelIndividual.deleteMessage(adapter.getMsgDetail(position))
+                viewModelIndividual.deleteMessage(chatMessage)
             }
             AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
-                viewModelChatIndividual.deleteMessage(adapter.getMsgDetail(position))
+                viewModelChatIndividual.deleteMessage(chatMessage)
             }
             AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
-                val type = if (PrefsManager.get().getBoolean(PrefsManager.PREF_CHAT_TYPE, false)) {
-                    "GROUP"
-                } else {
-                    "INDIVIDUAL"
-                }
-                viewModelChatGroup.deleteMessage(adapter.getMsgDetail(position), type)
+                viewModelChatGroup.deleteMessage(chatMessage)
             }
             AppConstants.REQ_CODE_GROUP_CHAT -> {
-                viewModelGroup.deleteMessage(adapter.getMsgDetail(position))
+                viewModelGroup.deleteMessage(chatMessage)
             }
         }
-        adapter.removeMsgPosition(position)
+        adapter.removeMsgPosition(chatMessage)
     }
 
-    override fun onImageShow(position: Int) {
-        onImageMessageClicked(adapter.getMsgDetail(position))
+    override fun onImageShow(chatMessage: ChatMessageDto) {
+        onImageMessageClicked(chatMessage)
     }
 
-    override fun onVideoShow(position: Int) {
-        onVideoMessageClicked(adapter.getMsgDetail(position))
+    override fun onVideoShow(chatMessage: ChatMessageDto) {
+        onVideoMessageClicked(chatMessage)
+    }
+
+    override fun captureCallback(file: MediaSelected) {
+        sendMedia(file)
+    }
+
+    override fun selectFromGalleryCallback(files: List<MediaSelected>) {
+        files.forEach { file -> sendMedia(file) }
+    }
+
+    private fun sendMedia(file: MediaSelected) {
+        val media = File(file.path)
+        when (file.type) {
+            MediaType.IMAGE -> {
+                if (media.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
+                    when (flag) {
+                        AppConstants.REQ_CODE_VENUE_CHAT -> {
+                            viewModel.sendImageMessage(media)
+                        }
+                        AppConstants.REQ_CODE_INDIVIDUAL_CHAT -> {
+                            viewModelIndividual.sendImageMessage(media)
+                        }
+                        AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
+                            viewModelChatIndividual.sendImageMessage(media)
+                        }
+                        AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
+                            viewModelChatGroup.sendImageMessage(media)
+                        }
+                        AppConstants.REQ_CODE_GROUP_CHAT -> {
+                            viewModelGroup.sendImageMessage(media)
+                        }
+                    }
+                } else {
+                    AppToast.longToast(applicationContext, R.string.message_select_smaller_image)
+                }
+            }
+            MediaType.GIF -> {
+                if (media.length() < AppConstants.MAXIMUM_IMAGE_SIZE) {
+                    when (flag) {
+                        AppConstants.REQ_CODE_VENUE_CHAT -> {
+                            viewModel.sendGifMessage(media)
+                        }
+                        AppConstants.REQ_CODE_INDIVIDUAL_CHAT -> {
+                            viewModelIndividual.sendGifMessage(media)
+                        }
+                        AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
+                            viewModelChatIndividual.sendGifMessage(media)
+                        }
+                        AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
+                            viewModelChatGroup.sendGifMessage(media)
+                        }
+                        AppConstants.REQ_CODE_GROUP_CHAT -> {
+                            viewModelGroup.sendGifMessage(media)
+                        }
+                    }
+                } else {
+                    AppToast.longToast(applicationContext, R.string.message_select_smaller_image)
+                }
+            }
+            MediaType.VIDEO -> {
+                if (media.length() < AppConstants.MAXIMUM_VIDEO_SIZE) {
+                    when (flag) {
+                        AppConstants.REQ_CODE_VENUE_CHAT -> {
+                            viewModel.sendVideoMessage(media)
+                        }
+                        AppConstants.REQ_CODE_INDIVIDUAL_CHAT -> {
+                            viewModelIndividual.sendVideoMessage(media)
+                        }
+                        AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
+                            viewModelChatIndividual.sendVideoMessage(media)
+                        }
+                        AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
+                            viewModelChatGroup.sendVideoMessage(media)
+                        }
+                        AppConstants.REQ_CODE_GROUP_CHAT -> {
+                            viewModelGroup.sendVideoMessage(media)
+                        }
+                    }
+                } else {
+                    AppToast.longToast(applicationContext, R.string.message_select_smaller_video)
+                }
+            }
+        }
     }
 }

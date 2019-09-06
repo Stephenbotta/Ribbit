@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
-import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.local.models.MessageEvent
 import com.checkIt.data.remote.PushType
 import com.checkIt.data.remote.models.Status
@@ -19,7 +18,6 @@ import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.data.remote.models.notifications.NotificationDto
 import com.checkIt.data.remote.models.people.UserCrossedDto
 import com.checkIt.data.remote.models.venues.VenueDto
-import com.checkIt.data.remote.socket.SocketManager
 import com.checkIt.databinding.DialogConverseNearbyNavigateBinding
 import com.checkIt.extensions.handleError
 import com.checkIt.extensions.isNetworkActiveWithMessage
@@ -73,7 +71,7 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: MessageEvent) {
         when (event.type) {
-            SocketManager.EVENT_REQUEST_COUNT, AppConstants.EVENT_PUSH_NOTIFICATION -> refreshData()
+            AppConstants.EVENT_PUSH_NOTIFICATION -> refreshData()
         }
     }
 
@@ -227,12 +225,8 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
     }
 
     private fun checkEnableClearNotification() {
-        val clear = viewSwitcher.displayedChild
-
-        when (clear) {
-
+        when (viewSwitcher.displayedChild) {
             CHILD_NOTIFICATIONS -> clearNotification.isEnabled = true
-
             CHILD_NO_NOTIFICATIONS -> clearNotification.isEnabled = false
         }
     }
@@ -246,8 +240,8 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
     override fun onUserProfileClicked(profile: ProfileDto) {
         val data = UserCrossedDto()
         data.profile = profile
-        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, profile.id ?: "")
-        val intent = PeopleDetailsActivity.getStartIntent(requireActivity(), data, AppConstants.REQ_CODE_BLOCK_USER)
+        val intent = PeopleDetailsActivity.getStartIntent(requireActivity(), data,
+                AppConstants.REQ_CODE_BLOCK_USER, data.profile?.id ?: "")
         startActivity(intent)
     }
 

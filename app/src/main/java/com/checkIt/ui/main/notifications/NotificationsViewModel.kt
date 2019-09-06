@@ -59,10 +59,10 @@ class NotificationsViewModel : ViewModel() {
                     * Use "receivedNotifications" list later and remove "venueJoinRequestNotifications".
                     * */
                     val receivedNotifications = response.body()?.data ?: emptyList()
-                    val venueJoinRequestNotifications = receivedNotifications.filter {
-                        it.type == ApiConstants.NOTIFICATION_TYPE_REQUEST_JOIN_VENUE ||
-                                it.type == ApiConstants.NOTIFICATION_TYPE_REQUEST_JOIN_GROUP
-                    }
+                    /* val venueJoinRequestNotifications = receivedNotifications.filter {
+                         it.type == ApiConstants.NOTIFICATION_TYPE_REQUEST_JOIN_VENUE ||
+                                 it.type == ApiConstants.NOTIFICATION_TYPE_REQUEST_JOIN_GROUP
+                     }*/
                     if (receivedNotifications.size < PAGE_LIMIT) {
                         Timber.i("Last notification is received")
                         isLastNotificationReceived = true

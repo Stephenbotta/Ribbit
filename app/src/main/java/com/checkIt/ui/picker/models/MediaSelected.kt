@@ -8,10 +8,9 @@ import java.io.File
 data class MediaSelected(
         val mediaId: String,
         var path: String,
-        val type: MediaType,
+        val type: MediaType? = null,
         val thumbnail: File? = null,
         var original: String? = null,
         var thumbnailPath: String? = null,
-        val isUploaded: Boolean = false,
         var status: UploadStatus = UploadStatus.NEW_ADDED
 ) : Parcelable

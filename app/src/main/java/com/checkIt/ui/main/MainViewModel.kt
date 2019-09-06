@@ -4,7 +4,6 @@ import android.app.Application
 import android.location.Geocoder
 import android.location.Location
 import com.checkIt.data.local.UserManager
-import com.checkIt.data.local.models.MessageEvent
 import com.checkIt.data.remote.RetrofitClient
 import com.checkIt.data.remote.models.ApiResponse
 import com.checkIt.data.remote.models.RequestCountDto
@@ -19,7 +18,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.greenrobot.eventbus.EventBus
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,7 +45,7 @@ class MainViewModel(application: Application) : BaseViewModel(application), Coro
             try {
                 val requestCountData = gson.fromJson(notificationData.toString(), RequestCountDto::class.java)
                 notificationCount.postValue(requestCountData.requestCount ?: "")
-                EventBus.getDefault().post(MessageEvent(SocketManager.EVENT_REQUEST_COUNT))
+//                EventBus.getDefault().post(MessageEvent(SocketManager.EVENT_REQUEST_COUNT))
             } catch (exception: Exception) {
                 Timber.w(exception)
             }

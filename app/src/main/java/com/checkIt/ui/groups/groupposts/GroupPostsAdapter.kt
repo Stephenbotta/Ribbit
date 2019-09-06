@@ -137,7 +137,7 @@ class GroupPostsAdapter(private val glide: GlideRequests,
                     }
                 }
             })
-            itemView.etReply.setOnFocusChangeListener { v, hasFocus ->
+            itemView.etReply.setOnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus) {
                     itemView.etReply.setSelectAllOnFocus(false)
                     val comment = itemView.etReply.text.toString()

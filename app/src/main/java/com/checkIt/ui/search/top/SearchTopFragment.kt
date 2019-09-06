@@ -5,7 +5,6 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
-import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.data.remote.models.people.UserCrossedDto
@@ -21,7 +20,6 @@ import kotlinx.android.synthetic.main.fragment_search_top.*
 
 
 class SearchTopFragment : BaseFragment(), SearchTopAdapter.Callback {
-
     companion object {
         const val TAG = "SearchTopFragment"
     }
@@ -105,15 +103,11 @@ class SearchTopFragment : BaseFragment(), SearchTopAdapter.Callback {
         getTopSearch()
     }
 
-    override fun onClick(position: Int, profile: ProfileDto) {
-        val items = adapter.getUpdatedList()
-        val item = items[position]
-        if (item is ProfileDto) {
-            val data = UserCrossedDto()
-            data.profile = item
-            PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, item.id?:"")
-            val intent = PeopleDetailsActivity.getStartIntent(requireActivity(), data, AppConstants.REQ_CODE_BLOCK_USER)
-            startActivity(intent)
-        }
+    override fun onClick(profile: ProfileDto) {
+        val data = UserCrossedDto()
+        data.profile = profile
+        val intent = PeopleDetailsActivity.getStartIntent(requireActivity(), data,
+                AppConstants.REQ_CODE_BLOCK_USER, data.profile?.id ?: "")
+        startActivity(intent)
     }
 }

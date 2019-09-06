@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.local.UserManager
+import com.checkIt.data.local.models.MessageEvent
 import com.checkIt.data.remote.PushType
 import com.checkIt.data.remote.models.groups.GroupDto
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
@@ -29,6 +30,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 
 class MainActivity : BaseActivity() {
@@ -229,4 +232,13 @@ class MainActivity : BaseActivity() {
             R.drawable.ic_notification_gray
         })
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: MessageEvent) {
+        if (event.type == AppConstants.EVENT_PUSH_NOTIFICATION && isNetworkActive()) {
+            viewModel.getNotificationCount()
+        }
+    }
+
 }

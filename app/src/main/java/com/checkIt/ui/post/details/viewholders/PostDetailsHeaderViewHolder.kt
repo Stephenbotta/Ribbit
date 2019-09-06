@@ -3,10 +3,11 @@ package com.checkIt.ui.post.details.viewholders
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.checkIt.R
-import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.models.groups.GroupDto
 import com.checkIt.data.remote.models.groups.GroupPostDto
+import com.checkIt.data.remote.models.loginsignup.ImageUrlDto
 import com.checkIt.data.remote.models.loginsignup.InterestDto
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.extensions.clickSpannable
@@ -19,9 +20,8 @@ import com.checkIt.utils.GlideRequests
 import com.checkIt.utils.SpannableTextClickListener
 import kotlinx.android.synthetic.main.item_post_details_header.view.*
 
-class PostDetailsHeaderViewHolder(itemView: View,
-                                  private val glide: GlideRequests,
-                                  private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+class PostDetailsHeaderViewHolder(itemView: View, private val glide: GlideRequests, private val media: ImageUrlDto?,
+                                  private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
     private val likesCountClickListener = View.OnClickListener {
         callback.onLikesCountClicked(post)
@@ -54,7 +54,7 @@ class PostDetailsHeaderViewHolder(itemView: View,
 
     init {
         itemView.ivImage.setOnClickListener {
-            ImagesActivity.start(it.context, arrayListOf(post.imageUrl?.original ?: ""))
+            ImagesActivity.start(it.context, arrayListOf(media?.original ?: ""))
         }
     }
 
@@ -73,14 +73,18 @@ class PostDetailsHeaderViewHolder(itemView: View,
             itemView.tvMessage.text = post.postText
         }
 
-        // Image is only visible when post type is image
-        if (post.type == ApiConstants.GROUP_POST_TYPE_IMAGE) {
-            itemView.ivImage.gone()
-            glide.load(post.imageUrl?.original)
+        /*// Image is only visible when post type is image
+        if (post.type == ApiConstants.GROUP_POST_TYPE_IMAGE) {*/
+        if (media != null) {
+            itemView.ivImage.visible()
+            glide.load(media.original)
                     .into(itemView.ivImage)
         } else {
             itemView.ivImage.gone()
         }
+        /*} else {
+            itemView.ivImage.gone()
+        }*/
 
         val username = post.user?.userName ?: ""
         val groupName = post.group?.name ?: ""

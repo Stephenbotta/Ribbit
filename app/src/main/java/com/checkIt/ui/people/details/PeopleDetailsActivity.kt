@@ -10,7 +10,6 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
-import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.data.remote.models.people.UserCrossedDto
@@ -24,25 +23,27 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.activity_people_details.*
 
 class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.OnMenuItemClickListener {
-
     companion object {
         private const val EXTRA_FLAG = "EXTRA_FLAG"
         private const val EXTRA_CROSSED_PEOPLE_DETAILS = "EXTRA_CROSSED_PEOPLE_DETAILS"
+        private const val EXTRA_USER_ID = "EXTRA_USER_ID"
 
-        fun getStartIntent(context: Context, userCrossed: UserCrossedDto, flag: Int): Intent {
+        fun getStartIntent(context: Context, userCrossed: UserCrossedDto, flag: Int, userId: String): Intent {
             return Intent(context, PeopleDetailsActivity::class.java)
                     .putExtra(EXTRA_FLAG, flag)
                     .putExtra(EXTRA_CROSSED_PEOPLE_DETAILS, userCrossed)
+                    .putExtra(EXTRA_USER_ID, userId)
         }
-
     }
 
     private lateinit var viewModel: PeopleDetailsViewModel
     private lateinit var interestsAdapter: PeopleMutualInterestsAdapter
-    private lateinit var userId: String
-    private lateinit var userCrossed: UserCrossedDto
     private var profile: ProfileDto? = null
-    private var flag = 0
+    private val flag by lazy { intent.getIntExtra(EXTRA_FLAG, AppConstants.REQ_CODE_PEOPLE) }
+    private val userId by lazy { intent.getStringExtra(EXTRA_USER_ID) ?: "" }
+    private val userCrossed by lazy {
+        intent.getParcelableExtra(EXTRA_CROSSED_PEOPLE_DETAILS) ?: UserCrossedDto()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +53,6 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
 
     private fun inItClasses() {
         viewModel = ViewModelProviders.of(this).get(PeopleDetailsViewModel::class.java)
-        flag = intent.getIntExtra(EXTRA_FLAG, 0)
-        userCrossed = intent.getParcelableExtra(EXTRA_CROSSED_PEOPLE_DETAILS)
-        userId = PrefsManager.get().getString(PrefsManager.PREF_PEOPLE_USER_ID, "")
         swipeRefreshLayout.setOnRefreshListener { getPeopleDetails(userId) }
         observeChanges()
         listener()
@@ -69,9 +67,6 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
         tvFollowedStatus.setOnClickListener(this)
         fabChat.setOnClickListener(this)
         tvFollowersCount.setOnClickListener(this)
-        /*tvLabelFollowers.setOnClickListener(this)
-        tvFollowingCount.setOnClickListener(this)
-        tvLabelFollowing.setOnClickListener(this)*/
     }
 
     private fun observeChanges() {
@@ -83,7 +78,15 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
                     visible()
                     swipeRefreshLayout.isRefreshing = false
                     profile = resource.data
-                    setData(profile)
+                    if (profile?.id == null) {
+                        viewFlipper.displayedChild = 1
+                        btnMore.gone()
+                    } else {
+                        viewFlipper.displayedChild = 0
+                        visible()
+                        userCrossed.profile = profile
+                        setData(profile)
+                    }
                 }
 
                 Status.ERROR -> {
@@ -93,7 +96,6 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
 
                 Status.LOADING -> {
                     swipeRefreshLayout.isRefreshing = true
-                    // Ignored
                 }
             }
         })
@@ -103,19 +105,14 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
 
             when (resource.status) {
                 Status.SUCCESS -> {
-                    // Ignored
                     if (profile?.isAccountPrivate == true)
                         getPeopleDetails(userId)
                 }
 
                 Status.ERROR -> {
-                    // Ignored
-//                    handleError(resource.error)
-//                    toggleFollow()
                 }
 
                 Status.LOADING -> {
-                    // Ignored
                 }
             }
         })
@@ -126,18 +123,14 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
             when (resource.status) {
                 Status.SUCCESS -> {
                     swipeRefreshLayout.isRefreshing = false
-                    // Ignored
                 }
 
                 Status.ERROR -> {
-                    // Ignored
-//                    handleError(resource.error)
                     swipeRefreshLayout.isRefreshing = false
                 }
 
                 Status.LOADING -> {
                     swipeRefreshLayout.isRefreshing = true
-                    // Ignored
                 }
             }
         })
@@ -194,7 +187,6 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
     }
 
     private fun toggleFollow(): Double {
-
         profile?.isFollowing = profile?.isFollowing?.not()
         val action = if (profile?.isFollowing == true) {
             tvFollowedStatus.setText(R.string.people_detail_button_un_follow)
@@ -229,48 +221,38 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
 
     private fun getPeopleDetails(userId: String) {
         if (isNetworkActiveWithMessage()) {
-            viewModel.getOtherUserProfileDetails(userId)
+            viewModel.getOtherUserProfileDetails(userId, flag)
         } else {
             swipeRefreshLayout.isRefreshing = false
         }
     }
 
     private fun visible() {
-        ivProfile.visibility = View.VISIBLE
-        tvFollowedStatus.visibility = View.VISIBLE
+        ivProfile.visible()
+        tvFollowedStatus.visible()
         fabChat.visible()
-        tvNameAndAge.visibility = View.VISIBLE
-        tvDesignation.visibility = View.VISIBLE
-        /*viewDividerFollowersTop.visibility = View.VISIBLE
-        viewDividerFollowersCenter.visibility = View.VISIBLE*/
-        tvFollowersCount.visibility = View.VISIBLE
-        /*tvLabelFollowers.visibility = View.VISIBLE
-        tvFollowingCount.visibility = View.VISIBLE
-        tvLabelFollowing.visibility = View.VISIBLE*/
-        viewDividerFollowersBottom.visibility = View.VISIBLE
-        tvLabelBio.visibility = View.VISIBLE
-        tvBio.visibility = View.VISIBLE
-        tvLabelMutualInterests.visibility = View.VISIBLE
-        rvMutualInterests.visibility = View.VISIBLE
+        tvNameAndAge.visible()
+        tvDesignation.visible()
+        tvFollowersCount.visible()
+        viewDividerFollowersBottom.visible()
+        tvLabelBio.visible()
+        tvBio.visible()
+        tvLabelMutualInterests.visible()
+        rvMutualInterests.visible()
     }
 
     private fun gone() {
-        ivProfile.visibility = View.GONE
-        tvFollowedStatus.visibility = View.GONE
+        ivProfile.gone()
+        tvFollowedStatus.gone()
         fabChat.gone()
-        tvNameAndAge.visibility = View.GONE
-        tvDesignation.visibility = View.GONE
-        /*viewDividerFollowersTop.visibility = View.GONE
-        viewDividerFollowersCenter.visibility = View.GONE*/
-        tvFollowersCount.visibility = View.GONE
-        /*tvLabelFollowers.visibility = View.GONE
-        tvFollowingCount.visibility = View.GONE
-        tvLabelFollowing.visibility = View.GONE*/
-        viewDividerFollowersBottom.visibility = View.GONE
-        tvLabelBio.visibility = View.GONE
-        tvBio.visibility = View.GONE
-        tvLabelMutualInterests.visibility = View.GONE
-        rvMutualInterests.visibility = View.GONE
+        tvNameAndAge.gone()
+        tvDesignation.gone()
+        tvFollowersCount.gone()
+        viewDividerFollowersBottom.gone()
+        tvLabelBio.gone()
+        tvBio.gone()
+        tvLabelMutualInterests.gone()
+        rvMutualInterests.gone()
     }
 
     @SuppressLint("RestrictedApi")
@@ -307,7 +289,7 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
 
             R.id.fabChat -> when (flag) {
                 AppConstants.REQ_CODE_PEOPLE -> navigateToChat(AppConstants.REQ_CODE_INDIVIDUAL_CHAT)
-                AppConstants.REQ_CODE_BLOCK_USER -> navigateToChat(AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
+                AppConstants.REQ_CODE_BLOCK_USER, AppConstants.REQ_CODE_REPLY_TAG_USER -> navigateToChat(AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
             }
 
             R.id.btnMore -> optionMenu(v)

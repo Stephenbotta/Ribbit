@@ -8,6 +8,7 @@ import com.checkIt.data.remote.models.ApiResponse
 import com.checkIt.data.remote.models.Resource
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.ui.base.BaseViewModel
+import com.checkIt.utils.AppConstants
 import com.checkIt.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,11 +22,15 @@ class PeopleDetailsViewModel(application: Application) : BaseViewModel(applicati
 
     private lateinit var profile: ProfileDto
 
-    fun getOtherUserProfileDetails(userId: String) {
+    fun getOtherUserProfileDetails(userId: String, flag: Int) {
         peopleDetails.value = Resource.loading()
 
         val hashMap = hashMapOf<String, String>()
-        hashMap["userId"] = userId
+        if (flag == AppConstants.REQ_CODE_REPLY_TAG_USER) {
+            hashMap["userName"] = userId
+        } else {
+            hashMap["userId"] = userId
+        }
         RetrofitClient.conversifyApi
                 .getUserProfileDetails(hashMap)
                 .enqueue(object : Callback<ApiResponse<ProfileDto>> {

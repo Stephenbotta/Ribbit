@@ -310,6 +310,7 @@
     <string name="chat_listing_label_empty">No Chat Found</string>
     <string name="chat_listing_hint_search_for_chat">Search</string>
     <string name="chat_listing_photo_last_message_for_chat">Photo</string>
+    <string name="chat_listing_gif_last_message_for_chat">GIF</string>
     <string name="chat_listing_video_last_message_for_chat">Video</string>
 
     <string name="group_details_label_delete_group">Delete network</string>
@@ -481,4 +482,9 @@
     <string name="error_msg_you_can_upload_max_6_files">You can select maximum %d files</string>
     <string name="you_can_not_remove_media_while_its_uploading_please_wait">You can not remove media file while it\'s uploading.Please wait.</string>
 
+    <string name="show_gif">Show GIF</string>
+    <string name="delete_gif">Delete GIF</string>
+    <string name="post_btn_edit_post">Edit</string>
+    <string name="post_updated_successfully">Post updated successfully.</string>
+    <string name="user_not_found">User not found</string>
 </resources>

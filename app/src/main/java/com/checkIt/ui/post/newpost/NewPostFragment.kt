@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
 import com.checkIt.data.local.models.AppError
+import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.groups.GroupDto
 import com.checkIt.data.remote.models.groups.GroupPostDto
@@ -28,6 +29,7 @@ import com.checkIt.ui.custom.LoadingDialog
 import com.checkIt.ui.loginsignup.chooseinterests.ChooseInterestsFragment
 import com.checkIt.ui.picker.MediaFragment
 import com.checkIt.ui.picker.models.MediaSelected
+import com.checkIt.ui.picker.models.MediaType
 import com.checkIt.ui.picker.models.UploadStatus
 import com.checkIt.ui.profile.ProfileInterestsAdapter
 import com.checkIt.ui.profile.settings.hideinfo.hidestatus.HideStatusActivity
@@ -48,6 +50,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
         const val TAG = "NewPostFragment"
         private const val ARGUMENT_GROUP = "ARGUMENT_GROUP"
         private const val ARGUMENT_GROUP_POST = "ARGUMENT_GROUP_POST"
+
         fun newInstance(group: GroupDto? = null): Fragment {
             val fragment = NewPostFragment()
             if (group != null) {
@@ -74,7 +77,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
     private lateinit var viewModel: NewPostViewModel
     /*private lateinit var mediaPicker: MediaPicker*/
     private lateinit var loadingDialog: LoadingDialog
-    private lateinit var createPostMenuItem: MenuItem
+    private var createPostMenuItem: MenuItem? = null
     private val request = CreatePostRequest()
     /*private var getSampledImage: GetSampledImage? = null*/
     private var postingIn = false
@@ -96,12 +99,12 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupViews()
         setListeners()
         observeChanges()
         setupInterestsRecycler()
 
         setMediaAdapter()
+        setupViews()
     }
 
     private fun setMediaAdapter() {
@@ -122,53 +125,86 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
     }
 
     private fun setupViews() {
-        val group = this.group
-        if (group != null) {
-            tvLabelPostingInGroup.visible()
-            ivGroup.visible()
-            tvGroupName.visible()
-            GlideApp.with(this)
-                    .load(group.imageUrl?.thumbnail)
-                    .into(ivGroup)
-            tvGroupName.text = group.name
-
-            tvPostingIn.gone()
-            tvLabelPostingIn.gone()
-            tvLabelInterest.gone()
-            rvConnection.gone()
-            divider_2.gone()
-        } else {
-            tvLabelPostingInGroup.gone()
-            ivGroup.gone()
-            tvGroupName.gone()
-
-            tvPostingIn.visible()
-            tvLabelPostingIn.visible()
-            tvLabelInterest.visible()
-            rvConnection.visible()
-            divider_2.visible()
-        }
-        if (!group?.id.isNullOrEmpty()) {
-            request.groupId = group?.id
-        }
-        if (!groupPost?.id.isNullOrEmpty()) {
-            request.postId = groupPost?.id
-            request.groupId = groupPost?.group?.id
-        }
-
-        /*groupPost?.let { groupPost ->
-            etPostText.setText(groupPost.postText)
-            if (!groupPost.imageUrl?.thumbnail.isNullOrEmpty()) {
-                GlideApp.with(this)
-                        .load(groupPost.imageUrl?.thumbnail)
-                        .into(ivImage)
-                request.imageOriginal = groupPost.imageUrl?.original
-                request.imageThumbnail = groupPost.imageUrl?.thumbnail
-                ivDelete.visible()
+        val groupPost = this.groupPost
+        if (groupPost == null) {
+            val group = this.group
+            if (group != null) {
+                postingInGroupUi(group)
+                request.groupId = group.id
+            } else {
+                postingOnWallUi()
             }
-            if (!groupPost.locationName.isNullOrEmpty())
-                tvSelectLocation.text = String.format("%s %s", groupPost.locationName, groupPost.locationAddress)
-        }*/
+        } else {
+            if (groupPost.group != null) {
+                postingInGroupUi(groupPost.group)
+            } else {
+                postingOnWallUi()
+            }
+            showPostData(groupPost)
+        }
+    }
+
+    private fun postingOnWallUi() {
+        tvLabelPostingInGroup.gone()
+        ivGroup.gone()
+        tvGroupName.gone()
+
+        tvPostingIn.visible()
+        tvLabelPostingIn.visible()
+        tvLabelInterest.visible()
+        rvConnection.visible()
+        divider_2.visible()
+    }
+
+    private fun postingInGroupUi(group: GroupDto) {
+        tvLabelPostingInGroup.visible()
+        ivGroup.visible()
+        tvGroupName.visible()
+        GlideApp.with(this)
+                .load(group.imageUrl?.original)
+                .into(ivGroup)
+        tvGroupName.text = group.name
+
+        tvPostingIn.gone()
+        tvLabelPostingIn.gone()
+        tvLabelInterest.gone()
+        rvConnection.gone()
+        divider_2.gone()
+    }
+
+    private fun showPostData(groupPost: GroupPostDto) {
+        etPostText.setText(groupPost.postText)
+        val medias = ArrayList<MediaSelected>()
+        groupPost.media.forEach {
+            val mediaType = when (it.mediaType) {
+                ApiConstants.POST_TYPE_IMAGE -> MediaType.IMAGE
+                ApiConstants.POST_TYPE_VIDEO -> MediaType.VIDEO
+                else -> MediaType.GIF
+            }
+            medias.add(MediaSelected(mediaId = it.id ?: "", path = it.original
+                    ?: "", original = it.original,
+                    type = mediaType, thumbnailPath = it.thumbnail, status = UploadStatus.SENT))
+        }
+
+        adapter.addMediaFiles(medias)
+        if (!groupPost.locationName.isNullOrEmpty())
+            tvSelectLocation.text = String.format("%s %s", groupPost.locationName, groupPost.locationAddress)
+        val postingInType = groupPost.postingIn
+        if (postingInType == ApiConstants.POSTING_IN_SELECTED_PEOPLE) {
+            postingIn = true
+            tvPostingIn.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_group, 0, 0, 0)
+            selectedUserIdList.clear()
+            selectedUserIdList.addAll(groupPost.selectedPeople)
+            tvPostingIn.text = getString(R.string.hide_info_label_people_count, selectedUserIdList.size)
+        } else if (postingInType == ApiConstants.POSTING_IN_FOLLOWERS) {
+            tvPostingIn.text = getString(R.string.converse_path_info_followers)
+        }
+        interest.clear()
+        interest.addAll(groupPost.interests ?: emptyList())
+        interestsAdapter.displayInterests(interest)
+
+        request.postId = groupPost.id
+        request.groupId = groupPost.group?.id
     }
 
     private fun setListeners() {
@@ -229,19 +265,16 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
         tvPostingIn.setOnClickListener { getPublicly() }
     }
 
-    private fun isValidPost(): Boolean {
-        return if (etPostText.text.toString().isNotBlank())
-            return true
-        else false
-    }
-
     private fun observeChanges() {
         viewModel.createPost.observe(this, Observer { resource ->
             resource ?: return@Observer
 
             when (resource.status) {
                 Status.SUCCESS -> {
-                    activity?.shortToast(getString(R.string.post_upload_successfully))
+                    if (groupPost == null)
+                        activity?.shortToast(getString(R.string.post_upload_successfully))
+                    else
+                        activity?.shortToast(R.string.post_updated_successfully)
                     loadingDialog.setLoading(false)
                     requireActivity().setResult(Activity.RESULT_OK)
                     requireActivity().finish()
@@ -276,7 +309,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
             if (isPostValid() && !adapter.isFilePendingToUpload()) {
                 createPost()
             } else if (isPostValid()) {
-                createPostMenuItem.isEnabled = true
+                createPostMenuItem?.isEnabled = true
             }
         })
     }
@@ -290,8 +323,10 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
     }
 
     private fun updateCreatePostMenuState() {
-        if (request.postId.isNullOrEmpty()) {
-            createPostMenuItem.isEnabled = isPostValid()
+        createPostMenuItem?.isEnabled = isPostValid()
+
+        if (!request.postId.isNullOrEmpty()) {
+            createPostMenuItem?.setTitle(R.string.post_btn_edit_post)
         }
     }
 
@@ -416,7 +451,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
             val medias = adapter.getNewlyAddedMediaFiles()
             if (medias.isNotEmpty()) {
                 viewModel.uploadMedias(medias)
-                createPostMenuItem.isEnabled = false
+                createPostMenuItem?.isEnabled = false
             } else {
                 val uploadedFiles = adapter.getUploadedMediaFiles()
 
@@ -471,7 +506,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
 
     override fun resendMedia(media: MediaSelected) {
         if (isNetworkActiveWithMessage()) {
-            createPostMenuItem.isEnabled = false
+            createPostMenuItem?.isEnabled = false
             viewModel.resendMedia(media)
         }
     }

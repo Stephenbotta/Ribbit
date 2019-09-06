@@ -2,75 +2,71 @@ package com.checkIt.ui.main.chats
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.checkIt.R
 import com.checkIt.data.remote.models.chat.ChatListingDto
-import com.checkIt.data.remote.models.venues.VenueCategoriesHeader
 import com.checkIt.extensions.inflate
 import com.checkIt.utils.DateTimeUtils
 import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_chat_listing.view.*
 
+class ChatListCommonAdapter(private val glide: GlideRequests, private val callback: ChatListCallback) : RecyclerView.Adapter<ChatListCommonAdapter.ViewHolderPeoples>() {
+    private val peoples = ArrayList<ChatListingDto>()
 
-/**
- * Created by Manish Bhargav
- */
-class ChatListCommonAdapter(private val glide: GlideRequests, private val callback: ChatListCallback) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
-
-    private val items = mutableListOf<Any>(VenueCategoriesHeader)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPeoples {
         return ViewHolderPeoples(parent.inflate(R.layout.item_chat_listing), glide, callback)
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = peoples.size
 
-    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
-        val item = items[position]
-        when (holder) {
-            is ViewHolderPeoples -> {
-                if (item is ChatListingDto) {
-                    holder.bind(item)
-                }
-            }
-        }
+    override fun onBindViewHolder(holder: ViewHolderPeoples, position: Int) {
+        holder.bind(peoples[position])
     }
 
-    fun displayCategories(peoples: List<Any>) {
-        items.clear()
-        items.addAll(peoples)
+    fun displayCategories(peoples: List<ChatListingDto>) {
+        this.peoples.clear()
+        this.peoples.addAll(peoples)
         notifyDataSetChanged()
     }
 
-    class ViewHolderPeoples(itemView: View,
-                            private val glide: GlideRequests, private val callback: ChatListCallback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
-        private lateinit var peoples: ChatListingDto
+    class ViewHolderPeoples(itemView: View, private val glide: GlideRequests,
+                            private val callback: ChatListCallback) : RecyclerView.ViewHolder(itemView) {
+        private lateinit var chat: ChatListingDto
 
         init {
-            itemView.setOnClickListener { callback.onClickItem(adapterPosition) }
+            itemView.setOnClickListener { callback.onClickItem(chat) }
         }
 
-        fun bind(category: ChatListingDto) {
-            this.peoples = category
+        fun bind(chat: ChatListingDto) {
+            this.chat = chat
 
-            glide.load(category.profile?.image?.thumbnail)
+            glide.load(chat.profile?.image?.thumbnail)
                     .error(R.color.greyImageBackground)
                     .placeholder(R.color.greyImageBackground)
                     .into(itemView.ivProfilePic)
-            itemView.tvTimeAgo.text = DateTimeUtils.formatPeopleRecentTime(category.createdDate)
+            itemView.tvTimeAgo.text = DateTimeUtils.formatPeopleRecentTime(chat.createdDate)
 
-            itemView.tvTitle.text = category.profile?.userName
+            itemView.tvTitle.text = chat.profile?.userName
 
-            if (category.lastChatDetails?.type.equals("TEXT")) {
-                itemView.tvChat.text = category.lastChatDetails?.message
-                itemView.tvChat.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null)
-            } else if (category.lastChatDetails?.type.equals("IMAGE")) {
-                itemView.tvChat.text = itemView.context.getString(R.string.chat_listing_photo_last_message_for_chat)
-                itemView.tvChat.compoundDrawablePadding = 8
-                itemView.tvChat.setCompoundDrawablesWithIntrinsicBounds(itemView.context.getDrawable(R.drawable.ic_photo_camera), null, null, null)
-            } else if (category.lastChatDetails?.type.equals("VIDEO")) {
-                itemView.tvChat.text = itemView.context.getString(R.string.chat_listing_video_last_message_for_chat)
-                itemView.tvChat.setCompoundDrawablesWithIntrinsicBounds(itemView.context.getDrawable(R.drawable.ic_video), null, null, null)
-                itemView.tvChat.compoundDrawablePadding = 8
+            when {
+                chat.lastChatDetails?.type.equals("TEXT") -> {
+                    itemView.tvChat.text = chat.lastChatDetails?.message
+                    itemView.tvChat.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null)
+                }
+                chat.lastChatDetails?.type.equals("GIF") -> {
+                    itemView.tvChat.text = itemView.context.getString(R.string.chat_listing_gif_last_message_for_chat)
+                    itemView.tvChat.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null)
+                }
+                chat.lastChatDetails?.type.equals("IMAGE") -> {
+                    itemView.tvChat.text = itemView.context.getString(R.string.chat_listing_photo_last_message_for_chat)
+                    itemView.tvChat.compoundDrawablePadding = 8
+                    itemView.tvChat.setCompoundDrawablesWithIntrinsicBounds(itemView.context.getDrawable(R.drawable.ic_photo_camera), null, null, null)
+                }
+                chat.lastChatDetails?.type.equals("VIDEO") -> {
+                    itemView.tvChat.text = itemView.context.getString(R.string.chat_listing_video_last_message_for_chat)
+                    itemView.tvChat.setCompoundDrawablesWithIntrinsicBounds(itemView.context.getDrawable(R.drawable.ic_video), null, null, null)
+                    itemView.tvChat.compoundDrawablePadding = 8
+                }
             }
         }
     }

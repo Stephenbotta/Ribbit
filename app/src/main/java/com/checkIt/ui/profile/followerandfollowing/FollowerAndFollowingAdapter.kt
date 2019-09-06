@@ -1,65 +1,36 @@
 package com.checkIt.ui.profile.followerandfollowing
 
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.checkIt.R
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.extensions.inflate
 import com.checkIt.utils.GlideRequests
 
 class FollowerAndFollowingAdapter(private val glide: GlideRequests,
-                                  private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
-    companion object {
-        private const val VIEW_TYPE = 0
+                                  private val callback: Callback) : RecyclerView.Adapter<FollowerAndFollowingViewHolder>() {
+    private val users = mutableListOf<ProfileDto>()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowerAndFollowingViewHolder {
+        return FollowerAndFollowingViewHolder(parent.inflate(R.layout.item_top_search), glide, callback)
     }
 
-    private val items = mutableListOf<Any>()
+    override fun getItemCount(): Int = users.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
-        return when (viewType) {
-
-            VIEW_TYPE -> FollowerAndFollowingViewHolder(parent.inflate(R.layout.item_top_search), glide, callback)
-
-            else -> throw IllegalArgumentException("Invalid view type")
-        }
+    override fun onBindViewHolder(holder: FollowerAndFollowingViewHolder, position: Int) {
+        holder.bind(users[position])
     }
 
-    override fun getItemCount(): Int = items.size
-
-    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
-        val item = items[position]
-
-        when (holder) {
-            is FollowerAndFollowingViewHolder -> {
-                if (item is ProfileDto) {
-                    holder.bind(item)
-                }
-            }
-        }
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        val item = items[position]
-
-        return when (item) {
-            is ProfileDto -> VIEW_TYPE
-            else -> VIEW_TYPE
-        }
-    }
-
-    fun displayItems(items: List<Any>) {
-        this.items.clear()
-        this.items.addAll(items)
+    fun displayItems(users: List<ProfileDto>) {
+        this.users.clear()
+        this.users.addAll(users)
         notifyDataSetChanged()
     }
 
-    fun addMoreItems(item: List<Any>) {
-        val oldListSize = this.items.size
-        this.items.addAll(item)
-        notifyItemRangeInserted(oldListSize, item.size)
-    }
-
-    fun getUpdatedList(): MutableList<Any> {
-        return items
+    fun addMoreItems(users: List<ProfileDto>) {
+        val oldListSize = this.users.size
+        this.users.addAll(users)
+        notifyItemRangeInserted(oldListSize, this.users.size)
     }
 
     interface Callback : FollowerAndFollowingViewHolder.Callback

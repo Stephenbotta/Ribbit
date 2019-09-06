@@ -4,18 +4,18 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.checkIt.R
 import com.checkIt.data.remote.models.groups.GroupPostDto
+import com.checkIt.data.remote.models.loginsignup.ImageUrlDto
 import com.checkIt.extensions.*
 import com.checkIt.ui.groups.GroupPostCallback
 import com.checkIt.ui.main.home.PostMediaAdapter
-import com.checkIt.ui.videoplayer.VideoPlayerActivity
 import com.checkIt.utils.*
 import kotlinx.android.synthetic.main.item_home_feed_post.view.*
 
-class HomePostViewHolder(itemView: View,
-                         private val glide: GlideRequests,
-                         callback: GroupPostCallback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView), PostMediaAdapter.Callback {
+class HomePostViewHolder(itemView: View, private val glide: GlideRequests,
+                         private val callback: GroupPostCallback) : RecyclerView.ViewHolder(itemView), PostMediaAdapter.Callback {
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
     private val postClickListener = View.OnClickListener {
         callback.onPostClicked(post, true)
@@ -29,9 +29,6 @@ class HomePostViewHolder(itemView: View,
         }
     }
     private val groupNameClickListener = View.OnClickListener {
-        //        post.group?.let { group ->
-//            callback.onGroupClicked(group)
-//        }
         callback.onPostClicked(post, true)
     }
     private val categoryNameClickListener = View.OnClickListener {
@@ -52,8 +49,8 @@ class HomePostViewHolder(itemView: View,
 
     private var mediaAdapter: PostMediaAdapter = PostMediaAdapter(itemView.context, this)
 
-    override fun playVideo(videoPath: String) {
-        VideoPlayerActivity.start(itemView.context, videoPath)
+    override fun openMediaDetail(media: ImageUrlDto) {
+        callback.onPostMediaClicked(post, true, media)
     }
 
     init {
@@ -66,6 +63,7 @@ class HomePostViewHolder(itemView: View,
                     // Forward click to the post click listener if there is no clickable span under touch.
                     postClickListener.onClick(view)
                     return@setOnTouchListener true
+
                 }
             }
             return@setOnTouchListener false
@@ -125,7 +123,7 @@ class HomePostViewHolder(itemView: View,
 
         if (!post.locationAddress.isNullOrEmpty()) {
             itemView.tvLocationAddress.visible()
-            itemView.tvLocationAddress.text = post.locationName + "," + post.locationAddress
+            itemView.tvLocationAddress.text = String.format("%s , %s", post.locationName, post.locationAddress)
         } else {
             itemView.tvLocationAddress.gone()
         }

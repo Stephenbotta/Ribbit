@@ -15,7 +15,7 @@ class SearchUsersAdapter(private val glide: GlideRequests, private val callback:
 
     private val userList = mutableListOf<ProfileDto>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchUsersAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(parent.inflate(R.layout.item_search_user), glide, callback)
     }
 
@@ -49,16 +49,16 @@ class SearchUsersAdapter(private val glide: GlideRequests, private val callback:
             itemView.rvMutualInterests.adapter = interestsAdapter
 
             itemView.setOnClickListener {
-                val user = UserCrossedDto(crossedUser = ProfileDto(fullName = profile.fullName, userName = profile.userName, image = profile.image,
-                        id = profile.id),
-                        conversationId = profile.conversationId)
+                val user = UserCrossedDto(crossedUser = ProfileDto(fullName = profile.fullName,
+                        userName = profile.userName, image = profile.image,
+                        id = profile.id), conversationId = profile.conversationId)
                 callback.openChatScreen(user, true)
             }
 
             itemView.fabChat.setOnClickListener {
-                val user = UserCrossedDto(crossedUser = ProfileDto(fullName = profile.fullName, userName = profile.userName, image = profile.image,
-                        id = profile.id),
-                        conversationId = profile.conversationId)
+                val user = UserCrossedDto(crossedUser = ProfileDto(fullName = profile.fullName,
+                        userName = profile.userName, image = profile.image,
+                        id = profile.id), conversationId = profile.conversationId)
                 callback.openChatScreen(user, false)
             }
         }

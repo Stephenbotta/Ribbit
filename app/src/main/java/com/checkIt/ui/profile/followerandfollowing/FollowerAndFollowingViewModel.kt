@@ -13,12 +13,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-/**
- * Created by Manish Bhargav
- */
 class FollowerAndFollowingViewModel(application: Application) : BaseViewModel(application) {
 
-    val followerList by lazy { SingleLiveEvent<Resource<List<Any>>>() }
+    val followerList by lazy { SingleLiveEvent<Resource<List<ProfileDto>>>() }
     private val filteredList by lazy { mutableListOf<ProfileDto>() }
     private var searchQuery = ""
 
@@ -36,7 +33,7 @@ class FollowerAndFollowingViewModel(application: Application) : BaseViewModel(ap
                             this@FollowerAndFollowingViewModel.filteredList.addAll(data)
 
                             val items = if (searchQuery.isBlank()) {
-                                getItems(data)
+                                data
                             } else {
                                 getSearchResult(searchQuery)
                             }
@@ -67,7 +64,7 @@ class FollowerAndFollowingViewModel(application: Application) : BaseViewModel(ap
                             this@FollowerAndFollowingViewModel.filteredList.addAll(data)
 
                             val items = if (searchQuery.isBlank()) {
-                                getItems(data)
+                                data
                             } else {
                                 getSearchResult(searchQuery)
                             }
@@ -85,7 +82,6 @@ class FollowerAndFollowingViewModel(application: Application) : BaseViewModel(ap
     }
 
 
-
     fun searchUsername(query: String) {
         this.searchQuery = query
         val searchResult = getSearchResult(query)
@@ -95,26 +91,13 @@ class FollowerAndFollowingViewModel(application: Application) : BaseViewModel(ap
     /**
      * Returns list items in correct order after applying the search filter
      * */
-    private fun getSearchResult(query: String): List<Any> {
+    private fun getSearchResult(query: String): List<ProfileDto> {
         // If query is blank then return the result with all username
         if (query.isBlank())
-            return getItems(filteredList)
+            return filteredList
 
-        val yourResult = filteredList.filter {
+        return filteredList.filter {
             (it.userName ?: "").toLowerCase().contains(query.toLowerCase())
         }
-
-        return getItems(yourResult)
     }
-
-    /**
-     * Returns items in correct order
-     * */
-    private fun getItems(list: List<ProfileDto>): List<Any> {
-        val items = mutableListOf<Any>()
-        if (list.isNotEmpty())
-            items.addAll(list)
-        return items
-    }
-
 }

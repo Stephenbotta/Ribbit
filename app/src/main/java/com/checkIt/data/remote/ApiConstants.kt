@@ -44,6 +44,7 @@ object ApiConstants {
     const val MESSAGE_TYPE_TEXT = "TEXT"
     const val MESSAGE_TYPE_IMAGE = "IMAGE"
     const val MESSAGE_TYPE_VIDEO = "VIDEO"
+    const val MESSAGE_TYPE_GIF = "GIF"
 
     const val GROUP_POST_TYPE_TEXT = "TEXT"
     const val GROUP_POST_TYPE_IMAGE = "IMAGE"
@@ -67,4 +68,8 @@ object ApiConstants {
     const val POST_TYPE_IMAGE = "IMAGE"
     const val POST_TYPE_VIDEO = "VIDEO"
     const val POST_TYPE_GIF = "GIF"
+
+    const val POSTING_IN_SELECTED_PEOPLE = "SELECTED_PEOPLE"
+    const val POSTING_IN_PUBLICILY = "PUBLICILY"
+    const val POSTING_IN_FOLLOWERS = "FOLLOWERS"
 }

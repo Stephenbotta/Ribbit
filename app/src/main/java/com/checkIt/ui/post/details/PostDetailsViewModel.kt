@@ -12,6 +12,7 @@ import com.checkIt.data.remote.models.PagingResult
 import com.checkIt.data.remote.models.Resource
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.groups.GroupPostDto
+import com.checkIt.data.remote.models.loginsignup.ImageUrlDto
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.data.remote.models.post.*
 import com.checkIt.utils.AppUtils
@@ -46,9 +47,11 @@ class PostDetailsViewModel : ViewModel() {
 
     private var likeUnlikePostCall: Call<Any>? = null
     private var mentionSuggestionsCall: Call<*>? = null
+    private var media: ImageUrlDto? = null
 
-    fun start(groupPost: GroupPostDto) {
+    fun start(groupPost: GroupPostDto, media: ImageUrlDto? = null) {
         postDetailsHeader = PostDetailsHeader(groupPost)
+        this.media = media
     }
 
     fun getPostDetailsHeader() = postDetailsHeader
@@ -118,7 +121,7 @@ class PostDetailsViewModel : ViewModel() {
     fun getPostWithReplies(firstPage: Boolean = true) {
         replies.value = Resource.loading()
         RetrofitClient.conversifyApi
-                .getPostWithReplies(postDetailsHeader.groupPost.id ?: "")
+                .getPostWithReplies(postDetailsHeader.groupPost.id ?: "", media?.id)
                 .enqueue(object : Callback<ApiResponse<GroupPostDto>> {
                     override fun onResponse(call: Call<ApiResponse<GroupPostDto>>,
                                             response: Response<ApiResponse<GroupPostDto>>) {
@@ -148,6 +151,7 @@ class PostDetailsViewModel : ViewModel() {
     fun addPostReply(replyText: String) {
         val usernameMentions = AppUtils.getMentionsFromString(replyText, false)
         val request = AddPostReplyRequest(postId = postDetailsHeader.groupPost.id,
+                mediaId = media?.id,
                 postOwnerId = postDetailsHeader.groupPost.user?.id,
                 replyText = replyText,
                 usernameMentions = if (usernameMentions.isEmpty()) null else usernameMentions)
@@ -180,6 +184,7 @@ class PostDetailsViewModel : ViewModel() {
     fun addPostSubReply(replyText: String, topLevelReply: PostReplyDto) {
         val usernameMentions = AppUtils.getMentionsFromString(replyText, false)
         val request = AddPostSubReplyRequest(postId = postDetailsHeader.groupPost.id,
+                mediaId = media?.id,
                 topLevelReplyId = topLevelReply.id,
                 topLevelReplyOwnerId = topLevelReply.commentBy?.id,
                 replyText = replyText,
@@ -239,7 +244,7 @@ class PostDetailsViewModel : ViewModel() {
         val postOwnerId = post.user?.id ?: ""
         val action = if (isLiked) ApiConstants.LIKED_TRUE else ApiConstants.LIKED_FALSE
         likeUnlikePostCall?.cancel()    // Cancel any on-going api call for like unlike post
-        val call = RetrofitClient.conversifyApi.likeUnlikePost(postId, postOwnerId, action)
+        val call = RetrofitClient.conversifyApi.likeUnlikePost(postId, media?.id, postOwnerId, action)
         likeUnlikePostCall = call
         call.enqueue(object : Callback<Any> {
             override fun onResponse(call: Call<Any>, response: Response<Any>) {

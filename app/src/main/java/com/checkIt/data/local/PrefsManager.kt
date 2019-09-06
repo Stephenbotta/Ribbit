@@ -20,11 +20,9 @@ class PrefsManager private constructor(context: Context) {
         const val PREF_LATITUDE = "PREF_LATITUDE"
         const val PREF_LONGITUDE = "PREF_LONGITUDE"
         const val PREF_LOCATION_UPDATE_MILLIS = "PREF_LOCATION_UPDATE_MILLIS"
-        const val PREF_PEOPLE_USER_ID = "PREF_PEOPLE_USER_ID"
         const val PREF_DEVICE_TOKEN = "PREF_DEVICE_TOKEN"
-        const val PREF_IS_CHAT_OPEN = "PREF_IS_CHAT_OPEN"
-        const val PREF_IS_CHAT_TYPE = "PREF_IS_CHAT_TYPE"
         const val PREF_CHAT_TYPE = "PREF_CHAT_TYPE"
+        const val PREF_CONVERSATION_ID = "PREF_CONVERSATION_ID"
 
         private lateinit var instance: PrefsManager
         private val isInitialized = AtomicBoolean()     // To check if instance was previously initialized or not

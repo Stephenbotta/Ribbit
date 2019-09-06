@@ -123,6 +123,12 @@ class ChatListIndividualViewModel(application: Application) : AndroidViewModel(a
         }
     }
 
+    fun sendGifMessage(image: File) {
+        val message = chatMessageBuilder.buildGifMessage(image)
+        newMessage.value = message
+        uploadImage(message)
+    }
+
     fun sendVideoMessage(video: File) {
         launch {
             val thumbnailImage = withContext(Dispatchers.IO) {
@@ -160,7 +166,7 @@ class ChatListIndividualViewModel(application: Application) : AndroidViewModel(a
         Timber.i("Resending message: $chatMessage")
 
         when (chatMessage.details?.type) {
-            ApiConstants.MESSAGE_TYPE_IMAGE -> uploadImage(chatMessage)
+            ApiConstants.MESSAGE_TYPE_IMAGE, ApiConstants.MESSAGE_TYPE_GIF -> uploadImage(chatMessage)
             ApiConstants.MESSAGE_TYPE_VIDEO -> uploadVideo(chatMessage)
         }
     }
@@ -324,7 +330,7 @@ class ChatListIndividualViewModel(application: Application) : AndroidViewModel(a
         jsonObject.putOpt("message", message.details?.message)
 
         when (message.details?.type) {
-            ApiConstants.MESSAGE_TYPE_IMAGE -> {
+            ApiConstants.MESSAGE_TYPE_IMAGE, ApiConstants.MESSAGE_TYPE_GIF -> {
                 jsonObject.putOpt("imageUrl", message.details.image?.original)
             }
 

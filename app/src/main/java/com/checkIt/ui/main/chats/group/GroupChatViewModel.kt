@@ -13,12 +13,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-/**
- * Created by Manish Bhargav
- */
 class GroupChatViewModel(application: Application) : BaseViewModel(application) {
 
-    val chatSummary by lazy { SingleLiveEvent<Resource<List<Any>>>() }
+    val chatSummary by lazy { SingleLiveEvent<Resource<List<ChatListingDto>>>() }
     private val chatList by lazy { mutableListOf<ChatListingDto>() }
     private var searchQuery = ""
 
@@ -37,7 +34,7 @@ class GroupChatViewModel(application: Application) : BaseViewModel(application) 
                             this@GroupChatViewModel.chatList.addAll(data)
 
                             val groupItems = if (searchQuery.isBlank()) {
-                                getGroupsItems(data)
+                                data
                             } else {
                                 getSearchGroupsResult(searchQuery)
                             }
@@ -63,30 +60,14 @@ class GroupChatViewModel(application: Application) : BaseViewModel(application) 
     /**
      * Returns chat list items in correct order after applying the search filter
      * */
-    private fun getSearchGroupsResult(query: String): List<Any> {
+    private fun getSearchGroupsResult(query: String): List<ChatListingDto> {
         // If query is blank then return the result with all groups
         if (query.isBlank()) {
-            return getGroupsItems(chatList)
+            return chatList
         }
 
-        val yourGroupsResult = chatList.filter {
+        return chatList.filter {
             (it.profile?.userName ?: "").toLowerCase().contains(query.toLowerCase())
         }
-
-        return getGroupsItems(yourGroupsResult)
     }
-
-    /**
-     * Returns chat items in correct order
-     * */
-    private fun getGroupsItems(chatList: List<ChatListingDto>): List<Any> {
-        val groupItems = mutableListOf<Any>()
-
-        if (chatList.isNotEmpty()) {
-            groupItems.addAll(chatList)
-        }
-
-        return groupItems
-    }
-
 }

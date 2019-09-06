@@ -1,12 +1,7 @@
 package com.checkIt.ui.main.chats
 
-/**
- * Created by Manish Bhargav
- */
+import com.checkIt.data.remote.models.chat.ChatListingDto
+
 interface ChatListCallback {
-
-    fun onClickItem()
-
-    fun onClickItem(position: Int)
-
+    fun onClickItem(chat: ChatListingDto)
 }

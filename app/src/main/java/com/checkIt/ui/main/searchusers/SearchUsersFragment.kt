@@ -11,7 +11,6 @@ import android.widget.SeekBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
-import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.loginsignup.InterestDto
 import com.checkIt.data.remote.models.people.UserCrossedDto
@@ -303,8 +302,8 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback, Se
 
     override fun openChatScreen(user: UserCrossedDto, isDetailShow: Boolean) {
         if (isDetailShow) {
-            PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, user.crossedUser?.id ?: "")
-            val intent = PeopleDetailsActivity.getStartIntent(requireContext(), user, AppConstants.REQ_CODE_PEOPLE)
+            val intent = PeopleDetailsActivity.getStartIntent(requireContext(), user,
+                    AppConstants.REQ_CODE_PEOPLE, user.crossedUser?.id ?: "")
             activity?.startActivity(intent)
         } else {
             val intent = ChatActivity.getStartIntentForIndividualChat(requireContext(), user, AppConstants.REQ_CODE_INDIVIDUAL_CHAT)

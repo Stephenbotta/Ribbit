@@ -144,20 +144,15 @@ class SearchVenueFragment : BaseFragment(), SearchVenueAdapter.Callback {
         getVenueSearch()
     }
 
-    override fun onClick(position: Int, venue: VenueDto) {
-        val items = adapter.getUpdatedList()
-        val item = items[position]
-        if (item is VenueDto) {
-
-            // Open own venue
-            if (item.isMember == true) {
-                val intent = ChatActivity.getStartIntent(requireActivity(), item, AppConstants.REQ_CODE_VENUE_CHAT)
-                startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
-                return
-            }
-            // Join other venue
-            val intent = JoinVenueActivity.getStartIntent(requireActivity(), item)
-            startActivityForResult(intent, AppConstants.REQ_CODE_JOIN_VENUE)
+    override fun onClick(venue: VenueDto) {
+        // Open own venue
+        if (venue.isMember == true) {
+            val intent = ChatActivity.getStartIntent(requireActivity(), venue, AppConstants.REQ_CODE_VENUE_CHAT)
+            startActivityForResult(intent, AppConstants.REQ_CODE_VENUE_CHAT)
         }
+
+        // Join other venue
+        val intent = JoinVenueActivity.getStartIntent(requireActivity(), venue)
+        startActivityForResult(intent, AppConstants.REQ_CODE_JOIN_VENUE)
     }
 }

@@ -13,7 +13,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
-import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.local.models.AppError
 import com.checkIt.data.remote.models.Resource
@@ -273,11 +272,11 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
     override fun onMemberClicked(member: MemberDto) {
         val data = UserCrossedDto()
         data.profile = member.user
-        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, member.user?.id ?: "")
         if (member.user?.id == UserManager.getUserId()) {
             startActivity(Intent(this, ProfileActivity::class.java))
         } else {
-            val intent = PeopleDetailsActivity.getStartIntent(this, data, AppConstants.REQ_CODE_BLOCK_USER)
+            val intent = PeopleDetailsActivity.getStartIntent(this, data,
+                    AppConstants.REQ_CODE_BLOCK_USER, member.user?.id ?: "")
             startActivity(intent)
         }
     }

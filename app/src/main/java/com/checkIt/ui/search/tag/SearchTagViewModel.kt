@@ -16,9 +16,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 
-/**
- * Created by Manish Bhargav
- */
 class SearchTagViewModel(application: Application) : BaseViewModel(application) {
     companion object {
         private const val PAGE_LIMIT = 10

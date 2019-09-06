@@ -124,6 +124,12 @@ class ChatListGroupViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
+    fun sendGifMessage(image: File) {
+        val message = chatMessageBuilder.buildGifMessage(image)
+        newMessage.value = message
+        uploadImage(message)
+    }
+
     fun sendVideoMessage(video: File) {
         launch {
             val thumbnailImage = withContext(Dispatchers.IO) {
@@ -161,7 +167,7 @@ class ChatListGroupViewModel(application: Application) : AndroidViewModel(applic
         Timber.i("Resending message: $chatMessage")
 
         when (chatMessage.details?.type) {
-            ApiConstants.MESSAGE_TYPE_IMAGE -> uploadImage(chatMessage)
+            ApiConstants.MESSAGE_TYPE_IMAGE, ApiConstants.MESSAGE_TYPE_GIF -> uploadImage(chatMessage)
             ApiConstants.MESSAGE_TYPE_VIDEO -> uploadVideo(chatMessage)
         }
     }
@@ -326,7 +332,7 @@ class ChatListGroupViewModel(application: Application) : AndroidViewModel(applic
         jsonObject.putOpt("message", message.details?.message)
 
         when (message.details?.type) {
-            ApiConstants.MESSAGE_TYPE_IMAGE -> {
+            ApiConstants.MESSAGE_TYPE_IMAGE, ApiConstants.MESSAGE_TYPE_GIF -> {
                 jsonObject.putOpt("imageUrl", message.details.image?.original)
             }
 
@@ -340,8 +346,8 @@ class ChatListGroupViewModel(application: Application) : AndroidViewModel(applic
         return jsonObject
     }
 
-    fun deleteMessage(message: ChatMessageDto, type: String) {
-        val arguments = deleteMessageJsonObject(message, type)
+    fun deleteMessage(message: ChatMessageDto) {
+        val arguments = deleteMessageJsonObject(message, message.details?.type ?: "")
         socketManager.emit(SocketManager.EVENT_DELETE_MESSAGE, arguments, Ack {
             val acknowledgement = it.firstOrNull()
             if (acknowledgement != null && acknowledgement is JSONObject) {

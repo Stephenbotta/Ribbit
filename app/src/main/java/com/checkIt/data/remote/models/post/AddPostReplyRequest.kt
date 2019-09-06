@@ -6,6 +6,9 @@ data class AddPostReplyRequest(
         @field:SerializedName("postId")
         val postId: String? = null,
 
+        @field:SerializedName("mediaId")
+        val mediaId: String? = null,
+
         @field:SerializedName("postBy")
         val postOwnerId: String? = null,
 

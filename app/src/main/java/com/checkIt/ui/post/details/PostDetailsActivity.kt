@@ -12,12 +12,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.checkIt.R
-import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.groups.GroupDto
 import com.checkIt.data.remote.models.groups.GroupPostDto
+import com.checkIt.data.remote.models.loginsignup.ImageUrlDto
 import com.checkIt.data.remote.models.loginsignup.InterestDto
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.data.remote.models.people.UserCrossedDto
@@ -27,6 +28,7 @@ import com.checkIt.extensions.*
 import com.checkIt.ui.base.BaseActivity
 import com.checkIt.ui.custom.SocialEditText
 import com.checkIt.ui.people.details.PeopleDetailsActivity
+import com.checkIt.ui.post.newpost.NewPostActivity
 import com.checkIt.ui.profile.ProfileActivity
 import com.checkIt.utils.AppConstants
 import com.checkIt.utils.GlideApp
@@ -38,14 +40,17 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     companion object {
         private const val EXTRA_POST = "EXTRA_POST"
         private const val EXTRA_FOCUS_REPLY_EDIT_TEXT = "EXTRA_FOCUS_REPLY_EDIT_TEXT"
+        private const val EXTRA_MEDIA_ID = "EXTRA_MEDIA_ID"
 
         private const val CHILD_MENTIONS = 0
         private const val CHILD_MENTIONS_LOADING = 1
 
-        fun getStartIntent(context: Context, post: GroupPostDto, focusReplyEditText: Boolean = false): Intent {
+        fun getStartIntent(context: Context, post: GroupPostDto, focusReplyEditText: Boolean = false, media: ImageUrlDto? = null): Intent {
             val intent = Intent(context, PostDetailsActivity::class.java)
             intent.putExtra(EXTRA_POST, post)
             intent.putExtra(EXTRA_FOCUS_REPLY_EDIT_TEXT, focusReplyEditText)
+            if (media != null)
+                intent.putExtra(EXTRA_MEDIA_ID, media)
             return intent
         }
     }
@@ -57,6 +62,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     private var replyingToTopLevelReply: PostReplyDto? = null
     private lateinit var groupPost: GroupPostDto
     private val ownUserId by lazy { UserManager.getUserId() }
+    private var media: ImageUrlDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,15 +71,23 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
         btnBack.setOnClickListener { onBackPressed() }
 
         groupPost = intent.getParcelableExtra(EXTRA_POST)
-        viewModel.start(groupPost)
+
+        if (intent.hasExtra(EXTRA_MEDIA_ID))
+            media = intent.getParcelableExtra(EXTRA_MEDIA_ID)
+
         val groupName = groupPost.group?.name ?: ""
         val categoryName = String.format("[%s]", groupPost.category?.name ?: "")
 
-        if (groupPost.user?.id == ownUserId) {
+        if (groupPost.user?.id == ownUserId && media == null) {
             btnMore.visible()
         } else {
             btnMore.gone()
         }
+
+        if (media != null) {
+            groupPost.isLiked = media?.isLiked
+        }
+        viewModel.start(groupPost, media)
 
         if (groupName.isNotBlank()) {
             btnBack.text = String.format("%s %s", groupName, categoryName)
@@ -89,9 +103,9 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     }
 
     private fun setupPostRecycler() {
-        postDetailsAdapter = PostDetailsAdapter(GlideApp.with(this), this)
+        postDetailsAdapter = PostDetailsAdapter(GlideApp.with(this), media, this)
         rvPostDetails.adapter = postDetailsAdapter
-        (rvPostDetails.itemAnimator as androidx.recyclerview.widget.SimpleItemAnimator).supportsChangeAnimations = false
+        (rvPostDetails.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         postDetailsAdapter.displayHeader(listOf(viewModel.getPostDetailsHeader()))
     }
 
@@ -302,11 +316,11 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     private fun optionMenu(v: View) {
         val popup = PopupMenu(this, v)
         popup.inflate(R.menu.menu_post_more)
-        /*when (groupPost.postType ?: "") {
+        when (groupPost.postType ?: "") {
             AppConstants.POST_TYPE_REGULAR -> {
                 popup.menu.getItem(1).isVisible = true
             }
-        }*/
+        }
 //        val m = popup.menu as MenuBuilder     //  visible the icon for menu
 //        m.setOptionalIconsVisible(true)
         popup.setOnMenuItemClickListener(this)
@@ -324,19 +338,19 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
         }
     }
 
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-
+    override fun onMenuItemClick(item: MenuItem): Boolean {
+        return when (item.itemId) {
             R.id.deletePost -> {
                 viewModel.deletePost(groupPost.id ?: "")
-                return true
+                true
             }
-            /*R.id.editPost -> {
-                val intent = NewPostActivity.getStartIntentForEdit(this, intent.getParcelableExtra(EXTRA_POST), AppConstants.REQ_CODE_EDIT_POST)
+            R.id.editPost -> {
+                val intent = NewPostActivity.getStartIntentForEdit(this,
+                        viewModel.getGroupPost(), AppConstants.REQ_CODE_EDIT_POST)
                 startActivityForResult(intent, AppConstants.REQ_CODE_EDIT_POST)
-                return true
-            }*/
-            else -> return super.onOptionsItemSelected(item)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -442,11 +456,11 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     override fun onUserProfileClicked(profile: ProfileDto) {
         val data = UserCrossedDto()
         data.profile = profile
-        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, profile.id ?: "")
         if (profile.id == ownUserId) {
             startActivity(Intent(this, ProfileActivity::class.java))
         } else {
-            val intent = PeopleDetailsActivity.getStartIntent(this, data, AppConstants.REQ_CODE_BLOCK_USER)
+            val intent = PeopleDetailsActivity.getStartIntent(this, data,
+                    AppConstants.REQ_CODE_BLOCK_USER, data.profile?.id ?: "")
             startActivity(intent)
         }
     }
@@ -504,7 +518,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     }
 
     override fun onUserMentionSuggestionClicked(user: ProfileDto) {
-        etReply.updateMentionBeforeCursor(user.userName ?: "")
+        etReply.updateMentionBeforeCursor(user.userName + " ")
         viewFlipperUserMentions.gone()
     }
 
@@ -542,8 +556,12 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(this)
-                .sendBroadcast(Intent(AppConstants.ACTION_GROUP_POST_UPDATED_POST_DETAILS)
-                        .putExtra(AppConstants.EXTRA_GROUP_POST, viewModel.getGroupPost()))
+        if (media == null) {
+            LocalBroadcastManager.getInstance(this)
+                    .sendBroadcast(Intent(AppConstants.ACTION_GROUP_POST_UPDATED_POST_DETAILS)
+                            .putExtra(AppConstants.EXTRA_GROUP_POST, viewModel.getGroupPost()))
+        } else {
+            setResult(Activity.RESULT_OK)
+        }
     }
 }

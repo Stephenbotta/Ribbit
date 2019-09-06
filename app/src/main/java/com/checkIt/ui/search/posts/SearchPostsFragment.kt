@@ -123,10 +123,8 @@ class SearchPostsFragment : BaseFragment(), SearchPostAdapter.Callback {
         getPostSearch()
     }
 
-    override fun onClick(position: Int, post: GroupPostDto) {
-        val items = adapter.getUpdatedList()
-        val item = items[position]
-        val intent = PostDetailsActivity.getStartIntent(requireActivity(), item, true)
+    override fun onClick(post: GroupPostDto) {
+        val intent = PostDetailsActivity.getStartIntent(requireActivity(), post, true)
         startActivityForResult(intent, AppConstants.REQ_CODE_POST_DETAILS)
     }
 }

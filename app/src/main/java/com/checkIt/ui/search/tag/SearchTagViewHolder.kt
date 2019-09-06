@@ -1,16 +1,14 @@
 package com.checkIt.ui.search.tag
 
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.checkIt.R
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
-import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_tag_search.view.*
 
-class SearchTagViewHolder(itemView: View,
-                          private val glide: GlideRequests,
-                          private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+class SearchTagViewHolder(itemView: View, private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
     init {
-        itemView.tvFollowedStatus.setOnClickListener { callback.onClick(adapterPosition,profile) }
+        itemView.tvFollowedStatus.setOnClickListener { callback.onClick(profile) }
     }
 
     private lateinit var profile: ProfileDto
@@ -19,7 +17,7 @@ class SearchTagViewHolder(itemView: View,
         this.profile = profile
 
         itemView.tvTag.text = profile.tagName
-        if (profile.isFollowing==true) {
+        if (profile.isFollowing == true) {
             itemView.tvFollowedStatus.text = itemView.context.getString(R.string.people_detail_button_un_follow)
         } else {
             itemView.tvFollowedStatus.text = itemView.context.getString(R.string.people_detail_button_follow)
@@ -28,6 +26,6 @@ class SearchTagViewHolder(itemView: View,
     }
 
     interface Callback {
-        fun onClick(position: Int,profile: ProfileDto)
+        fun onClick(profile: ProfileDto)
     }
 }

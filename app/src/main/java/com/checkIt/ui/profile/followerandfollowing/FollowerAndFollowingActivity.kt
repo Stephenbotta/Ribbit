@@ -8,14 +8,15 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.checkIt.R
-import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.data.remote.models.people.UserCrossedDto
+import com.checkIt.extensions.gone
 import com.checkIt.extensions.handleError
 import com.checkIt.extensions.isNetworkActiveWithMessage
+import com.checkIt.extensions.visible
 import com.checkIt.ui.base.BaseActivity
 import com.checkIt.ui.people.details.PeopleDetailsActivity
 import com.checkIt.ui.profile.ProfileActivity
@@ -24,7 +25,6 @@ import com.checkIt.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_follower_and_following.*
 
 class FollowerAndFollowingActivity : BaseActivity(), View.OnClickListener, FollowerAndFollowingAdapter.Callback {
-
     companion object {
         private const val EXTRA_FLAG = "EXTRA_FLAG"
         fun getIntentStart(context: Context, flag: Int): Intent {
@@ -32,7 +32,6 @@ class FollowerAndFollowingActivity : BaseActivity(), View.OnClickListener, Follo
                     .putExtra(EXTRA_FLAG, flag)
         }
     }
-
 
     private val viewModel by lazy { ViewModelProviders.of(this)[FollowerAndFollowingViewModel::class.java] }
     private lateinit var adapter: FollowerAndFollowingAdapter
@@ -84,21 +83,14 @@ class FollowerAndFollowingActivity : BaseActivity(), View.OnClickListener, Follo
     }
 
     private fun observeChanges() {
-
         viewModel.followerList.observe(this, Observer { resource ->
             resource ?: return@Observer
-
             when (resource.status) {
                 Status.SUCCESS -> {
                     swipeRefreshLayout.isRefreshing = false
                     val data = resource.data ?: emptyList()
-
-                    val items = mutableListOf<Any>()
-                    items.addAll(data)
-                    if (items.size > 0) {
-                        tvUser.visibility = View.GONE
-                    } else tvUser.visibility = View.VISIBLE
-                    adapter.displayItems(items)
+                    if (data.isNotEmpty()) tvUser.gone() else tvUser.visible()
+                    adapter.displayItems(data)
                 }
 
                 Status.ERROR -> {
@@ -123,34 +115,26 @@ class FollowerAndFollowingActivity : BaseActivity(), View.OnClickListener, Follo
                     viewModel.getLikeUserList(intent.getStringExtra(AppConstants.EXTRA_POST_ID))
                 }
             }
-
-
         } else {
             swipeRefreshLayout.isRefreshing = false
         }
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-
+    override fun onClick(v: View) {
+        when (v.id) {
             R.id.btnBack -> onBackPressed()
-
         }
     }
 
-    override fun onClick(position: Int, profile: ProfileDto) {
-        val items = adapter.getUpdatedList()
-        val item = items[position]
-        if (item is ProfileDto) {
-            val data = UserCrossedDto()
-            data.profile = item
-            PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, item.id ?: "")
-            if (profile.id == UserManager.getUserId()) {
-                startActivity(Intent(this, ProfileActivity::class.java))
-            } else {
-                val intent = PeopleDetailsActivity.getStartIntent(this, data, AppConstants.REQ_CODE_BLOCK_USER)
-                startActivity(intent)
-            }
+    override fun onClick(profile: ProfileDto) {
+        val data = UserCrossedDto()
+        data.profile = profile
+        if (profile.id == UserManager.getUserId()) {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        } else {
+            val intent = PeopleDetailsActivity.getStartIntent(this, data,
+                    AppConstants.REQ_CODE_BLOCK_USER, data.profile?.id ?: "")
+            startActivity(intent)
         }
     }
 }

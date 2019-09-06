@@ -34,7 +34,7 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
     private lateinit var adapter: SearchGroupAdapter
     private lateinit var loadingDialog: LoadingDialog
     private var search = ""
-    private var adapterPosition: Int? = null
+    private var group: GroupDto? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,8 +94,7 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
                             requireActivity().longToast(R.string.venues_message_notification_sent_to_admin)
                             getGroupSearch()
                         } else {
-                            val items = adapter.getUpdatedList()
-                            items[adapterPosition ?: 0] = group ?: GroupDto()
+                            this.group = group ?: GroupDto()
                             groupDetails(group ?: GroupDto())
                         }
                     }
@@ -155,15 +154,10 @@ class SearchGroupFragment : BaseFragment(), SearchGroupAdapter.Callback {
         getGroupSearch()
     }
 
-    override fun onClick(position: Int, group: GroupDto) {
-        val items = adapter.getUpdatedList()
-        val item = items[position]
-        adapterPosition = position
-        if (item is GroupDto) {
-            if (item.isMember == false) {
-                if (isNetworkActiveWithMessage())
-                    viewModel.joinGroup(item)
-            } else groupDetails(item)
-        }
+    override fun onClick(group: GroupDto) {
+        if (group.isMember == false) {
+            if (isNetworkActiveWithMessage())
+                viewModel.joinGroup(group)
+        } else groupDetails(group)
     }
 }

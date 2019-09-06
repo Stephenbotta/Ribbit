@@ -12,6 +12,9 @@ data class AddPostSubReplyRequest(
         @field:SerializedName("postId")
         val postId: String? = null,
 
+        @field:SerializedName("mediaId")
+        val mediaId: String? = null,
+
         @field:SerializedName("reply")
         val replyText: String? = null,
 

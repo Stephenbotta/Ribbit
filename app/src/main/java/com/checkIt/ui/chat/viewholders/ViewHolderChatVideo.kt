@@ -1,7 +1,7 @@
 package com.checkIt.ui.chat.viewholders
 
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.models.chat.ChatMessageDto
 import com.checkIt.data.remote.models.chat.MessageStatus
@@ -14,12 +14,11 @@ import com.checkIt.utils.DialogsUtil
 import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_chat_video_left.view.*
 
-class ViewHolderChatVideo(itemView: View,
-                          private val glide: GlideRequests,
-                          private val callback: Callback, private val actionCallback: ActionCallback) : ViewHolderChat(itemView) {
+class ViewHolderChatVideo(itemView: View, private val glide: GlideRequests, private val callback: Callback,
+                          private val actionCallback: ActionCallback) : ViewHolderChat(itemView) {
     init {
         itemView.btnResend.setOnClickListener {
-            if (adapterPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION && itemView.context.isNetworkActiveWithMessage()) {
+            if (adapterPosition != NO_POSITION && itemView.context.isNetworkActiveWithMessage()) {
                 chatMessage.messageStatus = MessageStatus.SENDING
                 updateMessageStatus(chatMessage.messageStatus)
                 callback.onResendMessageClicked(chatMessage)
@@ -27,14 +26,14 @@ class ViewHolderChatVideo(itemView: View,
         }
 
         itemView.ivThumbnail.setOnClickListener {
-            if (adapterPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
+            if (adapterPosition != NO_POSITION) {
                 callback.onVideoMessageClicked(chatMessage)
             }
         }
 
         itemView.ivThumbnail.setOnLongClickListener {
             if (chatMessage.sender?.id == UserManager.getUserId())
-                DialogsUtil.openAlertDialog(itemView.context, "video", actionCallback, adapterPosition)
+                DialogsUtil.openAlertDialog(itemView.context, chatMessage, actionCallback)
             true
         }
     }

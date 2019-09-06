@@ -33,9 +33,9 @@ class VerificationViewModel(application: Application) : BaseViewModel(applicatio
             verificationApi.value = Resource.loading()
             s3Uploader.upload(postImage)
                     .addUploadCompleteListener { imageUrl ->
-                        val map = hashMapOf<String, String>()
-                        map["passportDocUrl"] = imageUrl
-                        postSettingsVerification(map)
+                        val hashMap = hashMapOf<String, String>()
+                        hashMap["passportDocUrl"] = imageUrl
+                        postSettingsVerification(hashMap)
                     }
                     .addUploadFailedListener {
                         verificationApi.value = Resource.error(AppError.WaitingForNetwork)

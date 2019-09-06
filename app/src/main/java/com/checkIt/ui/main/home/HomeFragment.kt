@@ -11,11 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.checkIt.R
-import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.groups.GroupDto
 import com.checkIt.data.remote.models.groups.GroupPostDto
+import com.checkIt.data.remote.models.loginsignup.ImageUrlDto
 import com.checkIt.data.remote.models.loginsignup.InterestDto
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.data.remote.models.people.UserCrossedDto
@@ -62,9 +62,7 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout.setOnRefreshListener { getHomeFeed() }
-//        fabPost.setOnClickListener {
 
-//        }
         registerPostUpdatedReceiver()
         setupHomeRecycler()
         setupGroupsFab()
@@ -216,6 +214,12 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         startActivityForResult(intent, AppConstants.REQ_CODE_POST_DETAILS)
     }
 
+    override fun onPostMediaClicked(post: GroupPostDto, focusReplyEditText: Boolean, media: ImageUrlDto?) {
+        Timber.i("Post clicked : $post\nFocus reply edit text : $focusReplyEditText")
+        val intent = PostDetailsActivity.getStartIntent(requireActivity(), post, focusReplyEditText, media)
+        startActivityForResult(intent, AppConstants.REQ_CODE_MEDIA_DETAIL)
+    }
+
     override fun onLikesCountClicked(post: GroupPostDto) {
         Timber.i("Likes count clicked")
         val intent = FollowerAndFollowingActivity.getIntentStart(requireActivity(), AppConstants.REQ_CODE_POST_LIKE)
@@ -232,11 +236,11 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         Timber.i("User profile clicked : $profile")
         val data = UserCrossedDto()
         data.profile = profile
-        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, profile.id ?: "")
         if (profile.id == UserManager.getUserId()) {
             startActivity(Intent(requireContext(), ProfileActivity::class.java))
         } else {
-            val intent = PeopleDetailsActivity.getStartIntent(requireContext(), data, AppConstants.REQ_CODE_BLOCK_USER)
+            val intent = PeopleDetailsActivity.getStartIntent(requireContext(), data,
+                    AppConstants.REQ_CODE_BLOCK_USER, data.profile?.id ?: "")
             startActivity(intent)
         }
     }
@@ -262,9 +266,9 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            AppConstants.REQ_CODE_NEW_POST -> {
-                if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                AppConstants.REQ_CODE_NEW_POST, AppConstants.REQ_CODE_MEDIA_DETAIL -> {
                     getHomeFeed(false)
                 }
             }

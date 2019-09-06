@@ -19,7 +19,7 @@ import com.checkIt.utils.AppConstants
 import com.checkIt.utils.GlideApp
 import kotlinx.android.synthetic.main.activity_hide_status.*
 
-class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapter.Callback {
+class HideStatusActivity : BaseActivity(), View.OnClickListener {
 
     companion object {
         private const val EXTRA_FLAG = "EXTRA_FLAG"
@@ -30,16 +30,13 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     }
 
     private val viewModel by lazy { ViewModelProviders.of(this)[HideStatusViewModel::class.java] }
-    private var flag = 0
+    private val flag by lazy { intent.getIntExtra(EXTRA_FLAG, 0) }
     private lateinit var adapter: HideStatusAdapter
-    private var items = listOf<Any>()
-    private val selectedUserList by lazy { ArrayList<String>() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hide_status)
 
-        flag = intent.getIntExtra(EXTRA_FLAG, 0)
         setData(viewModel.getProfile(), flag)
         setListener()
         observeChanges()
@@ -91,7 +88,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     }
 
     private fun setupRecyclerView() {
-        adapter = HideStatusAdapter(GlideApp.with(this), this, viewModel.getProfile(), flag)
+        adapter = HideStatusAdapter(GlideApp.with(this))
         rvUsernameList.adapter = adapter
     }
 
@@ -172,32 +169,32 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
             when (resource.status) {
                 Status.SUCCESS -> {
                     swipeRefreshLayout.isRefreshing = false
-                    items = resource.data ?: emptyList()
-                    for (index in items.indices) {
+                    val users = resource.data ?: emptyList()
+                    for (user in users) {
                         when (flag) {
                             ApiConstants.FLAG_PROFILE_PICTURE -> {
                                 selectedUser(viewModel.getProfile().imageVisibility
-                                        ?: emptyList(), index)
+                                        ?: emptyList(), user)
                             }
                             ApiConstants.FLAG_PRIVATE_INFO -> {
                                 selectedUser(viewModel.getProfile().personalInfoVisibility
-                                        ?: emptyList(), index)
+                                        ?: emptyList(), user)
                             }
                             ApiConstants.FLAG_USERNAME -> {
                                 selectedUser(viewModel.getProfile().nameVisibility
-                                        ?: emptyList(), index)
+                                        ?: emptyList(), user)
                             }
                             ApiConstants.FLAG_MESSAGE -> {
                                 selectedUser(viewModel.getProfile().tagPermission
-                                        ?: emptyList(), index)
+                                        ?: emptyList(), user)
                             }
                             AppConstants.REQ_CODE_NEW_POST -> {
-                                selectedUserPost(intent.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS), index)
+                                selectedUserPost(intent.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS), user)
                             }
                         }
 
                     }
-                    adapter.displayCategories(items)
+                    adapter.displayCategories(users)
                 }
 
                 Status.ERROR -> {
@@ -212,32 +209,26 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
         })
     }
 
-    private fun selectedUser(list: List<SelectedUser>, index: Int) {
-        for (selected in list.indices) {
-            val item = items[index]
-            if (item is ProfileDto) {
-                if (item.id.equals(list[selected].id)) {
-                    item.isSelected = true
-                    break
-                }
+    private fun selectedUser(usersList: List<SelectedUser>, user: ProfileDto) {
+        for (userItem in usersList) {
+            if (user.id == userItem.id) {
+                user.isSelected = true
+                break
             }
         }
     }
 
-    private fun selectedUserPost(list: MutableList<String>, index: Int) {
-        for (selected in list.indices) {
-            val item = items[index]
-            if (item is ProfileDto) {
-                if (item.id.equals(list[selected])) {
-                    item.isSelected = true
-                    break
-                }
+    private fun selectedUserPost(users: MutableList<String>, user: ProfileDto) {
+        for (userItem in users) {
+            if (user.id == userItem) {
+                user.isSelected = true
+                break
             }
         }
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
+    override fun onClick(v: View) {
+        when (v.id) {
 
             R.id.btnBack -> onBackPressed()
 
@@ -251,14 +242,6 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
 
             R.id.selectedUser -> getFollower()
         }
-    }
-
-    override fun onClick(position: Int) {
-        val item = items[position]
-        if (item is ProfileDto) {
-            item.isSelected = item.isSelected.not()
-        }
-        adapter.notifyDataSetChanged()
     }
 
     private fun onBackPress() {
@@ -299,19 +282,7 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
             }
 
             R.id.selectedUser -> {
-                buildIdArray()
-                viewModel.configSetting(flag, selectedUserList)
-            }
-        }
-    }
-
-    private fun buildIdArray() {
-        for (i in items.indices) {
-            val item = items[i]
-            if (item is ProfileDto) {
-                if (item.isSelected) {
-                    selectedUserList.add(item.id ?: "")
-                }
+                viewModel.configSetting(flag, adapter.getSelectedUserIds())
             }
         }
     }
@@ -319,10 +290,10 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener, HideStatusAdapt
     override fun onBackPressed() {
         when (flag) {
             AppConstants.REQ_CODE_NEW_POST -> {
-                buildIdArray()
                 val data = Intent()
-                if (yourFollowers.isChecked)
-                    selectedUserList.clear()
+                val selectedUserList = ArrayList<String>()
+                if (!yourFollowers.isChecked)
+                    selectedUserList.addAll(adapter.getSelectedUserIds())
                 data.putStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS, selectedUserList)
                 setResult(Activity.RESULT_OK, data)
                 finish()

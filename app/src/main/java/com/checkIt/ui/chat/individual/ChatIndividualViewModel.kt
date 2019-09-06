@@ -90,7 +90,7 @@ class ChatIndividualViewModel(application: Application) : AndroidViewModel(appli
         socketManager.connect()
     }
 
-    fun updateVenue(venue: UserCrossedDto) {
+    private fun updateVenue(venue: UserCrossedDto) {
         this.venue = venue
     }
 
@@ -121,6 +121,12 @@ class ChatIndividualViewModel(application: Application) : AndroidViewModel(appli
                 Timber.w("Sampled image is null")
             }
         }
+    }
+
+    fun sendGifMessage(image: File) {
+        val message = chatMessageBuilder.buildGifMessage(image)
+        newMessage.value = message
+        uploadImage(message)
     }
 
     fun sendVideoMessage(video: File) {
@@ -160,7 +166,7 @@ class ChatIndividualViewModel(application: Application) : AndroidViewModel(appli
         Timber.i("Resending message: $chatMessage")
 
         when (chatMessage.details?.type) {
-            ApiConstants.MESSAGE_TYPE_IMAGE -> uploadImage(chatMessage)
+            ApiConstants.MESSAGE_TYPE_IMAGE, ApiConstants.MESSAGE_TYPE_GIF -> uploadImage(chatMessage)
             ApiConstants.MESSAGE_TYPE_VIDEO -> uploadVideo(chatMessage)
         }
     }
@@ -323,7 +329,7 @@ class ChatIndividualViewModel(application: Application) : AndroidViewModel(appli
         jsonObject.putOpt("message", message.details?.message)
 
         when (message.details?.type) {
-            ApiConstants.MESSAGE_TYPE_IMAGE -> {
+            ApiConstants.MESSAGE_TYPE_IMAGE, ApiConstants.MESSAGE_TYPE_GIF -> {
                 jsonObject.putOpt("imageUrl", message.details.image?.original)
             }
 

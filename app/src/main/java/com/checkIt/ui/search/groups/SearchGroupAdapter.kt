@@ -40,9 +40,7 @@ class SearchGroupAdapter(private val glide: GlideRequests,
     }
 
     override fun getItemViewType(position: Int): Int {
-        val item = items[position]
-
-        return when (item) {
+        return when (items[position]) {
             is GroupDto -> VIEW_TYPE_MY_VENUE
             else -> VIEW_TYPE_LABEL_YOUR_VENUES
         }
@@ -57,11 +55,7 @@ class SearchGroupAdapter(private val glide: GlideRequests,
     fun addMoreItems(item: List<Any>) {
         val oldListSize = this.items.size
         this.items.addAll(item)
-        notifyItemRangeInserted(oldListSize, item.size)
-    }
-
-    fun getUpdatedList(): MutableList<Any> {
-        return items
+        notifyItemRangeInserted(oldListSize, items.size)
     }
 
     interface Callback : SearchGroupViewHolder.Callback

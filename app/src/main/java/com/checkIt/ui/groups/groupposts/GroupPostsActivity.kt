@@ -19,11 +19,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.checkIt.R
-import com.checkIt.data.local.PrefsManager
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.models.Status
 import com.checkIt.data.remote.models.groups.GroupDto
 import com.checkIt.data.remote.models.groups.GroupPostDto
+import com.checkIt.data.remote.models.loginsignup.ImageUrlDto
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.data.remote.models.people.UserCrossedDto
 import com.checkIt.extensions.handleError
@@ -349,11 +349,11 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         Timber.i("User profile clicked : $profile")
         val data = UserCrossedDto()
         data.profile = profile
-        PrefsManager.get().save(PrefsManager.PREF_PEOPLE_USER_ID, profile.id ?: "")
         if (profile.id == UserManager.getUserId()) {
             startActivity(Intent(this, ProfileActivity::class.java))
         } else {
-            val intent = PeopleDetailsActivity.getStartIntent(this, data, AppConstants.REQ_CODE_BLOCK_USER)
+            val intent = PeopleDetailsActivity.getStartIntent(this, data,
+                    AppConstants.REQ_CODE_BLOCK_USER, data.profile?.id ?: "")
             startActivity(intent)
         }
     }
@@ -362,6 +362,10 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         Timber.i("Post clicked : $post\nFocus reply edit text : $focusReplyEditText")
         val intent = PostDetailsActivity.getStartIntent(this, post, focusReplyEditText)
         startActivity(intent)
+    }
+
+    override fun onPostMediaClicked(post: GroupPostDto, focusReplyEditText: Boolean, media: ImageUrlDto?) {
+
     }
 
     override fun onLikesCountClicked(post: GroupPostDto) {

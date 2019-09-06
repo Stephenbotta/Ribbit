@@ -1,6 +1,7 @@
 package com.checkIt.ui.search.top
 
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.checkIt.data.remote.models.loginsignup.ProfileDto
 import com.checkIt.extensions.gone
 import com.checkIt.extensions.visible
@@ -9,9 +10,9 @@ import kotlinx.android.synthetic.main.item_top_search.view.*
 
 class SearchTopViewHolder(itemView: View,
                           private val glide: GlideRequests,
-                          private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+                          private val callback: Callback) : RecyclerView.ViewHolder(itemView) {
     init {
-        itemView.setOnClickListener { callback.onClick(adapterPosition, profile) }
+        itemView.setOnClickListener { callback.onClick(profile) }
     }
 
     private lateinit var profile: ProfileDto
@@ -31,6 +32,6 @@ class SearchTopViewHolder(itemView: View,
     }
 
     interface Callback {
-        fun onClick(position: Int, profile: ProfileDto)
+        fun onClick(profile: ProfileDto)
     }
 }

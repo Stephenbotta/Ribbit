@@ -6,6 +6,9 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class ImageUrlDto(
+        @field:SerializedName("_id")
+        var id: String? = null,
+
         @field:SerializedName("thumbnail")
         var thumbnail: String? = null,
 
@@ -16,4 +19,8 @@ data class ImageUrlDto(
         var mediaType: String? = null,
 
         @field:SerializedName("videoUrl")
-        var videoUrl: String? = null) : Parcelable
+        var videoUrl: String? = null,
+
+        @field:SerializedName("liked")
+        var isLiked: Boolean? = null
+) : Parcelable

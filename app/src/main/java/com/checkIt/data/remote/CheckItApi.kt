@@ -19,7 +19,7 @@ import com.checkIt.ui.chat.individual.ChatIndividualResponse
 import retrofit2.Call
 import retrofit2.http.*
 
-interface ConversifyApi {
+interface CheckItApi {
 
     companion object {
         private const val FLAG = "flag"
@@ -97,7 +97,7 @@ interface ConversifyApi {
     @POST("user/chatConversation")
     @FormUrlEncoded
     fun getVenueChat(@Field("conversationId") conversationId: String?,
-                          @Field("chatId") chatId: String?): Call<ApiResponse<VenueDetailsResponse>>
+                     @Field("chatId") chatId: String?): Call<ApiResponse<VenueDetailsResponse>>
 
     @POST("user/configNotification")
     @FormUrlEncoded
@@ -189,7 +189,8 @@ interface ConversifyApi {
 
     @POST("user/getPostWithComment")
     @FormUrlEncoded
-    fun getPostWithReplies(@Field("postId") postId: String): Call<ApiResponse<GroupPostDto>>
+    fun getPostWithReplies(@Field("postId") postId: String,
+                           @Field("mediaId") mediaId: String?): Call<ApiResponse<GroupPostDto>>
 
     @POST("user/getCommentReplies")
     @FormUrlEncoded
@@ -203,6 +204,7 @@ interface ConversifyApi {
     @POST("user/likeOrUnlike")
     @FormUrlEncoded
     fun likeUnlikePost(@Field("postId") postId: String,
+                       @Field("mediaId") mediaId: String?,
                        @Field("postBy") postOwnerId: String,
                        @Field(ACTION) action: Int): Call<Any>
 

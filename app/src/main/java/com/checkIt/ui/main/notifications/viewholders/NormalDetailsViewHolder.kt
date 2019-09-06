@@ -183,9 +183,10 @@ class NormalDetailsViewHolder(itemView: View,
 
         itemView.tvTitle.setText(completeText, TextView.BufferType.SPANNABLE)
 
-        if (!notification.postId?.imageUrl?.original.isNullOrEmpty()) {
+        val media = notification.postId?.media?.firstOrNull()
+        if (!media?.original.isNullOrEmpty()) {
             itemView.ivCrossPic.visible()
-            glide.load(notification.postId?.imageUrl?.thumbnail)
+            glide.load(media?.thumbnail)
                     .into(itemView.ivCrossPic)
         } else itemView.ivCrossPic.gone()
 

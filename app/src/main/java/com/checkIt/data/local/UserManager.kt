@@ -122,4 +122,16 @@ object UserManager {
 
         return existingUniqueId
     }
+
+    fun saveConversationId(conversationId: String) {
+        PrefsManager.get().save(PrefsManager.PREF_CONVERSATION_ID, conversationId)
+    }
+
+    fun removeConversationId() {
+        PrefsManager.get().remove(PrefsManager.PREF_CONVERSATION_ID)
+    }
+
+    fun getConversationId(): String? {
+        return PrefsManager.get().getString(PrefsManager.PREF_CONVERSATION_ID, "")
+    }
 }

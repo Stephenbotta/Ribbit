@@ -11,7 +11,6 @@ import com.checkIt.extensions.handleError
 import com.checkIt.extensions.isNetworkActive
 import com.checkIt.extensions.isNetworkActiveWithMessage
 import com.checkIt.ui.base.BaseFragment
-import com.checkIt.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_search_tags.*
 
 class SearchTagFragment : BaseFragment(), SearchTagAdapter.Callback {
@@ -30,7 +29,7 @@ class SearchTagFragment : BaseFragment(), SearchTagAdapter.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SearchTagViewModel::class.java)
-        adapter = SearchTagAdapter(GlideApp.with(this), this)
+        adapter = SearchTagAdapter(this)
 //        loadingDialog = LoadingDialog(requireContext())
     }
 
@@ -48,45 +47,20 @@ class SearchTagFragment : BaseFragment(), SearchTagAdapter.Callback {
 
             when (resource.status) {
                 Status.SUCCESS -> {
-//                    loadingDialog.setLoading(false)
                     val data = resource.data?.result ?: emptyList()
                     val firstPage = resource.data?.isFirstPage ?: true
-                    val items = mutableListOf<Any>()
-                    items.addAll(data)
                     if (firstPage) {
-                        adapter.displayItems(items)
+                        adapter.displayItems(data)
                     } else {
-                        adapter.addMoreItems(items)
+                        adapter.addMoreItems(data)
                     }
                 }
 
                 Status.ERROR -> {
-//                    loadingDialog.setLoading(false)
                     handleError(resource.error)
                 }
 
                 Status.LOADING -> {
-//                    loadingDialog.setLoading(true)
-                }
-            }
-        })
-
-        viewModel.followUnFollow.observe(this, Observer { resource ->
-            resource ?: return@Observer
-
-            when (resource.status) {
-                Status.SUCCESS -> {
-                    // Ignored
-                }
-
-                Status.ERROR -> {
-                    // Ignored
-//                    handleError(resource.error)
-
-                }
-
-                Status.LOADING -> {
-                    // Ignored
                 }
             }
         })
@@ -116,14 +90,8 @@ class SearchTagFragment : BaseFragment(), SearchTagAdapter.Callback {
         getTagSearch()
     }
 
-    override fun onClick(position: Int, profile: ProfileDto) {
-        val items = adapter.getUpdatedList()
-        val item = items[position]
-        if (item is ProfileDto) {
-            profile.isFollowing = profile.isFollowing?.not()
-            items.set(position, profile)
-            adapter.notifyDataSetChanged()
-            viewModel.postFollowUnFollowTag(profile.id?:"", profile.isFollowing?:false)
-        }
+    override fun onClick(profile: ProfileDto) {
+        if (requireContext().isNetworkActiveWithMessage())
+            viewModel.postFollowUnFollowTag(profile.id ?: "", profile.isFollowing ?: false)
     }
 }

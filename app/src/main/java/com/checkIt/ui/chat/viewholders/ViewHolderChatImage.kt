@@ -14,12 +14,11 @@ import com.checkIt.utils.DialogsUtil
 import com.checkIt.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_chat_image_left.view.*
 
-class ViewHolderChatImage(itemView: View,
-                          private val glide: GlideRequests,
-                          private val callback: Callback, private val actionCallback: ActionCallback) : ViewHolderChat(itemView) {
+class ViewHolderChatImage(itemView: View, private val glide: GlideRequests, private val callback: Callback,
+                          private val actionCallback: ActionCallback) : ViewHolderChat(itemView) {
     init {
         itemView.btnResend.setOnClickListener {
-            if (adapterPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION && itemView.context.isNetworkActiveWithMessage()) {
+            if (adapterPosition != RecyclerView.NO_POSITION && itemView.context.isNetworkActiveWithMessage()) {
                 chatMessage.messageStatus = MessageStatus.SENDING
                 updateMessageStatus(chatMessage.messageStatus)
                 callback.onResendMessageClicked(chatMessage)
@@ -27,14 +26,14 @@ class ViewHolderChatImage(itemView: View,
         }
 
         itemView.ivImage.setOnClickListener {
-            if (adapterPosition != androidx.recyclerview.widget.RecyclerView.NO_POSITION) {
+            if (adapterPosition != RecyclerView.NO_POSITION) {
                 callback.onImageMessageClicked(chatMessage)
             }
         }
 
         itemView.ivImage.setOnLongClickListener {
             if (chatMessage.sender?.id == UserManager.getUserId())
-                DialogsUtil.openAlertDialog(itemView.context, "image", actionCallback, adapterPosition)
+                DialogsUtil.openAlertDialog(itemView.context, chatMessage, actionCallback)
             true
         }
     }
