@@ -292,9 +292,9 @@ class PostDetailsViewModel : ViewModel() {
 
         // Use the api according to the reply level
         val call = if (topLevelReply) {
-            RetrofitClient.conversifyApi.likeUnlikeReply(replyId, replyOwnerId, action)
+            RetrofitClient.conversifyApi.likeUnlikeReply(replyId, replyOwnerId, media?.id, action)
         } else {
-            RetrofitClient.conversifyApi.likeUnlikeSubReply(replyId, replyOwnerId, action)
+            RetrofitClient.conversifyApi.likeUnlikeSubReply(replyId, replyOwnerId, media?.id, action)
         }
 
         // If any call already exist for the replyId, then first cancel it.

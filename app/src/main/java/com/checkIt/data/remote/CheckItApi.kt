@@ -212,12 +212,14 @@ interface CheckItApi {
     @FormUrlEncoded
     fun likeUnlikeReply(@Field("commentId") replyId: String,
                         @Field("commentBy") replyOwnerId: String,
+                        @Field("mediaId") mediaId: String?,
                         @Field(ACTION) action: Int): Call<Any>
 
     @POST("user/likeOrUnlike")
     @FormUrlEncoded
     fun likeUnlikeSubReply(@Field("replyId") subReplyId: String,
                            @Field("replyBy") subReplyOwnerId: String,
+                           @Field("mediaId") mediaId: String?,
                            @Field(ACTION) action: Int): Call<Any>
 
     @POST("user/addEditReplies")
