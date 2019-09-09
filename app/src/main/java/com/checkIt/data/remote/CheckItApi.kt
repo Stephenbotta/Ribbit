@@ -194,7 +194,8 @@ interface CheckItApi {
 
     @POST("user/getCommentReplies")
     @FormUrlEncoded
-    fun getSubReplies(@Field("commentId") parentReplyId: String,
+    fun getSubReplies(@Field("mediaId") mediaId: String?,
+                      @Field("commentId") parentReplyId: String,
                       @Field("totalReply") parentTotalSubRepliesCount: Int,
                       @Field("replyId") lastParentSubReplyId: String? = null): Call<ApiResponse<List<PostReplyDto>>>
 

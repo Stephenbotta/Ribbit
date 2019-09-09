@@ -77,7 +77,7 @@ class PostDetailsViewModel : ViewModel() {
             null
         }
         RetrofitClient.conversifyApi
-                .getSubReplies(parentReplyId, parentTotalSubRepliesCount, lastParentSubReplyId)
+                .getSubReplies(media?.id, parentReplyId, parentTotalSubRepliesCount, lastParentSubReplyId)
                 .enqueue(object : Callback<ApiResponse<List<PostReplyDto>>> {
                     override fun onResponse(call: Call<ApiResponse<List<PostReplyDto>>>,
                                             response: Response<ApiResponse<List<PostReplyDto>>>) {

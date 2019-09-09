@@ -61,6 +61,14 @@
         tools:ignore="ContentDescription"
         tools:src="@tools:sample/backgrounds/scenic" />
 
+    <ImageView
+        android:id="@+id/ivVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_video_play"
+        android:visibility="gone"
+        app:layout_constraintCircle="@id/ivImage" />
+
     <TextView
         android:id="@+id/tvMessage"
         android:layout_width="0dp"

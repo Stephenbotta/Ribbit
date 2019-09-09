@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.checkIt.R
+import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.models.groups.GroupDto
 import com.checkIt.data.remote.models.groups.GroupPostDto
 import com.checkIt.data.remote.models.loginsignup.ImageUrlDto
@@ -14,6 +15,7 @@ import com.checkIt.extensions.clickSpannable
 import com.checkIt.extensions.gone
 import com.checkIt.extensions.visible
 import com.checkIt.ui.images.ImagesActivity
+import com.checkIt.ui.videoplayer.VideoPlayerActivity
 import com.checkIt.utils.AppUtils
 import com.checkIt.utils.DateTimeUtils
 import com.checkIt.utils.GlideRequests
@@ -54,7 +56,15 @@ class PostDetailsHeaderViewHolder(itemView: View, private val glide: GlideReques
 
     init {
         itemView.ivImage.setOnClickListener {
-            ImagesActivity.start(it.context, arrayListOf(media?.original ?: ""))
+            when (media?.mediaType) {
+                ApiConstants.POST_TYPE_VIDEO -> {
+                    VideoPlayerActivity.start(it.context, media.videoUrl ?: "")
+                }
+                else -> {
+                    ImagesActivity.start(it.context, arrayListOf(media?.original ?: ""))
+                }
+            }
+
         }
     }
 
@@ -79,8 +89,13 @@ class PostDetailsHeaderViewHolder(itemView: View, private val glide: GlideReques
             itemView.ivImage.visible()
             glide.load(media.original)
                     .into(itemView.ivImage)
+            when (media.mediaType) {
+                ApiConstants.POST_TYPE_VIDEO -> itemView.ivVideo.visible()
+                else -> itemView.ivVideo.gone()
+            }
         } else {
             itemView.ivImage.gone()
+            itemView.ivVideo.gone()
         }
         /*} else {
             itemView.ivImage.gone()
