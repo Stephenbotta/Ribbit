@@ -22,7 +22,7 @@ object RetrofitClient {
 
     private val LOGGING_INTERCEPTOR by lazy {
         HttpLoggingInterceptor().setLevel(if (BuildConfig.DEBUG) {
-            HttpLoggingInterceptor.Level.BODY
+            HttpLoggingInterceptor.Level.NONE
         } else {
             HttpLoggingInterceptor.Level.NONE
         })

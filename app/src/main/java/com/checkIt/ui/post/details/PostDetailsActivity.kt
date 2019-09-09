@@ -86,6 +86,8 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
 
         if (media != null) {
             groupPost.isLiked = media?.isLiked
+            groupPost.repliesCount = 0
+            groupPost.likesCount = 0
         }
         viewModel.start(groupPost, media)
 
