@@ -89,6 +89,10 @@ class PostDetailsHeaderViewHolder(itemView: View, private val glide: GlideReques
             itemView.ivImage.visible()
             glide.load(media.original)
                     .into(itemView.ivImage)
+            if (media.isMostLiked == true)
+                itemView.ivLiked.visible()
+            else
+                itemView.ivLiked.gone()
             when (media.mediaType) {
                 ApiConstants.POST_TYPE_VIDEO -> itemView.ivVideo.visible()
                 else -> itemView.ivVideo.gone()
@@ -96,6 +100,7 @@ class PostDetailsHeaderViewHolder(itemView: View, private val glide: GlideReques
         } else {
             itemView.ivImage.gone()
             itemView.ivVideo.gone()
+            itemView.ivLiked.gone()
         }
         /*} else {
             itemView.ivImage.gone()

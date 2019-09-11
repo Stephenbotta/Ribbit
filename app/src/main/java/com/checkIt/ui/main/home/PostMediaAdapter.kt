@@ -34,6 +34,11 @@ class PostMediaAdapter(private val context: Context,
         view.ivPostImage.setOnClickListener {
             callback.openMediaDetail(media)
         }
+
+        if (media.isMostLiked == true)
+            view.ivLiked.visible()
+        else
+            view.ivLiked.gone()
         container.addView(view)
         return view
     }

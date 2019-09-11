@@ -8,8 +8,8 @@
     <ImageView
         android:id="@+id/ivPostImage"
         android:layout_width="match_parent"
-        android:foreground="@color/black0F"
         android:layout_height="match_parent"
+        android:foreground="@color/black0F"
         android:scaleType="centerCrop"
         tools:ignore="ContentDescription"
         tools:src="@tools:sample/backgrounds/scenic" />
@@ -20,5 +20,14 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:src="@drawable/ic_video_play"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/ivLiked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_most_liked"
         tools:ignore="ContentDescription" />
 </RelativeLayout>
