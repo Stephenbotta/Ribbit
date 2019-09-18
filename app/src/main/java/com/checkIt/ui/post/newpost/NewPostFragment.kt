@@ -438,10 +438,14 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.menuPost) {
-            etPostText.clearFocus()
-            etPostText.hideKeyboard()
-            createPost()
-            return true
+            if (adapter.itemCount == 1) {
+                context?.shortToast(getString(R.string.error_msg_media_count_should_be_greater_than_1_and_less_than_5))
+            } else {
+                etPostText.clearFocus()
+                etPostText.hideKeyboard()
+                createPost()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }

@@ -42,8 +42,10 @@ fun TextView.clickSpannable(spannableText: String, @ColorRes textColorRes: Int? 
     }
 
     val startIndex = fullText.indexOf(spannableText)
-    val endIndex = startIndex + spannableText.length
-    spannableString.setSpan(clickable, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    if (startIndex != -1) {
+        val endIndex = startIndex + spannableText.length
+        spannableString.setSpan(clickable, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
     movementMethod = LinkMovementMethod.getInstance()
     highlightColor = Color.TRANSPARENT
     setText(spannableString, TextView.BufferType.SPANNABLE)

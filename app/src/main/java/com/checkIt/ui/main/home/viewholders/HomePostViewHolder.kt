@@ -2,20 +2,21 @@ package com.checkIt.ui.main.home.viewholders
 
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.checkIt.R
+import com.checkIt.data.remote.ApiConstants
 import com.checkIt.data.remote.models.groups.GroupPostDto
 import com.checkIt.data.remote.models.loginsignup.ImageUrlDto
 import com.checkIt.extensions.*
 import com.checkIt.ui.groups.GroupPostCallback
-import com.checkIt.ui.main.home.PostMediaAdapter
 import com.checkIt.utils.*
 import kotlinx.android.synthetic.main.item_home_feed_post.view.*
 
 class HomePostViewHolder(itemView: View, private val glide: GlideRequests,
-                         private val callback: GroupPostCallback) : RecyclerView.ViewHolder(itemView), PostMediaAdapter.Callback {
+                         private val callback: GroupPostCallback) : RecyclerView.ViewHolder(itemView)/*, PostMediaAdapter.Callback*/ {
     private val boldTypeface by lazy { ResourcesCompat.getFont(itemView.context, R.font.roboto_text_bold) }
     private val postClickListener = View.OnClickListener {
         callback.onPostClicked(post, true)
@@ -47,14 +48,14 @@ class HomePostViewHolder(itemView: View, private val glide: GlideRequests,
         }
     }
 
-    private var mediaAdapter: PostMediaAdapter = PostMediaAdapter(itemView.context, this)
+    /*private var mediaAdapter: PostMediaAdapter = PostMediaAdapter(itemView.context, this)*/
 
-    override fun openMediaDetail(media: ImageUrlDto) {
+    /*override fun openMediaDetail(media: ImageUrlDto) {
         callback.onPostMediaClicked(post, true, media)
-    }
+    }*/
 
     init {
-        itemView.vpMedias.adapter = mediaAdapter
+        /*itemView.vpMedias.adapter = mediaAdapter*/
         itemView.setOnClickListener(postClickListener)
 
         itemView.tvUserName.setOnTouchListener { view, event ->
@@ -102,6 +103,22 @@ class HomePostViewHolder(itemView: View, private val glide: GlideRequests,
         }
 
         itemView.ivProfile.setOnClickListener(userProfileClickListener)
+
+        itemView.ivMedia1.setOnClickListener {
+            callback.onPostMediaClicked(post, true, post.media[0])
+        }
+
+        itemView.ivMedia2.setOnClickListener {
+            callback.onPostMediaClicked(post, true, post.media[1])
+        }
+
+        itemView.ivMedia3.setOnClickListener {
+            callback.onPostMediaClicked(post, true, post.media[2])
+        }
+
+        itemView.ivMedia4.setOnClickListener {
+            callback.onPostMediaClicked(post, true, post.media[3])
+        }
     }
 
     private lateinit var post: GroupPostDto
@@ -142,18 +159,60 @@ class HomePostViewHolder(itemView: View, private val glide: GlideRequests,
 
         updateLikeButtonState()
 
-        // media pager is visible only if any media is uploaded
         if (post.media.isEmpty()) {
-            itemView.vpMedias.gone()
-            itemView.indicator.gone()
+            itemView.clMedia.gone()
+            /*itemView.vpMedias.gone()
+            itemView.indicator.gone()*/
         } else {
-            itemView.vpMedias.visible()
+            itemView.clMedia.visible()
+            /*itemView.vpMedias.visible()
             if (post.media.size > 1)
                 itemView.indicator.visible()
             else
-                itemView.indicator.gone()
+                itemView.indicator.gone()*/
+
+            when (post.media.size) {
+                1 -> {
+                    itemView.ivMedia1.visible()
+                    itemView.ivMedia2.gone()
+                    itemView.ivMedia3.gone()
+                    itemView.ivMedia4.gone()
+
+                    loadMedia(itemView.ivMedia1, post.media[0], itemView.ivPlay1, itemView.ivMostLiked1)
+                }
+                2 -> {
+                    itemView.ivMedia1.visible()
+                    itemView.ivMedia2.visible()
+                    itemView.ivMedia3.gone()
+                    itemView.ivMedia4.gone()
+
+                    loadMedia(itemView.ivMedia1, post.media[0], itemView.ivPlay1, itemView.ivMostLiked1)
+                    loadMedia(itemView.ivMedia2, post.media[1], itemView.ivPlay2, itemView.ivMostLiked2)
+                }
+                3 -> {
+                    itemView.ivMedia1.visible()
+                    itemView.ivMedia2.visible()
+                    itemView.ivMedia3.visible()
+                    itemView.ivMedia4.gone()
+
+                    loadMedia(itemView.ivMedia1, post.media[0], itemView.ivPlay1, itemView.ivMostLiked1)
+                    loadMedia(itemView.ivMedia2, post.media[1], itemView.ivPlay2, itemView.ivMostLiked2)
+                    loadMedia(itemView.ivMedia3, post.media[2], itemView.ivPlay3, itemView.ivMostLiked3)
+                }
+                4 -> {
+                    itemView.ivMedia1.visible()
+                    itemView.ivMedia2.visible()
+                    itemView.ivMedia3.visible()
+                    itemView.ivMedia4.visible()
+
+                    loadMedia(itemView.ivMedia1, post.media[0], itemView.ivPlay1, itemView.ivMostLiked1)
+                    loadMedia(itemView.ivMedia2, post.media[1], itemView.ivPlay2, itemView.ivMostLiked2)
+                    loadMedia(itemView.ivMedia3, post.media[2], itemView.ivPlay3, itemView.ivMostLiked3)
+                    loadMedia(itemView.ivMedia4, post.media[3], itemView.ivPlay4, itemView.ivMostLiked4)
+                }
+            }
         }
-        mediaAdapter.displayImages(post.media)
+        /*mediaAdapter.displayImages(post.media)*/
 
         val username = post.user?.userName ?: ""
         val groupName = post.group?.name ?: ""
@@ -202,16 +261,48 @@ class HomePostViewHolder(itemView: View, private val glide: GlideRequests,
         updateRepliesAndLikes()
     }
 
+    private fun loadMedia(ivMedia: ImageView, imageUrl: ImageUrlDto, ivPlay: ImageView, ivMostLiked: ImageView) {
+        glide.load(imageUrl.thumbnail)
+                .into(ivMedia)
+
+        /*itemView.ivPlay1.gone()
+        itemView.ivPlay2.gone()
+        itemView.ivPlay3.gone()
+        itemView.ivPlay4.gone()*/
+
+        when (imageUrl.mediaType) {
+            ApiConstants.POST_TYPE_VIDEO -> ivPlay.visible()
+            else -> ivPlay.gone()
+        }
+
+        if (imageUrl.isMostLiked == true)
+            ivMostLiked.visible()
+        else
+            ivMostLiked.gone()
+    }
+
     private fun updateRepliesAndLikes() {
         // Show formatted replies and likes count
         val repliesCount = post.repliesCount ?: 0
         val formattedReplies = itemView.resources.getQuantityString(R.plurals.replies_with_count, repliesCount, repliesCount)
 
-        val likesCount = post.likesCount ?: 0
-        val formattedLikes = itemView.resources.getQuantityString(R.plurals.likes_with_count, likesCount, likesCount)
+        var totalLikes = 0.0
+        post.media.forEach { totalLikes += it.likesCount ?: 0 }
+        val maxLikeCount = post.media.map { it.likesCount ?: 0 }.max() ?: 0
+        val likesCount = if (totalLikes > 0) {
+            (maxLikeCount / totalLikes) * 100
+        } else {
+            0.0
+        }
+        val formattedLikes = itemView.resources.getQuantityString(R.plurals.likes_with_count_in_percent, likesCount.toInt(), likesCount)
 
         // e.g. "156 Replies · 156 Likes"
-        val formattedRepliesAndLikes = String.format("%s · %s", formattedReplies, formattedLikes)
+        val formattedRepliesAndLikes = if (likesCount > 0.0) {
+            String.format("%s · %s", formattedReplies, formattedLikes)
+        } else {
+            String.format("%s", formattedReplies)
+        }
+
         itemView.tvRepliesLikes.setText(formattedRepliesAndLikes, TextView.BufferType.SPANNABLE)
 
         itemView.tvRepliesLikes.clickSpannable(spannableText = formattedReplies,

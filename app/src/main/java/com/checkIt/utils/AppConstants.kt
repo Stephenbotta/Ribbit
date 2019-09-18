@@ -99,5 +99,5 @@ object AppConstants {
     const val EXTRA_MULTI_SELECT_IMAGES_LIST = "EXTRA_MULTI_SELECT_IMAGES_LIST"
     const val EXTRA_SELECTED_MEDIA = "EXTRA_SELECTED_MEDIA"
 
-    const val MAX_FILE_COUNT = 10
+    const val MAX_FILE_COUNT = 4
 }

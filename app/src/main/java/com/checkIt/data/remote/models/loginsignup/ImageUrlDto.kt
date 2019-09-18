@@ -25,5 +25,8 @@ data class ImageUrlDto(
         var isLiked: Boolean? = null,
 
         @field:SerializedName("isMostLiked")
-        var isMostLiked: Boolean? = null
+        var isMostLiked: Boolean? = null,
+
+        @field:SerializedName("likeCount")
+        var likesCount: Int? = null
 ) : Parcelable

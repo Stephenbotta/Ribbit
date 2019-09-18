@@ -31,6 +31,10 @@
         <item quantity="one">%d Reply</item>
         <item quantity="other">%d Replies</item>
     </plurals>
+    <plurals name="likes_with_count_in_percent">
+        <item quantity="one">%.1f\%% Like</item>
+        <item quantity="other">%.1f\%% Likes</item>
+    </plurals>
     <plurals name="likes_with_count">
         <item quantity="one">%d Like</item>
         <item quantity="other">%d Likes</item>
@@ -487,4 +491,5 @@
     <string name="post_btn_edit_post">Edit</string>
     <string name="post_updated_successfully">Post updated successfully.</string>
     <string name="user_not_found">User not found</string>
+    <string name="error_msg_media_count_should_be_greater_than_1_and_less_than_5">Selected Media count should be greater than 1 and less than 5</string>
 </resources>
