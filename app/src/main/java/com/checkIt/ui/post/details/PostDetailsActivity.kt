@@ -1,18 +1,26 @@
 package com.checkIt.ui.post.details
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.checkIt.BuildConfig
 import com.checkIt.R
 import com.checkIt.data.local.UserManager
 import com.checkIt.data.remote.models.Status
@@ -26,6 +34,7 @@ import com.checkIt.data.remote.models.post.PostReplyDto
 import com.checkIt.databinding.BottomSheetDialogDeleteCommentBinding
 import com.checkIt.extensions.*
 import com.checkIt.ui.base.BaseActivity
+import com.checkIt.ui.custom.LoadingDialog
 import com.checkIt.ui.custom.SocialEditText
 import com.checkIt.ui.people.details.PeopleDetailsActivity
 import com.checkIt.ui.post.newpost.NewPostActivity
@@ -35,6 +44,8 @@ import com.checkIt.utils.GlideApp
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_post_details.*
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
 
 class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMentionAdapter.Callback, PopupMenu.OnMenuItemClickListener {
     companion object {
@@ -63,10 +74,13 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     private lateinit var groupPost: GroupPostDto
     private val ownUserId by lazy { UserManager.getUserId() }
     private var media: ImageUrlDto? = null
+    private lateinit var loader: LoadingDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_details)
+
+        loader = LoadingDialog(this)
 
         btnBack.setOnClickListener { onBackPressed() }
 
@@ -88,6 +102,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
             groupPost.isLiked = media?.isLiked
             groupPost.repliesCount = 0
             groupPost.likesCount = 0
+            btnShare.visible()
         }
         viewModel.start(groupPost, media)
 
@@ -153,6 +168,38 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
         }
 
         btnMore.setOnClickListener { optionMenu(btnMore) }
+
+        btnShare.setOnClickListener {
+            loader.setLoading(true)
+            Glide.with(this)
+                    .asBitmap()
+                    .load(media?.original ?: "")
+                    .into(object : CustomTarget<Bitmap>() {
+                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                            shareBitmap(resource, groupPost.id ?: "")
+                        }
+
+                        override fun onLoadCleared(placeholder: Drawable?) {}
+                    })
+        }
+    }
+
+    @SuppressLint("SetWorldReadable")
+    fun shareBitmap(bitmap: Bitmap, fileName: String) {
+        try {
+            val file = File(cacheDir, "$fileName.png")
+            val fOut = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut)
+            fOut.flush()
+            fOut.close()
+            file.setReadable(true, false)
+            val fileUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", file)
+            loader.setLoading(false)
+            shareText(fileUri, groupPost.postText ?: "")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            loader.setLoading(false)
+        }
     }
 
     private fun observeChanges() {

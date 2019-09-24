@@ -16,7 +16,7 @@ buildscript {
         retrofitVersion = '2.4.0'
         coroutinesAdapterVersion = '0.9.2'
         loggingInterceptorVersion = '3.10.0'
-        glideVersion = '4.8.0'
+        glideVersion = '4.9.0'
         roundedImageViewVersion = '2.3.0'
         countryCodePickerVersion = '2.2.3'
         firebaseCoreVersion = '17.2.0'

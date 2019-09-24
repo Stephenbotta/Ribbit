@@ -29,9 +29,21 @@
         android:background="?attr/selectableItemBackground"
         android:padding="16dp"
         android:src="@drawable/ic_more"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnShare"
         app:layout_constraintTop_toTopOf="@id/btnBack"
         tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/btnShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="?attr/selectableItemBackground"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnBack"
+        tools:ignore="ContentDescription"
+        android:src="@drawable/ic_share_blue" />
 
     <View
         android:id="@+id/dividerToolbar"

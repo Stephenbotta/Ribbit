@@ -68,6 +68,14 @@ fun Context.shareText(text: String) {
     startActivity(Intent.createChooser(intent, AppConstants.TITLE_SHARE_VIA))
 }
 
+fun Context.shareText(fileUri: Uri, shareText: String) {
+    val intent = Intent(Intent.ACTION_SEND)
+    intent.putExtra(Intent.EXTRA_TEXT, shareText)
+    intent.putExtra(Intent.EXTRA_STREAM, fileUri)
+    intent.type = "image/*"
+    startActivity(intent)
+}
+
 fun Context.sendInviteViaMessages(text: String) {
     val smsIntent = Intent(Intent.ACTION_VIEW)
     smsIntent.data = Uri.parse("smsto:")

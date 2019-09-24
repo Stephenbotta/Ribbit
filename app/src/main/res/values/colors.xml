@@ -42,4 +42,5 @@
     <color name="notificationsRejectText">#767676</color>
 
     <color name="profileFollowersText">#242D41</color>
+    <color name="blue">#0069FF</color>
 </resources>

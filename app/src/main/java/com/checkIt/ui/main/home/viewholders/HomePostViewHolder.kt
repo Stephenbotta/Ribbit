@@ -310,7 +310,7 @@ class HomePostViewHolder(itemView: View, private val glide: GlideRequests,
                 clickListener = postClickListener)
 
         itemView.tvRepliesLikes.clickSpannable(spannableText = formattedLikes,
-                textColorRes = R.color.textGrayMedium,
+                textColorRes = R.color.blue,
                 clickListener = likesCountClickListener)
     }
 
