@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:background="@drawable/bg_login_sign_up"
     android:orientation="vertical">
 
     <TextView

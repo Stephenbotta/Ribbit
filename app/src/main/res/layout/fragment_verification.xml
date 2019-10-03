@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/bg_create_password"
     android:clickable="true"
     android:focusable="true">
 
@@ -16,7 +16,7 @@
         android:fontFamily="@font/roboto_text_bold"
         android:includeFontPadding="false"
         android:text="@string/verification_label_verification"
-        android:textColor="@color/textGray"
+        android:textColor="@color/white"
         android:textSize="@dimen/all_screen_header_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="36dp"
-        android:textColor="@color/textGray"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelVerification"
         tools:text="@string/verification_label_we_sent_you_a_code_phone" />
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:textColor="@color/textGrayMedium"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelWeSentYou"
         tools:text="Code sent to +971 56 975 1672" />
@@ -68,7 +68,7 @@
         android:layout_marginTop="48dp"
         android:layout_marginEnd="24dp"
         android:text="@string/verification_label_did_not_receive_the_code"
-        android:textColor="@color/textGray"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etEnterCode" />

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="view"
-            type="com.checkIt.ui.main.notifications.NotificationsFragment" />
+            type="com.ribbit.ui.main.notifications.NotificationsFragment" />
     </data>
 
     <androidx.core.widget.NestedScrollView

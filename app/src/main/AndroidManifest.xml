@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.checkIt">
+    package="com.ribbit">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
     <application
-        android:name="com.checkIt.CheckItApp"
+        android:name="com.ribbit.RibbitApp"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -26,7 +26,7 @@
         tools:replace="android:allowBackup">
 
         <activity
-            android:name="com.checkIt.ui.splash.SplashActivity"
+            android:name="com.ribbit.ui.splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
@@ -35,63 +35,63 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.checkIt.ui.landing.LandingActivity"
+            android:name="com.ribbit.ui.landing.LandingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.main.MainActivity"
+            android:name="com.ribbit.ui.main.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="com.checkIt.ui.loginsignup.LoginSignUpActivity"
+            android:name="com.ribbit.ui.loginsignup.LoginSignUpActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.checkIt.ui.createvenue.CreateVenueActivity"
+            android:name="com.ribbit.ui.createvenue.CreateVenueActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.chat.ChatActivity"
+            android:name="com.ribbit.ui.chat.ChatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name="com.checkIt.ui.venues.filters.VenueFiltersActivity"
+            android:name="com.ribbit.ui.venues.filters.VenueFiltersActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.venues.details.VenueDetailsActivity"
+            android:name="com.ribbit.ui.venues.details.VenueDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.groups.details.GroupDetailsActivity"
+            android:name="com.ribbit.ui.groups.details.GroupDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.images.ImagesActivity"
+            android:name="com.ribbit.ui.images.ImagesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Images" />
         <activity
-            android:name="com.checkIt.ui.videoplayer.VideoPlayerActivity"
+            android:name="com.ribbit.ui.videoplayer.VideoPlayerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Images" />
         <activity
-            android:name="com.checkIt.ui.creategroup.create.CreateGroupActivity"
+            android:name="com.ribbit.ui.creategroup.create.CreateGroupActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.groups.topicgroups.TopicGroupsActivity"
+            android:name="com.ribbit.ui.groups.topicgroups.TopicGroupsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.groups.groupposts.GroupPostsActivity"
+            android:name="com.ribbit.ui.groups.groupposts.GroupPostsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.creategroup.addparticipants.AddParticipantsActivity"
+            android:name="com.ribbit.ui.creategroup.addparticipants.AddParticipantsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.post.newpost.NewPostActivity"
+            android:name="com.ribbit.ui.post.newpost.NewPostActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.post.details.PostDetailsActivity"
+            android:name="com.ribbit.ui.post.details.PostDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.venues.join.JoinVenueActivity"
+            android:name="com.ribbit.ui.venues.join.JoinVenueActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.venues.addparticipants.AddVenueParticipantsActivity"
+            android:name="com.ribbit.ui.venues.addparticipants.AddVenueParticipantsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -111,54 +111,54 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.checkIt.ui.people.details.PeopleDetailsActivity"
+            android:name="com.ribbit.ui.people.details.PeopleDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.profile.ProfileActivity"
+            android:name="com.ribbit.ui.profile.ProfileActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.checkIt.ui.search.SearchActivity"
+            android:name="com.ribbit.ui.search.SearchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.profile.edit.EditProfileActivity"
+            android:name="com.ribbit.ui.profile.edit.EditProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.profile.settings.SettingsActivity"
+            android:name="com.ribbit.ui.profile.settings.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.profile.settings.verification.VerificationActivity"
+            android:name="com.ribbit.ui.profile.settings.verification.VerificationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.profile.settings.blockusers.BlockUsersListActivity"
+            android:name="com.ribbit.ui.profile.settings.blockusers.BlockUsersListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.profile.settings.weblink.WebLinkActivity"
+            android:name="com.ribbit.ui.profile.settings.weblink.WebLinkActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.profile.settings.hideinfo.HidePersonalInfoActivity"
+            android:name="com.ribbit.ui.profile.settings.hideinfo.HidePersonalInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.profile.settings.hideinfo.hidestatus.HideStatusActivity"
+            android:name="com.ribbit.ui.profile.settings.hideinfo.hidestatus.HideStatusActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.profile.followerandfollowing.FollowerAndFollowingActivity"
+            android:name="com.ribbit.ui.profile.followerandfollowing.FollowerAndFollowingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.checkIt.ui.conversenearby.SelectNearByActivity"
+            android:name="com.ribbit.ui.conversenearby.SelectNearByActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.conversenearby.post.PostNearByActivity"
+            android:name="com.ribbit.ui.conversenearby.post.PostNearByActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.conversenearby.post.SubmitPostActivity"
+            android:name="com.ribbit.ui.conversenearby.post.SubmitPostActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.picker.PickerActivity"
+            android:name="com.ribbit.ui.picker.PickerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.checkIt.ui.preview.PreviewActivity"
+            android:name="com.ribbit.ui.preview.PreviewActivity"
             android:screenOrientation="portrait" />
 
         <!-- https://developers.google.com/maps/documentation/android-sdk/config#specify_requirement_for_apache_http_legacy_library -->
@@ -181,7 +181,7 @@
             android:enabled="true" />
 
         <service
-            android:name="com.checkIt.services.MessagingService"
+            android:name="com.ribbit.services.MessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF612C</color>
-    <color name="colorPrimaryDark">#CF491B</color>
-    <color name="colorAccent">#FF612C</color>
+    <color name="colorPrimary">#FFDF18</color>
+    <color name="colorPrimaryDark">#CEB310</color>
+    <color name="colorAccent">#FFDF18</color>
 
-    <color name="greyImageBackground">#E0E0E0</color>
+    <color name="greyImageBackground">#1FFFFFFF</color>
     <color name="peopleLine">#1F4A566C</color>
     <color name="fabDisabledBackground">#B0BEC5</color>
 
@@ -18,7 +18,7 @@
     <color name="black80">#80000000</color>
 
     <color name="red">#FF0000</color>
-    <color name="disableTextView">#55FF612C</color>
+    <color name="disableTextView">#55FFDF18</color>
 
     <color name="textGray">#4A566C</color>
     <color name="textGrayDE">#DE4A566C</color>
@@ -33,7 +33,7 @@
 
     <color name="editTextBackground">#FAFAFA</color>
     <color name="editTextStroke">#E7E7E7</color>
-    <color name="editTextContent">#2F2F2F</color>
+    <color name="editTextContent">#000000</color>
     <color name="editTextHint">#A1A1A1</color>
 
     <color name="venueFiltersParentBackground">#F9F4FD</color>
@@ -43,4 +43,7 @@
 
     <color name="profileFollowersText">#242D41</color>
     <color name="blue">#0069FF</color>
+    <color name="greenA3">#A3CA39</color>
+    <color name="gray">#454541</color>
+    <color name="blue3B">#3B5998</color>
 </resources>

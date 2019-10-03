@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray"
     android:focusable="true"
     android:focusableInTouchMode="true"
     tools:context=".ui.main.MainActivity">
@@ -23,14 +24,15 @@
         android:background="@color/greyImageBackground"
         app:layout_constraintBottom_toTopOf="@id/bottomTabs" />
 
-    <com.checkIt.ui.main.MainBottomTabs
+    <com.ribbit.ui.main.MainBottomTabs
         android:id="@+id/bottomTabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:tabGravity="fill"
         app:tabIconTint="@null"
-        app:tabIndicatorColor="@color/colorPrimary"
+        android:background="@color/gray"
+        app:tabIndicatorHeight="0dp"
         app:tabMode="fixed" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

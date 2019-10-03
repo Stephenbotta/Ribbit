@@ -3,15 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/ic_splash_white_bg"
     android:layout_height="match_parent">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_login_sign_up_pattern"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -23,26 +16,24 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-    <com.google.android.material.button.MaterialButton
+    <TextView
         android:id="@+id/btnGetStarted"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
         android:fontFamily="@font/roboto_text_bold"
         android:letterSpacing="0"
         android:paddingTop="20dp"
+        android:gravity="center"
         android:paddingBottom="20dp"
         android:text="@string/login_sign_up_btn_get_started"
         android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:backgroundTint="@color/colorPrimary"
-        app:cornerRadius="32dp"
+        android:textColor="@color/black"
+        android:background="@drawable/drawable_button_gradient"
         app:layout_constraintBottom_toTopOf="@id/tvLabelAlreadyAMember"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.75"
-        app:rippleColor="?attr/colorAccent" />
+        app:layout_constraintWidth_percent="0.75" />
 
     <TextView
         android:id="@+id/tvLabelAlreadyAMember"
@@ -53,7 +44,7 @@
         android:layout_marginBottom="70dp"
         android:gravity="center"
         android:text="@string/login_sign_up_label_already_a_member_sign_in"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@id/tvLabelTermsAndPrivacy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -67,7 +58,7 @@
         android:layout_marginBottom="30dp"
         android:gravity="center_horizontal"
         android:text="@string/login_sign_up_label_by_signing_in_you_are_agree"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="12sp"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -6,7 +6,7 @@
 
         <variable
             name="view"
-            type="com.checkIt.ui.post.details.PostDetailsActivity" />
+            type="com.ribbit.ui.post.details.PostDetailsActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

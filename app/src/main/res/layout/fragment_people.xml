@@ -7,11 +7,11 @@
 
         <variable
             name="view"
-            type="com.checkIt.ui.people.PeopleFragment" />
+            type="com.ribbit.ui.people.PeopleFragment" />
 
         <variable
             name="viewModel"
-            type="com.checkIt.ui.people.PeopleViewModel" />
+            type="com.ribbit.ui.people.PeopleViewModel" />
 
     </data>
 

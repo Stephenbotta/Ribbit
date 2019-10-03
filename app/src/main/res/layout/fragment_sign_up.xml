@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/bg_sign_up"
     android:clickable="true"
     android:focusable="true">
 
@@ -16,7 +16,7 @@
         android:fontFamily="@font/roboto_text_bold"
         android:includeFontPadding="false"
         android:text="@string/sign_up"
-        android:textColor="@color/textGray"
+        android:textColor="@color/white"
         android:textSize="@dimen/all_screen_header_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,6 +40,7 @@
         android:layout_marginTop="36dp"
         android:fontFamily="@font/roboto_text_bold"
         android:text="@string/login_label_slash"
+        android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@id/btnPhoneNumber"
         app:layout_constraintTop_toBottomOf="@id/tvLabelTitle" />
 
@@ -50,7 +51,7 @@
         android:layout_marginTop="36dp"
         android:fontFamily="@font/roboto_text_bold"
         android:text="@string/login_btn_email_id"
-        android:textColor="@color/textGray"
+        android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@id/tvLabelSlash"
         app:layout_constraintTop_toBottomOf="@id/tvLabelTitle" />
 
@@ -64,10 +65,10 @@
         android:id="@+id/llPhoneEmail"
         android:layout_width="0dp"
         android:layout_height="44dp"
+        android:background="@drawable/background_social_button"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:background="@drawable/background_edit_text_gray_rounded_4dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,7 +82,7 @@
             android:layout_marginStart="4dp"
             app:ccp_autoDetectCountry="true"
             app:ccp_autoFormatNumber="false"
-            app:ccp_contentColor="@color/editTextContent"
+            app:ccp_contentColor="@color/black"
             app:ccp_showArrow="false"
             app:ccp_showNameCode="false"
             app:ccp_textSize="16sp"
@@ -107,7 +108,8 @@
             app:layout_constraintStart_toEndOf="@id/countryCodePicker"
             app:layout_constraintTop_toTopOf="@id/countryCodePicker"
             tools:ignore="TextFields"
-            tools:targetApi="o" />
+            tools:targetApi="o"
+            tools:text="@tools:sample/us_phones" />
 
         <EditText
             android:id="@+id/etEmail"
@@ -137,7 +139,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="30dp"
         android:text="@string/login_label_or_you_could"
-        android:textColor="@color/textGray"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/llPhoneEmail" />
 
@@ -185,7 +187,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:text="@string/login_btn_continue_with_facebook"
-            android:textColor="@color/textGray"
+            android:textColor="@color/blue3B"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/dividerFacebook" />

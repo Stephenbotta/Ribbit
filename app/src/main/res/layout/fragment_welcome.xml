@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/bg_welcome"
     android:clickable="true"
     android:focusable="true">
 
@@ -24,7 +24,7 @@
                 android:fontFamily="@font/roboto_text_bold"
                 android:includeFontPadding="false"
                 android:text="@string/welcome_label_welcome"
-                android:textColor="@color/textGray"
+                android:textColor="@color/white"
                 android:textSize="@dimen/all_screen_header_text_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +38,7 @@
                 android:fontFamily="@font/roboto_text_medium"
                 android:includeFontPadding="false"
                 android:text="@string/welcome_label_what_s_your_full_name"
-                android:textColor="@color/textGray"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvLabelCreatePassword" />
@@ -76,7 +76,7 @@
                 android:fontFamily="@font/roboto_text_medium"
                 android:includeFontPadding="false"
                 android:text="@string/welcome_label_username"
-                android:textColor="@color/textGray"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/etFullName" />
@@ -87,8 +87,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
                 android:background="@drawable/background_edit_text_gray_rounded_4dp"
+                android:layout_marginEnd="24dp"
                 android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -138,7 +138,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="24dp"
                 android:text="@string/welcome_label_username_validation_requirements"
-                android:textColor="@color/textGray"
+                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/llUsername" />
@@ -152,7 +152,7 @@
                 android:fontFamily="@font/roboto_text_medium"
                 android:includeFontPadding="false"
                 android:text="@string/welcome_label_your_email_id"
-                android:textColor="@color/textGray"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvLabelUsernameValidation" />
@@ -189,7 +189,7 @@
                 android:fontFamily="@font/roboto_text_medium"
                 android:includeFontPadding="false"
                 android:text="@string/welcome_label_your_phone_number"
-                android:textColor="@color/textGray"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/etEmail" />
@@ -198,10 +198,10 @@
                 android:id="@+id/llPhoneNumber"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/background_edit_text_gray_rounded_4dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
-                android:background="@drawable/background_edit_text_gray_rounded_4dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingTop="4dp"

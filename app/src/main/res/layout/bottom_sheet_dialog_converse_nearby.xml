@@ -6,7 +6,7 @@
 
         <variable
             name="view"
-            type="com.checkIt.ui.conversenearby.post.PostNearByActivity" />
+            type="com.ribbit.ui.conversenearby.post.PostNearByActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

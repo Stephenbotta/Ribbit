@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Check It</string>
+    <string name="app_name">Ribbit</string>
 
     <string name="facebook_app_id" translatable="false">2767141076649146</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb2767141076649146</string>
@@ -95,7 +95,7 @@
     <string name="error_invalid_new_password_length">New password length must be 6 to 20 characters</string>
     <string name="error_invalid_phone_number">Please enter valid phone number</string>
 
-    <string name="login_sign_up_label_by_signing_in_you_are_agree">By Signing in you agree to Check It’s Terms &amp; conditions and Privacy policy.</string>
+    <string name="login_sign_up_label_by_signing_in_you_are_agree">By Signing in you agree to Ribbit’s Terms &amp; conditions and Privacy policy.</string>
     <string name="login_sign_up_label_terms_and_conditions">Terms &amp; conditions</string>
     <string name="login_sign_up_label_privacy_policy">Privacy policy</string>
     <string name="login_sign_up_label_already_a_member_sign_in">Already a member? Sign in</string>
@@ -448,8 +448,8 @@
     <string name="hide_info_label_people_count">%d People</string>
     <string name="search_user_label_progress_count">%02d mi</string>
 
-    <string name="venue_share_link">Please open this link to join my Check It Venue.</string>
-    <string name="group_share_link">Please open this link to join my Check It Group.</string>
+    <string name="venue_share_link">Please open this link to join my Ribbit Venue.</string>
+    <string name="group_share_link">Please open this link to join my Ribbit It Group.</string>
     <string name="msg_invite_sent_successfully">Invite sent successfully</string>
     <string name="follow_request_text">Follow request has already been sent to this user.</string>
 

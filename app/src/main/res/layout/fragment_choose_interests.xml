@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/gray"
     android:clickable="true"
     android:focusable="true">
 
@@ -18,7 +18,7 @@
         android:fontFamily="@font/roboto_text_bold"
         android:includeFontPadding="false"
         android:text="@string/choose_interests_label_choose_interests"
-        android:textColor="@color/notificationsRejectText"
+        android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
         android:layout_marginStart="24dp"
         android:fontFamily="@font/roboto_text_medium"
         android:text="@string/choose_interests_label_choose_at_least"
-        android:textColor="@color/textGray"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelTellUs" />
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
-        <com.google.android.material.button.MaterialButton
+        <TextView
             android:id="@+id/btnRetry"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
             android:fontFamily="@font/roboto_text_bold"
             android:text="@string/retry"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             app:backgroundTint="@color/colorPrimary"
             app:rippleColor="?attr/colorAccent"
             tools:visibility="visible" />
@@ -96,7 +96,7 @@
         android:paddingBottom="20dp"
         android:text="@string/choose_interests_btn_continue"
         android:textAllCaps="false"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="@dimen/all_labels_and_others_text_size"
         android:visibility="visible"
         app:backgroundTint="@color/selector_fab_background"

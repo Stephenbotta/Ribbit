@@ -6,7 +6,7 @@
 
         <variable
             name="view"
-            type="com.checkIt.ui.main.chats.ChatsFragment" />
+            type="com.ribbit.ui.main.chats.ChatsFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

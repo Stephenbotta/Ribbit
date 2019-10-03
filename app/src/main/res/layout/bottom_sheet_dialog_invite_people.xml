@@ -6,7 +6,7 @@
 
         <variable
             name="view"
-            type="com.checkIt.ui.profile.settings.SettingsActivity" />
+            type="com.ribbit.ui.profile.settings.SettingsActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

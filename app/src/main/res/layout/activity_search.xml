@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.checkIt.ui.search.SearchViewModel" />
+            type="com.ribbit.ui.search.SearchViewModel" />
 
         <variable
             name="view"
-            type="com.checkIt.ui.search.SearchActivity" />
+            type="com.ribbit.ui.search.SearchActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
