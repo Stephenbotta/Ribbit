@@ -54,6 +54,7 @@ class LoginPasswordFragment : BaseFragment() {
         credentials = arguments?.getString(ARGUMENT_CREDENTIALS) ?: ""
 
         fabProceed.isEnabled = false    // Disabled by default
+        fabProceed.updateAlphaLevel()
 
         displayProfile()
         setListeners()
@@ -101,6 +102,7 @@ class LoginPasswordFragment : BaseFragment() {
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
                 val password = text?.toString() ?: ""
                 fabProceed.isEnabled = ValidationUtils.isPasswordLengthValid(password)
+                fabProceed.updateAlphaLevel()
             }
         })
 

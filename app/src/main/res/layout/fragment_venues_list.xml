@@ -5,23 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView"
-        android:layout_width="0dp"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:singleLine="true"
-        android:background="@drawable/background_venues_list_search"
-        android:theme="@style/SearchViewSearchVenues"
-        app:iconifiedByDefault="false"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:background="@color/navigationBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:queryBackground="@color/transparent"
-        app:queryHint="@string/venues_label_search_for_venues_by_name"
-        app:searchIcon="@drawable/ic_search" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:background="@drawable/background_venues_list_search"
+            android:theme="@style/SearchViewSearchVenues"
+            app:iconifiedByDefault="false"
+            app:closeIcon="@drawable/ic_cross_gray_small"
+            app:queryBackground="@color/transparent"
+            app:queryHint="@string/venues_label_search_for_venues_by_name"
+            app:searchIcon="@drawable/ic_search" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -30,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchView">
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <ViewSwitcher
             android:id="@+id/viewSwitcher"

@@ -8,9 +8,11 @@ class HomeSearchViewHolder(itemView: View,
                            callback: Callback) : RecyclerView.ViewHolder(itemView) {
     init {
         itemView.ivSearch.setOnClickListener { callback.onHomeSearchClicked() }
+        itemView.ivNotification.setOnClickListener { callback.onHomeNotificationClicked() }
     }
 
     interface Callback {
         fun onHomeSearchClicked()
+        fun onHomeNotificationClicked()
     }
 }

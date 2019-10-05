@@ -65,7 +65,7 @@
         android:paddingBottom="20dp"
         android:text="@string/choose_interests_btn_continue"
         android:textAllCaps="false"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:visibility="gone"
         app:backgroundTint="@color/colorPrimary"
         app:cornerRadius="32dp"

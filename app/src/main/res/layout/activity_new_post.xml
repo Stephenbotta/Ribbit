@@ -14,7 +14,8 @@
         app:contentInsetEndWithActions="16dp"
         app:contentInsetStart="12dp"
         app:popupTheme="@style/ThemeOverlay.MaterialComponents.Dark"
-        app:theme="@style/ToolbarBoldMenuText">
+        app:theme="@style/ToolbarBoldMenuText"
+        android:background="@color/navigationBackground">
 
         <TextView
             android:id="@+id/btnBack"

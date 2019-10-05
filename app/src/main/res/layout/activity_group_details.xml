@@ -56,8 +56,8 @@
                 android:inputType="textPersonName|textCapWords|textMultiLine"
                 android:padding="4dp"
                 android:singleLine="true"
-                android:textColor="@color/textGray"
-                android:textColorHint="@color/textGrayMedium"
+                android:textColor="@color/screenBackground"
+                android:textColorHint="@color/gray45"
                 android:visibility="gone"
                 tools:ignore="UnusedAttribute"
                 tools:visibility="visible" />

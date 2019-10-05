@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.ribbit.R
 import com.ribbit.data.remote.models.loginsignup.ProfileDto
 import com.ribbit.extensions.shortToast
+import com.ribbit.extensions.updateAlphaLevel
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.loginsignup.welcome.WelcomeFragment
 import com.ribbit.utils.ValidationUtils
@@ -33,6 +34,7 @@ class CreatePasswordFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         fabProceed.isEnabled = false
+        fabProceed.updateAlphaLevel()
         setListeners()
     }
 
@@ -47,6 +49,7 @@ class CreatePasswordFragment : BaseFragment() {
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
                 val password = text?.toString() ?: ""
                 fabProceed.isEnabled = ValidationUtils.isPasswordLengthValid(password)
+                fabProceed.updateAlphaLevel()
             }
         })
 

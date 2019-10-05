@@ -229,7 +229,7 @@ class HomePostViewHolder(itemView: View, private val glide: GlideRequests,
 
         // Set clickable span to the username
         itemView.tvUserName.clickSpannable(spannableText = username,
-                textColorRes = R.color.white,
+                textColorRes = R.color.textGray,
                 textTypeface = boldTypeface,
                 clickListener = userProfileClickListener)
 

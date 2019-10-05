@@ -56,6 +56,7 @@ class VerificationFragment : BaseFragment() {
         viewModel.start(profile, startedForResult)
 
         fabProceed.isEnabled = false
+        fabProceed.updateAlphaLevel()
 
         displayVerificationDetails(profile)
         setListeners()
@@ -113,6 +114,7 @@ class VerificationFragment : BaseFragment() {
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
                 val otp = text?.toString() ?: ""
                 fabProceed.isEnabled = ValidationUtils.isOtpValid(otp)
+                fabProceed.updateAlphaLevel()
             }
         })
 

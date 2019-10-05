@@ -23,7 +23,7 @@
         android:id="@+id/bottomView"
         android:layout_width="0dp"
         android:layout_height="32dp"
-        android:background="@color/textGray7F"
+        android:background="@color/black88"
         app:layout_constraintBottom_toBottomOf="@id/ivAlbum" />
 
     <TextView

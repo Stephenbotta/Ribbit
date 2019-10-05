@@ -58,6 +58,7 @@ class NotificationsFragment : BaseFragment(), NotificationsAdapter.Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout.setOnRefreshListener { refreshData() }
+        tvTitle.setOnClickListener { activity?.finish() }
         clearNotification.setOnClickListener { clearNotifications() }
         setupNotificationsRecycler()
         observeChanges()

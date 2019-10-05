@@ -208,6 +208,10 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         startActivityForResult(intent, AppConstants.REQ_CODE_HOME_SEARCH)
     }
 
+    override fun onHomeNotificationClicked() {
+        ProfileActivity.start(requireContext(), false)
+    }
+
     override fun onPostClicked(post: GroupPostDto, focusReplyEditText: Boolean) {
         Timber.i("Post clicked : $post\nFocus reply edit text : $focusReplyEditText")
         val intent = PostDetailsActivity.getStartIntent(requireActivity(), post, focusReplyEditText)

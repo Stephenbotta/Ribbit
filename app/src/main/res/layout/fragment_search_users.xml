@@ -7,22 +7,33 @@
     android:animateLayoutChanges="true"
     android:orientation="vertical">
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/ivProfilePic"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="end"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:scaleType="centerCrop"
-        app:riv_oval="true"
-        tools:src="@tools:sample/avatars" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/navigationBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/ivProfilePic"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:scaleType="centerCrop"
+            app:riv_oval="true"
+            tools:src="@tools:sample/avatars" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <View
         android:id="@+id/divider_1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="8dp"
         android:background="@color/greyImageBackground" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,20 +58,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvConnection"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:paddingStart="16dp"
-                android:maxHeight="100dp"
-                android:paddingEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvLabelExploreConnection"
-                tools:layoutManager="android.support.v7.widget.GridLayoutManager"
-                tools:listitem="@layout/item_profile_interest"
-                tools:orientation="horizontal"
-                tools:spanCount="2" />
+            android:id="@+id/rvConnection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingStart="16dp"
+            android:maxHeight="100dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLabelExploreConnection"
+            tools:layoutManager="android.support.v7.widget.GridLayoutManager"
+            tools:listitem="@layout/item_profile_interest"
+            tools:orientation="horizontal"
+            tools:spanCount="2" />
 
         <View
             android:id="@+id/divider_2"

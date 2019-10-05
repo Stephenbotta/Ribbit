@@ -2,6 +2,7 @@ package com.ribbit.ui.main.chats.individual
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ribbit.R
@@ -41,6 +42,17 @@ class IndividualChatFragment : BaseFragment(), ChatListCallback {
         swipeRefreshLayout.setOnRefreshListener { getChatSummary() }
         observeChanges()
         getChatSummary()
+
+        searchChatView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(query: String?): Boolean {
+                search(query ?: "")
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+        })
     }
 
     private fun observeChanges() {

@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.ribbit.R
 import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.loginsignup.ProfileDto
 import com.ribbit.extensions.handleError
-import com.ribbit.extensions.isNetworkActive
 import com.ribbit.extensions.isNetworkActiveWithMessage
 import com.ribbit.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_search_tags.*
@@ -74,12 +75,12 @@ class SearchTagFragment : BaseFragment(), SearchTagAdapter.Callback {
 
     private fun setupHomeRecycler() {
         rvTagSearch.adapter = adapter
-        (rvTagSearch.itemAnimator as androidx.recyclerview.widget.SimpleItemAnimator).supportsChangeAnimations = false
-        rvTagSearch.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
+        (rvTagSearch.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        rvTagSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1) && viewModel.validForPaging() && isNetworkActive()) {
-                    viewModel.getTagSearch(false, search)
+                if (!recyclerView.canScrollVertically(1) && viewModel.validForPaging()) {
+                    getTagSearch(false)
                 }
             }
         })

@@ -5,52 +5,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginStart="4dp"
-        android:drawableStart="@drawable/ic_back"
-        android:drawablePadding="6dp"
-        android:fontFamily="@font/roboto_text_bold"
-        android:gravity="center_vertical"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:text="@string/back"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/back_navigation_header_text_size"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/navigationBackground"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/btnMore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:padding="16dp"
-        android:src="@drawable/ic_more"
-        app:layout_constraintEnd_toStartOf="@id/btnShare"
-        app:layout_constraintTop_toTopOf="@id/btnBack"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
-        android:id="@+id/btnShare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:background="?attr/selectableItemBackground"
-        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/btnBack"
-        tools:ignore="ContentDescription"
-        android:src="@drawable/ic_share_blue" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginStart="4dp"
+                android:drawableStart="@drawable/ic_back"
+                android:drawablePadding="6dp"
+                android:fontFamily="@font/roboto_text_bold"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="@string/back"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/back_navigation_header_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/btnMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:padding="16dp"
+                android:src="@drawable/ic_more"
+                app:layout_constraintEnd_toStartOf="@id/btnShare"
+                app:layout_constraintTop_toTopOf="@id/btnBack"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/btnShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="?attr/selectableItemBackground"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btnBack"
+                tools:ignore="ContentDescription"
+                android:src="@drawable/ic_share_blue" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <View
         android:id="@+id/dividerToolbar"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/greyImageBackground"
-        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -169,7 +185,8 @@
         app:layout_constraintEnd_toStartOf="@id/barrierLike"
         app:layout_constraintStart_toStartOf="parent"
         tools:targetApi="o"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        tools:text="Search" />
 
     <ImageView
         android:id="@+id/ivLikePost"
@@ -186,7 +203,7 @@
         tools:ignore="ContentDescription"
         tools:visibility="visible" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageView
         android:id="@+id/fabSendReply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -194,10 +211,9 @@
         android:layout_marginBottom="12dp"
         android:src="@drawable/ic_send_arrow_white"
         android:visibility="gone"
-        app:backgroundTint="@color/colorPrimary"
-        app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrierLike"

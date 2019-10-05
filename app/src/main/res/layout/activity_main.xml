@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
     android:focusable="true"
     android:focusableInTouchMode="true"
     tools:context=".ui.main.MainActivity">
@@ -31,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:tabGravity="fill"
         app:tabIconTint="@null"
-        android:background="@color/gray"
+        android:background="@color/screenBackground"
         app:tabIndicatorHeight="0dp"
         app:tabMode="fixed" />
 

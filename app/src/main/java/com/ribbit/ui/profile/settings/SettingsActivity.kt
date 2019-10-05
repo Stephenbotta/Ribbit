@@ -7,6 +7,7 @@ import android.provider.Settings
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -133,7 +134,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun showLogoutConfirmationDialog() {
-        val dialog = AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this, R.style.AppDialog)
                 .setMessage(R.string.profile_message_confirm_logout)
                 .setPositiveButton(R.string.profile_btn_logout) { _, _ ->
                     if (isNetworkActiveWithMessage()) {
@@ -145,6 +146,11 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         dialog.show()
         val typeface = ResourcesCompat.getFont(this, R.font.roboto_text_regular)
         dialog.findViewById<TextView>(android.R.id.message)?.typeface = typeface
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.white))
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.white))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
     }
 
     private fun verification() {

@@ -3,6 +3,7 @@ package com.ribbit.ui.main
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.tasks.OnCompleteListener
@@ -13,16 +14,14 @@ import com.ribbit.R
 import com.ribbit.data.local.UserManager
 import com.ribbit.data.local.models.MessageEvent
 import com.ribbit.data.remote.PushType
-import com.ribbit.data.remote.models.groups.GroupDto
 import com.ribbit.data.remote.models.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.people.UserCrossedDto
-import com.ribbit.data.remote.models.venues.VenueDto
 import com.ribbit.extensions.gone
 import com.ribbit.extensions.isNetworkActive
 import com.ribbit.extensions.visible
 import com.ribbit.ui.base.BaseActivity
 import com.ribbit.ui.chat.ChatActivity
-import com.ribbit.ui.main.chats.ChatsFragment
+import com.ribbit.ui.main.chats.individual.IndividualChatFragment
 import com.ribbit.ui.main.explore.ExploreFragment
 import com.ribbit.ui.main.home.HomeFragment
 import com.ribbit.ui.main.notifications.NotificationsFragment
@@ -83,13 +82,13 @@ class MainActivity : BaseActivity() {
                     val userCrossed = UserCrossedDto()
                     userCrossed.profile = profile
                     userCrossed.conversationId = intent.getStringExtra("id")
-                    if (!fragmentSwitcher.fragmentExist(ChatsFragment.TAG))
-                        fragmentSwitcher.addFragment(ChatsFragment(), ChatsFragment.TAG)
+                    if (!fragmentSwitcher.fragmentExist(IndividualChatFragment.TAG))
+                        fragmentSwitcher.addFragment(IndividualChatFragment(), IndividualChatFragment.TAG)
 
                     val intent = ChatActivity.getStartIntentForIndividualChat(this, userCrossed, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
                     startActivityForResult(intent, AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT)
                 }
-                PushType.GROUP_CHAT -> {
+                /*PushType.GROUP_CHAT -> {
                     val data = intent.getStringExtra("data")
                     val profile = gson.fromJson(data, GroupDto::class.java)
                     bottomTabs.getTabAt(TAB_INDEX_CHATS)?.select()
@@ -98,8 +97,8 @@ class MainActivity : BaseActivity() {
                         fragmentSwitcher.addFragment(ChatsFragment(), ChatsFragment.TAG)
                     val intent = ChatActivity.getStartIntentForGroupChat(this, profile, AppConstants.REQ_CODE_GROUP_CHAT)
                     startActivityForResult(intent, AppConstants.REQ_CODE_GROUP_CHAT)
-                }
-                PushType.VENUE_CHAT -> {
+                }*/
+                /*PushType.VENUE_CHAT -> {
                     bottomTabs.getTabAt(TAB_INDEX_EXPLORE)?.select()
                     val data = intent.getStringExtra("data")
                     val profile = gson.fromJson(data, VenueDto::class.java)
@@ -113,7 +112,7 @@ class MainActivity : BaseActivity() {
                     bottomTabs.getTabAt(TAB_INDEX_NOTIFICATIONS)?.select()
                     if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG))
                         fragmentSwitcher.addFragment(NotificationsFragment(), NotificationsFragment.TAG)
-                }
+                }*/
             }
 
         } else {
@@ -165,8 +164,8 @@ class MainActivity : BaseActivity() {
                     }
 
                     TAB_INDEX_CHATS -> {
-                        if (!fragmentSwitcher.fragmentExist(ChatsFragment.TAG)) {
-                            fragmentSwitcher.addFragment(ChatsFragment(), ChatsFragment.TAG)
+                        if (!fragmentSwitcher.fragmentExist(IndividualChatFragment.TAG)) {
+                            fragmentSwitcher.addFragment(IndividualChatFragment(), IndividualChatFragment.TAG)
                         }
                     }
 
@@ -178,13 +177,13 @@ class MainActivity : BaseActivity() {
 
                     TAB_INDEX_EXPLORE -> {
                         if (!fragmentSwitcher.fragmentExist(ExploreFragment.TAG)) {
-                            fragmentSwitcher.addFragment(ExploreFragment(), ExploreFragment.TAG)
+                            fragmentSwitcher.addFragment(Fragment(), ExploreFragment.TAG)
                         }
                     }
 
                     TAB_INDEX_NOTIFICATIONS -> {
                         if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG)) {
-                            fragmentSwitcher.addFragment(NotificationsFragment(), NotificationsFragment.TAG)
+                            fragmentSwitcher.addFragment(Fragment(), NotificationsFragment.TAG)
                         }
                     }
 

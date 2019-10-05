@@ -408,10 +408,10 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
             override fun onTextChanged(text: String) {
                 if (text.isBlank()) {
                     ivLikePost.visible()
-                    fabSendReply.hide()
+                    fabSendReply.gone()
                 } else {
                     ivLikePost.gone()
-                    fabSendReply.show()
+                    fabSendReply.visible()
                 }
             }
         })

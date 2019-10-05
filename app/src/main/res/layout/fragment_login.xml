@@ -16,7 +16,7 @@
         android:fontFamily="@font/roboto_text_bold"
         android:includeFontPadding="false"
         android:text="@string/login"
-        android:textColor="@color/white"
+        android:textColor="@color/textGray"
         android:textSize="@dimen/all_screen_header_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +47,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="30dp"
         android:text="@string/login_label_or_you_could"
-        android:textColor="@color/white"
+        android:textColor="@color/textGray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etCredentials" />
 
@@ -95,7 +95,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:text="@string/login_btn_continue_with_facebook"
-            android:textColor="@color/textGray"
+            android:textColor="@color/blue3B"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/dividerFacebook" />
@@ -146,7 +146,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:text="@string/login_btn_continue_with_google"
-            android:textColor="@color/textGray"
+            android:textColor="@color/gray45"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/dividerGoogle" />
@@ -159,7 +159,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:src="@drawable/ic_forward_white"
-        app:backgroundTint="@color/selector_fab_background"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

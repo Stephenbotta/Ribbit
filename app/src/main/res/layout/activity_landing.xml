@@ -44,7 +44,7 @@
         android:layout_marginBottom="70dp"
         android:gravity="center"
         android:text="@string/login_sign_up_label_already_a_member_sign_in"
-        android:textColor="@color/white"
+        android:textColor="@color/textGray"
         app:layout_constraintBottom_toTopOf="@id/tvLabelTermsAndPrivacy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -58,7 +58,7 @@
         android:layout_marginBottom="30dp"
         android:gravity="center_horizontal"
         android:text="@string/login_sign_up_label_by_signing_in_you_are_agree"
-        android:textColor="@color/white"
+        android:textColor="@color/textGray"
         android:textSize="12sp"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -15,9 +15,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 
-/**
- * Created by Manish Bhargav
- */
 class SearchPostViewModel(application: Application) : BaseViewModel(application) {
 
     companion object {

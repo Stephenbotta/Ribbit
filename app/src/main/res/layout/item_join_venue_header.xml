@@ -27,7 +27,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/roboto_text_bold"
         android:maxLines="1"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="32sp"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"

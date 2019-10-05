@@ -88,6 +88,7 @@
             android:maxLength="@integer/venue_title_max_length"
             android:singleLine="true"
             android:textColor="@color/textGray"
+            android:textColorHint="@color/textGrayDE"
             android:theme="@style/AppTheme.EditTextCreateVenue"
             tools:text="Starbucks Fans" />
 
@@ -124,8 +125,8 @@
         android:inputType="textPersonName|textCapWords|textMultiLine"
         android:padding="4dp"
         android:singleLine="false"
-        android:textColor="@color/textGray"
-        android:textColorHint="@color/textGrayMedium"
+        android:textColor="@color/editTextContent"
+        android:textColorHint="@color/editTextHint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/switchPrivateGroup"

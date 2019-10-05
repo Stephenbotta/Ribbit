@@ -24,6 +24,7 @@ import com.ribbit.data.remote.models.social.SocialProfile
 import com.ribbit.extensions.handleError
 import com.ribbit.extensions.hideKeyboard
 import com.ribbit.extensions.isNetworkActiveWithMessage
+import com.ribbit.extensions.updateAlphaLevel
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.custom.LoadingDialog
 import com.ribbit.ui.loginsignup.LoginSignUpViewModel
@@ -81,6 +82,7 @@ class LoginFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginLi
 
     private fun setupViews() {
         fabProceed.isEnabled = false
+        fabProceed.updateAlphaLevel()
     }
 
     private fun setListeners() {
@@ -204,6 +206,7 @@ class LoginFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginLi
 
     override fun onTextChanged(text: CharSequence, start: Int, before: Int, count: Int) {
         fabProceed.isEnabled = formDataValid()
+        fabProceed.updateAlphaLevel()
     }
 
     override fun onFacebookLoginSuccess() {

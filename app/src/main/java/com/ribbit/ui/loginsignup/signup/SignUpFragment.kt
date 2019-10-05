@@ -88,6 +88,7 @@ class SignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginL
 
     private fun setupViews() {
         fabProceed.isEnabled = false
+        fabProceed.updateAlphaLevel()
         countryCodePicker.setTypeFace(ResourcesCompat.getFont(requireActivity(), R.font.roboto_text_medium))
         countryCodePicker.registerCarrierNumberEditText(etPhoneNumber)
     }
@@ -98,6 +99,7 @@ class SignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginL
 
         btnPhoneNumber.setOnClickListener {
             fabProceed.isEnabled = false    // Disable fab
+            fabProceed.updateAlphaLevel()
             registeredMode = AppConstants.REGISTERED_MODE_PHONE     // Update registered mode
             btnPhoneNumber.setTextColor(selectedTextColor)
             btnEmail.setTextColor(deSelectedTextColor)
@@ -110,6 +112,7 @@ class SignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginL
 
         btnEmail.setOnClickListener {
             fabProceed.isEnabled = false    // Disable fab
+            fabProceed.updateAlphaLevel()
             registeredMode = AppConstants.REGISTERED_MODE_EMAIL     // Update registered mode
             btnEmail.setTextColor(selectedTextColor)
             btnPhoneNumber.setTextColor(deSelectedTextColor)
@@ -284,11 +287,13 @@ class SignUpFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginL
             AppConstants.REGISTERED_MODE_PHONE -> {
                 val phoneNumber = etPhoneNumber.text.toString()
                 fabProceed.isEnabled = ValidationUtils.isPhoneNumberLengthValid(phoneNumber)
+                fabProceed.updateAlphaLevel()
             }
 
             AppConstants.REGISTERED_MODE_EMAIL -> {
                 val email = etEmail.text.toString()
                 fabProceed.isEnabled = ValidationUtils.isEmailValid(email)
+                fabProceed.updateAlphaLevel()
             }
         }
     }

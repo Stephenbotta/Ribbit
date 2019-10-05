@@ -28,7 +28,18 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.OnClickListener {
     companion object {
         const val TAG = "ProfileFragment"
+        const val ARGUMENT_FROM_TAB = "ARGUMENT_FROM_TAB"
+
+        fun newInstance(fromTab: Boolean): ProfileFragment {
+            val profileFragment = ProfileFragment()
+            val bundle = Bundle()
+            bundle.putBoolean(ARGUMENT_FROM_TAB, fromTab)
+            profileFragment.arguments = bundle
+            return profileFragment
+        }
     }
+
+    private val fromTab by lazy { arguments?.getBoolean(ARGUMENT_FROM_TAB) ?: true }
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_profile
 
@@ -42,6 +53,12 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.O
         swipeRefreshLayout.setOnRefreshListener { getUserProfile() }
         observeChanges()
         listener()
+
+        if (fromTab) {
+            tvTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
+        } else {
+            tvTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_back, 0, 0, 0)
+        }
         gone()
     }
 
@@ -149,8 +166,8 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.O
     }
 
     override fun onEditInterestsClicked() {
-        val fragment = ChooseInterestsFragment.newInstance(true, interest = viewModel.getProfile().interests
-                ?: arrayListOf())
+        val fragment = ChooseInterestsFragment.newInstance(true,
+                interest = viewModel.getProfile().interests ?: arrayListOf())
         fragment.setTargetFragment(this, AppConstants.REQ_CODE_CHOOSE_INTERESTS)
         fragmentManager?.apply {
             beginTransaction()

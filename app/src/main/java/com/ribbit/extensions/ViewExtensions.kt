@@ -55,3 +55,8 @@ fun View.invisible() {
 fun ViewGroup.inflate(resId: Int): View {
     return LayoutInflater.from(context).inflate(resId, this, false)
 }
+
+fun View.updateAlphaLevel() {
+    alpha = if (isEnabled) 1f else 0.5f
+
+}

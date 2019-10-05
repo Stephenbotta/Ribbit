@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
     android:clickable="true"
+    android:background="@color/screenBackground"
     android:focusable="true">
 
     <TextView
@@ -18,7 +18,7 @@
         android:fontFamily="@font/roboto_text_bold"
         android:includeFontPadding="false"
         android:text="@string/choose_interests_label_choose_interests"
-        android:textColor="@color/white"
+        android:textColor="@color/textGray"
         android:textSize="24sp"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
         android:layout_marginStart="24dp"
         android:fontFamily="@font/roboto_text_medium"
         android:text="@string/choose_interests_label_choose_at_least"
-        android:textColor="@color/white"
+        android:textColor="@color/textGray"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelTellUs" />
@@ -82,9 +82,8 @@
             tools:visibility="visible" />
     </ViewFlipper>
 
-    <com.google.android.material.button.MaterialButton
+    <TextView
         android:id="@+id/btnContinue"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -92,19 +91,17 @@
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/roboto_text_bold"
         android:letterSpacing="0"
+        android:gravity="center"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:text="@string/choose_interests_btn_continue"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="@dimen/all_labels_and_others_text_size"
-        android:visibility="visible"
-        app:backgroundTint="@color/selector_fab_background"
-        app:cornerRadius="32dp"
+        android:background="@drawable/drawable_button_gradient"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:rippleColor="?attr/colorAccent"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

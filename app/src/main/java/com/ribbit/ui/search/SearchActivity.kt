@@ -50,13 +50,13 @@ class SearchActivity : BaseActivity() {
         viewPagerAdapter.addFragments(SearchTopFragment())
         viewPagerAdapter.addFragments(SearchTagFragment())
         viewPagerAdapter.addFragments(SearchPostsFragment())
-        viewPagerAdapter.addFragments(SearchGroupFragment())
+//        viewPagerAdapter.addFragments(SearchGroupFragment())
 //        viewPagerAdapter.addFragments(SearchVenueFragment())
         binding.viewPagerSearch.adapter = viewPagerAdapter
         binding.tabLayoutSearch.tabGravity = TabLayout.GRAVITY_CENTER
         binding.tabLayoutSearch.tabMode = TabLayout.MODE_SCROLLABLE
         binding.tabLayoutSearch.setupWithViewPager(binding.viewPagerSearch)
-        binding.viewPagerSearch.offscreenPageLimit = 4
+        binding.viewPagerSearch.offscreenPageLimit = 3
         listener()
     }
 

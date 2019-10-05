@@ -52,6 +52,7 @@ class WelcomeFragment : BaseFragment() {
 
         override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
             fabProceed.isEnabled = isFormValid()
+            fabProceed.updateAlphaLevel()
         }
     }
 
@@ -72,6 +73,7 @@ class WelcomeFragment : BaseFragment() {
 
     private fun setupViews() {
         fabProceed.isEnabled = false
+        fabProceed.updateAlphaLevel()
         countryCodePicker.setTypeFace(ResourcesCompat.getFont(requireActivity(), R.font.roboto_text_medium))
         etFullName.setText(profile.fullName)
 
@@ -107,6 +109,7 @@ class WelcomeFragment : BaseFragment() {
             }
 
             fabProceed.isEnabled = isFormValid()
+            fabProceed.updateAlphaLevel()
 
             if (!ivPhoneVerify.isVisible()) {
                 ivPhoneVerify.visible()
@@ -136,6 +139,7 @@ class WelcomeFragment : BaseFragment() {
                     ivUsernameVerify.visible()
                     progressBarUsername.gone()
                     fabProceed.isEnabled = false
+                    fabProceed.updateAlphaLevel()
                 }
             }
         })
@@ -310,6 +314,7 @@ class WelcomeFragment : BaseFragment() {
             }
 
             fabProceed.isEnabled = isFormValid()
+            fabProceed.updateAlphaLevel()
         })
     }
 

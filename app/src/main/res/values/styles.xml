@@ -5,7 +5,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/screenBackground</item>
 
         <!-- Disable multi touch -->
         <item name="android:windowEnableSplitTouch">false</item>
@@ -144,5 +144,10 @@
     <style name="AppToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
+    <style name="AppDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/screenBackground</item>
+        <item name="android:textColorPrimary">@color/white</item>
     </style>
 </resources>

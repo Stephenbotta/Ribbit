@@ -7,22 +7,31 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <TextView
-        android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginStart="8dp"
-        android:drawableStart="@drawable/ic_back"
-        android:drawablePadding="6dp"
-        android:fontFamily="@font/roboto_text_bold"
-        android:gravity="center_vertical"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:text="@string/back"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/back_navigation_header_text_size"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/navigationBackground">
+
+        <TextView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginStart="8dp"
+            android:drawableStart="@drawable/ic_back"
+            android:drawablePadding="6dp"
+            android:fontFamily="@font/roboto_text_bold"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/back"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/back_navigation_header_text_size" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <View
         android:id="@+id/divider_1"
@@ -31,7 +40,7 @@
         android:background="@color/greyImageBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchUser"
@@ -72,6 +81,7 @@
             android:padding="8dp"
             android:text="@string/hide_info_everyone"
             android:textColor="@color/textGray"
+            android:buttonTint="@color/white"
             android:textSize="@dimen/all_content_header_text_size"
             android:theme="@style/AppTheme.SwitchCompat" />
 
@@ -87,6 +97,7 @@
             android:padding="8dp"
             android:text="@string/hide_info_your_followers"
             android:textColor="@color/textGray"
+            android:buttonTint="@color/white"
             android:textSize="@dimen/all_content_header_text_size"
             android:theme="@style/AppTheme.SwitchCompat" />
 
@@ -102,6 +113,7 @@
             android:padding="8dp"
             android:text="@string/hide_info_selected_users"
             android:textColor="@color/textGray"
+            android:buttonTint="@color/white"
             android:textSize="@dimen/all_content_header_text_size"
             android:theme="@style/AppTheme.SwitchCompat" />
 
