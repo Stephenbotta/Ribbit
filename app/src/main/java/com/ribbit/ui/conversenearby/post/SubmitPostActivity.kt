@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.location.places.ui.PlacePicker
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.ribbit.R
 import com.ribbit.data.local.models.AppError
 import com.ribbit.data.remote.models.Status
@@ -129,8 +131,16 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.tvSelectLocation -> {
-                val builder = PlacePicker.IntentBuilder()
-                startActivityForResult(builder.build(this), AppConstants.REQ_CODE_PLACE_PICKER)
+                /*val builder = PlacePicker.IntentBuilder()
+                startActivityForResult(builder.build(this), AppConstants.REQ_CODE_PLACE_PICKER)*/
+
+                val placeFields = listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
+
+                // Start the autocomplete intent.
+                val intent = Autocomplete.IntentBuilder(
+                        AutocompleteActivityMode.FULLSCREEN, placeFields)
+                        .build(this)
+                startActivityForResult(intent, AppConstants.REQ_CODE_PLACE_PICKER)
             }
 
             R.id.tvLabelStartDateAndTime, R.id.tvStartDateAndTime, R.id.tvStartChange -> {
@@ -163,12 +173,12 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             AppConstants.REQ_CODE_PLACE_PICKER -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    val place = PlacePicker.getPlace(this, data)
-                    request.locationLat = place.latLng.latitude
-                    request.locationLong = place.latLng.longitude
-                    request.locationName = place.name?.toString()
-                    request.locationAddress = place.address?.toString()
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val place = Autocomplete.getPlaceFromIntent(data)
+                    request.locationLat = place.latLng?.latitude
+                    request.locationLong = place.latLng?.longitude
+                    request.locationName = place.name.toString()
+                    request.locationAddress = place.address.toString()
                     tvSelectLocation.text = AppUtils.getFormattedAddress(request.locationName, request.locationAddress)
                     btnNext.isEnabled = true
                 }

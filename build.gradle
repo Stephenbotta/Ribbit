@@ -37,6 +37,7 @@ buildscript {
         multiContactPicker = '1.8.5'
         eventBus = '3.1.1'
         pageIndicatorViewVersion = '1.0.1'
+        placePickerVersion='2.0.0'
     }
 
     repositories {

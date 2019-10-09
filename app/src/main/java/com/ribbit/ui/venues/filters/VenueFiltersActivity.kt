@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
-import com.google.android.gms.location.places.ui.PlacePicker
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.ribbit.R
 import com.ribbit.data.MemoryCache
 import com.ribbit.data.local.models.VenueFilters
@@ -125,8 +127,16 @@ class VenueFiltersActivity : BaseActivity(), VenueFiltersAdapter.Callback {
     }
 
     override fun onSelectLocationClicked() {
-        val builder = PlacePicker.IntentBuilder()
-        startActivityForResult(builder.build(this), AppConstants.REQ_CODE_PLACE_PICKER)
+        /*val builder = PlacePicker.IntentBuilder()
+        startActivityForResult(builder.build(this), AppConstants.REQ_CODE_PLACE_PICKER)*/
+
+        val placeFields = listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
+
+        // Start the autocomplete intent.
+        val intent = Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.FULLSCREEN, placeFields)
+                .build(this)
+        startActivityForResult(intent, AppConstants.REQ_CODE_PLACE_PICKER)
     }
 
     private fun showResetFiltersConfirmationDialog() {
@@ -146,8 +156,8 @@ class VenueFiltersActivity : BaseActivity(), VenueFiltersAdapter.Callback {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == AppConstants.REQ_CODE_PLACE_PICKER && resultCode == Activity.RESULT_OK) {
-            val place = PlacePicker.getPlace(this, data)
+        if (requestCode == AppConstants.REQ_CODE_PLACE_PICKER && resultCode == Activity.RESULT_OK && data != null) {
+            val place = Autocomplete.getPlaceFromIntent(data)
 
             // Use place name first if available otherwise use place address
             val locationName = if (!place.name.isNullOrBlank()) {
@@ -160,8 +170,8 @@ class VenueFiltersActivity : BaseActivity(), VenueFiltersAdapter.Callback {
 
             // Update the location filter and notify adapter change
             filters.location?.name = locationName
-            filters.location?.latitude = place.latLng.latitude
-            filters.location?.longitude = place.latLng.longitude
+            filters.location?.latitude = place.latLng?.latitude
+            filters.location?.longitude = place.latLng?.longitude
             venueFiltersAdapter.notifyDataSetChanged()
         }
     }

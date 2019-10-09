@@ -1,43 +1,50 @@
 {
   "project_info": {
-    "project_number": "895640925777",
-    "firebase_url": "https://check-it-3d409.firebaseio.com",
-    "project_id": "check-it-3d409",
-    "storage_bucket": "check-it-3d409.appspot.com"
+    "project_number": "112757870901",
+    "firebase_url": "https://ribbit-1570444383129.firebaseio.com",
+    "project_id": "ribbit-1570444383129",
+    "storage_bucket": "ribbit-1570444383129.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:895640925777:android:8e82522e80e111c0",
+        "mobilesdk_app_id": "1:112757870901:android:ddf1b40d10add6c6043c7c",
         "android_client_info": {
-          "package_name": "com.checkIt"
+          "package_name": "com.ribbit"
         }
       },
       "oauth_client": [
         {
-          "client_id": "895640925777-cnrufoi4t8cvi029cgabcs8qtu29pjt0.apps.googleusercontent.com",
+          "client_id": "112757870901-hqhlg695nt3iq4ho88kqk4fu57j198fc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.checkIt",
+            "package_name": "com.ribbit",
             "certificate_hash": "d04135f9f770cb41e989c114140bad3942cdfa8f"
           }
         },
         {
-          "client_id": "895640925777-ja3r8l5faepabk1a8p192u2fjcl8qcvg.apps.googleusercontent.com",
+          "client_id": "112757870901-n8nk9ngdno00g5urmple8angp0aimn00.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA9BLiHtZIj50SWfgefJqK6TNQLQbgvyak"
+          "current_key": "AIzaSyAvpbM3J2jBBY1gfK0dyrGBXbmioJl0IJo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "895640925777-ja3r8l5faepabk1a8p192u2fjcl8qcvg.apps.googleusercontent.com",
+              "client_id": "112757870901-n8nk9ngdno00g5urmple8angp0aimn00.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "112757870901-71qen8g4edk0b31q18voe8pvm21u9eeg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.RibbitApp"
+              }
             }
           ]
         }

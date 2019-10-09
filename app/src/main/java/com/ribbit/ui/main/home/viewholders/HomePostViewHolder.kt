@@ -172,14 +172,6 @@ class HomePostViewHolder(itemView: View, private val glide: GlideRequests,
                 itemView.indicator.gone()*/
 
             when (post.media.size) {
-                1 -> {
-                    itemView.ivMedia1.visible()
-                    itemView.ivMedia2.gone()
-                    itemView.ivMedia3.gone()
-                    itemView.ivMedia4.gone()
-
-                    loadMedia(itemView.ivMedia1, post.media[0], itemView.ivPlay1, itemView.ivMostLiked1)
-                }
                 2 -> {
                     itemView.ivMedia1.visible()
                     itemView.ivMedia2.visible()
@@ -209,6 +201,14 @@ class HomePostViewHolder(itemView: View, private val glide: GlideRequests,
                     loadMedia(itemView.ivMedia2, post.media[1], itemView.ivPlay2, itemView.ivMostLiked2)
                     loadMedia(itemView.ivMedia3, post.media[2], itemView.ivPlay3, itemView.ivMostLiked3)
                     loadMedia(itemView.ivMedia4, post.media[3], itemView.ivPlay4, itemView.ivMostLiked4)
+                }
+                else -> {
+                    itemView.ivMedia1.visible()
+                    itemView.ivMedia2.gone()
+                    itemView.ivMedia3.gone()
+                    itemView.ivMedia4.gone()
+
+                    loadMedia(itemView.ivMedia1, post.media[0], itemView.ivPlay1, itemView.ivMostLiked1)
                 }
             }
         }
@@ -275,26 +275,27 @@ class HomePostViewHolder(itemView: View, private val glide: GlideRequests,
             else -> ivPlay.gone()
         }
 
-        if (imageUrl.isMostLiked == true)
+        /*if (imageUrl.isMostLiked == true)
             ivMostLiked.visible()
         else
-            ivMostLiked.gone()
+            ivMostLiked.gone()*/
     }
 
     private fun updateRepliesAndLikes() {
         // Show formatted replies and likes count
         val repliesCount = post.repliesCount ?: 0
+        val likesCount = post.likesCount ?: 0
         val formattedReplies = itemView.resources.getQuantityString(R.plurals.replies_with_count, repliesCount, repliesCount)
 
-        var totalLikes = 0.0
+        /*var totalLikes = 0.0
         post.media.forEach { totalLikes += it.likesCount ?: 0 }
         val maxLikeCount = post.media.map { it.likesCount ?: 0 }.max() ?: 0
         val likesCount = if (totalLikes > 0) {
             (maxLikeCount / totalLikes) * 100
         } else {
             0.0
-        }
-        val formattedLikes = itemView.resources.getQuantityString(R.plurals.likes_with_count_in_percent, likesCount.toInt(), likesCount)
+        }*/
+        val formattedLikes = itemView.resources.getQuantityString(R.plurals.likes_with_count, likesCount, likesCount)
 
         // e.g. "156 Replies · 156 Likes"
         val formattedRepliesAndLikes = if (likesCount > 0.0) {
@@ -310,7 +311,7 @@ class HomePostViewHolder(itemView: View, private val glide: GlideRequests,
                 clickListener = postClickListener)
 
         itemView.tvRepliesLikes.clickSpannable(spannableText = formattedLikes,
-                textColorRes = R.color.blue,
+                textColorRes = R.color.textGrayMedium,
                 clickListener = likesCountClickListener)
     }
 

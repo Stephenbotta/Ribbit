@@ -16,7 +16,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.gms.location.places.ui.PlacePicker
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.ribbit.R
 import com.ribbit.data.local.models.AppError
@@ -214,8 +216,16 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
         }
 
         tvSelectLocation.setOnClickListener {
-            val builder = PlacePicker.IntentBuilder()
-            startActivityForResult(builder.build(activity), AppConstants.REQ_CODE_PLACE_PICKER)
+            /*val builder = PlacePicker.IntentBuilder()
+            startActivityForResult(builder.build(activity), AppConstants.REQ_CODE_PLACE_PICKER)*/
+
+            val placeFields = listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
+
+            // Start the autocomplete intent.
+            val intent = Autocomplete.IntentBuilder(
+                    AutocompleteActivityMode.FULLSCREEN, placeFields)
+                    .build(requireContext())
+            startActivityForResult(intent, AppConstants.REQ_CODE_PLACE_PICKER)
         }
 
         /*mediaPicker.setImagePickerListener { imageFile ->
@@ -387,12 +397,12 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             AppConstants.REQ_CODE_PLACE_PICKER -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    val place = PlacePicker.getPlace(context, data)
-                    request.locationLat = place.latLng.latitude
-                    request.locationLong = place.latLng.longitude
-                    request.locationName = place.name?.toString()
-                    request.locationAddress = place.address?.toString()
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val place = Autocomplete.getPlaceFromIntent(data)
+                    request.locationLat = place.latLng?.latitude
+                    request.locationLong = place.latLng?.longitude
+                    request.locationName = place.name
+                    request.locationAddress = place.address
                     tvSelectLocation.text = AppUtils.getFormattedAddress(request.locationName, request.locationAddress)
 //                    updateCreateVenueMenuState()
                 }
@@ -438,14 +448,14 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.menuPost) {
-            if (adapter.itemCount == 1) {
+            /*if (adapter.itemCount == 1) {
                 context?.shortToast(getString(R.string.error_msg_media_count_should_be_greater_than_1_and_less_than_5))
-            } else {
+            } else {*/
                 etPostText.clearFocus()
                 etPostText.hideKeyboard()
                 createPost()
                 return true
-            }
+            /*}*/
         }
         return super.onOptionsItemSelected(item)
     }

@@ -13,7 +13,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.location.places.ui.PlacePicker
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.ribbit.R
 import com.ribbit.data.local.models.AppError
 import com.ribbit.data.remote.models.Status
@@ -116,8 +118,16 @@ class CreateVenueFragment : BaseFragment(), CreateGroupAdapter.Callback {
         ivVenue.setOnClickListener { showImagePickerWithPermissionCheck() }
 
         etVenueLocation.setOnClickListener {
-            val builder = PlacePicker.IntentBuilder()
-            startActivityForResult(builder.build(activity), AppConstants.REQ_CODE_PLACE_PICKER)
+            /*val builder = PlacePicker.IntentBuilder()
+            startActivityForResult(builder.build(activity), AppConstants.REQ_CODE_PLACE_PICKER)*/
+
+            val placeFields = listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
+
+            // Start the autocomplete intent.
+            val intent = Autocomplete.IntentBuilder(
+                    AutocompleteActivityMode.FULLSCREEN, placeFields)
+                    .build(requireContext())
+            startActivityForResult(intent, AppConstants.REQ_CODE_PLACE_PICKER)
         }
 
         etDateTime.setOnClickListener {
@@ -305,12 +315,12 @@ class CreateVenueFragment : BaseFragment(), CreateGroupAdapter.Callback {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             AppConstants.REQ_CODE_PLACE_PICKER -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    val place = PlacePicker.getPlace(context, data)
-                    request.latitude = place.latLng.latitude
-                    request.longitude = place.latLng.longitude
-                    request.locationName = place.name?.toString()
-                    request.locationAddress = place.address?.toString()
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val place = Autocomplete.getPlaceFromIntent(data)
+                    request.latitude = place.latLng?.latitude
+                    request.longitude = place.latLng?.longitude
+                    request.locationName = place.name
+                    request.locationAddress = place.address
                     etVenueLocation.setText(AppUtils.getFormattedAddress(request.locationName, request.locationAddress))
                     updateCreateVenueMenuState()
                 }

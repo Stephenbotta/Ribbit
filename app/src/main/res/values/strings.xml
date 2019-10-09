@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Ribbit</string>
 
-    <string name="facebook_app_id" translatable="false">2767141076649146</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb2767141076649146</string>
+    <string name="facebook_app_id" translatable="false">487530908496689</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb487530908496689</string>
     <string name="app_google_api_key" translatable="false">AIzaSyA9BLiHtZIj50SWfgefJqK6TNQLQbgvyak</string>
-    <string name="server_client_id" translatable="false">895640925777-cnrufoi4t8cvi029cgabcs8qtu29pjt0.apps.googleusercontent.com</string>
+    <!--<string name="app_google_api_key" translatable="false">AIzaSyAvpbM3J2jBBY1gfK0dyrGBXbmioJl0IJo</string>-->
 
     <string name="default_notification_channel_id">default_notification_channel_id</string>
 

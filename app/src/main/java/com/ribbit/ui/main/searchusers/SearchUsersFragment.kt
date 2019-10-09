@@ -12,7 +12,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.gms.location.places.ui.PlacePicker
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.ribbit.R
 import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.loginsignup.InterestDto
@@ -92,8 +94,16 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback, Se
 
     private fun setListener() {
         tvSelectLocation.setOnClickListener {
-            val builder = PlacePicker.IntentBuilder()
-            startActivityForResult(builder.build(activity), AppConstants.REQ_CODE_PLACE_PICKER)
+            /*val builder = PlacePicker.IntentBuilder()
+            startActivityForResult(builder.build(activity), AppConstants.REQ_CODE_PLACE_PICKER)*/
+
+            val placeFields = listOf(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME)
+
+            // Start the autocomplete intent.
+            val intent = Autocomplete.IntentBuilder(
+                    AutocompleteActivityMode.FULLSCREEN, placeFields)
+                    .build(requireContext())
+            startActivityForResult(intent, AppConstants.REQ_CODE_PLACE_PICKER)
         }
         goLarge.setOnClickListener { startSearching() }
         ivGo.setOnClickListener { startSearching() }
@@ -206,12 +216,12 @@ class SearchUsersFragment : BaseFragment(), ProfileInterestsAdapter.Callback, Se
 
         when (requestCode) {
             AppConstants.REQ_CODE_PLACE_PICKER -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    val place = PlacePicker.getPlace(requireContext(), data)
-                    latitude = place.latLng.latitude
-                    longitude = place.latLng.longitude
-                    val locationName = place.name?.toString()
-                    val locationAddress = place.address?.toString()
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val place = Autocomplete.getPlaceFromIntent(data)
+                    latitude = place.latLng?.latitude ?: 0.0
+                    longitude = place.latLng?.longitude ?: 0.0
+                    val locationName = place.name
+                    val locationAddress = place.address
                     tvLocationAddress.text = AppUtils.getFormattedAddress(locationName, locationAddress)
                     tvLocationAddress.visible()
                     goLarge.isEnabled = true

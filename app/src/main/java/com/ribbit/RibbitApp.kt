@@ -7,6 +7,7 @@ import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.FontRequestEmojiCompatConfig
 import androidx.multidex.MultiDexApplication
 import com.crashlytics.android.Crashlytics
+import com.google.android.libraries.places.api.Places
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.ribbit.data.local.PrefsManager
 import timber.log.Timber
@@ -28,6 +29,14 @@ class RibbitApp : MultiDexApplication() {
         setupThreeTen()
         setupSharedPreferences()
         setupEmojiCompat()
+
+        /**
+         * Initialize Places. For simplicity, the API key is hard-coded. In a production
+         * environment we recommend using a secure mechanism to manage API keys.
+         */
+        if (!Places.isInitialized()) {
+            Places.initialize(this, getString(R.string.google_api_key))
+        }
     }
 
     private fun setupTimber() {
