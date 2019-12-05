@@ -16,6 +16,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginSignUpViewModel : ViewModel() {
+
     val loginRegister by lazy { SingleLiveEvent<Resource<ProfileDto>>() }
 
     fun registerEmailOrPhoneNumber(email: String? = null, countryCode: String? = null, phoneNumber: String? = null) {

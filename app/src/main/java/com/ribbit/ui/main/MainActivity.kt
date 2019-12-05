@@ -25,6 +25,7 @@ import com.ribbit.ui.main.chats.individual.IndividualChatFragment
 import com.ribbit.ui.main.explore.ExploreFragment
 import com.ribbit.ui.main.home.HomeFragment
 import com.ribbit.ui.main.notifications.NotificationsFragment
+import com.ribbit.ui.main.survey.SurveyFragment
 import com.ribbit.ui.profile.ProfileFragment
 import com.ribbit.utils.AppConstants
 import com.ribbit.utils.FragmentSwitcher
@@ -182,8 +183,8 @@ class MainActivity : BaseActivity() {
                     }
 
                     TAB_INDEX_NOTIFICATIONS -> {
-                        if (!fragmentSwitcher.fragmentExist(NotificationsFragment.TAG)) {
-                            fragmentSwitcher.addFragment(Fragment(), NotificationsFragment.TAG)
+                        if (!fragmentSwitcher.fragmentExist(SurveyFragment.TAG)) {
+                            fragmentSwitcher.addFragment(SurveyFragment(), SurveyFragment.TAG)
                         }
                     }
 
