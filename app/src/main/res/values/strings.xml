@@ -492,4 +492,6 @@
     <string name="post_updated_successfully">Post updated successfully.</string>
     <string name="user_not_found">User not found</string>
     <string name="error_msg_media_count_should_be_greater_than_1_and_less_than_5">Selected Media count should be greater than 1 and less than 5</string>
+    <string name="survey">Survey</string>
+    <string name="take_survey">Take Survey</string>
 </resources>
