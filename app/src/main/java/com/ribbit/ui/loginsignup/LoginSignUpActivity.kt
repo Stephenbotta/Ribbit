@@ -3,6 +3,7 @@ package com.ribbit.ui.loginsignup
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import com.ribbit.R
 import com.ribbit.data.local.UserManager
 import com.ribbit.extensions.gone
@@ -109,8 +110,16 @@ class LoginSignUpActivity : BaseActivity(), BackButtonEnabledListener {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
+//    override fun onSaveInstanceState(outState: Bundle?) {
+//        super.onSaveInstanceState(outState)
+//
+//        // Save state of back button
+//        outState?.putBoolean(KEY_BACK_BUTTON_ENABLED, isBackButtonEnabled)
+//    }
+
+
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        super.onSaveInstanceState(outState, outPersistentState)
 
         // Save state of back button
         outState?.putBoolean(KEY_BACK_BUTTON_ENABLED, isBackButtonEnabled)

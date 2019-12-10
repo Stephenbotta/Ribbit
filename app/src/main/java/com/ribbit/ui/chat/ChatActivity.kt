@@ -72,7 +72,6 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                     .putExtra(EXTRA_FLAG, flag)
                     .putExtra(EXTRA_GROUP_CHAT, group)
         }
-
     }
 
     private lateinit var viewModel: ChatViewModel

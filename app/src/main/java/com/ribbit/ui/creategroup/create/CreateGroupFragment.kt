@@ -166,6 +166,9 @@ class CreateGroupFragment : BaseFragment(), CreateGroupAdapter.Callback {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menuCreateVenue) {
             rvCreateGroup.hideKeyboard()

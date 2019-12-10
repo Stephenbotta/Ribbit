@@ -493,5 +493,20 @@
     <string name="user_not_found">User not found</string>
     <string name="error_msg_media_count_should_be_greater_than_1_and_less_than_5">Selected Media count should be greater than 1 and less than 5</string>
     <string name="survey">Survey</string>
+    <string name="house_hold_income">House hold income</string>
+    <string name="home_ownership">Home ownership</string>
+    <string name="education">Education</string>
+    <string name="employement_status">Employment status</string>
+    <string name="marital_status">Marital status</string>
+    <string name="i_agree_terms_and_conditions">I agree terms and conditions</string>
+    <string name="submit">Submit</string>
+    <string name="total_survey">Total Survey</string>
+    <string name="points_earned">Points Earned</string>
+    <string name="redeemed">Redeemed</string>
+    <string name="daily_challenges">DAILY CHALLENGES</string>
+    <string name="daily_challenges_in_a_day">Your daily challenges is send a 100 messages in a Day!</string>
+    <string name="my_challenges">My Challenges</string>
     <string name="take_survey">Take Survey</string>
+    <string name="want_to_buy_gift_card">Want to Buy Gift Card</string>
+    <string name="want_to_donate">Want to Donate!</string>
 </resources>

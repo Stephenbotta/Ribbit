@@ -80,6 +80,7 @@ dependencies {
         exclude module: "support-v13"
     }
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     kapt "com.github.hotchemi:permissionsdispatcher-processor:$permissionDispatcherVersion"
 
     // Logging
@@ -161,9 +162,13 @@ dependencies {
     // https://github.com/greenrobot/EventBus
     implementation "org.greenrobot:eventbus:$eventBus"
 
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+
     // https://github.com/romandanylyk/PageIndicatorView
     implementation "com.romandanylyk:pageindicatorview:$pageIndicatorViewVersion"
 
     implementation 'com.arasthel:spannedgridlayoutmanager:3.0.2'
+
+
 }
 apply plugin: 'com.google.gms.google-services'

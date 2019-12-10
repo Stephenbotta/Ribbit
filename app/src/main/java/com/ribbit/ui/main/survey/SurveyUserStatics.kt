@@ -24,18 +24,17 @@ import com.ribbit.utils.AppConstants
 import com.ribbit.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.swipeRefreshLayout
-import kotlinx.android.synthetic.main.fragment_survey.*
 import kotlinx.android.synthetic.main.fragment_survey.rvSurvey
 import kotlinx.android.synthetic.main.fragment_survey_data.*
 import timber.log.Timber
 
-class SurveyDataFragment : BaseFragment(), SurveyAdapter.Callback, View.OnClickListener {
+class SurveyUserStatics : BaseFragment(), SurveyAdapter.Callback, View.OnClickListener {
     companion object {
         const val TAG = "SurveyFragment"
         const val ARGUMENT_FROM_TAB = "ARGUMENT_FROM_TAB"
 
-        fun newInstance(fromTab: Boolean): SurveyDataFragment {
-            val profileFragment = SurveyDataFragment()
+        fun newInstance(fromTab: Boolean): SurveyUserStatics {
+            val profileFragment = SurveyUserStatics()
             val bundle = Bundle()
             bundle.putBoolean(ARGUMENT_FROM_TAB, fromTab)
             profileFragment.arguments = bundle
@@ -45,7 +44,7 @@ class SurveyDataFragment : BaseFragment(), SurveyAdapter.Callback, View.OnClickL
 
     private val fromTab by lazy { arguments?.getBoolean(ARGUMENT_FROM_TAB) ?: true }
 
-    override fun getFragmentLayoutResId(): Int = R.layout.fragment_survey_data
+    override fun getFragmentLayoutResId(): Int = R.layout.fragment_user_statics
 
     private val viewModel by lazy { ViewModelProviders.of(this)[ProfileViewModel::class.java] }
     private lateinit var interestsAdapter: SurveyAdapter
@@ -57,10 +56,16 @@ class SurveyDataFragment : BaseFragment(), SurveyAdapter.Callback, View.OnClickL
         super.onViewCreated(view, savedInstanceState)
 
 
-        spGender?.setArrayAdapter(list)
 
-        Timber.e("yor`re doing right")
-        context?.shortToast("fds")
+        tvSurvey.setOnClickListener {
+
+         //   context?.launchActivity<SurveyActivity> {  }
+            Timber.e("yor`re doing right")
+            context?.shortToast("fds")
+        }
+
+
+
 
      //   setupSurveyRecycler()
       //  setupInterestsRecycler()
