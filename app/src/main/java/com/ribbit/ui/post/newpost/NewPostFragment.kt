@@ -367,7 +367,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
         if (maxCount > 0) {
             val mediaFragment = MediaFragment.newInstance(maxCount)
             mediaFragment.setListeners(this)
-            mediaFragment.show(fragmentManager, MediaFragment.TAG)
+            fragmentManager?.let { mediaFragment.show(it, MediaFragment.TAG) }
         } else {
             activity?.shortToast(getString(R.string.error_msg_you_can_upload_max_6_files, AppConstants.MAX_FILE_COUNT))
         }
@@ -436,7 +436,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater?.inflate(R.menu.menu_new_post, menu)
 
         val createPostItem = menu.findItem(R.id.menuPost)
@@ -446,7 +446,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item?.itemId == R.id.menuPost) {
             /*if (adapter.itemCount == 1) {
                 context?.shortToast(getString(R.string.error_msg_media_count_should_be_greater_than_1_and_less_than_5))

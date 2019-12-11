@@ -65,7 +65,7 @@ class ChooseInterestsFragment : BaseFragment(), ChooseInterestsAdapter.Callback 
     private lateinit var interestsAdapter: ChooseInterestsAdapter
     private var backButtonEnabledListener: BackButtonEnabledListener? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is BackButtonEnabledListener) {
             backButtonEnabledListener = context

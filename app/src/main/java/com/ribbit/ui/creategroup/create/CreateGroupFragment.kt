@@ -156,8 +156,8 @@ class CreateGroupFragment : BaseFragment(), CreateGroupAdapter.Callback {
     override fun onGroupDescriptionTextChanged() {
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_fragment_create_venue, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_fragment_create_venue, menu)
 
         val createGroupItem = menu.findItem(R.id.menuCreateVenue)
         createGroupMenuItem = createGroupItem

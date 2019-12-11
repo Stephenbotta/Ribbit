@@ -120,7 +120,7 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
                 R.id.fabTopics -> {
                     val fragment = GroupTopicsFragment()
                     fragment.setTargetFragment(this, AppConstants.REQ_CODE_GROUP_TOPICS)
-                    fragment.show(fragmentManager, GroupTopicsFragment.TAG)
+                    fragmentManager?.let { fragment.show(it, GroupTopicsFragment.TAG) }
                     false
                 }
 

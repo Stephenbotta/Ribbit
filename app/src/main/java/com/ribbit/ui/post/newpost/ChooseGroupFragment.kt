@@ -35,7 +35,7 @@ class ChooseGroupFragment : BaseFragment() {
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_choose_group
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater?.inflate(R.menu.menu_choose_group, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -89,7 +89,7 @@ class ChooseGroupFragment : BaseFragment() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item?.itemId == R.id.menuSkip) {
             navigateToNewPostFragment()
             return true
