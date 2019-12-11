@@ -25,7 +25,6 @@ import com.ribbit.utils.AppConstants
 import com.ribbit.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.swipeRefreshLayout
-import kotlinx.android.synthetic.main.fragment_survey.*
 import kotlinx.android.synthetic.main.fragment_survey.rvSurvey
 import kotlinx.android.synthetic.main.fragment_survey_data.*
 import timber.log.Timber
@@ -60,10 +59,7 @@ class SurveyDataFragment : BaseFragment(), SurveyAdapter.Callback, View.OnClickL
 
         spGender?.setArrayAdapter(list)
 
-        Timber.e("yor`re doing right")
-        context?.shortToast("fds")
-
-        tvSurvey.setOnClickListener {
+        tvQuestions.setOnClickListener {
 
             view.findNavController().navigate(R.id.surveyFragment)
         }

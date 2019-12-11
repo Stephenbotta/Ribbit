@@ -58,7 +58,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvSurvey" />
+                app:layout_constraintTop_toBottomOf="@id/tvQuestions" />
 
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -81,7 +81,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvSurvey" />
+                app:layout_constraintTop_toBottomOf="@id/tvQuestions" />
 
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -103,7 +103,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvSurvey" />
+                app:layout_constraintTop_toBottomOf="@id/tvQuestions" />
 
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -127,7 +127,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvSurvey" />
+                app:layout_constraintTop_toBottomOf="@id/tvQuestions" />
 
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -151,7 +151,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvSurvey" />
+                app:layout_constraintTop_toBottomOf="@id/tvQuestions" />
 
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -173,7 +173,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvSurvey" />
+                app:layout_constraintTop_toBottomOf="@id/tvQuestions" />
 
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -195,7 +195,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvSurvey" />
+                app:layout_constraintTop_toBottomOf="@id/tvQuestions" />
 
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -217,7 +217,7 @@
 
 
             <TextView
-                android:id="@+id/tvSurvey"
+                android:id="@+id/tvQuestions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"

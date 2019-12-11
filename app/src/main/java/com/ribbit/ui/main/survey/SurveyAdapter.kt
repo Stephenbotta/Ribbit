@@ -68,7 +68,7 @@ class SurveyAdapter(private val callback: Callback) : androidx.recyclerview.widg
                 it.findNavController().navigate(R.id.surveyDetailFragment)
             }
 
-            itemView.tvSurvey.text = itemView.context.getString(R.string.profile_btn_edit)
+            itemView.tvQuestions.text = itemView.context.getString(R.string.profile_btn_edit)
             itemView.tvDuration.text = "8 hours"
      //       itemView.tvInterest.setTextColor(editColor)
      //       itemView.tvInterest.setBackgroundResource(R.drawable.background_profile_edit_interest)

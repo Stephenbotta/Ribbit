@@ -86,7 +86,7 @@ class LandingActivity : BaseActivity() {
     }
 
     private fun setListeners() {
-        tvSurvey.setOnClickListener {
+        tvQuestions.setOnClickListener {
             LoginSignUpActivity.start(this, AppConstants.MODE_SIGN_UP)
         }
 

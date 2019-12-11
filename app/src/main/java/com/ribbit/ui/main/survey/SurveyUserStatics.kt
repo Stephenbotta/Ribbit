@@ -57,11 +57,10 @@ class SurveyUserStatics : BaseFragment(), SurveyAdapter.Callback, View.OnClickLi
 
 
 
-        tvSurvey.setOnClickListener {
+        tvQuestions.setOnClickListener {
 
             context?.launchActivity<SurveyActivity> {  }
-            Timber.e("yor`re doing right")
-            context?.shortToast("fds")
+
         }
 
 

@@ -53,8 +53,7 @@ class SurveyFragment : BaseFragment(), SurveyAdapter.Callback, View.OnClickListe
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Timber.e("yor`re doing right")
-        context?.shortToast("fds")
+
 
         setupSurveyRecycler()
       //  setupInterestsRecycler()

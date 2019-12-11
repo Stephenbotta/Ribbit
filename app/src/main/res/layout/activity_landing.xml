@@ -10,14 +10,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_splash_logo"
-        app:layout_constraintBottom_toTopOf="@id/tvSurvey"
+        app:layout_constraintBottom_toTopOf="@id/tvQuestions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/tvSurvey"
+        android:id="@+id/tvQuestions"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
