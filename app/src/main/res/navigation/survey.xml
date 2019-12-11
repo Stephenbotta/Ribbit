@@ -7,4 +7,12 @@
         android:id="@+id/surveyDataFragment"
         android:name="com.ribbit.ui.main.survey.SurveyDataFragment"
         android:label="SurveyDataFragment" />
+    <fragment
+        android:id="@+id/surveyFragment"
+        android:name="com.ribbit.ui.main.survey.SurveyFragment"
+        android:label="SurveyFragment" />
+    <fragment
+        android:id="@+id/surveyDetailFragment"
+        android:name="com.ribbit.ui.main.survey.SurveyDetailFragment"
+        android:label="SurveyDetailFragment" />
 </navigation>

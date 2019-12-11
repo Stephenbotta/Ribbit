@@ -3,10 +3,10 @@ package com.ribbit.ui.main.survey
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.ribbit.R
@@ -17,6 +17,7 @@ import com.ribbit.data.remote.models.loginsignup.ProfileDto
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.loginsignup.chooseinterests.ChooseInterestsFragment
+import com.ribbit.ui.profile.ProfileInterestsAdapter
 import com.ribbit.ui.profile.ProfileViewModel
 import com.ribbit.ui.profile.edit.EditProfileActivity
 import com.ribbit.ui.profile.followerandfollowing.FollowerAndFollowingActivity
@@ -26,17 +27,15 @@ import com.ribbit.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.swipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_survey.*
-import kotlinx.android.synthetic.main.fragment_survey.rvSurvey
-import kotlinx.android.synthetic.main.fragment_survey_data.*
 import timber.log.Timber
 
-class SurveyDataFragment : BaseFragment(), SurveyAdapter.Callback, View.OnClickListener {
+class SurveyDetailFragment : BaseFragment(), SurveyAdapter.Callback, View.OnClickListener {
     companion object {
         const val TAG = "SurveyFragment"
         const val ARGUMENT_FROM_TAB = "ARGUMENT_FROM_TAB"
 
-        fun newInstance(fromTab: Boolean): SurveyDataFragment {
-            val profileFragment = SurveyDataFragment()
+        fun newInstance(fromTab: Boolean): SurveyDetailFragment {
+            val profileFragment = SurveyDetailFragment()
             val bundle = Bundle()
             bundle.putBoolean(ARGUMENT_FROM_TAB, fromTab)
             profileFragment.arguments = bundle
@@ -46,30 +45,18 @@ class SurveyDataFragment : BaseFragment(), SurveyAdapter.Callback, View.OnClickL
 
     private val fromTab by lazy { arguments?.getBoolean(ARGUMENT_FROM_TAB) ?: true }
 
-    override fun getFragmentLayoutResId(): Int = R.layout.fragment_survey_data
+    override fun getFragmentLayoutResId(): Int = R.layout.fragment_survey_detail
 
     private val viewModel by lazy { ViewModelProviders.of(this)[ProfileViewModel::class.java] }
     private lateinit var interestsAdapter: SurveyAdapter
 
-
-    val list = mutableListOf<String>("Male","Gender","Female")
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        spGender?.setArrayAdapter(list)
 
         Timber.e("yor`re doing right")
         context?.shortToast("fds")
 
-        tvSurvey.setOnClickListener {
-
-            view.findNavController().navigate(R.id.surveyFragment)
-        }
-
-
-     //   setupSurveyRecycler()
+        setupSurveyRecycler()
       //  setupInterestsRecycler()
      //   swipeRefreshLayout.setOnRefreshListener { getUserProfile() }
      //   observeChanges()

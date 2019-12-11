@@ -3,6 +3,7 @@ package com.ribbit.ui.main.survey
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import com.ribbit.R
 import com.ribbit.data.remote.models.loginsignup.InterestDto
 import com.ribbit.extensions.inflate
@@ -63,7 +64,8 @@ class SurveyAdapter(private val callback: Callback) : androidx.recyclerview.widg
 
         init {
             itemView.setOnClickListener {
-                callback.onEditInterestsClicked()
+
+                it.findNavController().navigate(R.id.surveyDetailFragment)
             }
 
             itemView.tvSurvey.text = itemView.context.getString(R.string.profile_btn_edit)
