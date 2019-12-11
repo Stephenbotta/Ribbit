@@ -41,6 +41,11 @@ class SurveyDetailFragment : BaseFragment() {
 
 
         fillDemoList()
+
+        tvQuestions.text = gloabalList[quizIndex].question
+        initOptions(gloabalList[quizIndex].optionList)
+
+
         setClickListners()
     }
 
@@ -76,32 +81,33 @@ class SurveyDetailFragment : BaseFragment() {
 
     fun setClickListners(){
 
+
+        imageViewClose.setOnClickListener { findNavController().navigateUp() }
+
         btnGetStarted3.setOnClickListener {
 
+            if (!checkValidations())
+                return@setOnClickListener
 
-
-            if (quizIndex > gloabalList.size){
+            if (quizIndex == gloabalList.size-1){
                 context?.shortToast("Quiz finished thanks")
                 findNavController().navigateUp()
                 return@setOnClickListener
             }
 
-            if (quizIndex>0 && !checkValidations())
-                return@setOnClickListener
-
             if (quizIndex<gloabalList.size)
             {
+                quizIndex ++
                 tvQuestions.text = gloabalList[quizIndex].question
                 initOptions(gloabalList[quizIndex].optionList)
-                quizIndex ++
-            }
-            else{
-                btnGetStarted3.text = "Finished"
-                quizIndex ++
+
+                if (quizIndex == gloabalList.size-1){
+                    btnGetStarted3.text = "Finished"
+                }
             }
 
         }
-        btnGetStarted3.performClick()
+
     }
 
 
@@ -117,6 +123,7 @@ class SurveyDetailFragment : BaseFragment() {
             // clickListner
             cb.setOnCheckedChangeListener { compoundButton, b ->
 
+                // get current check-box index here...
                 var index = linLayout.indexOfChild(cb)
 
                 // if user presses checkboxes to true
@@ -127,7 +134,7 @@ class SurveyDetailFragment : BaseFragment() {
                     for (i in 0 until childCount) {
                         val v: CheckBox = linLayout.getChildAt(i) as CheckBox
                         v.isChecked = false
-                        gloabalList[quizIndex-1].optionList.forEach {
+                        gloabalList[quizIndex].optionList.forEach {
                             it.isSelected = false
                         }
                     }
@@ -135,7 +142,7 @@ class SurveyDetailFragment : BaseFragment() {
                     // enable current check and listValue
                     val v: CheckBox = linLayout.getChildAt(index) as CheckBox
                     v.isChecked = true
-                    gloabalList[quizIndex-1].optionList[index].isSelected = true
+                    gloabalList[quizIndex].optionList[index].isSelected = true
                 }
 
             }
@@ -147,13 +154,12 @@ class SurveyDetailFragment : BaseFragment() {
 
     fun checkValidations():Boolean{
 
-        gloabalList[quizIndex-1].optionList.forEach {
+        gloabalList[quizIndex].optionList.forEach {
             if (it.isSelected)
                 return true
         }
         context?.shortToast("Please select an option")
         return false
     }
-
 
 }
