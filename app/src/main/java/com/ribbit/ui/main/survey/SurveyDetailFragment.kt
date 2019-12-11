@@ -11,6 +11,7 @@ import com.ribbit.data.remote.models.survey.Questions
 import com.ribbit.extensions.shortToast
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.profile.ProfileViewModel
+import com.ribbit.ui.videoplayer.VideoPlayerActivity
 import kotlinx.android.synthetic.main.fragment_survey_detail.*
 
 
@@ -70,10 +71,16 @@ class SurveyDetailFragment : BaseFragment() {
         optionList4.add(OptionsList("india"))
         optionList4.add(OptionsList("south"))
         optionList4.add(OptionsList("bhutan"))
+        optionList4.add(OptionsList("df"))
+        optionList4.add(OptionsList("bhfsfutan"))
+        optionList4.add(OptionsList("f"))
+        optionList4.add(OptionsList("bhufftan"))
+        optionList4.add(OptionsList("f"))
+        optionList4.add(OptionsList("f"))
+        optionList4.add(OptionsList("f"))
+        optionList4.add(OptionsList("ft"))
 
-
-
-        gloabalList.add(Questions("jidfgg",optionList=optionList))
+        gloabalList.add(Questions("jidfgg",optionList=optionList4))
         gloabalList.add(Questions(" fdfs 2",optionList=optionList2))
         gloabalList.add(Questions("jidfgg 3",optionList=optionList3))
         gloabalList.add(Questions("jidfgg df 4",optionList=optionList4))
@@ -81,6 +88,9 @@ class SurveyDetailFragment : BaseFragment() {
 
     fun setClickListners(){
 
+        imageView3.setOnClickListener {
+            VideoPlayerActivity.start(context!!,  "https://youtu.be/SlPhMPnQ58k")
+        }
 
         imageViewClose.setOnClickListener { findNavController().navigateUp() }
 
