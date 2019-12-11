@@ -37,6 +37,11 @@
         <activity
             android:name="com.ribbit.ui.landing.LandingActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.survey.SurveyActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name="com.ribbit.ui.main.MainActivity"
             android:screenOrientation="portrait"
