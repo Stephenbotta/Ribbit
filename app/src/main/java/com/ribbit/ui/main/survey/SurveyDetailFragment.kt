@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.ribbit.R
 import com.ribbit.data.local.models.AppError
 import com.ribbit.data.remote.models.Status
+import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
 import com.ribbit.data.remote.models.survey.GetSurveyList
 import com.ribbit.data.remote.models.survey.Options
 import com.ribbit.data.remote.models.survey.OptionsList
@@ -18,6 +19,7 @@ import com.ribbit.extensions.shortToast
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.custom.LoadingDialog
 import com.ribbit.ui.videoplayer.VideoPlayerActivity
+import com.ribbit.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_survey_detail.*
 
 
@@ -72,8 +74,7 @@ class SurveyDetailFragment : BaseFragment() {
                     }
 
                      fillDemoList(resource.data)
-                     tvQuestions.text = gloabalList[quizIndex].question
-                     initOptions(gloabalList[quizIndex].optionList)
+                    updateUI()
                 }
 
                 Status.ERROR -> {
@@ -91,12 +92,18 @@ class SurveyDetailFragment : BaseFragment() {
         })
     }
 
+    fun updateUI(){
+        GlideApp.with(requireContext()).load(gloabalList[quizIndex].imageUrl).into(imageView3)
+        tvQuestions.text = gloabalList[quizIndex].question
+        initOptions(gloabalList[quizIndex].optionList)
+    }
 
 
     fun  fillDemoList(data: GetSurveyList?) {
 
         data?.info?.forEach {
-            gloabalList.add(Questions(it.name,optionList=it.options))
+            val media = it.media as?  ImageUrlDto
+            gloabalList.add(Questions(imageUrl = media?.original,question = it.name,optionList=it.options))
         }
     }
 
@@ -122,8 +129,8 @@ class SurveyDetailFragment : BaseFragment() {
             if (quizIndex<gloabalList.size)
             {
                 quizIndex ++
-                tvQuestions.text = gloabalList[quizIndex].question
-                initOptions(gloabalList[quizIndex].optionList)
+                updateUI()
+
 
                 if (quizIndex == gloabalList.size-1){
                     btnGetStarted3.text = "Finished"
