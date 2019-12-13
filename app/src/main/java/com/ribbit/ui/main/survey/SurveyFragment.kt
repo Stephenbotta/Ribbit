@@ -8,7 +8,6 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.ribbit.R
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.InterestDto
 import com.ribbit.data.remote.models.survey.SurveyInfo
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseFragment

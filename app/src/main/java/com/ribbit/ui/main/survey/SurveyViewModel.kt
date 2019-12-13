@@ -67,4 +67,26 @@ class SurveyViewModel : ViewModel() {
     }
 
 
+    fun getQuestionList(surveyId: String) {
+        surveyList.value = Resource.loading()
+
+        RetrofitClient.ribbitApi
+                .getSurveyQuestions(surveyId)
+                .enqueue(object : Callback<ApiResponse<GetSurveyList>> {
+                    override fun onResponse(call: Call<ApiResponse<GetSurveyList>>, response: Response<ApiResponse<GetSurveyList>>) {
+                        if (response.isSuccessful) {
+                            list = response.body()?.data ?: GetSurveyList()
+                            surveyList.value = Resource.success(list)
+                        } else {
+                            surveyList.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<GetSurveyList>>, t: Throwable) {
+                        surveyList.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.ribbit.ui.main.survey
 
+import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -73,7 +74,9 @@ class SurveyAdapter(private val callback: Callback) : androidx.recyclerview.widg
 
         init {
             itemView.setOnClickListener {
-                it.findNavController().navigate(R.id.surveyDetailFragment)
+                val bundle = Bundle()
+                bundle.putString(SurveyDetailFragment.SURVEY_ID,interest._id)
+                it.findNavController().navigate(R.id.surveyDetailFragment,bundle)
             }
 
 

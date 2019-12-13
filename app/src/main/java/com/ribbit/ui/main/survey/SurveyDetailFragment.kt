@@ -3,14 +3,20 @@ package com.ribbit.ui.main.survey
 import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.ribbit.R
+import com.ribbit.data.local.models.AppError
+import com.ribbit.data.remote.models.Status
+import com.ribbit.data.remote.models.survey.GetSurveyList
+import com.ribbit.data.remote.models.survey.Options
 import com.ribbit.data.remote.models.survey.OptionsList
 import com.ribbit.data.remote.models.survey.Questions
+import com.ribbit.extensions.handleError
 import com.ribbit.extensions.shortToast
 import com.ribbit.ui.base.BaseFragment
-import com.ribbit.ui.profile.ProfileViewModel
+import com.ribbit.ui.custom.LoadingDialog
 import com.ribbit.ui.videoplayer.VideoPlayerActivity
 import kotlinx.android.synthetic.main.fragment_survey_detail.*
 
@@ -19,6 +25,7 @@ class SurveyDetailFragment : BaseFragment() {
     companion object {
         const val TAG = "SurveyFragment"
         const val ARGUMENT_FROM_TAB = "ARGUMENT_FROM_TAB"
+        const val SURVEY_ID = "SURVEY_ID"
 
         fun newInstance(fromTab: Boolean): SurveyDetailFragment {
             val profileFragment = SurveyDetailFragment()
@@ -29,61 +36,78 @@ class SurveyDetailFragment : BaseFragment() {
         }
     }
 
+    var surveyID:String = ""
     var gloabalList = mutableListOf<Questions>()
     var quizIndex = 0
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_survey_detail
 
-    private val viewModel by lazy { ViewModelProviders.of(this)[ProfileViewModel::class.java] }
-
+    private val viewModel by lazy { ViewModelProviders.of(this)[SurveyViewModel::class.java] }
+    private lateinit var loadingDialog: LoadingDialog
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        surveyID = arguments?.getString(SURVEY_ID) ?: ""
+        loadingDialog = LoadingDialog(context!!)
 
-        fillDemoList()
-
-        tvQuestions.text = gloabalList[quizIndex].question
-        initOptions(gloabalList[quizIndex].optionList)
-
-
+        viewModel.getQuestionList(surveyID)
+        observeChanges()
         setClickListners()
     }
 
 
-    fun  fillDemoList(){
-        var optionList = mutableListOf<OptionsList>()
-        optionList.add(OptionsList("name"))
-        optionList.add(OptionsList("age"))
-        optionList.add(OptionsList("number"))
+    fun observeChanges(){
+        viewModel.surveyList.observe(this, Observer {resource->
+            resource ?: return@Observer
 
-        var optionList2 = mutableListOf<OptionsList>()
-        optionList2.add(OptionsList("bahu"))
-        optionList2.add(OptionsList("munna"))
-        optionList2.add(OptionsList("tej"))
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    loadingDialog.setLoading(false)
 
-        var optionList3 = mutableListOf<OptionsList>()
-        optionList3.add(OptionsList("men"))
-        optionList3.add(OptionsList("wo-men"))
-        optionList3.add(OptionsList("age"))
+                     fillDemoList(resource.data)
+                     tvQuestions.text = gloabalList[quizIndex].question
+                     initOptions(gloabalList[quizIndex].optionList)
+                     context?.shortToast("data coming")
+                }
 
-        var optionList4 = mutableListOf<OptionsList>()
-        optionList4.add(OptionsList("india"))
-        optionList4.add(OptionsList("south"))
-        optionList4.add(OptionsList("bhutan"))
-        optionList4.add(OptionsList("df"))
-        optionList4.add(OptionsList("bhfsfutan"))
-        optionList4.add(OptionsList("f"))
-        optionList4.add(OptionsList("bhufftan"))
-        optionList4.add(OptionsList("f"))
-        optionList4.add(OptionsList("f"))
-        optionList4.add(OptionsList("f"))
-        optionList4.add(OptionsList("ft"))
+                Status.ERROR -> {
+                    loadingDialog.setLoading(false)
+                    if (resource.error != AppError.WaitingForNetwork) {
+                        handleError(resource.error)
+                    }
+                }
 
-        gloabalList.add(Questions("jidfgg",optionList=optionList4))
-        gloabalList.add(Questions(" fdfs 2",optionList=optionList2))
-        gloabalList.add(Questions("jidfgg 3",optionList=optionList3))
-        gloabalList.add(Questions("jidfgg df 4",optionList=optionList4))
+                Status.LOADING -> {
+                    loadingDialog.setLoading(true)
+                }
+            }
+
+        })
+    }
+
+
+
+    fun  fillDemoList(data: GetSurveyList?) {
+
+
+        data?.info?.forEach {
+
+            gloabalList.add(Questions(it.name,optionList=it.options))
+
+        }
+
+//        var optionList = mutableListOf<OptionsList>()
+//        optionList.add(OptionsList("name"))
+//        optionList.add(OptionsList("age"))
+//        optionList.add(OptionsList("number"))
+//
+//
+//
+//
+//        gloabalList.add(Questions(" fdfs 2",optionList=optionList2))
+//        gloabalList.add(Questions("jidfgg 3",optionList=optionList3))
+//        gloabalList.add(Questions("jidfgg df 4",optionList=optionList4))
     }
 
     fun setClickListners(){
@@ -121,13 +145,13 @@ class SurveyDetailFragment : BaseFragment() {
     }
 
 
-    fun initOptions(list: List<OptionsList>){
+    fun initOptions(list: List<Options>?){
 
         linLayout.removeAllViews()
-        list.forEach {
+        list?.forEach {
 
             var cb = CheckBox(context)
-            cb.text = it.option
+            cb.text = it.name
             linLayout.addView(cb)
 
             // clickListner
@@ -144,7 +168,7 @@ class SurveyDetailFragment : BaseFragment() {
                     for (i in 0 until childCount) {
                         val v: CheckBox = linLayout.getChildAt(i) as CheckBox
                         v.isChecked = false
-                        gloabalList[quizIndex].optionList.forEach {
+                        gloabalList[quizIndex].optionList?.forEach {
                             it.isSelected = false
                         }
                     }
@@ -152,7 +176,7 @@ class SurveyDetailFragment : BaseFragment() {
                     // enable current check and listValue
                     val v: CheckBox = linLayout.getChildAt(index) as CheckBox
                     v.isChecked = true
-                    gloabalList[quizIndex].optionList[index].isSelected = true
+                    gloabalList[quizIndex]?.optionList?.get(index)?.isSelected = true
                 }
 
             }
@@ -164,7 +188,7 @@ class SurveyDetailFragment : BaseFragment() {
 
     fun checkValidations():Boolean{
 
-        gloabalList[quizIndex].optionList.forEach {
+        gloabalList[quizIndex].optionList?.forEach {
             if (it.isSelected)
                 return true
         }

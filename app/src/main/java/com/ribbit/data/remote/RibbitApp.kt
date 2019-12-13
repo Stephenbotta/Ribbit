@@ -40,9 +40,15 @@ interface RibbitApp {
     @GET("user/getTakeSurveyProperties")
     fun getTakeSurveyProperties(): Call<ApiResponse<GetSurveyProperties>>
 
-
     @GET("user/getSurvey")
     fun getSurveyList(@Query("pageNo") pageNo:Int, @Query("limit") limit: Int): Call<ApiResponse<GetSurveyList>>
+
+    @GET("/user/getSurveyQuestions")
+    fun getSurveyQuestions(@Query("surveyId") surveyId:String): Call<ApiResponse<GetSurveyList>>
+
+
+
+
 
 
     @POST("user/forgotPassword")
