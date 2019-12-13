@@ -1,13 +1,5 @@
 package com.ribbit.data.remote.models.survey
 
-import com.google.gson.annotations.Expose
-
-import com.google.gson.annotations.SerializedName
-
-
-
-
-
 
 class GetSurveyProperties {
 

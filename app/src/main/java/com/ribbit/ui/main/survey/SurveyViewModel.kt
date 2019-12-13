@@ -1,13 +1,12 @@
 package com.ribbit.ui.main.survey
 
 import androidx.lifecycle.ViewModel
-import com.ribbit.data.local.UserManager
 import com.ribbit.data.remote.RetrofitClient
 import com.ribbit.data.remote.failureAppError
 import com.ribbit.data.remote.getAppError
 import com.ribbit.data.remote.models.ApiResponse
 import com.ribbit.data.remote.models.Resource
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.data.remote.models.survey.GetSurveyList
 import com.ribbit.data.remote.models.survey.GetSurveyProperties
 import com.ribbit.utils.SingleLiveEvent
 import retrofit2.Call
@@ -16,12 +15,15 @@ import retrofit2.Response
 
 class SurveyViewModel : ViewModel() {
 
-    private var profile = GetSurveyProperties()
-
+    private var properties = GetSurveyProperties()
+    private var list = GetSurveyList()
 
     val surveyProperties by lazy { SingleLiveEvent<Resource<GetSurveyProperties>>() }
 
-    fun getUserProfileDetails() {
+    val surveyList by lazy { SingleLiveEvent<Resource<GetSurveyList>>() }
+
+
+    fun getSurveyProperties() {
         surveyProperties.value = Resource.loading()
 
         RetrofitClient.ribbitApi
@@ -29,8 +31,8 @@ class SurveyViewModel : ViewModel() {
                 .enqueue(object : Callback<ApiResponse<GetSurveyProperties>> {
                     override fun onResponse(call: Call<ApiResponse<GetSurveyProperties>>, response: Response<ApiResponse<GetSurveyProperties>>) {
                         if (response.isSuccessful) {
-                            profile = response.body()?.data ?: GetSurveyProperties()
-                            surveyProperties.value = Resource.success(profile)
+                            properties = response.body()?.data ?: GetSurveyProperties()
+                            surveyProperties.value = Resource.success(properties)
                         } else {
                             surveyProperties.value = Resource.error(response.getAppError())
                         }
@@ -42,5 +44,27 @@ class SurveyViewModel : ViewModel() {
                 })
     }
 
-    fun getProfile() = profile
+
+    fun getSurveyList() {
+        surveyList.value = Resource.loading()
+
+        RetrofitClient.ribbitApi
+                .getSurveyList(1,20)
+                .enqueue(object : Callback<ApiResponse<GetSurveyList>> {
+                    override fun onResponse(call: Call<ApiResponse<GetSurveyList>>, response: Response<ApiResponse<GetSurveyList>>) {
+                        if (response.isSuccessful) {
+                            list = response.body()?.data ?: GetSurveyList()
+                            surveyList.value = Resource.success(list)
+                        } else {
+                            surveyList.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<GetSurveyList>>, t: Throwable) {
+                        surveyList.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
+
+
 }

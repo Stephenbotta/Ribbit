@@ -5,7 +5,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import com.ribbit.R
-import com.ribbit.data.remote.models.loginsignup.InterestDto
+
+import com.ribbit.data.remote.models.survey.SurveyInfo
 import com.ribbit.extensions.inflate
 import kotlinx.android.synthetic.main.item_profile_interest.view.*
 import kotlinx.android.synthetic.main.item_survey_list.view.*
@@ -16,7 +17,7 @@ class SurveyAdapter(private val callback: Callback) : androidx.recyclerview.widg
         private const val VIEW_TYPE_EDIT_INTERESTS = 1
     }
 
-    private val interests = mutableListOf<InterestDto>()
+    private val interests = mutableListOf<SurveyInfo>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_INTEREST) {
@@ -30,7 +31,7 @@ class SurveyAdapter(private val callback: Callback) : androidx.recyclerview.widg
     override fun getItemCount(): Int = interests.size
 
     override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) {
+        if (holder is SurveyListViewHolder) {
             holder.bind(interests[position])
         }
     }
@@ -43,16 +44,16 @@ class SurveyAdapter(private val callback: Callback) : androidx.recyclerview.widg
         }
     }
 
-    fun displayInterests(interests: List<InterestDto>) {
+    fun displayInterests(interests: List<SurveyInfo>) {
         this.interests.clear()
         this.interests.addAll(interests)
         notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
-        private lateinit var interest: InterestDto
+        private lateinit var interest: SurveyInfo
 
-        fun bind(interest: InterestDto) {
+        fun bind(interest: SurveyInfo) {
             this.interest = interest
             itemView.tvInterest.text = interest.name
         }
@@ -60,24 +61,30 @@ class SurveyAdapter(private val callback: Callback) : androidx.recyclerview.widg
 
     class SurveyListViewHolder(itemView: View,
                                private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
-        private val editColor by lazy { ContextCompat.getColor(itemView.context, R.color.colorPrimary) }
+      //  private val editColor by lazy { ContextCompat.getColor(itemView.context, R.color.colorPrimary) }
+
+        private lateinit var interest: SurveyInfo
+
+        fun bind(interest: SurveyInfo) {
+            this.interest = interest
+            itemView.tvQuestions.text = interest.name
+            itemView.tvDuration.text = "${interest.totalTime} mins"
+        }
 
         init {
             itemView.setOnClickListener {
-
                 it.findNavController().navigate(R.id.surveyDetailFragment)
             }
 
-            itemView.tvQuestions.text = itemView.context.getString(R.string.profile_btn_edit)
-            itemView.tvDuration.text = "8 hours"
+
      //       itemView.tvInterest.setTextColor(editColor)
      //       itemView.tvInterest.setBackgroundResource(R.drawable.background_profile_edit_interest)
         }
     }
 
-    fun getCategoryIds(): ArrayList<String> {
-        return interests.map { it.id ?: "" } as ArrayList<String>
-    }
+//    fun getCategoryIds(): ArrayList<String> {
+//        return interests.map { it.id ?: "" } as ArrayList<String>
+//    }
 
     interface Callback {
         fun onEditInterestsClicked()

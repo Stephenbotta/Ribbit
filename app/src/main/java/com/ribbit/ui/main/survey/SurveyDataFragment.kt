@@ -1,11 +1,7 @@
 package com.ribbit.ui.main.survey
 
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
@@ -15,11 +11,8 @@ import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.survey.GetSurveyProperties
 import com.ribbit.extensions.handleError
 import com.ribbit.extensions.setArrayAdapter
-import com.ribbit.extensions.shortToast
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.custom.LoadingDialog
-import com.ribbit.ui.profile.ProfileViewModel
-import kotlinx.android.synthetic.main.custom_spinner_layout.view.*
 import kotlinx.android.synthetic.main.fragment_survey_data.*
 
 class SurveyDataFragment : BaseFragment() {
@@ -53,7 +46,7 @@ class SurveyDataFragment : BaseFragment() {
         //  spGender?.setArrayAdapter(list)
 
      //   initChilds()
-        viewModel.getUserProfileDetails()
+        viewModel.getSurveyProperties()
         setClickListners()
         observeChanges()
     }
@@ -66,7 +59,7 @@ class SurveyDataFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
                     setSpinnerData(resource.data)
-                   context?.shortToast("data coming")
+                 //  context?.shortToast("data coming")
                 }
 
                 Status.ERROR -> {
