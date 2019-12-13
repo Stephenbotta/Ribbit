@@ -37,7 +37,7 @@ class SurveyDataFragment : BaseFragment() {
     private lateinit var interestsAdapter: SurveyAdapter
 
 
-    val list = mutableListOf<String>("Male", "Gender", "Female")
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -88,7 +88,6 @@ class SurveyDataFragment : BaseFragment() {
         spEmployementStatus?.setArrayAdapter(data?.employementStatus?.toList())
         spMaritalStatus?.setArrayAdapter(data?.maritalStatus?.toList())
 
-
     }
 
 
@@ -116,7 +115,6 @@ class SurveyDataFragment : BaseFragment() {
 
     fun setClickListners(){
         tvQuestions.setOnClickListener {
-
             view?.findNavController()?.navigate(R.id.surveyFragment)
         }
 

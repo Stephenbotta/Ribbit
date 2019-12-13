@@ -59,16 +59,21 @@ class SurveyDetailFragment : BaseFragment() {
 
     fun observeChanges(){
         viewModel.surveyList.observe(this, Observer {resource->
-            resource ?: return@Observer
+            resource.data?.info ?: return@Observer
 
             when (resource.status) {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
 
+                    if (resource.data.info.isNullOrEmpty())
+                    {
+                        context?.shortToast("Empty questions list")
+                        return@Observer
+                    }
+
                      fillDemoList(resource.data)
                      tvQuestions.text = gloabalList[quizIndex].question
                      initOptions(gloabalList[quizIndex].optionList)
-                     context?.shortToast("data coming")
                 }
 
                 Status.ERROR -> {
@@ -90,24 +95,9 @@ class SurveyDetailFragment : BaseFragment() {
 
     fun  fillDemoList(data: GetSurveyList?) {
 
-
         data?.info?.forEach {
-
             gloabalList.add(Questions(it.name,optionList=it.options))
-
         }
-
-//        var optionList = mutableListOf<OptionsList>()
-//        optionList.add(OptionsList("name"))
-//        optionList.add(OptionsList("age"))
-//        optionList.add(OptionsList("number"))
-//
-//
-//
-//
-//        gloabalList.add(Questions(" fdfs 2",optionList=optionList2))
-//        gloabalList.add(Questions("jidfgg 3",optionList=optionList3))
-//        gloabalList.add(Questions("jidfgg df 4",optionList=optionList4))
     }
 
     fun setClickListners(){

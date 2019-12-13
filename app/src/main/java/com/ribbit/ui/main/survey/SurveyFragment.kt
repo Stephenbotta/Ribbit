@@ -53,7 +53,6 @@ class SurveyFragment : BaseFragment(),SurveyAdapter.Callback {
             when (resource.status) {
                 Status.SUCCESS -> {
                  //   visible()
-                    context?.shortToast("Gdfg")
                     setupSurveyRecycler(resource.data?.info)
                     swipeRefreshLayout.isRefreshing = false
                 }
