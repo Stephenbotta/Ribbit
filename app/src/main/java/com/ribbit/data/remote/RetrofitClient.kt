@@ -17,7 +17,7 @@ import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
-    private const val BASE_URL_DEV = "http://54.186.97.138:8000/"
+    private const val BASE_URL_DEV = "http://100.21.168.56:8005/"
     private const val BASE_URL = BASE_URL_DEV
 
     private val LOGGING_INTERCEPTOR by lazy {

@@ -510,4 +510,6 @@
     <string name="want_to_buy_gift_card">Want to Buy Gift Card</string>
     <string name="want_to_donate">Want to Donate!</string>
     <string name="ends_in_10min">Ends in 10min</string>
+    <string name="gender">Gender</string>
+    <string name="race">Race</string>
 </resources>

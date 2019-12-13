@@ -3,7 +3,6 @@ package com.ribbit.ui.main.survey
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,7 +16,6 @@ import com.ribbit.data.remote.models.loginsignup.ProfileDto
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.loginsignup.chooseinterests.ChooseInterestsFragment
-import com.ribbit.ui.profile.ProfileInterestsAdapter
 import com.ribbit.ui.profile.ProfileViewModel
 import com.ribbit.ui.profile.edit.EditProfileActivity
 import com.ribbit.ui.profile.followerandfollowing.FollowerAndFollowingActivity
@@ -27,7 +25,6 @@ import com.ribbit.utils.GlideApp
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.swipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_survey.*
-import timber.log.Timber
 
 class SurveyFragment : BaseFragment(), SurveyAdapter.Callback, View.OnClickListener {
     companion object {
@@ -86,9 +83,9 @@ class SurveyFragment : BaseFragment(), SurveyAdapter.Callback, View.OnClickListe
 
         val layoutManager = FlexboxLayoutManager(requireActivity())
         layoutManager.flexWrap = FlexWrap.WRAP
-        rvSurvey.layoutManager = layoutManager
-        rvSurvey.isNestedScrollingEnabled = false
-        rvSurvey.adapter = interestsAdapter
+        llSpinners.layoutManager = layoutManager
+        llSpinners.isNestedScrollingEnabled = false
+        llSpinners.adapter = interestsAdapter
     }
 
     private fun displayProfile(profile: ProfileDto) {

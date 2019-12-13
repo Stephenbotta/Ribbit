@@ -15,7 +15,7 @@ fun EditText.setSelectionAtEnd() {
 }
 
 
-fun <T> AppCompatSpinner.setArrayAdapter(list: MutableList<T>?) {
+fun <T> AppCompatSpinner.setArrayAdapter(list: List<T>?) {
     val adapter = ArrayAdapter<T>(context, R.layout.item_spinner_wrap, list ?: emptyList())
     adapter.setDropDownViewResource(android.R.layout.simple_list_item_1)
 
