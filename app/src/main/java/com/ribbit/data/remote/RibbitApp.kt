@@ -16,6 +16,7 @@ import com.ribbit.data.remote.models.post.PostReplyDto
 import com.ribbit.data.remote.models.profile.CreateEditProfileRequest
 import com.ribbit.data.remote.models.survey.GetSurveyList
 import com.ribbit.data.remote.models.survey.GetSurveyProperties
+import com.ribbit.data.remote.models.survey.RequestSurveyProperties
 import com.ribbit.data.remote.models.venues.*
 import com.ribbit.ui.chat.individual.ChatIndividualResponse
 import retrofit2.Call
@@ -46,9 +47,8 @@ interface RibbitApp {
     @GET("/user/getSurveyQuestions")
     fun getSurveyQuestions(@Query("surveyId") surveyId:String): Call<ApiResponse<GetSurveyList>>
 
-
-
-
+    @POST("/user/takeSurveyProperties")
+    fun takeSurveyProperties(@Body request: RequestSurveyProperties): Call<ApiResponse<Any>>
 
 
     @POST("user/forgotPassword")

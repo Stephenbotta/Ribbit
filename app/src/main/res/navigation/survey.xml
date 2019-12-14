@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/surveyDataFragment"
-        android:name="com.ribbit.ui.main.survey.SurveyDataFragment"
+        android:name="com.ribbit.ui.main.survey.SurveyPropetiesFragment"
         android:label="SurveyDataFragment" />
     <fragment
         android:id="@+id/surveyFragment"

@@ -8,6 +8,7 @@ import com.ribbit.data.remote.models.ApiResponse
 import com.ribbit.data.remote.models.Resource
 import com.ribbit.data.remote.models.survey.GetSurveyList
 import com.ribbit.data.remote.models.survey.GetSurveyProperties
+import com.ribbit.data.remote.models.survey.RequestSurveyProperties
 import com.ribbit.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,7 +20,7 @@ class SurveyViewModel : ViewModel() {
     private var list = GetSurveyList()
 
     val surveyProperties by lazy { SingleLiveEvent<Resource<GetSurveyProperties>>() }
-
+    val takeSurveyProperties by lazy { SingleLiveEvent<Resource<Any>>() }
     val surveyList by lazy { SingleLiveEvent<Resource<GetSurveyList>>() }
 
 
@@ -44,6 +45,26 @@ class SurveyViewModel : ViewModel() {
                 })
     }
 
+    fun takeSurveyProperties(model:RequestSurveyProperties) {
+        takeSurveyProperties.value = Resource.loading()
+
+        RetrofitClient.ribbitApi
+                .takeSurveyProperties(model)
+                .enqueue(object : Callback<ApiResponse<Any>> {
+                    override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
+                        if (response.isSuccessful) {
+
+                                    takeSurveyProperties.value = Resource.success("done")
+                        } else {
+                            takeSurveyProperties.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                        takeSurveyProperties.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
 
     fun getSurveyList() {
         surveyList.value = Resource.loading()
@@ -87,6 +108,10 @@ class SurveyViewModel : ViewModel() {
                     }
                 })
     }
+
+
+
+
 
 
 }
