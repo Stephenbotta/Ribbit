@@ -1,19 +1,18 @@
 package com.ribbit.ui.main.survey
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import com.ribbit.R
 import com.ribbit.data.local.models.AppError
 import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
-import com.ribbit.data.remote.models.survey.GetSurveyList
-import com.ribbit.data.remote.models.survey.Options
-import com.ribbit.data.remote.models.survey.OptionsList
-import com.ribbit.data.remote.models.survey.Questions
+import com.ribbit.data.remote.models.survey.*
 import com.ribbit.extensions.handleError
 import com.ribbit.extensions.shortToast
 import com.ribbit.ui.base.BaseFragment
@@ -41,6 +40,8 @@ class SurveyDetailFragment : BaseFragment() {
     var surveyID:String = ""
     var gloabalList = mutableListOf<Questions>()
     var quizIndex = 0
+
+    var globalRequest = RequestSubmitSurvey()
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_survey_detail
 
@@ -103,7 +104,7 @@ class SurveyDetailFragment : BaseFragment() {
 
         data?.info?.forEach {
             val media = it.media as?  ImageUrlDto
-            gloabalList.add(Questions(imageUrl = media?.original,question = it.name,optionList=it.options))
+            gloabalList.add(Questions(imageUrl = media?.original,quesId = it._id,question = it.name,optionList=it.options))
         }
     }
 
@@ -120,9 +121,11 @@ class SurveyDetailFragment : BaseFragment() {
             if (!checkValidations())
                 return@setOnClickListener
 
+            // when user is at last quiz..
             if (quizIndex == gloabalList.size-1){
-                context?.shortToast("Quiz finished thanks")
-                findNavController().navigateUp()
+                // add selected data to request here..
+                updateRequestData()
+                makeSurveySubmitRequest()
                 return@setOnClickListener
             }
 
@@ -131,14 +134,57 @@ class SurveyDetailFragment : BaseFragment() {
                 quizIndex ++
                 updateUI()
 
+                // add selected data to request here..
+                updateRequestData()
 
                 if (quizIndex == gloabalList.size-1){
                     btnGetStarted3.text = "Finished"
                 }
             }
-
         }
+    }
 
+
+    fun updateRequestData(){
+        // add selected data to request here..
+        val quesObj = Ques()
+        quesObj.questionId = gloabalList[quizIndex-1].quesId
+
+        val selectedOption = gloabalList[quizIndex-1].optionList?.filter { it.isSelected }
+        quesObj.options?.add(OptionsList().apply { optionId = selectedOption?.get(0)?._id})
+        globalRequest.questions?.add(quesObj)
+
+        Log.d("quesS",Gson().toJson(globalRequest.questions))
+    }
+
+
+    fun makeSurveySubmitRequest(){
+        viewModel.submitSurveyQuiz(surveyID,Gson().toJson(globalRequest.questions))
+
+        viewModel.submitSurvey.observe(this, Observer {resource ->
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    loadingDialog.setLoading(false)
+
+                    context?.shortToast("Survey Submitted Successfully")
+                    findNavController().navigateUp()
+
+                }
+
+                Status.ERROR -> {
+                    loadingDialog.setLoading(false)
+                    if (resource.error != AppError.WaitingForNetwork) {
+                        handleError(resource.error)
+                    }
+                }
+
+                Status.LOADING -> {
+                    loadingDialog.setLoading(true)
+                }
+            }
+
+        })
     }
 
 

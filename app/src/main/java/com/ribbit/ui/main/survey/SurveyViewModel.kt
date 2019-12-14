@@ -22,7 +22,7 @@ class SurveyViewModel : ViewModel() {
     val surveyProperties by lazy { SingleLiveEvent<Resource<GetSurveyProperties>>() }
     val takeSurveyProperties by lazy { SingleLiveEvent<Resource<Any>>() }
     val surveyList by lazy { SingleLiveEvent<Resource<GetSurveyList>>() }
-
+    val submitSurvey by lazy { SingleLiveEvent<Resource<Any>>() }
 
     fun getSurveyProperties() {
         surveyProperties.value = Resource.loading()
@@ -110,6 +110,28 @@ class SurveyViewModel : ViewModel() {
     }
 
 
+
+
+    fun submitSurveyQuiz(surveyId: String,data:String) {
+        submitSurvey.value = Resource.loading()
+
+        RetrofitClient.ribbitApi
+                .submitSurvey(surveyId,data)
+                .enqueue(object : Callback<ApiResponse<Any>> {
+                    override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
+                        if (response.isSuccessful) {
+                          //  list = response.body()?.data ?: GetSurveyList()
+                            submitSurvey.value = Resource.success(list)
+                        } else {
+                            submitSurvey.value = Resource.error(response.getAppError())
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                        submitSurvey.value = Resource.error(t.failureAppError())
+                    }
+                })
+    }
 
 
 

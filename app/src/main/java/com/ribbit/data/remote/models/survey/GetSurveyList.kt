@@ -28,6 +28,7 @@ var name:String? = null
 class  Options{
 
      var name:String? = null
+     var _id:String? = null
      var isSelected:Boolean = false
 
 }

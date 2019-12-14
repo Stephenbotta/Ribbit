@@ -50,6 +50,10 @@ interface RibbitApp {
     @POST("/user/takeSurveyProperties")
     fun takeSurveyProperties(@Body request: RequestSurveyProperties): Call<ApiResponse<Any>>
 
+    @POST("/user/sumitUserSurvey")
+    @FormUrlEncoded
+    fun submitSurvey(@Field("surveyId")surveyId:String,@Field("questions") questions: String): Call<ApiResponse<Any>>
+
 
     @POST("user/forgotPassword")
     @FormUrlEncoded
