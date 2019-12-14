@@ -189,4 +189,7 @@ data class ProfileDto(
         @field:SerializedName("distance")
         val distance: Double? = null,
 
+        @field:SerializedName("isTakeSurvey")
+        var isTakeSurvey:Boolean?= null,
+
         var isSelected: Boolean = false) : Parcelable

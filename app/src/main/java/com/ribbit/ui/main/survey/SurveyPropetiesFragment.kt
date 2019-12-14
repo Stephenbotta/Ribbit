@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.ribbit.R
+import com.ribbit.data.local.UserManager
 import com.ribbit.data.local.models.AppError
 import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.survey.GetSurveyProperties
@@ -49,6 +50,8 @@ class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
 
         loadingDialog = LoadingDialog(context!!)
         //  spGender?.setArrayAdapter(list)
@@ -213,6 +216,9 @@ class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
                     Status.SUCCESS -> {
                         loadingDialog.setLoading(false)
                         view?.findNavController()?.navigate(R.id.surveyFragment)
+                        val profile = UserManager.getProfile()
+                        profile.isTakeSurvey = true
+                        UserManager.saveProfile(profile)
                         //  context?.shortToast("data coming")
                     }
 

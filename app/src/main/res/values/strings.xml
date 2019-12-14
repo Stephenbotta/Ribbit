@@ -222,7 +222,7 @@
     <string name="create_group_label_channel_s_title">Network\'s title</string>
 
     <string name="profile_btn_logout">Logout</string>
-
+    <string name="survey_btn_exit">Exit</string>
     <string name="group_posts_label_no_posts">No post added yet</string>
     <string name="group_posts_label_leave_a_reply">Leave a comment</string>
 
@@ -270,7 +270,7 @@
     <string name="profile_label_designation_at_company">%s at %s</string>
     <string name="profile_btn_edit">Edit</string>
     <string name="profile_message_confirm_logout">Confirm logout?</string>
-
+    <string name="survey_message_confirm_exit">Confirm Exit?</string>
     <string name="add_group_label_add_participants">Add Participants</string>
     <string name="add_group_label_no_followers_found">No followers found</string>
 

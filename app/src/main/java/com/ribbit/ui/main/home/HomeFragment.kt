@@ -64,11 +64,6 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         super.onViewCreated(view, savedInstanceState)
         swipeRefreshLayout.setOnRefreshListener { getHomeFeed() }
 
-
-
-
-
-
         registerPostUpdatedReceiver()
         setupHomeRecycler()
         setupGroupsFab()

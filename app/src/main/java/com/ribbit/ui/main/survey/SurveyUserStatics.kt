@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.lifecycle.ViewModelProviders
 import com.ribbit.R
+import com.ribbit.data.local.UserManager
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.profile.ProfileViewModel
@@ -39,6 +40,7 @@ class SurveyUserStatics : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setClickListners()
+
     }
 
 

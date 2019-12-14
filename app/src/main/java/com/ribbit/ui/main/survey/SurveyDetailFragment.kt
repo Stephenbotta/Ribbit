@@ -4,6 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.CheckBox
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -14,6 +18,7 @@ import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
 import com.ribbit.data.remote.models.survey.*
 import com.ribbit.extensions.handleError
+import com.ribbit.extensions.isNetworkActiveWithMessage
 import com.ribbit.extensions.shortToast
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.custom.LoadingDialog
@@ -94,6 +99,7 @@ class SurveyDetailFragment : BaseFragment() {
     }
 
     fun updateUI(){
+        tvQuizNo.text = "Question No. ${quizIndex+1}"
         GlideApp.with(requireContext()).load(gloabalList[quizIndex].imageUrl).into(imageView3)
         tvQuestions.text = gloabalList[quizIndex].question
         initOptions(gloabalList[quizIndex].optionList)
@@ -114,7 +120,7 @@ class SurveyDetailFragment : BaseFragment() {
             VideoPlayerActivity.start(context!!,  "https://youtu.be/SlPhMPnQ58k")
         }
 
-        imageViewClose.setOnClickListener { findNavController().navigateUp() }
+        imageViewClose.setOnClickListener { showLogoutConfirmationDialog() }
 
         btnGetStarted3.setOnClickListener {
 
@@ -238,5 +244,27 @@ class SurveyDetailFragment : BaseFragment() {
         context?.shortToast("Please select an option")
         return false
     }
+
+
+    private fun showLogoutConfirmationDialog() {
+        val dialog = AlertDialog.Builder(context!!, R.style.AppDialog)
+                .setMessage(R.string.survey_message_confirm_exit)
+                .setPositiveButton(R.string.survey_btn_exit) { _, _ ->
+                    if (isNetworkActiveWithMessage()) {
+                        findNavController().navigateUp()
+                    }
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+        dialog.show()
+        val typeface = ResourcesCompat.getFont(context!!, R.font.roboto_text_regular)
+        dialog.findViewById<TextView>(android.R.id.message)?.typeface = typeface
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context!!, R.color.white))
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(ContextCompat.getColor(context!!, R.color.transparent))
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(context!!, R.color.white))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setBackgroundColor(ContextCompat.getColor(context!!, R.color.transparent))
+    }
+
 
 }

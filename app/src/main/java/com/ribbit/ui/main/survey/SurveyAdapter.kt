@@ -3,12 +3,12 @@ package com.ribbit.ui.main.survey
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import com.ribbit.R
 
 import com.ribbit.data.remote.models.survey.SurveyInfo
 import com.ribbit.extensions.inflate
+import com.ribbit.extensions.shortToast
 import kotlinx.android.synthetic.main.item_profile_interest.view.*
 import kotlinx.android.synthetic.main.item_survey_list.view.*
 
@@ -69,11 +69,17 @@ class SurveyAdapter(private val callback: Callback) : androidx.recyclerview.widg
         fun bind(interest: SurveyInfo) {
             this.interest = interest
             itemView.tvQuestions.text = interest.name
-            itemView.tvDuration.text = "${interest.totalTime} mins"
+            itemView.tvQuizNo.text = "${interest.totalTime} mins"
         }
 
         init {
             itemView.setOnClickListener {
+
+                if (interest.questionCount == 0){
+                    itemView.context.shortToast("This survey has empty data now...")
+                    return@setOnClickListener
+                }
+
                 val bundle = Bundle()
                 bundle.putString(SurveyDetailFragment.SURVEY_ID,interest._id)
                 it.findNavController().navigate(R.id.surveyDetailFragment,bundle)

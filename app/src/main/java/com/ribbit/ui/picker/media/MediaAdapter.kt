@@ -70,14 +70,14 @@ class MediaAdapter(context: Context,
 
             when (media) {
                 is PickerMedia.PickerPhoto -> {
-                    itemView.tvDuration.gone()
+                    itemView.tvQuizNo.gone()
                     itemView.ivVideo.gone()
                 }
 
                 is PickerMedia.PickerVideo -> {
-                    itemView.tvDuration.visible()
+                    itemView.tvQuizNo.visible()
                     itemView.ivVideo.visible()
-                    itemView.tvDuration.text = DateTimeUtils.formatMillisToDuration(media.duration.toLong())
+                    itemView.tvQuizNo.text = DateTimeUtils.formatMillisToDuration(media.duration.toLong())
                 }
             }
         }

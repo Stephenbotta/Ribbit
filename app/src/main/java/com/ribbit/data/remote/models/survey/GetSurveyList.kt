@@ -18,6 +18,7 @@ var name:String? = null
 
      val options:List<Options>? = null
 
+     var questionCount:Int? = null
 
      val media: Any?=null
 

@@ -67,4 +67,6 @@ data class GroupPostDto(
 
         @field:SerializedName("selectInterests")
         val interests: ArrayList<InterestDto>? = null
+
+
 ) : Parcelable

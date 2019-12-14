@@ -14,6 +14,7 @@ import com.ribbit.data.remote.models.post.AddPostSubReplyRequest
 import com.ribbit.data.remote.models.post.CreatePostRequest
 import com.ribbit.data.remote.models.post.PostReplyDto
 import com.ribbit.data.remote.models.profile.CreateEditProfileRequest
+import com.ribbit.data.remote.models.survey.GetSurveyData
 import com.ribbit.data.remote.models.survey.GetSurveyList
 import com.ribbit.data.remote.models.survey.GetSurveyProperties
 import com.ribbit.data.remote.models.survey.RequestSurveyProperties
@@ -200,6 +201,7 @@ interface RibbitApp {
                     @Field("pageNo") page: Int,
                     @Field("limit") limit: Int): Call<ApiResponse<List<GroupPostDto>>>
 
+
     @POST("user/getData")
     @FormUrlEncoded
     fun getYourGroups(@Field(FLAG) flag: Int = ApiConstants.FLAG_GET_YOUR_GROUPS): Call<ApiResponse<List<GroupDto>>>
@@ -359,7 +361,7 @@ interface RibbitApp {
 
     @POST("user/updateDeviceToken")
     @FormUrlEncoded
-    fun updateDeviceToken(@Field("deviceToken") deviceToken: String): Call<ApiResponse<Any>>
+    fun updateDeviceToken(@Field("deviceToken") deviceToken: String): Call<ApiResponse<GetSurveyData>>
 
     @POST("user/interestMatchUsers")
     fun interestMatchUsers(@Body user: SearchUser): Call<ApiResponse<List<ProfileDto>>>

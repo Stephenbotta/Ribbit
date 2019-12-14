@@ -1,7 +1,11 @@
 package com.ribbit.ui.main.home
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
+import com.ribbit.data.local.PrefsManager
+import com.ribbit.data.local.UserManager
 import com.ribbit.data.remote.RetrofitClient
 import com.ribbit.data.remote.failureAppError
 import com.ribbit.data.remote.getAppError
@@ -9,6 +13,8 @@ import com.ribbit.data.remote.models.ApiResponse
 import com.ribbit.data.remote.models.PagingResult
 import com.ribbit.data.remote.models.Resource
 import com.ribbit.data.remote.models.groups.GroupPostDto
+import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.data.remote.models.survey.GetSurveyData
 import com.ribbit.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,7 +56,11 @@ class HomeViewModel : ViewModel() {
                         page = 1
                     }
 
+                //    Log.d("isIII",response.body()?.data.isSu)
+                 //   UserManager.saveProfile(response.body()?.data?.user)
+
                     val receivedPosts = response.body()?.data ?: emptyList()
+
                     if (receivedPosts.size < PAGE_LIMIT) {
                         Timber.i("Last home feed post is received")
                         isLastHomeFeedReceived = true
@@ -80,16 +90,20 @@ class HomeViewModel : ViewModel() {
 
         RetrofitClient.ribbitApi
                 .updateDeviceToken(deviceToken)
-                .enqueue(object : Callback<ApiResponse<Any>> {
-                    override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
+                .enqueue(object : Callback<ApiResponse<GetSurveyData>> {
+                    override fun onResponse(call: Call<ApiResponse<GetSurveyData>>, response: Response<ApiResponse<GetSurveyData>>) {
                         if (response.isSuccessful) {
                             updateDeviceToken.value = Resource.success(response.body()?.data)
+                          //  Log.d("fsdsg",response.body()?.data?.isTakeSurvey.toString())
+                            val profile = UserManager.getProfile()
+                            profile.isTakeSurvey = response.body()?.data?.isTakeSurvey
+                            UserManager.saveProfile(profile)
                         } else {
                             updateDeviceToken.value = Resource.error(response.getAppError())
                         }
                     }
 
-                    override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                    override fun onFailure(call: Call<ApiResponse<GetSurveyData>>, t: Throwable) {
                         updateDeviceToken.value = Resource.error(t.failureAppError())
                     }
                 })
