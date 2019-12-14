@@ -512,4 +512,5 @@
     <string name="ends_in_10min">Ends in 10min</string>
     <string name="gender">Gender</string>
     <string name="race">Race</string>
+    <string name="Date_of_birth">Date_of_birth</string>
 </resources>

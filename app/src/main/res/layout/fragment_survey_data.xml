@@ -99,6 +99,34 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:alpha=".7"
+                    android:text="@string/Date_of_birth"
+                    android:textColor="@color/white"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvQuestions" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="8sp"
+                    android:id="@+id/spDOB"
+                    android:text="Select date of birth"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/white50"
+                    android:drawableEnd="@drawable/ic_date_range_black_24dp"
+                    android:padding="@dimen/_6sdp"
+                    android:background="@drawable/bg_spinner_no_arrow"
+                    android:drawablePadding="@dimen/_8sdp"
+                    android:prompt="@string/survey" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:alpha=".7"
                     android:text="@string/house_hold_income"
                     android:textColor="@color/white"
                     app:layout_constrainedWidth="true"
@@ -116,8 +144,6 @@
                     android:background="@drawable/bg_spinner"
                     android:prompt="@string/survey" />
 
-
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -132,7 +158,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvQuestions" />
 
-
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:layout_width="match_parent"
                     android:layout_height="40sp"
@@ -140,8 +165,6 @@
                     android:id="@+id/spHomeOwnership"
                     android:background="@drawable/bg_spinner"
                     android:prompt="@string/survey" />
-
-
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -203,7 +226,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvQuestions" />
 
-
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:layout_width="match_parent"
                     android:layout_height="40sp"
@@ -212,7 +234,6 @@
                     android:background="@drawable/bg_spinner"
                     android:prompt="@string/survey" />
 
-
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -220,6 +241,7 @@
                     android:text="@string/i_agree_terms_and_conditions"
                     android:gravity="center_vertical"
                     android:textColor="@color/white"
+                    android:id="@+id/cbTerms"
                     />
 
 

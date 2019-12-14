@@ -1,10 +1,11 @@
 package com.ribbit.ui.main.survey
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
-
+import android.widget.DatePicker
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
@@ -21,7 +22,7 @@ import com.ribbit.ui.custom.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_survey_data.*
 
 
-class SurveyPropetiesFragment : BaseFragment() {
+class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
     companion object {
         const val TAG = "SurveyFragment"
         const val ARGUMENT_FROM_TAB = "ARGUMENT_FROM_TAB"
@@ -95,6 +96,15 @@ class SurveyPropetiesFragment : BaseFragment() {
         spEducation?.setArrayAdapter(data?.education?.toList())
         spEmployementStatus?.setArrayAdapter(data?.employementStatus?.toList())
         spMaritalStatus?.setArrayAdapter(data?.maritalStatus?.toList())
+
+
+        spDOB.setOnClickListener {
+            val dialog = DatePickerDialog(context, this, 2013, 2, 18)
+            dialog.datePicker.maxDate = System.currentTimeMillis()
+            dialog.show()
+        }
+
+
 
         spinnerListners()
     }
@@ -172,9 +182,28 @@ class SurveyPropetiesFragment : BaseFragment() {
 //
 //    }
 
+
+    fun checkValidations():Boolean{
+
+        if (spDOB.text == "Select date of birth" ){
+            context?.shortToast("Please select date of birth")
+            return false
+        }
+
+         if (!cbTerms.isChecked){
+             context?.shortToast("Please agree to the terms and conditions")
+             return false
+         }
+
+        return true
+    }
+
     fun setClickListners(){
         tvQuestions.setOnClickListener {
            //
+
+            if (!checkValidations())
+                return@setOnClickListener
 
             viewModel.takeSurveyProperties(model)
 
@@ -203,6 +232,10 @@ class SurveyPropetiesFragment : BaseFragment() {
 
         }
 
+    }
+
+    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+        spDOB.text = "$p3/$p2/$p1"
     }
 
 }
