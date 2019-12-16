@@ -82,6 +82,8 @@ class SurveyAdapter(private val callback: Callback) : androidx.recyclerview.widg
 
                 val bundle = Bundle()
                 bundle.putString(SurveyDetailFragment.SURVEY_ID,interest._id)
+                bundle.putInt(SurveyDetailFragment.SURVEY_TIME,interest.totalTime ?: 10)
+
                 it.findNavController().navigate(R.id.surveyDetailFragment,bundle)
             }
 

@@ -34,13 +34,11 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:alpha=".7"
-            android:text="Question "
             android:textColor="@color/white"
             app:layout_constrainedWidth="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view"
             />
-
 
         <ImageView
             android:id="@+id/imageView3"
@@ -49,6 +47,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvQuizNo"
@@ -84,6 +83,7 @@
             android:letterSpacing="0"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
+            android:visibility="invisible"
             android:text="@string/next"
             android:textAllCaps="false"
             android:textColor="@color/black"
@@ -123,7 +123,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="32dp"
             android:text="@string/survey"
-
             android:textColor="@color/white"
             app:layout_constraintEnd_toStartOf="@+id/imageViewClose"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
@@ -136,12 +135,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/ends_in_10min"
             android:textColor="@color/white50"
             app:layout_constraintEnd_toStartOf="@+id/imageViewClose"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
 
         <View
             android:id="@+id/view"

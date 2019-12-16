@@ -20,7 +20,8 @@ var name:String? = null
 
      var questionCount:Int? = null
 
-     val media: Any?=null
+
+     var media: Any?=null
 
 
 }

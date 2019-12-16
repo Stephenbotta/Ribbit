@@ -1,6 +1,7 @@
 package com.ribbit.ui.main.survey
 
 import android.os.Bundle
+import android.os.UserManager
 import android.util.Log
 import android.view.View
 import android.widget.CheckBox
@@ -12,14 +13,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
+import com.google.gson.internal.LinkedTreeMap
 import com.ribbit.R
 import com.ribbit.data.local.models.AppError
 import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
 import com.ribbit.data.remote.models.survey.*
-import com.ribbit.extensions.handleError
-import com.ribbit.extensions.isNetworkActiveWithMessage
-import com.ribbit.extensions.shortToast
+import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.custom.LoadingDialog
 import com.ribbit.ui.videoplayer.VideoPlayerActivity
@@ -32,7 +32,7 @@ class SurveyDetailFragment : BaseFragment() {
         const val TAG = "SurveyFragment"
         const val ARGUMENT_FROM_TAB = "ARGUMENT_FROM_TAB"
         const val SURVEY_ID = "SURVEY_ID"
-
+        const val SURVEY_TIME = "SURVEY_TIME"
         fun newInstance(fromTab: Boolean): SurveyDetailFragment {
             val profileFragment = SurveyDetailFragment()
             val bundle = Bundle()
@@ -43,6 +43,7 @@ class SurveyDetailFragment : BaseFragment() {
     }
 
     var surveyID:String = ""
+    var surveyTIME:Int = 10
     var gloabalList = mutableListOf<Questions>()
     var quizIndex = 0
 
@@ -57,7 +58,12 @@ class SurveyDetailFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         surveyID = arguments?.getString(SURVEY_ID) ?: ""
+        surveyTIME = arguments?.getInt(SURVEY_TIME) ?: 10
         loadingDialog = LoadingDialog(context!!)
+
+
+        GlideApp.with(requireContext()).load(com.ribbit.data.local.UserManager.getProfile().image?.thumbnail).into(imageView2)
+        textView9.text = "Ends in ${surveyTIME}mins"
 
         viewModel.getQuestionList(surveyID)
         observeChanges()
@@ -80,7 +86,7 @@ class SurveyDetailFragment : BaseFragment() {
                     }
 
                      fillDemoList(resource.data)
-                    updateUI()
+                     updateUI()
                 }
 
                 Status.ERROR -> {
@@ -100,7 +106,24 @@ class SurveyDetailFragment : BaseFragment() {
 
     fun updateUI(){
         tvQuizNo.text = "Question No. ${quizIndex+1}"
-        GlideApp.with(requireContext()).load(gloabalList[quizIndex].imageUrl).into(imageView3)
+        btnGetStarted3.visible()
+        when (gloabalList[quizIndex].mediaType) {
+            "TEXT" -> {
+                imageView3.gone()
+            }
+            "IMAGE" -> {
+                imageView3.visible()
+                GlideApp.with(requireContext()).load(gloabalList[quizIndex].imageUrl).into(imageView3)
+            }
+            else -> {
+                imageView3.visible()
+                GlideApp.with(requireContext()).load(gloabalList[quizIndex].imageUrl).into(imageView3)
+                imageView3.setOnClickListener {
+                    VideoPlayerActivity.start(context!!,  gloabalList[quizIndex].imageUrl ?: "")
+                }
+            }
+        }
+
         tvQuestions.text = gloabalList[quizIndex].question
         initOptions(gloabalList[quizIndex].optionList)
     }
@@ -109,16 +132,18 @@ class SurveyDetailFragment : BaseFragment() {
     fun  fillDemoList(data: GetSurveyList?) {
 
         data?.info?.forEach {
-            val media = it.media as?  ImageUrlDto
-            gloabalList.add(Questions(imageUrl = media?.original,quesId = it._id,question = it.name,optionList=it.options))
+            val media =it.media  as? LinkedTreeMap<String,String>
+            val mediaType = media?.getValue("mediaType")
+            val thumbnail = media?.getValue("thumbnail")
+
+        //    Log.d("meddd","" + thumbnail)
+            gloabalList.add(Questions(imageUrl = thumbnail,mediaType = mediaType,quesId = it._id,question = it.name,optionList=it.options))
         }
     }
 
     fun setClickListners(){
 
-        imageView3.setOnClickListener {
-            VideoPlayerActivity.start(context!!,  "https://youtu.be/SlPhMPnQ58k")
-        }
+
 
         imageViewClose.setOnClickListener { showLogoutConfirmationDialog() }
 
@@ -126,6 +151,12 @@ class SurveyDetailFragment : BaseFragment() {
 
             if (!checkValidations())
                 return@setOnClickListener
+
+
+            if (gloabalList.size == 1){
+                makeSurveySubmitRequest()
+                return@setOnClickListener
+            }
 
             // when user is at last quiz..
             if (quizIndex == gloabalList.size-1){
@@ -201,11 +232,10 @@ class SurveyDetailFragment : BaseFragment() {
 
             var cb = CheckBox(context)
             cb.text = it.name
+            cb.setTextColor(resources.getColor(R.color.white))
             linLayout.addView(cb)
-
             // clickListner
             cb.setOnCheckedChangeListener { compoundButton, b ->
-
                 // get current check-box index here...
                 var index = linLayout.indexOfChild(cb)
 
