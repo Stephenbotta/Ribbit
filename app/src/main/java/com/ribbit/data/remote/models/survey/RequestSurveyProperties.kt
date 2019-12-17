@@ -9,6 +9,6 @@ class RequestSurveyProperties {
     var education:String?=null
     var employementStatus:String?=null
     var maritalStatus:String?=null
-    var dateOfBirth:Double?=null
+    var dateOfBirth:Long?=null
 
 }

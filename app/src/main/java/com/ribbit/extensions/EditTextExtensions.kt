@@ -22,8 +22,12 @@ fun  AppCompatSpinner.setArrayAdapter(list: List<KeyData>?) {
     adapter.setDropDownViewResource(android.R.layout.simple_list_item_1)
 
 
-    val selected = list?.indexOf(list.find { it.isSelected == 1  })
+    var selected = list?.indexOf(list.find { it.isSelected == 1  })
     setAdapter(adapter)
+
+    if (selected == -1){
+        selected = 0
+    }
 
     val position = adapter.getPosition(list?.get(selected ?: 0)?.key ?: "")
 

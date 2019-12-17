@@ -26,14 +26,14 @@ fun ZonedDateTime.isSameYear(other: ZonedDateTime): Boolean {
 
 fun parseDob(double:Long?):String {
 
-    if (double == null){
+    if (double == null || double.toInt() == 0){
 
         return "Select date of birth"
     }
 
-    val foo = double?.toLong()
-    val date = Date(foo)
-    val formatter: DateFormat = SimpleDateFormat("dd/MM/yyyy")
+
+    val date = Date(double)
+    val formatter: DateFormat = SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH)
 
     Log.d("ddoobb",formatter.format(date))
 

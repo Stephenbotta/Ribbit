@@ -112,7 +112,7 @@ class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
 
 
         spDOB.text = parseDob(data?.dateOfBirth)
-        model.dateOfBirth = data?.dateOfBirth?.toDouble()
+        model.dateOfBirth = data?.dateOfBirth
 
 
     }
@@ -246,14 +246,14 @@ class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
     }
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        spDOB.text = "$p3/$p2/$p1"
+        spDOB.text = "$p3/${p2+1}/$p1"
 
         val c  = Calendar.getInstance()
-        val year = c.set(Calendar.YEAR,p3)
+        val year = c.set(Calendar.YEAR,p1)
         val day = c.set(Calendar.DAY_OF_MONTH,p3)
-        val month = c.set(Calendar.MONTH,p2 + 1)
+        val month = c.set(Calendar.MONTH,p2)
 
-        model.dateOfBirth = c.timeInMillis.toDouble()
+        model.dateOfBirth = c.timeInMillis
     }
 
 }
