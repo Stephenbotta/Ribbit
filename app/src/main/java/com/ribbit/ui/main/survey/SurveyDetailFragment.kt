@@ -152,7 +152,6 @@ class SurveyDetailFragment : BaseFragment() {
             if (!checkValidations())
                 return@setOnClickListener
 
-
             if (gloabalList.size == 1){
                 makeSurveySubmitRequest()
                 return@setOnClickListener

@@ -23,7 +23,7 @@ class PrefsManager private constructor(context: Context) {
         const val PREF_DEVICE_TOKEN = "PREF_DEVICE_TOKEN"
         const val PREF_CHAT_TYPE = "PREF_CHAT_TYPE"
         const val PREF_CONVERSATION_ID = "PREF_CONVERSATION_ID"
-
+        const val DEMOGRAPHIC_CLICK = "DEMOGRAPHIC_CLICK"
         private lateinit var instance: PrefsManager
         private val isInitialized = AtomicBoolean()     // To check if instance was previously initialized or not
 

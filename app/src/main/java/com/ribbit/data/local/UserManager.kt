@@ -37,6 +37,14 @@ object UserManager {
         PrefsManager.get().save(PrefsManager.PREF_GROUP_COUNT, profile.groupCount ?: 0)
     }
 
+    fun saveDemographicClick(isClicked:Boolean){
+        PrefsManager.get().save(PrefsManager.DEMOGRAPHIC_CLICK,isClicked)
+    }
+
+    fun getDemographicCLick():Boolean{
+        return PrefsManager.get().contains(PrefsManager.DEMOGRAPHIC_CLICK)
+    }
+
     fun updateLocation(location: Location) {
         PrefsManager.get().save(PrefsManager.PREF_LOCATION_UPDATE_MILLIS, System.currentTimeMillis())
         PrefsManager.get().save(PrefsManager.PREF_LATITUDE, location.latitude.toFloat())

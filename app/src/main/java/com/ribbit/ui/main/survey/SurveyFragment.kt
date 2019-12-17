@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.ribbit.R
+import com.ribbit.data.local.UserManager
 import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.survey.SurveyInfo
 import com.ribbit.extensions.*
@@ -40,6 +42,12 @@ class SurveyFragment : BaseFragment(),SurveyAdapter.Callback {
 
         viewModel.getSurveyList()
         observeChanges()
+
+
+        fabEdit.setOnClickListener {
+            UserManager.saveDemographicClick(true)
+            findNavController().navigate(R.id.action_surveyFragment_to_surveyDataFragment)
+        }
     }
 
 
