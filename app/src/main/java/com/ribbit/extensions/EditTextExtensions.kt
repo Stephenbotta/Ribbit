@@ -9,21 +9,27 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.appcompat.widget.AppCompatSpinner
 import com.ribbit.R
+import com.ribbit.data.remote.models.survey.KeyData
 
 fun EditText.setSelectionAtEnd() {
     setSelection(text?.length ?: 0)
 }
 
 
-fun <T> AppCompatSpinner.setArrayAdapter(list: List<T>?) {
-    val adapter = ArrayAdapter<T>(context, R.layout.item_spinner_wrap, list ?: emptyList())
+fun  AppCompatSpinner.setArrayAdapter(list: List<KeyData>?) {
+    val mList = list?.map { it.key }
+    val adapter = ArrayAdapter<String>(context, R.layout.item_spinner_wrap, mList ?: emptyList())
     adapter.setDropDownViewResource(android.R.layout.simple_list_item_1)
 
+
+    val selected = list?.indexOf(list.find { it.isSelected == 1  })
     setAdapter(adapter)
+
+    val position = adapter.getPosition(list?.get(selected ?: 0)?.key ?: "")
+
+    setSelection(position)
+
 }
-
-
-
 
 inline fun <reified T : Any> Activity.launchActivity(
         requestCode: Int = -1,

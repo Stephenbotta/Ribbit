@@ -16,11 +16,13 @@ import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.survey.GetSurveyProperties
 import com.ribbit.data.remote.models.survey.RequestSurveyProperties
 import com.ribbit.extensions.handleError
+import com.ribbit.extensions.parseDob
 import com.ribbit.extensions.setArrayAdapter
 import com.ribbit.extensions.shortToast
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.custom.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_survey_data.*
+import java.util.*
 
 
 class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
@@ -92,14 +94,13 @@ class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
 
     fun setSpinnerData(data:GetSurveyProperties?){
 
-        spGender?.setArrayAdapter(data?.gender?.toList())
-        spRace?.setArrayAdapter(data?.race?.toList())
-        spHouseHold?.setArrayAdapter(data?.houseHoldIncome?.toList())
-        spHomeOwnership?.setArrayAdapter(data?.homeOwnership?.toList())
-        spEducation?.setArrayAdapter(data?.education?.toList())
-        spEmployementStatus?.setArrayAdapter(data?.employementStatus?.toList())
-        spMaritalStatus?.setArrayAdapter(data?.maritalStatus?.toList())
-
+        spGender?.setArrayAdapter(data?.gender?.map { it })
+        spRace?.setArrayAdapter(data?.race?.map { it })
+        spHouseHold?.setArrayAdapter(data?.houseHoldIncome?.map { it })
+        spHomeOwnership?.setArrayAdapter(data?.homeOwnership?.map { it })
+        spEducation?.setArrayAdapter(data?.education?.map { it })
+        spEmployementStatus?.setArrayAdapter(data?.employementStatus?.map { it })
+        spMaritalStatus?.setArrayAdapter(data?.maritalStatus?.map { it })
 
         spDOB.setOnClickListener {
             val dialog = DatePickerDialog(context, this, 2013, 2, 18)
@@ -107,9 +108,13 @@ class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
             dialog.show()
         }
 
-
-
         spinnerListners()
+
+
+        spDOB.text = parseDob(data?.dateOfBirth)
+        model.dateOfBirth = data?.dateOfBirth?.toDouble()
+
+
     }
 
 
@@ -215,7 +220,7 @@ class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
                 when (resource.status) {
                     Status.SUCCESS -> {
                         loadingDialog.setLoading(false)
-                        view?.findNavController()?.navigate(R.id.surveyFragment)
+                        view?.findNavController()?.navigate(R.id.action_surveyDataFragment_to_surveyFragment)
                         val profile = UserManager.getProfile()
                         profile.isTakeSurvey = true
                         UserManager.saveProfile(profile)
@@ -242,6 +247,13 @@ class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         spDOB.text = "$p3/$p2/$p1"
+
+        val c  = Calendar.getInstance()
+        val year = c.set(Calendar.YEAR,p3)
+        val day = c.set(Calendar.DAY_OF_MONTH,p3)
+        val month = c.set(Calendar.MONTH,p2 + 1)
+
+        model.dateOfBirth = c.timeInMillis.toDouble()
     }
 
 }
