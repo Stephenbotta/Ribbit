@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:id="@+id/tvQuestions"
+        android:id="@+id/tvQuestion"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -34,7 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvQuestions"
+        app:layout_constraintTop_toBottomOf="@id/tvQuestion"
         tools:text="8 hours" />
 
     <View
@@ -50,7 +50,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableRight="@drawable/ic_back"
+        android:drawableEnd="@drawable/ic_back"
         android:rotation="180"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -6,6 +6,7 @@ import com.ribbit.data.remote.failureAppError
 import com.ribbit.data.remote.getAppError
 import com.ribbit.data.remote.models.ApiResponse
 import com.ribbit.data.remote.models.Resource
+import com.ribbit.data.remote.models.survey.GetSurveyInfo
 import com.ribbit.data.remote.models.survey.GetSurveyList
 import com.ribbit.data.remote.models.survey.GetSurveyProperties
 import com.ribbit.data.remote.models.survey.RequestSurveyProperties
@@ -15,13 +16,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class SurveyViewModel : ViewModel() {
-
-    private var properties = GetSurveyProperties()
-    private var list = GetSurveyList()
-
     val surveyProperties by lazy { SingleLiveEvent<Resource<GetSurveyProperties>>() }
     val takeSurveyProperties by lazy { SingleLiveEvent<Resource<Any>>() }
     val surveyList by lazy { SingleLiveEvent<Resource<GetSurveyList>>() }
+    val surveyInfo by lazy { SingleLiveEvent<Resource<GetSurveyInfo>>() }
     val submitSurvey by lazy { SingleLiveEvent<Resource<Any>>() }
 
     fun getSurveyProperties() {
@@ -32,8 +30,8 @@ class SurveyViewModel : ViewModel() {
                 .enqueue(object : Callback<ApiResponse<GetSurveyProperties>> {
                     override fun onResponse(call: Call<ApiResponse<GetSurveyProperties>>, response: Response<ApiResponse<GetSurveyProperties>>) {
                         if (response.isSuccessful) {
-                            properties = response.body()?.data ?: GetSurveyProperties()
-                            surveyProperties.value = Resource.success(properties)
+                            surveyProperties.value = Resource.success(response.body()?.data
+                                    ?: GetSurveyProperties())
                         } else {
                             surveyProperties.value = Resource.error(response.getAppError())
                         }
@@ -45,7 +43,7 @@ class SurveyViewModel : ViewModel() {
                 })
     }
 
-    fun takeSurveyProperties(model:RequestSurveyProperties) {
+    fun takeSurveyProperties(model: RequestSurveyProperties) {
         takeSurveyProperties.value = Resource.loading()
 
         RetrofitClient.ribbitApi
@@ -54,7 +52,7 @@ class SurveyViewModel : ViewModel() {
                     override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
                         if (response.isSuccessful) {
 
-                                    takeSurveyProperties.value = Resource.success("done")
+                            takeSurveyProperties.value = Resource.success("done")
                         } else {
                             takeSurveyProperties.value = Resource.error(response.getAppError())
                         }
@@ -70,12 +68,12 @@ class SurveyViewModel : ViewModel() {
         surveyList.value = Resource.loading()
 
         RetrofitClient.ribbitApi
-                .getSurveyList(1,20)
+                .getSurveyList(1, 20)
                 .enqueue(object : Callback<ApiResponse<GetSurveyList>> {
                     override fun onResponse(call: Call<ApiResponse<GetSurveyList>>, response: Response<ApiResponse<GetSurveyList>>) {
                         if (response.isSuccessful) {
-                            list = response.body()?.data ?: GetSurveyList()
-                            surveyList.value = Resource.success(list)
+                            surveyList.value = Resource.success(response.body()?.data
+                                    ?: GetSurveyList())
                         } else {
                             surveyList.value = Resource.error(response.getAppError())
                         }
@@ -89,39 +87,35 @@ class SurveyViewModel : ViewModel() {
 
 
     fun getQuestionList(surveyId: String) {
-        surveyList.value = Resource.loading()
+        surveyInfo.value = Resource.loading()
 
         RetrofitClient.ribbitApi
                 .getSurveyQuestions(surveyId)
-                .enqueue(object : Callback<ApiResponse<GetSurveyList>> {
-                    override fun onResponse(call: Call<ApiResponse<GetSurveyList>>, response: Response<ApiResponse<GetSurveyList>>) {
+                .enqueue(object : Callback<ApiResponse<GetSurveyInfo>> {
+                    override fun onResponse(call: Call<ApiResponse<GetSurveyInfo>>, response: Response<ApiResponse<GetSurveyInfo>>) {
                         if (response.isSuccessful) {
-                            list = response.body()?.data ?: GetSurveyList()
-                            surveyList.value = Resource.success(list)
+                            surveyInfo.value = Resource.success(response.body()?.data)
                         } else {
-                            surveyList.value = Resource.error(response.getAppError())
+                            surveyInfo.value = Resource.error(response.getAppError())
                         }
                     }
 
-                    override fun onFailure(call: Call<ApiResponse<GetSurveyList>>, t: Throwable) {
-                        surveyList.value = Resource.error(t.failureAppError())
+                    override fun onFailure(call: Call<ApiResponse<GetSurveyInfo>>, t: Throwable) {
+                        surveyInfo.value = Resource.error(t.failureAppError())
                     }
                 })
     }
 
 
-
-
-    fun submitSurveyQuiz(surveyId: String,data:String) {
+    fun submitSurveyQuiz(surveyId: String, data: String) {
         submitSurvey.value = Resource.loading()
-
+        //todo check for this at last
         RetrofitClient.ribbitApi
-                .submitSurvey(surveyId,data)
+                .submitSurvey(surveyId, data)
                 .enqueue(object : Callback<ApiResponse<Any>> {
                     override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
                         if (response.isSuccessful) {
-                          //  list = response.body()?.data ?: GetSurveyList()
-                            submitSurvey.value = Resource.success(list)
+                            submitSurvey.value = Resource.success()
                         } else {
                             submitSurvey.value = Resource.error(response.getAppError())
                         }
@@ -132,8 +126,6 @@ class SurveyViewModel : ViewModel() {
                     }
                 })
     }
-
-
 
 
 }

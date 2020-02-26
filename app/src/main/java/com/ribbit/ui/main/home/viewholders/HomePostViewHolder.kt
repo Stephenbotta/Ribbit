@@ -140,7 +140,7 @@ class HomePostViewHolder(itemView: View, private val glide: GlideRequests,
 
         if (!post.locationAddress.isNullOrEmpty()) {
             itemView.tvLocationAddress.visible()
-            itemView.tvLocationAddress.text = String.format("%s , %s", post.locationName, post.locationAddress)
+            itemView.tvLocationAddress.text = post.locationName /*String.format("%s , %s", post.locationName, post.locationAddress)*/
         } else {
             itemView.tvLocationAddress.gone()
         }

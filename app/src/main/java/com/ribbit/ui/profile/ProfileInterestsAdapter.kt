@@ -2,7 +2,6 @@ package com.ribbit.ui.profile
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import com.ribbit.R
 import com.ribbit.data.remote.models.loginsignup.InterestDto
 import com.ribbit.extensions.inflate
@@ -53,21 +52,19 @@ class ProfileInterestsAdapter(private val callback: Callback) : androidx.recycle
         fun bind(interest: InterestDto) {
             this.interest = interest
             itemView.tvInterest.text = interest.name
+            itemView.tvInterest.setBackgroundResource(R.drawable.drawable_added_interest)
         }
     }
 
     class EditInterestsViewHolder(itemView: View,
                                   private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
-        private val editColor by lazy { ContextCompat.getColor(itemView.context, R.color.colorPrimary) }
-
         init {
             itemView.setOnClickListener {
                 callback.onEditInterestsClicked()
             }
 
             itemView.tvInterest.text = itemView.context.getString(R.string.profile_btn_edit)
-            itemView.tvInterest.setTextColor(editColor)
-            itemView.tvInterest.setBackgroundResource(R.drawable.background_profile_edit_interest)
+            itemView.tvInterest.setBackgroundResource(R.drawable.drawable_edit_interest)
         }
     }
 

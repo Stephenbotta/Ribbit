@@ -4,14 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.ribbit.R
 import com.ribbit.ui.picker.models.PickerAlbum
 import kotlinx.android.synthetic.main.item_picker_album.view.*
 
-class AlbumsAdapter(context: Context,
-                    private val glide: RequestManager,
-                    private val callback: Callback) : androidx.recyclerview.widget.RecyclerView.Adapter<AlbumsAdapter.ViewHolder>() {
+class AlbumsAdapter(context: Context, private val glide: RequestManager, private val callback: Callback)
+    : RecyclerView.Adapter<AlbumsAdapter.ViewHolder>() {
     private val inflater = LayoutInflater.from(context)
     private val albums = mutableListOf<PickerAlbum>()
 
@@ -31,7 +31,7 @@ class AlbumsAdapter(context: Context,
     }
 
     class ViewHolder(itemView: View, private val glide: RequestManager,
-                     callback: Callback) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+                     callback: Callback) : RecyclerView.ViewHolder(itemView) {
         init {
             itemView.setOnClickListener { callback.onAlbumClicked(album) }
         }

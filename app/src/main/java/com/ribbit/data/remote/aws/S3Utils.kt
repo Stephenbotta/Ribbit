@@ -10,6 +10,9 @@ import com.ribbit.RibbitApp
 object S3Utils {
     private const val BUCKET_NAME = "checkits3bucket"
     private const val IDENTITY_POOL_ID = "us-west-2:507740a2-4e72-40da-be87-a6fca04c6146"
+
+    /*private const val BUCKET_NAME = "ribbitrewardsdev"
+    private const val IDENTITY_POOL_ID = "us-west-2:4f35d080-e94d-4bd6-907b-84e83a21c28f"*/
     private val REGION = Regions.US_WEST_2
 
     /**

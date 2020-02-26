@@ -11,6 +11,7 @@
     <color name="transparent">#00000000</color>
     <color name="transparent_white">#00FFFFFF</color>
     <color name="white">#FFFFFF</color>
+    <color name="whiteCA">#CACACA</color>
     <color name="white50">#80FFFFFF</color>
     <color name="black">#000000</color>
 
@@ -46,7 +47,10 @@
     <color name="profileFollowersText">#242D41</color>
     <color name="blue">#0069FF</color>
     <color name="greenA3">#A3CA39</color>
+    <color name="greenD6">#D6E037</color>
     <color name="yellow">#FFF135</color>
+    <color name="yellowE7">#E7E736</color>
+    <color name="yellow14">#14E7E736</color>
     <color name="blue3B">#3B5998</color>
     <color name="gray4E">#4E5462</color>
     <color name="grayA4">#A4AAB5</color>

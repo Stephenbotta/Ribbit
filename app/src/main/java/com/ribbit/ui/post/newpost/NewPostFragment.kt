@@ -10,17 +10,15 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.databinding.DataBindingUtil
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.ribbit.R
+import com.ribbit.data.local.UserManager
 import com.ribbit.data.local.models.AppError
 import com.ribbit.data.remote.ApiConstants
 import com.ribbit.data.remote.models.Status
@@ -28,7 +26,6 @@ import com.ribbit.data.remote.models.groups.GroupDto
 import com.ribbit.data.remote.models.groups.GroupPostDto
 import com.ribbit.data.remote.models.loginsignup.InterestDto
 import com.ribbit.data.remote.models.post.CreatePostRequest
-import com.ribbit.databinding.BottomSheetDialogConverseNearbyBinding
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.custom.LoadingDialog
@@ -37,6 +34,7 @@ import com.ribbit.ui.picker.MediaFragment
 import com.ribbit.ui.picker.models.MediaSelected
 import com.ribbit.ui.picker.models.MediaType
 import com.ribbit.ui.picker.models.UploadStatus
+import com.ribbit.ui.pickers.CustomPickerDialog
 import com.ribbit.ui.profile.ProfileInterestsAdapter
 import com.ribbit.ui.profile.settings.hideinfo.hidestatus.HideStatusActivity
 import com.ribbit.utils.AppConstants
@@ -47,7 +45,7 @@ import kotlinx.android.synthetic.main.fragment_new_post.*
 import permissions.dispatcher.*
 
 @RuntimePermissions
-class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaFragment.MediaCallback, MediaAdapter.Callback {
+class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaFragment.MediaCallback, MediaAdapter.Callback, CustomPickerDialog.PickerSelectionCallback {
     companion object {
         const val TAG = "NewPostFragment"
         private const val ARGUMENT_GROUP = "ARGUMENT_GROUP"
@@ -84,8 +82,10 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
     /*private var getSampledImage: GetSampledImage? = null*/
     private var postingIn = false
     private val selectedUserIdList by lazy { ArrayList<String>() }
-    private lateinit var interestsAdapter: ProfileInterestsAdapter
-    private val interest by lazy { ArrayList<InterestDto>() }
+    /*private lateinit var interestsAdapter: ProfileInterestsAdapter*/
+    private val interest by lazy {
+        viewModel.getProfile().interests ?: ArrayList()
+    }
     private lateinit var adapter: MediaAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,12 +101,51 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val userData = UserManager.getProfile()
+        tvUserName.text = userData.fullName
+        GlideApp.with(this)
+                .load(userData.image?.thumbnail)
+                .into(ivProfile)
+
         setListeners()
         observeChanges()
-        setupInterestsRecycler()
+        /*setupInterestsRecycler()*/
 
         setMediaAdapter()
         setupViews()
+
+//        setPostTypeSpinner()
+    }
+
+    private fun setPostTypeSpinner() {
+        /* val spinnerArray = ArrayList<String>()
+         spinnerArray.add(getString(R.string.dialog_post_label_publicly))
+         spinnerArray.add(getString(R.string.dialog_post_label_follower_selected_people))
+
+         val spinnerArrayAdapter: ArrayAdapter<String> = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item,
+                 spinnerArray) //selected item will look like a spinner set from XML
+         spPostingIn.adapter = spinnerArrayAdapter
+
+         spPostingIn.onItemSelectedListener = object : OnItemSelectedListener {
+             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View, position: Int, id: Long) {
+                 when (spinnerArray[position]) {
+                     getString(R.string.dialog_post_label_publicly) -> {
+                         tvPostingIn.text = getString(R.string.converse_post_label_publicity)
+                         postingIn = false
+                         tvPostingIn.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_public, 0, 0, 0)
+                     }
+                     getString(R.string.dialog_post_label_follower_selected_people) -> {
+                         val intent = HideStatusActivity.start(requireContext(), AppConstants.REQ_CODE_NEW_POST)
+                         intent.putExtra(AppConstants.EXTRA_FOLLOWERS, selectedUserIdList)
+                         startActivityForResult(intent, AppConstants.REQ_CODE_NEW_POST)
+                     }
+                 }
+             }
+
+             override fun onNothingSelected(parentView: AdapterView<*>?) {}
+         }
+
+         spPostingIn.isEnabled = false*/
     }
 
     private fun setMediaAdapter() {
@@ -114,7 +153,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
         rvMedias.adapter = adapter
     }
 
-    private fun setupInterestsRecycler() {
+    /*private fun setupInterestsRecycler() {
         interestsAdapter = ProfileInterestsAdapter(this)
         val layoutManager = FlexboxLayoutManager(requireContext())
         layoutManager.flexWrap = FlexWrap.WRAP
@@ -124,7 +163,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
 
         interest.addAll(viewModel.getProfile().interests ?: emptyList())
         interestsAdapter.displayInterests(interest)
-    }
+    }*/
 
     private fun setupViews() {
         val groupPost = this.groupPost
@@ -147,31 +186,33 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
     }
 
     private fun postingOnWallUi() {
-        tvLabelPostingInGroup.gone()
-        ivGroup.gone()
-        tvGroupName.gone()
+        /*tvLabelPostingInGroup.gone()*/
+        /* ivGroup.gone()
+         tvGroupName.gone()*/
 
         tvPostingIn.visible()
         tvLabelPostingIn.visible()
         tvLabelInterest.visible()
-        rvConnection.visible()
-        divider_2.visible()
+        tvInterests.visible()
+        /*rvConnection.visible()
+        divider_2.visible()*/
     }
 
     private fun postingInGroupUi(group: GroupDto) {
-        tvLabelPostingInGroup.visible()
-        ivGroup.visible()
+        /*tvLabelPostingInGroup.visible()*/
+        /*ivGroup.visible()
         tvGroupName.visible()
         GlideApp.with(this)
                 .load(group.imageUrl?.original)
                 .into(ivGroup)
-        tvGroupName.text = group.name
+        tvGroupName.text = group.name*/
 
         tvPostingIn.gone()
         tvLabelPostingIn.gone()
         tvLabelInterest.gone()
-        rvConnection.gone()
-        divider_2.gone()
+        tvInterests.gone()
+        /*rvConnection.gone()
+        divider_2.gone()*/
     }
 
     private fun showPostData(groupPost: GroupPostDto) {
@@ -183,27 +224,28 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
                 ApiConstants.POST_TYPE_VIDEO -> MediaType.VIDEO
                 else -> MediaType.GIF
             }
-            medias.add(MediaSelected(mediaId = it.id ?: "", path = it.original
-                    ?: "", original = it.original,
-                    type = mediaType, thumbnailPath = it.thumbnail, status = UploadStatus.SENT))
+            medias.add(MediaSelected(mediaId = it.id ?: "", path = it.original ?: "",
+                    original = it.original, type = mediaType, thumbnailPath = it.thumbnail,
+                    status = UploadStatus.SENT))
         }
 
         adapter.addMediaFiles(medias)
         if (!groupPost.locationName.isNullOrEmpty())
-            tvSelectLocation.text = String.format("%s %s", groupPost.locationName, groupPost.locationAddress)
+            tvLocation.text = String.format("%s %s", groupPost.locationName, groupPost.locationAddress)
+
         val postingInType = groupPost.postingIn
         if (postingInType == ApiConstants.POSTING_IN_SELECTED_PEOPLE) {
             postingIn = true
-            tvPostingIn.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_group, 0, 0, 0)
+            tvPostingIn.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_group, 0, R.drawable.ccp_down_arrow, 0)
             selectedUserIdList.clear()
             selectedUserIdList.addAll(groupPost.selectedPeople)
             tvPostingIn.text = getString(R.string.hide_info_label_people_count, selectedUserIdList.size)
         } else if (postingInType == ApiConstants.POSTING_IN_FOLLOWERS) {
             tvPostingIn.text = getString(R.string.converse_path_info_followers)
         }
+
         interest.clear()
         interest.addAll(groupPost.interests ?: emptyList())
-        interestsAdapter.displayInterests(interest)
 
         request.postId = groupPost.id
         request.groupId = groupPost.group?.id
@@ -215,7 +257,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
             showMediaPickerWithPermissionCheck()
         }
 
-        tvSelectLocation.setOnClickListener {
+        tvLocation.setOnClickListener {
             /*val builder = PlacePicker.IntentBuilder()
             startActivityForResult(builder.build(activity), AppConstants.REQ_CODE_PLACE_PICKER)*/
 
@@ -272,7 +314,18 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
             }
         })
 
-        tvPostingIn.setOnClickListener { getPublicly() }
+        tvPostingIn.setOnClickListener {
+            /*spPostingIn.performClick()*/
+            getPublicly()
+        }
+
+        tvInterests.setOnClickListener {
+            fragmentManager?.let { fragmentManager ->
+                val dialog = CustomPickerDialog(false, interest.map { it.copy() })
+                dialog.setCallback(this)
+                dialog.show(fragmentManager, CustomPickerDialog.TAG)
+            }
+        }
     }
 
     private fun observeChanges() {
@@ -341,7 +394,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
     }
 
     private fun getPublicly() {
-        val inflater = layoutInflater
+        /*val inflater = layoutInflater
         val binding = DataBindingUtil.inflate<BottomSheetDialogConverseNearbyBinding>(inflater, R.layout.bottom_sheet_dialog_converse_nearby, null, false)
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         bottomSheetDialog.setContentView(binding.root)
@@ -357,7 +410,27 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
             intent.putExtra(AppConstants.EXTRA_FOLLOWERS, selectedUserIdList)
             startActivityForResult(intent, AppConstants.REQ_CODE_NEW_POST)
             bottomSheetDialog.dismiss()
+        }*/
+
+        val popup = PopupMenu(requireContext(), tvPostingIn)
+        popup.menu.add(getString(R.string.dialog_post_label_publicly))
+        popup.menu.add(getString(R.string.dialog_post_label_follower_selected_people))
+        popup.setOnMenuItemClickListener { item ->
+            when (item.title) {
+                getString(R.string.dialog_post_label_publicly) -> {
+                    tvPostingIn.text = getString(R.string.converse_post_label_publicity)
+                    postingIn = false
+                    tvPostingIn.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_public, 0, R.drawable.ccp_down_arrow, 0)
+                }
+                getString(R.string.dialog_post_label_follower_selected_people) -> {
+                    val intent = HideStatusActivity.start(requireContext(), AppConstants.REQ_CODE_NEW_POST)
+                    intent.putExtra(AppConstants.EXTRA_FOLLOWERS, selectedUserIdList)
+                    startActivityForResult(intent, AppConstants.REQ_CODE_NEW_POST)
+                }
+            }
+            true
         }
+        popup.show()
     }
 
     @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -403,7 +476,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
                     request.locationLong = place.latLng?.longitude
                     request.locationName = place.name
                     request.locationAddress = place.address
-                    tvSelectLocation.text = AppUtils.getFormattedAddress(request.locationName, request.locationAddress)
+                    tvLocation.text = AppUtils.getFormattedAddress(request.locationName, request.locationAddress)
 //                    updateCreateVenueMenuState()
                 }
             }
@@ -411,7 +484,7 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
             AppConstants.REQ_CODE_NEW_POST -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     postingIn = true
-                    tvPostingIn.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_group, 0, 0, 0)
+                    tvPostingIn.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_group, 0, R.drawable.ccp_down_arrow, 0)
                     selectedUserIdList.clear()
                     selectedUserIdList.addAll(data.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS))
                     if (selectedUserIdList.isNotEmpty()) {
@@ -420,24 +493,23 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
                         tvPostingIn.text = getString(R.string.converse_path_info_followers)
                     }
                 }
-
             }
 
-            AppConstants.REQ_CODE_CHOOSE_INTERESTS -> {
+            /*AppConstants.REQ_CODE_CHOOSE_INTERESTS -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val interests = data.getParcelableArrayListExtra<InterestDto>(AppConstants.EXTRA_INTEREST)
                     interest.clear()
                     interest.addAll(interests)
                     interestsAdapter.displayInterests(interests)
                 }
-            }
+            }*/
 
             /*else -> mediaPicker.onActivityResult(requestCode, resultCode, data)*/
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater?.inflate(R.menu.menu_new_post, menu)
+        inflater.inflate(R.menu.menu_new_post, menu)
 
         val createPostItem = menu.findItem(R.id.menuPost)
         createPostMenuItem = createPostItem
@@ -447,14 +519,14 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item?.itemId == R.id.menuPost) {
+        if (item.itemId == R.id.menuPost) {
             /*if (adapter.itemCount == 1) {
                 context?.shortToast(getString(R.string.error_msg_media_count_should_be_greater_than_1_and_less_than_5))
             } else {*/
-                etPostText.clearFocus()
-                etPostText.hideKeyboard()
-                createPost()
-                return true
+            etPostText.clearFocus()
+            etPostText.hideKeyboard()
+            createPost()
+            return true
             /*}*/
         }
         return super.onOptionsItemSelected(item)
@@ -524,6 +596,16 @@ class NewPostFragment : BaseFragment(), ProfileInterestsAdapter.Callback, MediaF
             viewModel.resendMedia(media)
         }
     }
+
+    override fun setSelectedItems(selectedDataItems: List<InterestDto>) {
+        interest.forEach { it.selected = false }
+        selectedDataItems.forEach { item ->
+            interest.firstOrNull { it.id == item.id }?.selected = item.selected
+        }
+        tvInterests?.text = selectedDataItems.joinToString { it.name ?: "" }
+    }
+
+    override fun setSelectedItem(item: InterestDto) {}
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -283,10 +283,10 @@
     <string name="new_post_label_new_post">New Post</string>
     <string name="new_post_label_choose_a_channel_you_want_to_post_into">Choose a network you want to post into</string>
     <string name="new_post_label_skip">SKIP</string>
-    <string name="new_post_label_post">POST</string>
+    <string name="new_post_label_post">CREATE</string>
     <string name="new_post_label_type_here">Type here</string>
     <string name="new_post_label_posting_in">Posting in</string>
-    <string name="new_post_label_text_caption">Write a caption</string>
+    <string name="new_post_label_text_caption">Write your post here…</string>
     <string name="new_post_label_check_in">Check in</string>
 
     <string name="post_details_btn_reply">Reply</string>
@@ -395,6 +395,7 @@
 
     <string name="search_user_label_explore_connections">EXPLORE CONNECTIONS</string>
     <string name="search_user_label_select_location">Select location</string>
+    <string name="search_user_label_select_your_location">Select your location</string>
     <string name="search_user_label_select_range">Selected Range</string>
     <string name="search_user_label_go">Go</string>
     <string name="search_user_label_finding_matches">Finding matches…</string>
@@ -446,6 +447,7 @@
     <string name="converse_post_label_change">Change</string>
 
     <string name="hide_info_label_people_count">%d People</string>
+    <string name="selected_people">Selected People</string>
     <string name="search_user_label_progress_count">%02d mi</string>
 
     <string name="venue_share_link">Please open this link to join my Ribbit Venue.</string>
@@ -503,14 +505,25 @@
     <string name="total_survey">Total Survey</string>
     <string name="points_earned">Points Earned</string>
     <string name="redeemed">Redeemed</string>
-    <string name="daily_challenges">DAILY CHALLENGES</string>
-    <string name="daily_challenges_in_a_day">Your daily challenges is send a 100 messages in a Day!</string>
+    <string name="daily_challenges">DAILY CHALLENGE</string>
+    <string name="daily_challenges_in_a_day">Your daily challenge is to send 100 messages in a day!</string>
     <string name="my_challenges">My Challenges</string>
     <string name="take_survey">Take Survey</string>
     <string name="want_to_buy_gift_card">Want to Buy Gift Card</string>
     <string name="want_to_donate">Want to Donate!</string>
-    <string name="ends_in_10min">Ends in 10min</string>
+    <string name="ends_in_10min">Ends in 10 min</string>
     <string name="gender">Gender</string>
     <string name="race">Race</string>
-    <string name="Date_of_birth">Date_of_birth</string>
+    <string name="Date_of_birth">Date of birth</string>
+    <string name="display_qr_code">Display QR code</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="select_location">Select location</string>
+    <string name="select_one">Select One</string>
+    <string name="survey_time">%d mins</string>
+    <string name="ends_in_survey_time">Ends in %d mins</string>
+    <string name="this_survey_has_empty_data_now">This survey has empty data now…</string>
+    <string name="select_date_of_birth">Select date of birth</string>
+    <string name="please_select_date_of_birth">Please select date of birth</string>
+    <string name="please_agree_to_terms_and_conditions">Please agree to the terms and conditions</string>
+    <string name="empty_question_list">Empty questions list</string>
 </resources>

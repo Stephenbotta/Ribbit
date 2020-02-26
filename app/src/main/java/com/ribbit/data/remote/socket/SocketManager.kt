@@ -10,8 +10,9 @@ import timber.log.Timber
 class SocketManager(private val userManager: UserManager) {
     companion object {
         private const val BASE_URL_DEV = "http://54.186.97.138:8000/"
+        private const val BASE_URL_DOMAIN = "http://api-ribbit.royoapps.com/"
 
-        private const val SOCKET_URL = BASE_URL_DEV
+        private const val SOCKET_URL = BASE_URL_DOMAIN
 
         private const val EVENT_CONNECT = "socketConnected"
         const val EVENT_NEW_MESSAGE = "receiveMessage"

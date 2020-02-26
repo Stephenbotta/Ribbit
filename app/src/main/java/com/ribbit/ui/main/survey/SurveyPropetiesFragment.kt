@@ -15,10 +15,7 @@ import com.ribbit.data.local.models.AppError
 import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.survey.GetSurveyProperties
 import com.ribbit.data.remote.models.survey.RequestSurveyProperties
-import com.ribbit.extensions.handleError
-import com.ribbit.extensions.parseDob
-import com.ribbit.extensions.setArrayAdapter
-import com.ribbit.extensions.shortToast
+import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.custom.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_survey_data.*
@@ -27,52 +24,32 @@ import java.util.*
 
 class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
     companion object {
-        const val TAG = "SurveyFragment"
-        const val ARGUMENT_FROM_TAB = "ARGUMENT_FROM_TAB"
-
-        fun newInstance(fromTab: Boolean): SurveyPropetiesFragment {
-            val profileFragment = SurveyPropetiesFragment()
-            val bundle = Bundle()
-            bundle.putBoolean(ARGUMENT_FROM_TAB, fromTab)
-            profileFragment.arguments = bundle
-            return profileFragment
-        }
+        const val TAG = "SurveyPropetiesFragment"
     }
-    private lateinit var loadingDialog: LoadingDialog
-    private val fromTab by lazy { arguments?.getBoolean(ARGUMENT_FROM_TAB) ?: true }
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_survey_data
 
     private val viewModel by lazy { ViewModelProviders.of(this)[SurveyViewModel::class.java] }
-    private lateinit var interestsAdapter: SurveyAdapter
-
-
     var model = RequestSurveyProperties()
-
+    private lateinit var loadingDialog: LoadingDialog
+    private val calendar by lazy { Calendar.getInstance() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
-        loadingDialog = LoadingDialog(context!!)
-        //  spGender?.setArrayAdapter(list)
-
-     //   initChilds()
-        viewModel.getSurveyProperties()
-        setClickListners()
+        loadingDialog = LoadingDialog(view.context)
+        if (requireContext().isNetworkActiveWithMessage())
+            viewModel.getSurveyProperties()
+        setClickListeners()
         observeChanges()
     }
 
-    fun observeChanges(){
-        viewModel.surveyProperties.observe(this, Observer {resource->
+    fun observeChanges() {
+        viewModel.surveyProperties.observe(this, Observer { resource ->
             resource ?: return@Observer
-
             when (resource.status) {
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
                     setSpinnerData(resource.data)
-                 //  context?.shortToast("data coming")
                 }
 
                 Status.ERROR -> {
@@ -86,14 +63,35 @@ class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
                     loadingDialog.setLoading(true)
                 }
             }
-
         })
 
+        viewModel.takeSurveyProperties.observe(this, Observer { resource ->
+
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    loadingDialog.setLoading(false)
+                    view?.findNavController()?.navigate(R.id.action_surveyDataFragment_to_surveyFragment)
+                    val profile = UserManager.getProfile()
+                    profile.isTakeSurvey = true
+                    UserManager.saveProfile(profile)
+                    //  context?.shortToast("data coming")
+                }
+
+                Status.ERROR -> {
+                    loadingDialog.setLoading(false)
+                    if (resource.error != AppError.WaitingForNetwork) {
+                        handleError(resource.error)
+                    }
+                }
+
+                Status.LOADING -> {
+                    loadingDialog.setLoading(true)
+                }
+            }
+        })
     }
 
-
-    fun setSpinnerData(data:GetSurveyProperties?){
-
+    private fun setSpinnerData(data: GetSurveyProperties?) {
         spGender?.setArrayAdapter(data?.gender?.map { it })
         spRace?.setArrayAdapter(data?.race?.map { it })
         spHouseHold?.setArrayAdapter(data?.houseHoldIncome?.map { it })
@@ -103,65 +101,55 @@ class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
         spMaritalStatus?.setArrayAdapter(data?.maritalStatus?.map { it })
 
         spDOB.setOnClickListener {
-            val dialog = DatePickerDialog(context, this, 2013, 2, 18)
+            val dialog = DatePickerDialog(requireContext(), this, calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH))
             dialog.datePicker.maxDate = System.currentTimeMillis()
             dialog.show()
         }
 
-        spinnerListners()
-
+        spinnerListeners()
 
         spDOB.text = parseDob(data?.dateOfBirth)
         model.dateOfBirth = data?.dateOfBirth
+    }
 
-
+    private fun spinnerListeners() {
+        spGender.onItemSelectedListener = itemListener
+        spRace.onItemSelectedListener = itemListener
+        spHouseHold.onItemSelectedListener = itemListener
+        spHomeOwnership.onItemSelectedListener = itemListener
+        spEducation.onItemSelectedListener = itemListener
+        spEmployementStatus.onItemSelectedListener = itemListener
+        spMaritalStatus.onItemSelectedListener = itemListener
     }
 
 
-    fun spinnerListners(){
-        spGender.onItemSelectedListener = itemLisner
-        spRace.onItemSelectedListener = itemLisner
-        spHouseHold.onItemSelectedListener = itemLisner
-        spHomeOwnership.onItemSelectedListener = itemLisner
-        spEducation.onItemSelectedListener = itemLisner
-        spEmployementStatus.onItemSelectedListener = itemLisner
-        spMaritalStatus.onItemSelectedListener = itemLisner
-    }
-
-
-    val itemLisner = object : OnItemSelectedListener {
+    private val itemListener = object : OnItemSelectedListener {
         override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-
             val selectedValue = adapterView.getItemAtPosition(i).toString()
-
-            when(adapterView.id){
-
-                R.id.spGender ->{
+            when (adapterView.id) {
+                R.id.spGender -> {
                     model.gender = selectedValue
                 }
-                R.id.spRace ->{
+                R.id.spRace -> {
                     model.race = selectedValue
                 }
-                R.id.spHouseHold ->{
+                R.id.spHouseHold -> {
                     model.houseHoldIncome = selectedValue
                 }
-                R.id.spHomeOwnership ->{
+                R.id.spHomeOwnership -> {
                     model.homeOwnership = selectedValue
                 }
-                R.id.spEducation ->{
+                R.id.spEducation -> {
                     model.education = selectedValue
                 }
-                R.id.spEmployementStatus ->{
+                R.id.spEmployementStatus -> {
                     model.employementStatus = selectedValue
                 }
-                R.id.spMaritalStatus ->{
+                R.id.spMaritalStatus -> {
                     model.maritalStatus = selectedValue
                 }
-            }
-
-            try { //Your task here
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
 
@@ -169,91 +157,38 @@ class SurveyPropetiesFragment : BaseFragment(), DatePickerDialog.OnDateSetListen
     }
 
 
-
-//    fun initChilds(){
-//
-//
-//            val view = LayoutInflater.from(context)
-//
-//            val child = view.inflate(R.layout.custom_spinner_layout, null)
-//            val params = LinearLayout.LayoutParams(
-//                    LinearLayout.LayoutParams.MATCH_PARENT,
-//                    LinearLayout.LayoutParams.WRAP_CONTENT
-//            )
-//
-//        child.tvName.text = "male"
-//
-//        child.spinner.setArrayAdapter(list)
-//
-//        llSpinners?.addView(child,params)
-//
-//
-//    }
-
-
-    fun checkValidations():Boolean{
-
-        if (spDOB.text == "Select date of birth" ){
-            context?.shortToast("Please select date of birth")
+    private fun checkValidations(): Boolean {
+        if (spDOB.text == getString(R.string.select_date_of_birth)) {
+            context?.shortToast(getString(R.string.please_select_date_of_birth))
             return false
         }
 
-         if (!cbTerms.isChecked){
-             context?.shortToast("Please agree to the terms and conditions")
-             return false
-         }
+        if (!cbTerms.isChecked) {
+            context?.shortToast(getString(R.string.please_agree_to_terms_and_conditions))
+            return false
+        }
 
         return true
     }
 
-    fun setClickListners(){
-        tvQuestions.setOnClickListener {
-           //
-
+    private fun setClickListeners() {
+        tvQuestion.setOnClickListener {
             if (!checkValidations())
                 return@setOnClickListener
 
-            viewModel.takeSurveyProperties(model)
-
-            viewModel.takeSurveyProperties.observe(this, Observer {resource ->
-
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        loadingDialog.setLoading(false)
-                        view?.findNavController()?.navigate(R.id.action_surveyDataFragment_to_surveyFragment)
-                        val profile = UserManager.getProfile()
-                        profile.isTakeSurvey = true
-                        UserManager.saveProfile(profile)
-                        //  context?.shortToast("data coming")
-                    }
-
-                    Status.ERROR -> {
-                        loadingDialog.setLoading(false)
-                        if (resource.error != AppError.WaitingForNetwork) {
-                            handleError(resource.error)
-                        }
-                    }
-
-                    Status.LOADING -> {
-                        loadingDialog.setLoading(true)
-                    }
-                }
-
-            })
-
+            if (requireContext().isNetworkActiveWithMessage()) {
+                viewModel.takeSurveyProperties(model)
+            }
         }
-
     }
 
-    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
-        spDOB.text = "$p3/${p2+1}/$p1"
+    override fun onDateSet(picker: DatePicker, year: Int, month: Int, day: Int) {
+        spDOB.text = String.format("%02d/%02d/%d", day, month + 1, year)
 
-        val c  = Calendar.getInstance()
-        val year = c.set(Calendar.YEAR,p1)
-        val day = c.set(Calendar.DAY_OF_MONTH,p3)
-        val month = c.set(Calendar.MONTH,p2)
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.DAY_OF_MONTH, day)
+        calendar.set(Calendar.MONTH, month)
 
-        model.dateOfBirth = c.timeInMillis
+        model.dateOfBirth = calendar.timeInMillis
     }
-
 }

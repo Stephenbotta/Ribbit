@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/survey"
-    app:startDestination="@id/surveyDataFragment"
-
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/survey"
+    app:startDestination="@id/surveyDataFragment">
 
     <fragment
         android:id="@+id/surveyDataFragment"
         android:name="com.ribbit.ui.main.survey.SurveyPropetiesFragment"
-        android:label="SurveyDataFragment" >
+        android:label="SurveyDataFragment">
         <action
             android:id="@+id/action_surveyDataFragment_to_surveyFragment"
             app:destination="@id/surveyFragment"
@@ -18,7 +17,7 @@
     <fragment
         android:id="@+id/surveyFragment"
         android:name="com.ribbit.ui.main.survey.SurveyFragment"
-        android:label="SurveyFragment" >
+        android:label="SurveyFragment">
         <action
             android:id="@+id/action_surveyFragment_to_surveyDataFragment"
             app:destination="@id/surveyDataFragment"

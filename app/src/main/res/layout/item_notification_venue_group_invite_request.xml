@@ -45,8 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:textColor="@color/white"
         android:alpha=".7"
+        android:textColor="@color/white"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -54,34 +54,38 @@
 
     <TextView
         android:id="@+id/btnAccept"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_gradient_notification"
         android:fontFamily="@font/roboto_text_medium"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:text="@string/notifications_btn_accept"
         android:textAllCaps="false"
         android:textColor="@color/notificationsRejectText"
         android:textSize="14sp"
-        android:background="@drawable/background_gradient_notification"
+        app:layout_constraintBottom_toBottomOf="@id/btnReject"
         app:layout_constraintStart_toStartOf="@id/tvTitle"
-        app:layout_constraintTop_toBottomOf="@id/barrierProfileAndTitle" />
+        app:layout_constraintTop_toTopOf="@id/btnReject" />
 
-    <com.google.android.material.button.MaterialButton
+    <TextView
         android:id="@+id/btnReject"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
+        android:background="@drawable/background_notification_reject"
         android:fontFamily="@font/roboto_text_medium"
+        android:paddingStart="20dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="8dp"
         android:text="@string/notifications_btn_reject"
         android:textAllCaps="false"
         android:textColor="@color/notificationsRejectText"
         android:textSize="14sp"
-        app:backgroundTint="@color/notificationsRejectBackground"
         app:layout_constraintStart_toEndOf="@id/btnAccept"
-        app:cornerRadius="16dp"
         app:layout_constraintTop_toBottomOf="@id/barrierProfileAndTitle" />
 
     <View

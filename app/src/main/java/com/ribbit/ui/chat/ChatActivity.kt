@@ -682,6 +682,11 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
             }
         }
         adapter.removeMsgPosition(chatMessage)
+        if (adapter.itemCount == 0) {
+            tvLabelEmptyChat.visible()
+        } else {
+            tvLabelEmptyChat.gone()
+        }
     }
 
     override fun onImageShow(chatMessage: ChatMessageDto) {

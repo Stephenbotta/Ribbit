@@ -11,7 +11,6 @@ import com.ribbit.R
 import com.ribbit.data.remote.ApiConstants
 import com.ribbit.data.remote.models.chat.ChatMessageDto
 import com.ribbit.extensions.gone
-import com.ribbit.extensions.visible
 import com.ribbit.ui.chat.ChatActionCallback
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_delete_post.view.*
 
@@ -28,13 +27,13 @@ object DialogsUtil {
 
         when (chatMessage.details?.type) {
             ApiConstants.MESSAGE_TYPE_VIDEO -> {
-                contentView.groupShowPost.visible()
-                contentView.tvActionShow.text = context.getString(R.string.show_video)
+                contentView.groupShowPost.gone()
+                /*contentView.tvActionShow.text = context.getString(R.string.show_video)*/
                 contentView.tvDelete.text = context.getString(R.string.delete_video)
             }
             ApiConstants.MESSAGE_TYPE_IMAGE -> {
-                contentView.groupShowPost.visible()
-                contentView.tvActionShow.text = context.getString(R.string.show_image)
+                contentView.groupShowPost.gone()
+                /*contentView.tvActionShow.text = context.getString(R.string.show_image)*/
                 contentView.tvDelete.text = context.getString(R.string.delete_image)
             }
             ApiConstants.MESSAGE_TYPE_TEXT -> {
@@ -42,8 +41,8 @@ object DialogsUtil {
                 contentView.groupShowPost.gone()
             }
             ApiConstants.MESSAGE_TYPE_GIF -> {
-                contentView.groupShowPost.visible()
-                contentView.tvActionShow.text = context.getString(R.string.show_gif)
+                contentView.groupShowPost.gone()
+                /*contentView.tvActionShow.text = context.getString(R.string.show_gif)*/
                 contentView.tvDelete.text = context.getString(R.string.delete_gif)
             }
         }
@@ -51,20 +50,22 @@ object DialogsUtil {
         bottomSheetDialog.show()
 
         contentView.tvDelete.setOnClickListener {
-            when (chatMessage.details?.type) {
+            /*when (chatMessage.details?.type) {
                 ApiConstants.MESSAGE_TYPE_VIDEO -> {
-                    bottomSheetDialog.dismiss()
-                    openDeleteMessageDialog(context, chatMessage, listener)
-                }
-                ApiConstants.MESSAGE_TYPE_IMAGE, ApiConstants.MESSAGE_TYPE_GIF -> {
-                    bottomSheetDialog.dismiss()
-                    openDeleteMessageDialog(context, chatMessage, listener)
-                }
-                ApiConstants.MESSAGE_TYPE_TEXT -> {
                     listener.onDeleteImage(chatMessage)
                     bottomSheetDialog.dismiss()
+                    *//* openDeleteMessageDialog(context, chatMessage, listener)*//*
                 }
-            }
+                ApiConstants.MESSAGE_TYPE_IMAGE, ApiConstants.MESSAGE_TYPE_GIF -> {
+                    listener.onDeleteImage(chatMessage)
+                    bottomSheetDialog.dismiss()
+                    *//*openDeleteMessageDialog(context, chatMessage, listener)*//*
+                }
+                ApiConstants.MESSAGE_TYPE_TEXT -> {*/
+                    listener.onDeleteImage(chatMessage)
+                    bottomSheetDialog.dismiss()
+                /*}
+            }*/
         }
 
         contentView.tvActionShow.setOnClickListener {

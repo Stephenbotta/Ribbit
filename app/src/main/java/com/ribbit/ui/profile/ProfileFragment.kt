@@ -80,26 +80,21 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.O
         GlideApp.with(this)
                 .load(profile.image?.original)
                 .into(ivProfile)
+
         tvNameAndAge.text = if (profile.age == null) {
             profile.fullName
         } else {
             getString(R.string.profile_label_name_with_age, profile.fullName, profile.age)
         }
 
-        /*tvNameAndAge.setCompoundDrawablesWithIntrinsicBounds(0, 0,
-                if (profile.userType == ApiConstants.TYPE_STUDENT) R.drawable.ic_student_symbol
-                else R.drawable.ic_teacher_symbol, 0)*/
-//        if (profile.designation.isNullOrBlank() || profile.company.isNullOrBlank()) {
-        if (profile.designation.isNullOrBlank()) {
-            tvDesignation.gone()
+        if (profile.userName.isNullOrBlank()) {
+            tvUserName.gone()
         } else {
-            tvDesignation.visible()
-//            tvDesignation.text = getString(R.string.profile_label_designation_at_company, profile.designation, profile.company)
-            tvDesignation.text = profile.designation
+            tvUserName.visible()
+            tvUserName.text = profile.userName
         }
 
         tvFollowersCount.text = (profile.followersCount ?: 0).toString()
-//        tvFollowingCount.text = (profile.followingCount ?: 0).toString()
 
         if (profile.bio.isNullOrBlank()) {
             tvLabelBio.gone()
@@ -108,6 +103,60 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.O
             tvLabelBio.visible()
             tvBio.visible()
             tvBio.text = profile.bio
+        }
+
+        if (profile.designation.isNullOrBlank()) {
+            tvLabelDesignation.gone()
+            tvDesignation.gone()
+        } else {
+            tvLabelDesignation.visible()
+            tvDesignation.visible()
+            tvDesignation.text = profile.designation
+        }
+
+        if (profile.website.isNullOrBlank()) {
+            tvLabelWebsite.gone()
+            tvWebsite.gone()
+        } else {
+            tvLabelWebsite.visible()
+            tvWebsite.visible()
+            tvWebsite.text = profile.website
+        }
+
+        if (profile.company.isNullOrBlank()) {
+            tvLabelCompany.gone()
+            tvCompany.gone()
+        } else {
+            tvLabelCompany.visible()
+            tvCompany.visible()
+            tvCompany.text = profile.company
+        }
+
+        if (profile.phoneNumber.isNullOrBlank()) {
+            tvLabelPhoneNumber.gone()
+            tvPhoneNumber.gone()
+        } else {
+            tvLabelPhoneNumber.visible()
+            tvPhoneNumber.visible()
+            tvPhoneNumber.text = String.format("%s %s", profile.countryCode, profile.phoneNumber)
+        }
+
+        if (profile.email.isNullOrBlank()) {
+            tvLabelEmail.gone()
+            tvEmail.gone()
+        } else {
+            tvLabelEmail.visible()
+            tvEmail.visible()
+            tvEmail.text = profile.email
+        }
+
+        if (profile.gender.isNullOrBlank()) {
+            tvLabelGender.gone()
+            tvGender.gone()
+        } else {
+            tvLabelGender.visible()
+            tvGender.visible()
+            tvGender.text = profile.gender
         }
 
         interestsAdapter.displayInterests(profile.interests ?: emptyList())
@@ -199,45 +248,69 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.O
             R.id.tvFollowersCount/*, R.id.tvLabelFollowers*/ -> startActivity(FollowerAndFollowingActivity.getIntentStart(requireActivity(), ApiConstants.FLAG_FOLLOWERS))
 
 //            R.id.tvFollowingCount, R.id.tvLabelFollowing -> startActivity(FollowerAndFollowingActivity.getIntentStart(requireActivity(), ApiConstants.FLAG_FOLLOWINGS))
-
         }
-
     }
 
     private fun visible() {
-        ivProfile.visibility = View.VISIBLE
+        ivProfile.visible()
         fabEdit.visible()
-        tvNameAndAge.visibility = View.VISIBLE
-        tvDesignation.visibility = View.VISIBLE
+        tvNameAndAge.visible()
+        tvDesignation.visible()
         /*viewDividerFollowersTop.visibility = View.VISIBLE
         viewDividerFollowersCenter.visibility = View.VISIBLE*/
-        tvFollowersCount.visibility = View.VISIBLE
+        tvFollowersCount.visible()
         /*tvLabelFollowers.visibility = View.VISIBLE
         tvFollowingCount.visibility = View.VISIBLE
         tvLabelFollowing.visibility = View.VISIBLE*/
-        viewDividerFollowersBottom.visibility = View.VISIBLE
-        tvLabelBio.visibility = View.VISIBLE
-        tvBio.visibility = View.VISIBLE
-        tvLabelMyInterests.visibility = View.VISIBLE
-        rvInterests.visibility = View.VISIBLE
+        viewDividerFollowersBottom.visible()
+        tvLabelBio.visible()
+        tvBio.visible()
+        tvLabelMyInterests.visible()
+        rvInterests.visible()
+        btnQR.visible()
+        tvLabelDesignation.visible()
+        tvDesignation.visible()
+        tvLabelWebsite.visible()
+        tvWebsite.visible()
+        tvLabelCompany.visible()
+        tvCompany.visible()
+        tvPhoneNumber.visible()
+        tvLabelPhoneNumber.visible()
+        tvEmail.visible()
+        tvLabelEmail.visible()
+        tvGender.visible()
+        tvLabelGender.visible()
     }
 
     private fun gone() {
-        ivProfile.visibility = View.GONE
+        ivProfile.gone()
         fabEdit.gone()
-        tvNameAndAge.visibility = View.GONE
-        tvDesignation.visibility = View.GONE
+        tvNameAndAge.gone()
+        tvDesignation.gone()
         /*viewDividerFollowersTop.visibility = View.GONE
         viewDividerFollowersCenter.visibility = View.GONE*/
-        tvFollowersCount.visibility = View.GONE
+        tvFollowersCount.gone()
         /*tvLabelFollowers.visibility = View.GONE
         tvFollowingCount.visibility = View.GONE
         tvLabelFollowing.visibility = View.GONE*/
-        viewDividerFollowersBottom.visibility = View.GONE
-        tvLabelBio.visibility = View.GONE
-        tvBio.visibility = View.GONE
-        tvLabelMyInterests.visibility = View.GONE
-        rvInterests.visibility = View.GONE
+        viewDividerFollowersBottom.gone()
+        tvLabelBio.gone()
+        tvBio.gone()
+        tvLabelMyInterests.gone()
+        rvInterests.gone()
+        btnQR.gone()
+        tvLabelDesignation.gone()
+        tvDesignation.gone()
+        tvLabelWebsite.gone()
+        tvWebsite.gone()
+        tvLabelCompany.gone()
+        tvCompany.gone()
+        tvPhoneNumber.gone()
+        tvLabelPhoneNumber.gone()
+        tvEmail.gone()
+        tvLabelEmail.gone()
+        tvGender.gone()
+        tvLabelGender.gone()
     }
 
 }

@@ -18,7 +18,8 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
     private const val BASE_URL_DEV = "http://100.21.168.56:8005/"
-    private const val BASE_URL = BASE_URL_DEV
+    private const val BASE_URL_DOMAIN = "http://api-ribbit.royoapps.com/"
+    private const val BASE_URL = BASE_URL_DOMAIN
 
     private val LOGGING_INTERCEPTOR by lazy {
         HttpLoggingInterceptor().setLevel(if (BuildConfig.DEBUG) {
@@ -77,7 +78,7 @@ object RetrofitClient {
             val authorization = UserManager.getAuthorization()
 
             return if (authorization != null) {
-                Timber.i("Adding authorization in header")
+                Timber.i("Adding authorization in header \n $authorization")
                 val authRequest = originalRequest.newBuilder()
                         .header("authorization", authorization)
                         .build()

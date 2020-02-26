@@ -14,10 +14,7 @@ import com.ribbit.data.remote.models.post.AddPostSubReplyRequest
 import com.ribbit.data.remote.models.post.CreatePostRequest
 import com.ribbit.data.remote.models.post.PostReplyDto
 import com.ribbit.data.remote.models.profile.CreateEditProfileRequest
-import com.ribbit.data.remote.models.survey.GetSurveyData
-import com.ribbit.data.remote.models.survey.GetSurveyList
-import com.ribbit.data.remote.models.survey.GetSurveyProperties
-import com.ribbit.data.remote.models.survey.RequestSurveyProperties
+import com.ribbit.data.remote.models.survey.*
 import com.ribbit.data.remote.models.venues.*
 import com.ribbit.ui.chat.individual.ChatIndividualResponse
 import retrofit2.Call
@@ -46,7 +43,7 @@ interface RibbitApp {
     fun getSurveyList(@Query("pageNo") pageNo:Int, @Query("limit") limit: Int): Call<ApiResponse<GetSurveyList>>
 
     @GET("/user/getSurveyQuestions")
-    fun getSurveyQuestions(@Query("surveyId") surveyId:String): Call<ApiResponse<GetSurveyList>>
+    fun getSurveyQuestions(@Query("surveyId") surveyId:String): Call<ApiResponse<GetSurveyInfo>>
 
     @POST("/user/takeSurveyProperties")
     fun takeSurveyProperties(@Body request: RequestSurveyProperties): Call<ApiResponse<Any>>
