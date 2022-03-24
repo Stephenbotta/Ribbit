@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/img_venue"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/roboto_text_bold"
+        android:text="@string/create_venue_label_create_a_venue"
+        android:textColor="@color/textGray"
+        android:textSize="@dimen/all_screen_header_text_size" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="40dp"
+        android:gravity="center_horizontal"
+        android:text="@string/create_venue_label_venues_are_a_fun_and_engaging_way_to_meet_and_explore_people_create_chat_rooms_based_upon_your_location"
+        android:textColor="@color/textGray" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:visibility="visible"
+        android:background="@color/greyImageBackground" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/roboto_text_bold"
+        android:text="@string/create_venue_label_choose_a_category"
+        android:textColor="@color/colorPrimary" />
+
+</LinearLayout>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/textGrayMedium"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@id/ivThumbnail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Fri · May 12" />
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/ivThumbnail"
+        android:layout_width="@dimen/chat_image_width"
+        android:layout_height="@dimen/chat_image_height"
+        android:layout_marginStart="@dimen/chat_item_margin"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@id/tvTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDate"
+        app:riv_corner_radius="16dp"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <ImageView
+        android:id="@+id/ivPlay"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_video_play"
+        app:layout_constraintBottom_toBottomOf="@id/ivThumbnail"
+        app:layout_constraintEnd_toEndOf="@id/ivThumbnail"
+        app:layout_constraintStart_toStartOf="@id/ivThumbnail"
+        app:layout_constraintTop_toTopOf="@id/ivThumbnail"
+        tools:ignore="ContentDescription" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:theme="@style/ProgressBarChatMessage"
+        android:visibility="gone"
+        app:layout_constraintCircle="@id/ivThumbnail" />
+
+    <ImageView
+        android:id="@+id/btnResend"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/background_chat_message_progress_bar"
+        android:scaleType="center"
+        android:src="@drawable/ic_share_white"
+        android:visibility="gone"
+        app:layout_constraintCircle="@id/ivThumbnail"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:padding="4dp"
+        android:textColor="@color/textGrayMedium"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivThumbnail"
+        tools:text="5:30 AM" />
+</androidx.constraintlayout.widget.ConstraintLayout>

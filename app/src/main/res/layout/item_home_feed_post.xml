@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_oval="true"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:maxLines="2"
+        android:textColor="@color/textGray"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/tvLocationAddress"
+        app:layout_constraintEnd_toStartOf="@id/tvTime"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/ivProfile"
+        app:layout_constraintTop_toTopOf="@id/ivProfile"
+        tools:text="Jacob in Music" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/textGray"
+        android:alpha=".7"
+        app:layout_constraintBottom_toBottomOf="@id/ivProfile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivProfile"
+        tools:text="40 min" />
+
+    <TextView
+        android:id="@+id/tvLocationAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/textGray"
+        android:alpha=".7"
+        android:textSize="@dimen/item_people_tv_address_text_size"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="@id/ivProfile"
+        app:layout_constraintEnd_toStartOf="@id/tvTime"
+        app:layout_constraintStart_toEndOf="@id/ivProfile"
+        app:layout_constraintTop_toBottomOf="@+id/tvUserName"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="14, Hahn Garsaasasden Street. 917, NY" />
+
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/textGray"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clMedia"
+        app:layout_goneMarginTop="32dp"
+        tools:text="Test message #hello #world" />
+
+    <!--<androidx.viewpager.widget.ViewPager
+        android:id="@+id/vpMedias"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintDimensionRatio="1.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfile"
+        app:layout_goneMarginTop="28dp" />
+
+    <com.rd.PageIndicatorView
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vpMedias"
+        app:piv_animationType="scale"
+        app:piv_dynamicCount="true"
+        app:piv_radius="4dp"
+        app:piv_selectedColor="?attr/colorPrimary"
+        app:piv_unselectedColor="@color/disableTextView"
+        app:piv_viewPager="@+id/vpMedias" />-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clMedia"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintDimensionRatio="1.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfile"
+        app:layout_goneMarginTop="28dp">
+
+        <ImageView
+            android:id="@+id/ivMedia1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="2dp"
+            android:foreground="@color/black44"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@id/ivMedia3"
+            app:layout_constraintEnd_toStartOf="@id/ivMedia2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription,UnusedAttribute"
+            tools:src="@tools:sample/avatars" />
+
+        <ImageView
+            android:id="@+id/ivPlay1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_video_play"
+            android:visibility="gone"
+            app:layout_constraintCircle="@id/ivMedia1" />
+
+        <ImageView
+            android:id="@+id/ivMostLiked1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_most_liked"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/ivMedia1"
+            app:layout_constraintEnd_toEndOf="@id/ivMedia1"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/ivMedia2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:foreground="@color/black44"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/ivMedia1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivMedia1"
+            app:layout_constraintTop_toTopOf="@id/ivMedia1"
+            tools:ignore="ContentDescription,UnusedAttribute"
+            tools:src="@tools:sample/avatars" />
+
+        <ImageView
+            android:id="@+id/ivPlay2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_video_play"
+            android:visibility="gone"
+            app:layout_constraintCircle="@id/ivMedia2" />
+
+        <ImageView
+            android:id="@+id/ivMostLiked2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_most_liked"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/ivMedia2"
+            app:layout_constraintEnd_toEndOf="@id/ivMedia2"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/ivMedia3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:foreground="@color/black44"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivMedia4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivMedia1"
+            tools:ignore="ContentDescription,UnusedAttribute"
+            tools:src="@tools:sample/avatars" />
+
+        <ImageView
+            android:id="@+id/ivPlay3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_video_play"
+            android:visibility="gone"
+            app:layout_constraintCircle="@id/ivMedia3" />
+
+        <ImageView
+            android:id="@+id/ivMostLiked3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_most_liked"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/ivMedia3"
+            app:layout_constraintEnd_toEndOf="@id/ivMedia3"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/ivMedia4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="2dp"
+            android:foreground="@color/black44"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="@id/ivMedia3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivMedia3"
+            app:layout_constraintTop_toTopOf="@id/ivMedia3"
+            tools:ignore="ContentDescription,UnusedAttribute"
+            tools:src="@tools:sample/avatars" />
+
+        <ImageView
+            android:id="@+id/ivPlay4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_video_play"
+            android:visibility="gone"
+            app:layout_constraintCircle="@id/ivMedia4" />
+
+        <ImageView
+            android:id="@+id/ivMostLiked4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_most_liked"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/ivMedia4"
+            app:layout_constraintEnd_toEndOf="@id/ivMedia4"
+            tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvRepliesLikes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/greyImageBackground"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/ivReply"
+        app:layout_constraintTop_toBottomOf="@id/tvMessage"
+        tools:text="156 Replies · 156 Likes" />
+
+    <ImageView
+        android:id="@+id/ivLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_heart_normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMessage"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/ivReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_replies"
+        app:layout_constraintStart_toEndOf="@id/ivLike"
+        app:layout_constraintTop_toBottomOf="@id/tvMessage"
+        tools:ignore="ContentDescription" />
+
+
+    <ImageView
+        android:id="@+id/ivType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_converse_nerby"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMessage"
+        tools:ignore="ContentDescription" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/greyImageBackground"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRepliesLikes" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

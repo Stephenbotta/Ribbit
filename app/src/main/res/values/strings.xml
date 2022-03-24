@@ -1,0 +1,529 @@
+<resources>
+    <string name="app_name">Ribbit</string>
+
+    <string name="facebook_app_id" translatable="false">487530908496689</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb487530908496689</string>
+    <string name="app_google_api_key" translatable="false">AIzaSyA9BLiHtZIj50SWfgefJqK6TNQLQbgvyak</string>
+    <!--<string name="app_google_api_key" translatable="false">AIzaSyAvpbM3J2jBBY1gfK0dyrGBXbmioJl0IJo</string>-->
+
+    <string name="default_notification_channel_id">default_notification_channel_id</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="back">BACK</string>
+    <string name="next">NEXT</string>
+    <string name="home">HOME</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="retry">Retry</string>
+    <string name="distance_mile_with_value">%.1f Mi</string>
+    <string name="yesterday">Yesterday</string>
+
+    <plurals name="members_with_count">
+        <item quantity="one">%d member</item>
+        <item quantity="other">%d members</item>
+    </plurals>
+    <plurals name="members_with_count_venue">
+        <item quantity="one">%d Active Member</item>
+        <item quantity="other">%d Active Members</item>
+    </plurals>
+    <plurals name="replies_with_count">
+        <item quantity="one">%d Reply</item>
+        <item quantity="other">%d Replies</item>
+    </plurals>
+    <plurals name="likes_with_count_in_percent">
+        <item quantity="one">%.1f\%% Like</item>
+        <item quantity="other">%.1f\%% Likes</item>
+    </plurals>
+    <plurals name="likes_with_count">
+        <item quantity="one">%d Like</item>
+        <item quantity="other">%d Likes</item>
+    </plurals>
+
+    <string name="message_google_maps_is_not_installed">Google maps is not installed. Would you like to install it?</string>
+    <string name="message_select_smaller_video">Please select a smaller video. Maximum size should not exceed 200 MB</string>
+    <string name="message_select_smaller_image">Please select a smaller image. Maximum size should not exceed 25 MB.</string>
+
+    <string name="media_picker_dialog_capture_image">Capture image from camera</string>
+    <string name="media_picker_dialog_capture_video">Capture video from camera</string>
+    <string name="media_picker_dialog_gallery_image">Select image from gallery</string>
+    <string name="media_picker_dialog_gallery_video">Select video from gallery</string>
+    <string name="media_picker_dialog_select_your_choice">Select your choice</string>
+    <string name="media_picker_message_please_free_up_space">Please free up some space on device before proceeding</string>
+
+    <string name="permission_btn_allow">Allow</string>
+    <string name="permission_btn_deny">Deny</string>
+    <string name="permission_btn_cancel">Cancel</string>
+    <string name="permission_label_settings">Settings</string>
+
+    <string name="permission_rationale_location">Location permission is required for nearby functionality and recommendations.</string>
+    <string name="permission_denied_location">Without the location permission nearby functionality and recommendations will not work properly.</string>
+    <string name="permission_never_ask_again_location">You previously selected to never ask again for location permission. You have to manually grant them from the app settings.</string>
+
+    <string name="permission_rationale_camera_storage">Camera and Storage permission is required to access camera and select images from gallery.</string>
+    <string name="permission_denied_camera_storage">Without the Camera and Storage permission camera and gallery will not work.</string>
+    <string name="permission_never_ask_camera_storage">You previously selected to never ask again for Camera and Storage permission. You have to manually grant them from the app settings.</string>
+
+    <string name="permission_rationale_storage">Storage permission is required to select files from local storage.</string>
+    <string name="permission_denied_storage">Without the Storage permission, file selection will not work.</string>
+    <string name="permission_never_ask_storage">You previously selected to never ask again for Storage permission. You have to manually grant it from the app settings.</string>
+
+    <string name="permission_rationale_contact">Read Contact permission is required to access contacts for invite.</string>
+    <string name="permission_denied_read_contact">Without the Read Contact permission read contact will not work.</string>
+    <string name="permission_never_ask_contact">You previously selected to never ask again for Read Contact permission. You have to manually grant them from the app settings.</string>
+
+    <string name="error_check_internet_connection">Please check your internet connection</string>
+    <string name="error_api_failure">Unable to connect to the server</string>
+    <string name="error_empty_password">Please enter password</string>
+    <string name="error_empty_old_password">Please enter old password</string>
+    <string name="error_empty_new_password">Please enter new password</string>
+    <string name="error_empty_confirm_password">Please confirm the password</string>
+    <string name="error_empty_email">Please enter email</string>
+    <string name="error_empty_full_name">Please enter full name</string>
+    <string name="error_empty_user_name">Please enter username</string>
+    <string name="error_user_name_contains_spaces">Username should not contain whitespace</string>
+    <string name="error_invalid_user_name_length">Username should contain at least 6 characters</string>
+    <string name="error_invalid_username_characters">Username can contain underscores, periods, dashes and at least one Alphanumeric character</string>
+    <string name="error_empty_phone_number">Please enter phone number</string>
+    <string name="error_empty_otp">Please enter OTP</string>
+    <string name="error_password_does_not_match">Password does not match</string>
+    <string name="error_add_profile_image">Please add profile image</string>
+    <string name="error_invalid_otp">Please enter valid OTP</string>
+    <string name="error_invalid_email">Please enter valid email</string>
+    <string name="error_invalid_website">Please enter valid website url</string>
+    <string name="error_invalid_password_length">Password length must be 6 to 20 characters</string>
+    <string name="error_invalid_new_password_length">New password length must be 6 to 20 characters</string>
+    <string name="error_invalid_phone_number">Please enter valid phone number</string>
+
+    <string name="login_sign_up_label_by_signing_in_you_are_agree">By Signing in you agree to Ribbit’s Terms &amp; conditions and Privacy policy.</string>
+    <string name="login_sign_up_label_terms_and_conditions">Terms &amp; conditions</string>
+    <string name="login_sign_up_label_privacy_policy">Privacy policy</string>
+    <string name="login_sign_up_label_already_a_member_sign_in">Already a member? Sign in</string>
+    <string name="login_sign_up_btn_sign_in">Sign in</string>
+    <string name="login_sign_up_btn_get_started">Get started</string>
+
+    <string name="login_label_enter_phone_number">Enter phone number</string>
+    <string name="login_label_enter_email_id">Enter Email ID</string>
+    <string name="login_label_phone_username_or_email">Phone number, username or email</string>
+    <string name="login_label_slash">/</string>
+    <string name="login_label_welcome">Welcome</string>
+    <string name="login_label_password">Password</string>
+    <string name="login_label_forgot_password_reset_password">Forgot password? Reset Password</string>
+    <string name="login_label_reset_password">Reset Password</string>
+    <string name="login_label_or_you_could">or you could</string>
+    <string name="login_btn_email_id">Email ID</string>
+    <string name="login_btn_phone_number">Phone Number</string>
+    <string name="login_btn_continue_with_facebook">CONTINUE WITH FACEBOOK</string>
+    <string name="login_btn_continue_with_google">CONTINUE WITH GOOGLE</string>
+    <string name="login_message_reset_password_link_sent">Reset password link has been sent on your email successfully</string>
+
+    <string name="verification_label_verification">Verification</string>
+    <string name="verification_label_we_sent_you_a_code_phone">We sent you a code to verify your number</string>
+    <string name="verification_label_we_sent_you_a_code_email">We sent you a code to verify your email</string>
+    <string name="verification_label_code_sent_to">Code sent to %s</string>
+    <string name="verification_label_enter_code">Enter code</string>
+    <string name="verification_label_did_not_receive_the_code">Didn’t receive the code yet? Resend code</string>
+    <string name="verification_label_resend_code">Resend code</string>
+    <string name="verification_message_otp_resent_successfully">OTP has been resent successfully</string>
+
+    <string name="create_password_label_create_password">Create password</string>
+    <string name="create_password_label_secure_your_account">Secure your account with a password</string>
+
+    <string name="welcome_label_welcome">Welcome</string>
+    <string name="welcome_label_what_s_your_full_name">What’s your Full name?</string>
+    <string name="welcome_label_username">Username</string>
+    <string name="welcome_label_your_email_id">And your email ID?</string>
+    <string name="welcome_label_your_phone_number">And your Phone Number?</string>
+    <string name="welcome_label_full_name">Full name</string>
+    <string name="welcome_label_enter_username">Enter Username</string>
+    <string name="welcome_label_enter_full_name">Enter Full name</string>
+    <string name="welcome_label_username_validation_requirements">*Username must contains at least 6 characters containing only alphanumeric, period, hyphen and underscore.</string>
+
+    <string name="choose_interests_label_choose_interests">Tell us about your interests</string>
+    <string name="choose_interests_label_choose_at_least">Choose at least 3 interests</string>
+    <string name="choose_interests_message_choose_more_interests">Choose at least %d interests</string>
+    <string name="choose_interests_message_choose_one_interests">Choose at least %d interest</string>
+    <string name="choose_interests_btn_continue">Continue</string>
+
+    <string name="explore_tab_channels">NETWORKS</string>
+    <string name="explore_tab_venues">VENUES</string>
+    <string name="explore_tab_people">PEOPLE</string>
+
+    <string name="venues_btn_map">Map</string>
+    <string name="venues_btn_list">List</string>
+    <string name="venues_btn_filters">Filters</string>
+    <string name="venues_label_search_for_venues_by_name">Search for venues by name</string>
+    <string name="venues_label_your_venues">YOUR VENUES</string>
+    <string name="venues_label_suggested">SUGGESTED</string>
+    <string name="venues_label_no_venues_found">No venue</string>
+    <string name="venues_label_pending">PENDING</string>
+    <string name="venues_label_rejected">REJECTED</string>
+    <string name="venues_message_notification_sent_to_admin">Notification sent to admin. Please wait for approval</string>
+
+    <string name="create_venue_btn_create">CREATE</string>
+    <string name="create_venue_btn_upload_document">Upload Document</string>
+    <string name="create_venue_label_venues">Venues</string>
+    <string name="create_venue_label_choose_a_category">Choose a category</string>
+    <string name="create_venue_label_venues_are_a_fun_and_engaging_way_to_meet_and_explore_people_create_chat_rooms_based_upon_your_location">Venues are a fun and engaging way to meet and explore people. Create chat rooms based upon your location.</string>
+    <string name="create_venue_label_create_a_venue">Create a Venue</string>
+    <string name="create_venue_label_tap_to_add_a_picture">Tap to add a picture</string>
+    <string name="create_venue_label_venue_s_title">Venue\'s title</string>
+    <string name="create_venue_label_venue_location">Venue location</string>
+    <string name="create_venue_label_tags">Tags</string>
+    <string name="create_venue_label_additional_details">Additional Details</string>
+    <string name="create_venue_label_if_you_are_an_owner">If you are an Owner or Manager of a company you mentioned, then share your company’s verification proof and your name!</string>
+    <string name="create_venue_label_your_name">Your Name</string>
+    <string name="create_venue_label_private">Private</string>
+    <string name="create_venue_label_date_and_time">Date &amp; time</string>
+    <string name="create_venue_message_please_add_at_least_one_tag">Please add at least one hash tag</string>
+    <string name="create_venue_message_verification_file_size_should_be">Verification file size should be less than 5 MB</string>
+
+    <string name="chat_label_type_here">Type here</string>
+    <string name="chat_message_invalid_video_path">Invalid video path</string>
+    <string name="chat_label_empty_chat">Start a conversation</string>
+
+    <string name="venue_filters_label_category">Category</string>
+    <string name="venue_filters_label_date">Date</string>
+    <string name="venue_filters_label_privacy">Privacy</string>
+    <string name="venue_filters_label_location">Location</string>
+    <string name="venue_filters_label_confirm_reset_filter">Confirm reset filters?</string>
+    <string name="venue_filters_btn_reset">Reset</string>
+    <string name="venue_filters_btn_select_date">Select date</string>
+    <string name="venue_filters_btn_public">Public</string>
+    <string name="venue_filters_btn_private">Private</string>
+    <string name="venue_filters_btn_select_location">Select location</string>
+    <string name="venue_filters_btn_apply">Apply</string>
+
+    <string name="venue_details_label_share">Share</string>
+    <string name="venue_details_label_more">More</string>
+    <string name="venue_details_label_notifications">Notifications</string>
+    <string name="venue_details_label_location">Location</string>
+    <string name="venue_details_label_admin">ADMIN</string>
+    <string name="venue_details_label_members_with_count">Members · %d</string>
+    <string name="venue_details_btn_exit_venue">Exit venue</string>
+    <string name="venue_details_btn_delete_venue">Delete venue</string>
+    <string name="venue_details_label_exit_venue_question">Are you sure you want to exit this venue?</string>
+    <string name="venue_details_label_delete_venue_question">Are you sure you want to delete this venue?</string>
+    <string name="venue_details_btn_archive_venue">Archive venue</string>
+    <string name="venue_details_label_archive_venue_question">Are you sure you want to archive this venue?</string>
+    <string name="venue_details_btn_exit">Exit</string>
+    <string name="venue_details_btn_archive">Archive</string>
+
+    <string name="groups_label_search_for_channels">Search for networks</string>
+    <string name="groups_label_add_new_channel">Add New Network</string>
+    <string name="groups_label_topics">Topics</string>
+    <string name="groups_label_suggested_channels">SUGGESTED NETWORKS</string>
+    <string name="groups_label_your_channels">YOUR NETWORKS</string>
+    <string name="groups_label_no_channels_found">No network yet!!</string>
+
+    <string name="create_group_label_channels">NETWORKS</string>
+    <string name="create_group_label_create_a_channel">Create a Network</string>
+    <string name="create_group_label_create_channels_based_on_your_interest">Create network based on your interest, location and invite your friends, family and colleagues to join!!!</string>
+    <string name="create_group_label_channel_s_title">Network\'s title</string>
+
+    <string name="profile_btn_logout">Logout</string>
+    <string name="survey_btn_exit">Exit</string>
+    <string name="group_posts_label_no_posts">No post added yet</string>
+    <string name="group_posts_label_leave_a_reply">Leave a comment</string>
+
+    <string name="notifications_btn_accept">Accept</string>
+    <string name="notifications_btn_reject">Reject</string>
+    <string name="notifications_label_no_notifications_found">No Notifications Found</string>
+    <string name="notifications_label_send_request_to_join">%s send request to join network %s</string>
+    <string name="notifications_label_send_request_to_join_venue">%s send request to join venue %s</string>
+    <string name="notifications_btn_clear">CLEAR</string>
+
+    <string name="notifications_label_cross_path">%s has crossed your path %s at %s</string>
+    <string name="notifications_label_converse_nearby">%s wants to converse with someone nearby. Tap here to check the details</string>
+    <string name="notifications_label_follow">%s start following you</string>
+
+    <string name="notifications_label_sub_reply_like">%s liked your reply</string>
+    <string name="notifications_label_like">%s liked your post</string>
+    <string name="notifications_label_like_comment">%s liked your comment</string>
+    <string name="notifications_label_comment">%s commented: %s</string>
+    <string name="notifications_label_tag_comment">%s mentioned you in comment</string>
+    <string name="notifications_label_tag_reply">%s mentioned you in reply</string>
+    <string name="notifications_label_accept_invite">%s  has accepted your invite for network %s</string>
+    <string name="notifications_label_accept_invite_venue">%s  has accepted your invite for venue %s</string>
+    <string name="notifications_label_invite">%s  has invited for network %s</string>
+    <string name="notifications_label_invite_venue">%s  has invited for venue %s</string>
+    <string name="notifications_label_accept_request_channel">%s has accepted your request for network. Now you are the member of group %s</string>
+    <string name="notifications_label_accept_request_venue">%s has accepted your request for venue. Now you are the member of venue %s</string>
+    <string name="notifications_label_accept_request_follow">%s has accepted your follow request</string>
+
+    <string name="notifications_label_joined_group">%s you are now member of network %s</string>
+    <string name="notifications_label_joined_venue">%s you are now member of venue %s</string>
+    <string name="notifications_msg_requestFollow">%s has started following you </string>
+    <string name="notifications_msg_requestFollowPrivate">%s has requested to follow you</string>
+    <string name="notifications_label_post">%s has posted on your group %s</string>
+    <string name="notifications_label_reply">%s replied on your comment</string>
+
+    <string name="notifications_label_public_joined_group">%s has join your network %s</string>
+    <string name="notifications_label_public_joined_venue">%s has join your venue %s</string>
+
+    <string name="profile_label_profile">Profile</string>
+    <string name="profile_label_followers">Followers</string>
+    <string name="profile_label_following">Following</string>
+    <string name="profile_label_bio">Bio</string>
+    <string name="profile_label_my_interests">My Interests</string>
+    <string name="profile_label_name_with_age">%s · %d</string>
+    <string name="profile_label_designation_at_company">%s at %s</string>
+    <string name="profile_btn_edit">Edit</string>
+    <string name="profile_message_confirm_logout">Confirm logout?</string>
+    <string name="survey_message_confirm_exit">Confirm Exit?</string>
+    <string name="add_group_label_add_participants">Add Participants</string>
+    <string name="add_group_label_no_followers_found">No followers found</string>
+
+    <string name="home_label_search">Search</string>
+    <string name="home_label_no_posts_found">No post yet!! Please create your one by tapping + icon</string><!--No post found-->
+    <string name="home_label_username_with_group_and_category_name">%s in %s %s</string>
+    <string name="home_label_username_with_in">%s</string>
+    <string name="home_label_group_and_category_name">in %s %s</string>
+
+    <string name="new_post_label_new_post">New Post</string>
+    <string name="new_post_label_choose_a_channel_you_want_to_post_into">Choose a network you want to post into</string>
+    <string name="new_post_label_skip">SKIP</string>
+    <string name="new_post_label_post">CREATE</string>
+    <string name="new_post_label_type_here">Type here</string>
+    <string name="new_post_label_posting_in">Posting in</string>
+    <string name="new_post_label_text_caption">Write your post here…</string>
+    <string name="new_post_label_check_in">Check in</string>
+
+    <string name="post_details_btn_reply">Reply</string>
+    <string name="post_details_btn_load_replies_with_count">Load replies (%d)</string>
+    <string name="post_details_label_hide_all_replies">Hide all replies</string>
+    <string name="post_details_label_replying_to_with_username">Replying to @%s</string>
+
+    <string name="people_label_crossed_paths">You crossed paths with</string>
+    <string name="people_label_crossed_paths_message">Find people who crossed paths with you at places you went</string>
+    <string name="people_label_mutual_interest">Mutual Interests</string>
+    <string name="people_label_interest">Interests</string>
+
+    <string name="people_detail_button_follow">Follow</string>
+    <string name="people_detail_button_un_follow">Unfollow</string>
+    <string name="people_detail_more_label_block">Block</string>
+    <string name="people_detail_more_label_unblock">Unblock</string>
+
+    <string name="join_venue_btn_join">JOIN</string>
+    <string name="join_venue_label_participants">Participants</string>
+
+    <string name="add_venue_participants_message_request_sent">Request has been sent to the participants. They will get added once they accept.</string>
+
+    <string name="chat_listing_label_individual">INDIVIDUAL</string>
+    <string name="chat_listing_label_group">NETWORKS</string>
+    <string name="chat_listing_label_empty">No Chat Found</string>
+    <string name="chat_listing_hint_search_for_chat">Search</string>
+    <string name="chat_listing_photo_last_message_for_chat">Photo</string>
+    <string name="chat_listing_gif_last_message_for_chat">GIF</string>
+    <string name="chat_listing_video_last_message_for_chat">Video</string>
+
+    <string name="group_details_label_delete_group">Delete network</string>
+    <string name="group_details_label_exit_group">Exit network</string>
+    <string name="group_details_label_archive_group">Archive network</string>
+    <string name="group_details_label_delete_group_question">Are you sure you want to delete this network?</string>
+    <string name="group_details_label_exit_group_question">Are you sure you want to exit this network?</string>
+    <string name="group_details_label_archive_group_question">Are you sure you want to archive this network?</string>
+
+    <string name="search_title_top">TOP</string>
+    <string name="search_title_tags">TAGS</string>
+    <string name="search_title_posts">POSTS</string>
+    <string name="search_title_groups">NETWORKS</string>
+    <string name="search_title_venues">VENUES</string>
+    <string name="search_top_label_recent">Recent</string>
+    <string name="search_top_label_suggested">Suggested</string>
+    <string name="search_label_tags">#</string>
+
+    <string name="group_more_options_label_exit">Exit</string>
+    <string name="group_more_options_label_share">Share</string>
+    <string name="group_more_options_label_channel_chat">Network Chat</string>
+    <string name="group_more_options_label_create_post">Create a new post</string>
+    <string name="group_more_options_label_channel_detail">Network Detail</string>
+    <string name="group_more_options_label_channel_delete">Delete</string>
+
+    <string name="edit_profile_label_save">SAVE</string>
+    <string name="edit_profile_label_change_profile">Change Profile Photo</string>
+    <string name="edit_profile_label_name">Name</string>
+    <string name="edit_profile_label_website">Website</string>
+    <string name="edit_profile_label_website_hint">www.example.com</string>
+    <string name="edit_profile_label_professional_info">Professional Information</string>
+    <string name="edit_profile_label_designation">Designation</string>
+    <string name="edit_profile_label_company_workplace">Company/\nWorkPlace</string>
+    <string name="edit_profile_label_company_workplace_hint">Company/WorkPlace</string>
+    <string name="edit_profile_label_private_info">Private Information</string>
+    <string name="edit_profile_label_email">Email</string>
+    <string name="edit_profile_label_phone">Phone</string>
+    <string name="edit_profile_label_gender">Gender</string>
+
+    <string name="dialog_gender_label_male">Male</string>
+    <string name="dialog_gender_label_female">Female</string>
+    <string name="dialog_gender_label_others">Others</string>
+    <string name="dialog_post_label_publicly">Publicly</string>
+    <string name="dialog_post_label_follower_selected_people">Followers/Selected People</string>
+    <string name="dialog_venue_label_invite">Invite to Venue</string>
+    <string name="dialog_group_label_invite">Invite to Network</string>
+
+    <string name="dialog_notification_label_okay">Okay!!</string>
+    <string name="dialog_notification_label_show_post">Show Post</string>
+
+    <string name="settings_profile_label_invite_people">Invite People</string>
+    <string name="settings_profile_label_share_contact_details">Share your Contact Details</string>
+    <string name="settings_profile_label_about">About</string>
+    <string name="settings_profile_label_hide_personal_info">Hide Personal Info. from other users</string>
+    <string name="settings_profile_label_block_users">Block Users</string>
+    <string name="settings_profile_label_access_location">Access Location</string>
+    <string name="settings_profile_label_contact_us">Contact Us</string>
+    <string name="settings_profile_label_terms_and_conditions">Terms and conditions</string>
+    <string name="settings_profile_label_push_notifications">Push Notifications</string>
+    <string name="settings_profile_label_alert_notifications">Alert Notifications</string>
+
+    <string name="dialog_invite_people_label_mail">Mail</string>
+    <string name="dialog_invite_people_label_message">Message</string>
+
+    <string name="verification_label_email">Click here to verify email</string>
+    <string name="verification_label_mobile">Click here to verify mobile number</string>
+    <string name="verification_label_verify_email">Email address verified</string>
+    <string name="verification_label_verify_mobile">Mobile number verified</string>
+    <string name="verification_btn_upload_document">Upload document (Passport Id)</string>
+    <string name="verification_api_message_verify_email">We have sent verification email to your registered email id. Please verify your email.</string>
+    <string name="verification_api_message_verify_mobile">We have sent verification otp to your registered mobile number. Please verify your mobile number.</string>
+    <string name="verification_api_message_verify_passport">Passport id uploaded successfully</string>
+
+    <string name="invite_people_option_more_text_message">To share this app, please type their emails or select their names from the list. Enjoy!</string>
+
+    <string name="block_user_label_empty_list">No blocked user yet!!</string>
+    <string name="block_user_label_blocked_user">Blocked users</string>
+
+    <string name="search_user_label_explore_connections">EXPLORE CONNECTIONS</string>
+    <string name="search_user_label_select_location">Select location</string>
+    <string name="search_user_label_select_your_location">Select your location</string>
+    <string name="search_user_label_select_range">Selected Range</string>
+    <string name="search_user_label_go">Go</string>
+    <string name="search_user_label_finding_matches">Finding matches…</string>
+
+    <string name="hide_info_private_account">Private account</string>
+    <string name="hide_info_label_private_message">Only your followers will be able to see your photos and videos</string>
+    <string name="hide_info_see_profile_pic">Who can see my profile picture</string>
+    <string name="hide_info_see_profile_pic_message">Select people who can see your profile picture</string>
+    <string name="hide_info_see_private_info">Who can see my private info</string>
+    <string name="hide_info_see_private_info_message">Select people who can see your email, phone and gender</string>
+    <string name="hide_info_see_username">Who can see my username</string>
+    <string name="hide_info_see_username_message">Select people who can see your username</string>
+    <string name="hide_info_message_me">Who can message me</string>
+    <string name="hide_info_message_me_message">Select people who can tag you in photos and videos</string>
+    <string name="hide_info_search_username">Search by username</string>
+    <string name="hide_info_everyone">Everyone</string>
+    <string name="hide_info_your_followers">Your Followers</string>
+    <string name="hide_info_selected_users">Selected Users</string>
+    <string name="hide_info_my_followers">My Followers</string>
+    <string name="hide_info_people">People</string>
+    <string name="hide_info_label_status">%d %s</string>
+
+    <string name="converse_path_info_followers">Followers</string>
+
+    <string name="follower_label_empty_list">No follower user yet!!</string>
+    <string name="following_label_empty_list">No following user yet!!</string>
+    <string name="post_like_label_empty_list">No user yet!!</string>
+
+
+    <string name="post_label_delete_post">Delete post</string>
+    <string name="post_label_edit_post">Edit post</string>
+
+    <string name="home_label_find_someone">Find someone</string>
+    <string name="home_label_create_new_post">Create new post</string>
+
+    <string name="converse_near_label_someone_near_by">Converse with someone nearby</string>
+    <string name="converse_near_label_crossed_path">Find someone I crossed path with</string>
+
+    <string name="converse_post_label_thinking">What are you thinking?</string>
+    <string name="converse_post_label_publicity">Publicly</string>
+    <string name="converse_post_label_select_interest">Select interest</string>
+
+    <string name="converse_post_label_create">Create</string>
+    <string name="converse_post_label_add_location">Add Location</string>
+    <string name="converse_post_label_tap_location">Tap to select location</string>
+    <string name="converse_post_label_set_date_time">Set date and time to meet</string>
+    <string name="converse_post_label_select_date_time">Select date/time</string>
+    <string name="converse_post_label_set_exp_date_time">Set expiration date and time</string>
+    <string name="converse_post_label_change">Change</string>
+
+    <string name="hide_info_label_people_count">%d People</string>
+    <string name="selected_people">Selected People</string>
+    <string name="search_user_label_progress_count">%02d mi</string>
+
+    <string name="venue_share_link">Please open this link to join my Ribbit Venue.</string>
+    <string name="group_share_link">Please open this link to join my Ribbit It Group.</string>
+    <string name="msg_invite_sent_successfully">Invite sent successfully</string>
+    <string name="follow_request_text">Follow request has already been sent to this user.</string>
+
+    <string name="create_channel_successfully">Network is created successfully</string>
+    <string name="join_venue_request_msg">Do you want to join this venue?</string>
+    <string name="join_venue_request_btn_agree">Yes</string>
+    <string name="post_upload_successfully">Post uploaded successfully</string>
+    <string name="venue_created_successfully">Venue is created successfully</string>
+    <string name="description">Description</string>
+
+    <string name="venue_details_label_venue_title">Enter Venue Name</string>
+    <string name="group_details_label_group_title">Enter Network Name</string>
+
+    <string name="venue_error_label_venue_title">Please enter venue name</string>
+    <string name="post_delete_label_comment">Delete Comment</string>
+    <string name="show_video">Show Video</string>
+    <string name="show_image">Show Image</string>
+    <string name="delete_message">Delete Message</string>
+    <string name="delete_video">Delete Video</string>
+    <string name="delete_image">Delete Image</string>
+    <string name="welcome_label_student">Student</string>
+    <string name="welcome_label_mentor">Mentor</string>
+
+    <string name="image_picker_btn_send">Send (%d)</string>
+    <string name="image_picker_title_albums">Albums</string>
+
+    <string name="media_selector_take_photo">Take Photo</string>
+    <string name="media_selector_take_video">Take Video</string>
+    <string name="media_selector_select_from_gallery">Select From Gallery</string>
+    <string name="placeholder_no_album_found">No Album Found</string>
+    <string name="placeholder_no_media_found">No Media Found</string>
+    <string name="placeholder_no_result_found">Result not found</string>
+
+    <string name="error_msg_you_can_upload_max_6_files">You can select maximum %d files</string>
+    <string name="you_can_not_remove_media_while_its_uploading_please_wait">You can not remove media file while it\'s uploading.Please wait.</string>
+
+    <string name="show_gif">Show GIF</string>
+    <string name="delete_gif">Delete GIF</string>
+    <string name="post_btn_edit_post">Edit</string>
+    <string name="post_updated_successfully">Post updated successfully.</string>
+    <string name="user_not_found">User not found</string>
+    <string name="error_msg_media_count_should_be_greater_than_1_and_less_than_5">Selected Media count should be greater than 1 and less than 5</string>
+    <string name="survey">Survey</string>
+    <string name="house_hold_income">House hold income</string>
+    <string name="home_ownership">Home ownership</string>
+    <string name="education">Education</string>
+    <string name="employement_status">Employment status</string>
+    <string name="marital_status">Marital status</string>
+    <string name="i_agree_terms_and_conditions">I agree terms and conditions</string>
+    <string name="submit">Submit</string>
+    <string name="total_survey">Total Survey</string>
+    <string name="points_earned">Points Earned</string>
+    <string name="redeemed">Redeemed</string>
+    <string name="daily_challenges">DAILY CHALLENGE</string>
+    <string name="daily_challenges_in_a_day">Your daily challenge is to send 100 messages in a day!</string>
+    <string name="my_challenges">My Challenges</string>
+    <string name="take_survey">Take Survey</string>
+    <string name="want_to_buy_gift_card">Want to Buy Gift Card</string>
+    <string name="want_to_donate">Want to Donate!</string>
+    <string name="ends_in_10min">Ends in 10 min</string>
+    <string name="gender">Gender</string>
+    <string name="race">Race</string>
+    <string name="Date_of_birth">Date of birth</string>
+    <string name="display_qr_code">Display QR code</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="select_location">Select location</string>
+    <string name="select_one">Select One</string>
+    <string name="survey_time">%d mins</string>
+    <string name="ends_in_survey_time">Ends in %d mins</string>
+    <string name="this_survey_has_empty_data_now">This survey has empty data now…</string>
+    <string name="select_date_of_birth">Select date of birth</string>
+    <string name="please_select_date_of_birth">Please select date of birth</string>
+    <string name="please_agree_to_terms_and_conditions">Please agree to the terms and conditions</string>
+    <string name="empty_question_list">Empty questions list</string>
+</resources>

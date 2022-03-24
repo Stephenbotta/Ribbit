@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:id="@+id/tvLabelTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/roboto_text_bold"
+            android:includeFontPadding="false"
+            android:text="@string/take_survey"
+            android:textColor="@color/textGray"
+            android:textSize="@dimen/all_screen_header_text_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/rvSurvey"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="90dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:alpha=".7"
+                android:text="@string/gender"
+                android:textColor="@color/white"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvQuestion" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spGender"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8sp"
+                android:background="@drawable/bg_spinner"
+                android:gravity="center_vertical"
+                android:prompt="@string/survey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:alpha=".7"
+                android:text="@string/race"
+                android:textColor="@color/white"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvQuestion" />
+
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spRace"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8sp"
+                android:background="@drawable/bg_spinner"
+                android:prompt="@string/survey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:alpha=".7"
+                android:text="@string/Date_of_birth"
+                android:textColor="@color/white"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvQuestion" />
+
+            <TextView
+                android:id="@+id/spDOB"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8sp"
+                android:background="@drawable/bg_spinner_no_arrow"
+                android:drawableEnd="@drawable/ic_date_range_black_24dp"
+                android:drawablePadding="@dimen/_8sdp"
+                android:gravity="center_vertical"
+                android:padding="@dimen/_6sdp"
+                android:prompt="@string/survey"
+                android:text="@string/select_date_of_birth"
+                android:textColor="@color/white50" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:alpha=".7"
+                android:text="@string/house_hold_income"
+                android:textColor="@color/white"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvQuestion" />
+
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spHouseHold"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8sp"
+                android:background="@drawable/bg_spinner"
+                android:prompt="@string/survey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:alpha=".7"
+                android:text="@string/home_ownership"
+                android:textColor="@color/white"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvQuestion" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spHomeOwnership"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8sp"
+                android:background="@drawable/bg_spinner"
+                android:prompt="@string/survey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:alpha=".7"
+                android:text="@string/education"
+                android:textColor="@color/white"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvQuestion" />
+
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spEducation"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8sp"
+                android:background="@drawable/bg_spinner"
+                android:prompt="@string/survey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:alpha=".7"
+                android:text="@string/employement_status"
+                android:textColor="@color/white"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvQuestion" />
+
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spEmployementStatus"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8sp"
+                android:background="@drawable/bg_spinner"
+                android:prompt="@string/survey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:alpha=".7"
+                android:text="@string/marital_status"
+                android:textColor="@color/white"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvQuestion" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spMaritalStatus"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8sp"
+                android:background="@drawable/bg_spinner"
+                android:prompt="@string/survey" />
+
+            <CheckBox
+                android:id="@+id/cbTerms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:buttonTint="@color/white"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:text="@string/i_agree_terms_and_conditions"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/drawable_button_gradient"
+                android:fontFamily="@font/roboto_text_bold"
+                android:gravity="center"
+                android:letterSpacing="0"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@id/tvLabelAlreadyAMember"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.75" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

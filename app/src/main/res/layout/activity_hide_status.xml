@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/navigationBackground">
+
+        <TextView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginStart="8dp"
+            android:drawableStart="@drawable/ic_back"
+            android:drawablePadding="6dp"
+            android:fontFamily="@font/roboto_text_bold"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/back"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/back_navigation_header_text_size" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/divider_1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/greyImageBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchUser"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/background_venues_list_search"
+        android:singleLine="true"
+        android:theme="@style/SearchViewSearchVenues"
+        app:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_1"
+        app:queryBackground="@color/transparent"
+        app:queryHint="@string/hide_info_search_username"
+        app:searchIcon="@drawable/ic_search" />
+
+    <RadioGroup
+        android:id="@+id/rgStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchUser">
+
+        <RadioButton
+            android:id="@+id/everyone"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:checked="false"
+            android:fontFamily="@font/roboto_text_medium"
+            android:layoutDirection="rtl"
+            android:padding="8dp"
+            android:text="@string/hide_info_everyone"
+            android:textColor="@color/textGray"
+            android:buttonTint="@color/white"
+            android:textSize="@dimen/all_content_header_text_size"
+            android:theme="@style/AppTheme.SwitchCompat" />
+
+        <RadioButton
+            android:id="@+id/yourFollowers"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:checked="false"
+            android:fontFamily="@font/roboto_text_medium"
+            android:layoutDirection="rtl"
+            android:padding="8dp"
+            android:text="@string/hide_info_your_followers"
+            android:textColor="@color/textGray"
+            android:buttonTint="@color/white"
+            android:textSize="@dimen/all_content_header_text_size"
+            android:theme="@style/AppTheme.SwitchCompat" />
+
+        <RadioButton
+            android:id="@+id/selectedUser"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:checked="false"
+            android:fontFamily="@font/roboto_text_medium"
+            android:layoutDirection="rtl"
+            android:padding="8dp"
+            android:text="@string/hide_info_selected_users"
+            android:textColor="@color/textGray"
+            android:buttonTint="@color/white"
+            android:textSize="@dimen/all_content_header_text_size"
+            android:theme="@style/AppTheme.SwitchCompat" />
+
+    </RadioGroup>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rgStatus">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvUsernameList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingBottom="60dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:listitem="@layout/item_top_search" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
