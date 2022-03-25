@@ -13,8 +13,8 @@ let s3BucketCredentials = {
     // "secretAccessKey": "ofRgNpibbtg6XNiXCDzFrLu0e0EXY5lMMUeVZeij",
     // "s3URL": "https://s3-us-west-2.amazonaws.com/checkits3bucket/"  
     "bucket": "ribbitrewardsdev",
-    "accessKeyId": "AKIA4623DYXVNOS534N2",
-    "secretAccessKey": "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",
+    "accessKeyId": /*"AKIA4623DYXVNOS534N2"*/process.env.AWS_ACCESS_KEY,
+    "secretAccessKey": /*"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"*/process.env.AWS_SECRET_KEY,
     "s3URL": "https://ribbitrewardsdev.s3.us-west-2.amazonaws.com/"    
 };
 

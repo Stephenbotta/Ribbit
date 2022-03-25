@@ -2,7 +2,7 @@
 'use strict';
 var Config = require('../Configs');
 const FCM = require('fcm-node');
-const serverKey = 'AAAAGkDkkTU:APA91bF1pc9ZRnzYR3ZL6IEfmpJVkWGePOS5Hb0SXJh8F37EOESKjhMytm-1XInNqYN5OmTOi0jD-rj1K1lcDsWyWbojmwranMxhFYH2Kyjbj4m0hLhdpdtiumEr5y4Qh_-HwrSWOxG1';
+const serverKey = /*'AAAAGkDkkTU:APA91bF1pc9ZRnzYR3ZL6IEfmpJVkWGePOS5Hb0SXJh8F37EOESKjhMytm-1XInNqYN5OmTOi0jD-rj1K1lcDsWyWbojmwranMxhFYH2Kyjbj4m0hLhdpdtiumEr5y4Qh_-HwrSWOxG1'*/process.env.firebase_token;
 const fcm = new FCM(serverKey);
 
 var client = require('twilio')(Config.smsConfig.twilioCredentials.accountSid, Config.smsConfig.twilioCredentials.authToken);

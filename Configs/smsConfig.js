@@ -1,6 +1,6 @@
 var twilioCredentials = {
-    accountSid : 'ACdd0c249a47d5f2b0bc36595dc7663842',
-    authToken : '7efae19f6a8d09e80446123e6a8dda91',
+    accountSid : process.env.twilio_account_Sid,
+    authToken : /*'7efae19f6a8d09e80446123e6a8dda91'*/process.env.TWILIO_AUTH_TOKEN,
     smsFromNumber : '+15045094820'
 };
 
