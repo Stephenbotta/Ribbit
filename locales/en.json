@@ -1,0 +1,18 @@
+{
+	"Success": "Success",
+	"Id Missing": "Id Missing",
+	"Username you have entered is already registered with us.": "Username you have entered is already registered with us.",
+	"Password you have entered does not match.": "Password you have entered does not match.",
+	"": "",
+	"DB Error : ": "DB Error : ",
+	"Sorry, your account has been logged in other device! Please login again to continue.": "Sorry, your account has been logged in other device! Please login again to continue.",
+	"Promise Rejected": "Promise Rejected",
+	"Not found": "Not found",
+	"Phone number you have entered is already registered with us.": "Phone number you have entered is already registered with us.",
+	"You Have Low Points To Get This Reward": "You Have Low Points To Get This Reward",
+	"You Have Low Points To Make Charity": "You Have Low Points To Make Charity",
+	"You are Spin The Wheel": "You are Spin The Wheel",
+	"Your Today Spin Wheel Limit Is Over": "Your Today Spin Wheel Limit Is Over",
+	"Application ErrorCharityDonationList validation failed: organizationId: Cast to ObjectID failed for value string at path organizationId": "Application ErrorCharityDonationList validation failed: organizationId: Cast to ObjectID failed for value string at path organizationId",
+	"DB Error : Invalid Id Provided : NaN": "DB Error : Invalid Id Provided : NaN"
+}
