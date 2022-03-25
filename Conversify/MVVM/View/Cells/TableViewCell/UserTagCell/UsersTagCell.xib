@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UsersTagCell" rowHeight="50" id="8GG-vV-2S6" customClass="UsersTagCell" customModule="Conversify" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8GG-vV-2S6" id="a1z-IJ-hB8">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ska-JY-cIu" customClass="AnimatableImageView" customModule="IBAnimatable">
+                        <rect key="frame" x="16" y="4" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="1wX-8l-KRz"/>
+                            <constraint firstAttribute="height" constant="40" id="as8-dK-szG"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="20"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tAr-3I-8nf">
+                        <rect key="frame" x="72" y="4" width="287" height="17"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7MK-Pi-Oge">
+                        <rect key="frame" x="72" y="29.5" width="287" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.28235294119999998" green="0.28235294119999998" blue="0.28235294119999998" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="tAr-3I-8nf" firstAttribute="top" secondItem="ska-JY-cIu" secondAttribute="top" id="1SO-JE-TiI"/>
+                    <constraint firstItem="tAr-3I-8nf" firstAttribute="leading" secondItem="ska-JY-cIu" secondAttribute="trailing" constant="16" id="1dF-JK-uX9"/>
+                    <constraint firstItem="ska-JY-cIu" firstAttribute="top" secondItem="a1z-IJ-hB8" secondAttribute="top" constant="4" id="f72-Sw-VdV"/>
+                    <constraint firstAttribute="bottom" secondItem="ska-JY-cIu" secondAttribute="bottom" constant="4" id="g9J-dO-IWs"/>
+                    <constraint firstAttribute="trailing" secondItem="tAr-3I-8nf" secondAttribute="trailing" constant="16" id="jdP-6E-fGG"/>
+                    <constraint firstItem="7MK-Pi-Oge" firstAttribute="trailing" secondItem="tAr-3I-8nf" secondAttribute="trailing" id="mUU-US-raA"/>
+                    <constraint firstItem="7MK-Pi-Oge" firstAttribute="bottom" secondItem="ska-JY-cIu" secondAttribute="bottom" id="q8s-Ir-3nd"/>
+                    <constraint firstItem="ska-JY-cIu" firstAttribute="leading" secondItem="a1z-IJ-hB8" secondAttribute="leading" constant="16" id="sfe-GF-0YV"/>
+                    <constraint firstItem="7MK-Pi-Oge" firstAttribute="leading" secondItem="tAr-3I-8nf" secondAttribute="leading" id="shb-f7-43l"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="imgUserPic" destination="ska-JY-cIu" id="3Pj-6S-Egh"/>
+                <outlet property="labelUserName" destination="7MK-Pi-Oge" id="tYZ-WT-XGZ"/>
+                <outlet property="lblFullName" destination="tAr-3I-8nf" id="2aW-T6-mGr"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="campton-book.ttf">
+            <string>Campton-Book</string>
+        </array>
+        <array key="campton-semibold.ttf">
+            <string>Campton-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ReceiverImgCell" rowHeight="183" id="KGk-i7-Jjw" customClass="ReceiverImgCell" customModule="Conversify" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="627" height="183"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="627" height="183"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view clipsSubviews="YES" tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HQL-7w-HCh" customClass="AnimatableView" customModule="IBAnimatable">
+                        <rect key="frame" x="60" y="12" width="215.5" height="151"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WCo-Fh-iUF">
+                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="1PC-U4-EjF"/>
+                                    <constraint firstAttribute="width" constant="20" id="ajA-1R-G0p"/>
+                                </constraints>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nqN-bq-j6c" customClass="AnimatableImageView" customModule="IBAnimatable">
+                                <rect key="frame" x="0.0" y="0.0" width="215.5" height="151"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="16"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ftu-9M-Uf2" customClass="AnimatableImageView" customModule="IBAnimatable">
+                                <rect key="frame" x="0.0" y="0.0" width="215.5" height="151"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="16"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <imageView contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_play_video" translatesAutoresizingMaskIntoConstraints="NO" id="L7u-FL-I4Y">
+                                <rect key="frame" x="72" y="39.5" width="72" height="72"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="jk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sJV-8O-jYP">
+                                <rect key="frame" x="8" y="126.5" width="199.5" height="16.5"/>
+                                <fontDescription key="fontDescription" name="Campton-SemiBold" family="Campton" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ftu-9M-Uf2" firstAttribute="trailing" secondItem="nqN-bq-j6c" secondAttribute="trailing" id="00S-Ia-bVJ"/>
+                            <constraint firstItem="WCo-Fh-iUF" firstAttribute="top" secondItem="HQL-7w-HCh" secondAttribute="top" id="4hU-ik-baD"/>
+                            <constraint firstItem="nqN-bq-j6c" firstAttribute="top" secondItem="HQL-7w-HCh" secondAttribute="top" id="DuD-xa-srq"/>
+                            <constraint firstItem="ftu-9M-Uf2" firstAttribute="top" secondItem="nqN-bq-j6c" secondAttribute="top" id="KRk-iV-Eos"/>
+                            <constraint firstItem="ftu-9M-Uf2" firstAttribute="leading" secondItem="nqN-bq-j6c" secondAttribute="leading" id="PwA-H6-pEm"/>
+                            <constraint firstItem="sJV-8O-jYP" firstAttribute="leading" secondItem="HQL-7w-HCh" secondAttribute="leading" constant="8" id="Z4y-c8-NEj"/>
+                            <constraint firstItem="ftu-9M-Uf2" firstAttribute="bottom" secondItem="nqN-bq-j6c" secondAttribute="bottom" id="aUb-CJ-Gba"/>
+                            <constraint firstAttribute="width" secondItem="HQL-7w-HCh" secondAttribute="height" multiplier="1:0.7" id="b6X-Y5-jNC"/>
+                            <constraint firstAttribute="bottom" secondItem="nqN-bq-j6c" secondAttribute="bottom" id="crr-Rn-ftP"/>
+                            <constraint firstAttribute="bottom" secondItem="sJV-8O-jYP" secondAttribute="bottom" constant="8" id="fgp-eh-cYA"/>
+                            <constraint firstItem="WCo-Fh-iUF" firstAttribute="leading" secondItem="HQL-7w-HCh" secondAttribute="leading" id="gWK-lu-Xyf"/>
+                            <constraint firstAttribute="trailing" secondItem="nqN-bq-j6c" secondAttribute="trailing" id="mE0-s2-KiD"/>
+                            <constraint firstItem="L7u-FL-I4Y" firstAttribute="centerY" secondItem="HQL-7w-HCh" secondAttribute="centerY" id="uON-e2-251"/>
+                            <constraint firstAttribute="trailing" secondItem="sJV-8O-jYP" secondAttribute="trailing" constant="8" id="uzs-lR-hlv"/>
+                            <constraint firstItem="L7u-FL-I4Y" firstAttribute="centerX" secondItem="HQL-7w-HCh" secondAttribute="centerX" id="wIT-Md-e2a"/>
+                            <constraint firstItem="nqN-bq-j6c" firstAttribute="leading" secondItem="HQL-7w-HCh" secondAttribute="leading" id="wdO-QL-LgG"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="16"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5:45 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bAc-xh-dfT">
+                        <rect key="frame" x="60" y="167" width="37.5" height="12"/>
+                        <fontDescription key="fontDescription" name="Campton-Book" family="Campton" pointSize="10"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Prj-uW-4yL" customClass="AnimatableImageView" customModule="IBAnimatable">
+                        <rect key="frame" x="12" y="12" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="T54-Tc-fXQ"/>
+                            <constraint firstAttribute="height" constant="40" id="eAd-OP-COf"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="20"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="HQL-7w-HCh" firstAttribute="leading" secondItem="Prj-uW-4yL" secondAttribute="trailing" constant="8" id="6qV-yM-xpz"/>
+                    <constraint firstItem="bAc-xh-dfT" firstAttribute="top" secondItem="HQL-7w-HCh" secondAttribute="bottom" constant="4" id="H1D-JB-r3o"/>
+                    <constraint firstItem="Prj-uW-4yL" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="WqM-vC-qOY"/>
+                    <constraint firstAttribute="bottom" secondItem="HQL-7w-HCh" secondAttribute="bottom" constant="20" id="dJt-Sk-3Tx"/>
+                    <constraint firstItem="HQL-7w-HCh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="eYj-MF-AB9"/>
+                    <constraint firstItem="Prj-uW-4yL" firstAttribute="top" secondItem="ftu-9M-Uf2" secondAttribute="top" id="kcb-No-iFl"/>
+                    <constraint firstItem="bAc-xh-dfT" firstAttribute="leading" secondItem="ftu-9M-Uf2" secondAttribute="leading" id="rhz-oe-mDS"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="constraintHeightImg" destination="eAd-OP-COf" id="hIJ-kv-aU4"/>
+                <outlet property="constraintWidthImg" destination="T54-Tc-fXQ" id="dDr-sU-sR4"/>
+                <outlet property="imageUser" destination="Prj-uW-4yL" id="v80-0d-ndk"/>
+                <outlet property="imgPlay" destination="L7u-FL-I4Y" id="cIG-p1-CU9"/>
+                <outlet property="imgView" destination="nqN-bq-j6c" id="3ky-UM-LXb"/>
+                <outlet property="labelPropertyName" destination="sJV-8O-jYP" id="H03-tI-Whd"/>
+                <outlet property="lblTime" destination="bAc-xh-dfT" id="ghI-CK-vQz"/>
+                <outlet property="leadingConstraintImg" destination="WqM-vC-qOY" id="AKv-jP-Ujy"/>
+                <outlet property="viewVideoDim" destination="ftu-9M-Uf2" id="1Qw-5C-S5E"/>
+            </connections>
+            <point key="canvasLocation" x="178.5" y="9.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ic_play_video" width="72" height="72"/>
+    </resources>
+</document>

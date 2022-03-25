@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="77" id="KGk-i7-Jjw" customClass="SenderAudioCell" customModule="Conversify" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="420" height="77"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="420" height="77"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ecS-Yp-Sj6" customClass="AnimatableView" customModule="IBAnimatable">
+                        <rect key="frame" x="48" y="8" width="352" height="48"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Y9-Fa-eUC">
+                                <rect key="frame" x="332" y="0.0" width="20" height="20"/>
+                                <color key="backgroundColor" red="1" green="0.86666666670000003" blue="0.08235294118" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="PMP-NP-7Ov"/>
+                                    <constraint firstAttribute="width" constant="20" id="t7A-DB-wxr"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ez-xX-jqA">
+                                <rect key="frame" x="16" y="4" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="2Kz-3V-OYZ"/>
+                                    <constraint firstAttribute="width" constant="40" id="3Jq-i0-i0m"/>
+                                </constraints>
+                                <state key="normal" image="ic_audioPlay"/>
+                                <connections>
+                                    <action selector="btnActionPlay:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="e93-bt-YH9"/>
+                                </connections>
+                            </button>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="49s-ID-D22" customClass="AnimatableSlider" customModule="IBAnimatable">
+                                <rect key="frame" x="62" y="9" width="276" height="31"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="minimumTrackTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="maximumTrackTintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="thumbTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="thumbImage" value="circle"/>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="thumbHighlightedImage" value="circle"/>
+                                </userDefinedRuntimeAttributes>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SEu-Wt-13A">
+                                <rect key="frame" x="64" y="33" width="29" height="13"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="13" id="4CE-Al-88m"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.86666666670000003" blue="0.08235294118" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="SEu-Wt-13A" firstAttribute="leading" secondItem="49s-ID-D22" secondAttribute="leading" id="6xM-go-dex"/>
+                            <constraint firstItem="49s-ID-D22" firstAttribute="leading" secondItem="9ez-xX-jqA" secondAttribute="trailing" constant="8" id="8Oj-uh-ene"/>
+                            <constraint firstAttribute="bottom" secondItem="SEu-Wt-13A" secondAttribute="bottom" constant="2" id="BEG-Nz-FDE"/>
+                            <constraint firstItem="9ez-xX-jqA" firstAttribute="leading" secondItem="ecS-Yp-Sj6" secondAttribute="leading" constant="16" id="SHA-7l-aet"/>
+                            <constraint firstAttribute="bottom" secondItem="9ez-xX-jqA" secondAttribute="bottom" constant="4" id="TUq-37-0Vs"/>
+                            <constraint firstItem="9ez-xX-jqA" firstAttribute="top" secondItem="ecS-Yp-Sj6" secondAttribute="top" constant="4" id="coR-ku-qMY"/>
+                            <constraint firstItem="49s-ID-D22" firstAttribute="centerY" secondItem="9ez-xX-jqA" secondAttribute="centerY" id="dNr-no-fri"/>
+                            <constraint firstAttribute="trailing" secondItem="3Y9-Fa-eUC" secondAttribute="trailing" id="skt-ob-mZw"/>
+                            <constraint firstItem="3Y9-Fa-eUC" firstAttribute="top" secondItem="ecS-Yp-Sj6" secondAttribute="top" id="vfZ-xc-HH8"/>
+                            <constraint firstAttribute="trailing" secondItem="49s-ID-D22" secondAttribute="trailing" constant="16" id="xfK-hn-LjZ"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="16"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kQv-18-RrD">
+                        <rect key="frame" x="371" y="60" width="29" height="13"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="13" id="RMb-e2-zD8"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="ecS-Yp-Sj6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="3So-fw-zkY"/>
+                    <constraint firstItem="kQv-18-RrD" firstAttribute="trailing" secondItem="ecS-Yp-Sj6" secondAttribute="trailing" id="DEM-qk-Grz"/>
+                    <constraint firstAttribute="trailing" secondItem="ecS-Yp-Sj6" secondAttribute="trailing" constant="20" id="Hiq-hg-8DZ"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kQv-18-RrD" secondAttribute="bottom" constant="4" id="Snk-UC-oaK"/>
+                    <constraint firstItem="kQv-18-RrD" firstAttribute="top" secondItem="ecS-Yp-Sj6" secondAttribute="bottom" constant="4" id="Wty-aS-vwt"/>
+                    <constraint firstItem="ecS-Yp-Sj6" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="48" id="y6Z-p2-QXD"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="audioProgressBar" destination="49s-ID-D22" id="y6x-2G-8lk"/>
+                <outlet property="btnPlay" destination="9ez-xX-jqA" id="b4C-FM-Qd2"/>
+                <outlet property="lblTime" destination="kQv-18-RrD" id="7Vt-z4-tlu"/>
+                <outlet property="lblaudioTime" destination="SEu-Wt-13A" id="wBk-lw-IUg"/>
+                <outlet property="viewBase" destination="ecS-Yp-Sj6" id="Ie7-AV-Kjq"/>
+            </connections>
+            <point key="canvasLocation" x="110.14492753623189" y="-69.977678571428569"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="circle" width="12" height="12"/>
+        <image name="ic_audioPlay" width="16" height="16"/>
+    </resources>
+</document>

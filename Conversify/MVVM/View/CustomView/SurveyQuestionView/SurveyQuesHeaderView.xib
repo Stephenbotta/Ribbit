@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SurveyQuesHeaderView" customModule="Conversify" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="659" height="358"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Question No. 3" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="77L-2B-5S0">
+                    <rect key="frame" x="16" y="68" width="627" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="czc-q8-3MV">
+                    <rect key="frame" x="16" y="101" width="627" height="237"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0LR-B0-ptt" customClass="AnimatableImageView" customModule="IBAnimatable">
+                            <rect key="frame" x="0.0" y="0.0" width="627" height="200"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="200" id="03P-1M-XgI"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loram ipsum doller sit amng Loram ipsum doller sit amng Loram ipsum doller sit amng " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JdN-X2-IAy">
+                            <rect key="frame" x="0.0" y="220" width="627" height="17"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                </stackView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w7B-AP-rKB">
+                    <rect key="frame" x="16" y="101" width="627" height="200"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y9j-T3-3Ej">
+                    <rect key="frame" x="309.5" y="181" width="40" height="40"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="dmD-Qq-Mxp"/>
+                        <constraint firstAttribute="width" constant="40" id="uW3-2A-Lfv"/>
+                    </constraints>
+                    <state key="normal" image="ic_play"/>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" name="AppGreyColor"/>
+            <constraints>
+                <constraint firstItem="77L-2B-5S0" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="24" id="69W-2q-PKW"/>
+                <constraint firstAttribute="bottom" secondItem="czc-q8-3MV" secondAttribute="bottom" constant="20" id="FBz-KH-hm9"/>
+                <constraint firstItem="czc-q8-3MV" firstAttribute="leading" secondItem="77L-2B-5S0" secondAttribute="leading" id="JYK-M0-65P"/>
+                <constraint firstItem="77L-2B-5S0" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="JhY-bg-3kN"/>
+                <constraint firstItem="Y9j-T3-3Ej" firstAttribute="centerY" secondItem="0LR-B0-ptt" secondAttribute="centerY" id="KSU-xp-aAJ"/>
+                <constraint firstItem="czc-q8-3MV" firstAttribute="top" secondItem="77L-2B-5S0" secondAttribute="bottom" constant="16" id="LgN-YH-QtA"/>
+                <constraint firstItem="w7B-AP-rKB" firstAttribute="leading" secondItem="0LR-B0-ptt" secondAttribute="leading" id="LtA-zW-2cz"/>
+                <constraint firstItem="w7B-AP-rKB" firstAttribute="trailing" secondItem="0LR-B0-ptt" secondAttribute="trailing" id="WTR-yy-zNE"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="77L-2B-5S0" secondAttribute="trailing" constant="16" id="bjA-Ly-QnN"/>
+                <constraint firstItem="w7B-AP-rKB" firstAttribute="top" secondItem="0LR-B0-ptt" secondAttribute="top" id="cjZ-8a-1sA"/>
+                <constraint firstItem="w7B-AP-rKB" firstAttribute="bottom" secondItem="0LR-B0-ptt" secondAttribute="bottom" id="exG-E2-gDw"/>
+                <constraint firstItem="czc-q8-3MV" firstAttribute="trailing" secondItem="77L-2B-5S0" secondAttribute="trailing" id="hHC-2r-eWo"/>
+                <constraint firstItem="Y9j-T3-3Ej" firstAttribute="centerX" secondItem="0LR-B0-ptt" secondAttribute="centerX" id="muP-5A-goJ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="btnPlay" destination="Y9j-T3-3Ej" id="1fF-zz-wH7"/>
+                <outlet property="btnShowImageVideo" destination="w7B-AP-rKB" id="fg4-Tb-tIb"/>
+                <outlet property="imgView" destination="0LR-B0-ptt" id="464-c2-IH9"/>
+                <outlet property="labelQuestion" destination="JdN-X2-IAy" id="Yz5-xL-R6J"/>
+                <outlet property="labelQuestionNumber" destination="77L-2B-5S0" id="1xH-5N-7au"/>
+            </connections>
+            <point key="canvasLocation" x="173.18840579710147" y="70.3125"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_play" width="50" height="50"/>
+        <namedColor name="AppGreyColor">
+            <color red="0.6940000057220459" green="0.6940000057220459" blue="0.68599998950958252" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
