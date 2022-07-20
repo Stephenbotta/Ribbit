@@ -1,7 +1,10 @@
-package com.ribbit.data.remote.models.loginsignup
+package com.ribbit.ui.loginsignup
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
+import com.ribbit.data.remote.models.loginsignup.InterestDto
+import com.ribbit.data.remote.models.loginsignup.SelectedUser
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

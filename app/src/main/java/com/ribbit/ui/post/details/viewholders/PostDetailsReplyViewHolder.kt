@@ -7,7 +7,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ribbit.R
 import com.ribbit.data.local.UserManager
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.people.UserCrossedDto
 import com.ribbit.data.remote.models.post.PostReplyDto
 import com.ribbit.extensions.*

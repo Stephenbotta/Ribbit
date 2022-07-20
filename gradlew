@@ -140,7 +140,9 @@ if $cygwin ; then
         fi
         i=$((i+1))
     done
+
     case $i in
+
         (0) set -- ;;
         (1) set -- "$args0" ;;
         (2) set -- "$args0" "$args1" ;;

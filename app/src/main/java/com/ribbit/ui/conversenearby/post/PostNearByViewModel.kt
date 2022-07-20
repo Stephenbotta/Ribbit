@@ -11,7 +11,7 @@ import com.ribbit.data.remote.failureAppError
 import com.ribbit.data.remote.getAppError
 import com.ribbit.data.remote.models.Resource
 import com.ribbit.data.remote.models.loginsignup.InterestDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.post.CreatePostRequest
 import com.ribbit.data.repository.InterestsRepository
 import com.ribbit.ui.base.BaseViewModel

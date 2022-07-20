@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ribbit.R
@@ -36,6 +37,9 @@ class TopicGroupsActivity : BaseActivity() {
     private lateinit var groupsViewModel: GroupsViewModel
     private lateinit var groupsAdapter: TopicGroupsAdapter
     private lateinit var loadingDialog: LoadingDialog
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,11 +48,15 @@ class TopicGroupsActivity : BaseActivity() {
         val topic = intent.getParcelableExtra<InterestDto>(EXTRA_TOPIC)
         topicGroupsViewModel = ViewModelProviders.of(this)[TopicGroupsViewModel::class.java]
         groupsViewModel = ViewModelProviders.of(this)[GroupsViewModel::class.java]
-        topicGroupsViewModel.start(topic)
+        if (topic != null) {
+            topicGroupsViewModel.start(topic)
+        }
 
         loadingDialog = LoadingDialog(this)
 
-        tvTopic.text = topic.name
+        if (topic != null) {
+            tvTopic.text = topic.name
+        }
         btnBack.setOnClickListener { onBackPressed() }
         swipeRefreshLayout.isEnabled = false
 

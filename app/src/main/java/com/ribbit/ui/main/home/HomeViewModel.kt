@@ -1,10 +1,7 @@
 package com.ribbit.ui.main.home
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
-import com.ribbit.data.local.PrefsManager
 import com.ribbit.data.local.UserManager
 import com.ribbit.data.remote.RetrofitClient
 import com.ribbit.data.remote.failureAppError
@@ -13,7 +10,6 @@ import com.ribbit.data.remote.models.ApiResponse
 import com.ribbit.data.remote.models.PagingResult
 import com.ribbit.data.remote.models.Resource
 import com.ribbit.data.remote.models.groups.GroupPostDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.survey.GetSurveyData
 import com.ribbit.utils.SingleLiveEvent
 import retrofit2.Call

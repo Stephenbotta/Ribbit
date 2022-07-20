@@ -1,3 +1,4 @@
+
 package com.ribbit.ui.post.details
 
 import android.annotation.SuppressLint
@@ -8,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
+import android.os.PersistableBundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
@@ -29,7 +31,7 @@ import com.ribbit.data.remote.models.groups.GroupDto
 import com.ribbit.data.remote.models.groups.GroupPostDto
 import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
 import com.ribbit.data.remote.models.loginsignup.InterestDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.people.UserCrossedDto
 import com.ribbit.data.remote.models.post.PostReplyDto
 import com.ribbit.databinding.BottomSheetDialogDeleteCommentBinding
@@ -48,6 +50,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMentionAdapter.Callback, PopupMenu.OnMenuItemClickListener {
+    public
     companion object {
         private const val EXTRA_POST = "EXTRA_POST"
         private const val EXTRA_FOCUS_REPLY_EDIT_TEXT = "EXTRA_FOCUS_REPLY_EDIT_TEXT"
@@ -65,7 +68,6 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
             return intent
         }
     }
-
     private val viewModel by lazy { ViewModelProviders.of(this)[PostDetailsViewModel::class.java] }
     private val focusReplyEditText by lazy { intent.getBooleanExtra(EXTRA_FOCUS_REPLY_EDIT_TEXT, false) }
     private lateinit var postDetailsAdapter: PostDetailsAdapter
@@ -75,6 +77,9 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
     private val ownUserId by lazy { UserManager.getUserId() }
     private var media: ImageUrlDto? = null
     private lateinit var loader: LoadingDialog
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +89,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
 
         btnBack.setOnClickListener { onBackPressed() }
 
-        groupPost = intent.getParcelableExtra(EXTRA_POST)
+        groupPost = intent.getParcelableExtra(EXTRA_POST)!!
 
         if (intent.hasExtra(EXTRA_MEDIA_ID))
             media = intent.getParcelableExtra(EXTRA_MEDIA_ID)
@@ -115,6 +120,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
         setupUserMentionRecycler()
         setListeners()
         observeChanges()
+
         setupPostReplyEditText()
         getReplies()
     }
@@ -144,6 +150,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
                 postDetailsAdapter.notifyHeaderChanged()
             }
         }
+
 
         ivCloseReplyingTo.setOnClickListener {
             llReplyingTo.gone()
@@ -301,6 +308,8 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
 
         viewModel.mentionSuggestions.observe(this, Observer { resource ->
             resource ?: return@Observer
+
+
 
             when (resource.status) {
                 Status.SUCCESS -> {
@@ -563,6 +572,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
 
     override fun onGroupCategoryClicked(category: InterestDto) {
         /*val intent = TopicGroupsActivity.getStartIntent(this, category)
+        public
         startActivity(intent)*/
     }
 
@@ -581,6 +591,7 @@ class PostDetailsActivity : BaseActivity(), PostDetailsAdapter.Callback, UserMen
         val bottomSheetDialog = BottomSheetDialog(this)
         bottomSheetDialog.setContentView(binding.root)
         bottomSheetDialog.show()
+
         binding.tvDelete.setOnClickListener {
             deleteReply(user)
             bottomSheetDialog.dismiss()

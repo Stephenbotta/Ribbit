@@ -4,7 +4,7 @@ import com.ribbit.data.remote.ApiConstants
 import com.ribbit.data.remote.RetrofitClient
 import com.ribbit.data.remote.models.chat.*
 import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import org.json.JSONObject
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber

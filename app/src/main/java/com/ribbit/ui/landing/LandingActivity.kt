@@ -3,6 +3,7 @@ package com.ribbit.ui.landing
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextPaint
@@ -23,6 +24,9 @@ import com.ribbit.utils.AppConstants
 import kotlinx.android.synthetic.main.activity_landing.*
 
 class LandingActivity : BaseActivity() {
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)

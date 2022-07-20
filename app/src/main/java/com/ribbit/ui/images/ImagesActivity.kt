@@ -3,6 +3,7 @@ package com.ribbit.ui.images
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import com.ribbit.R
 import com.ribbit.ui.base.BaseActivity
 import com.ribbit.utils.GlideApp
@@ -18,6 +19,10 @@ class ImagesActivity : BaseActivity() {
                     .putStringArrayListExtra(EXTRA_IMAGES, images)
                     .putExtra(EXTRA_START_POSITION, startPosition))
         }
+    }
+
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

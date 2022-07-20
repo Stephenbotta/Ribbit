@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.provider.MediaStore
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -33,6 +34,10 @@ class PickerActivity : BaseActivity(), ToolbarTitleListener {
         }
     }
 
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_picker)
@@ -42,7 +47,9 @@ class PickerActivity : BaseActivity(), ToolbarTitleListener {
         setToolbarTitle(getString(R.string.image_picker_title_albums))
 
         val viewModel = ViewModelProviders.of(this)[PickerViewModel::class.java]
-        viewModel.start(selectionParams)
+        if (selectionParams != null) {
+            viewModel.start(selectionParams)
+        }
         viewModel.getAlbums()
 
         viewModel.getMediaCountLiveData().observe(this, Observer { count ->

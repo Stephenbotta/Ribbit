@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
@@ -15,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.ribbit.R
 import com.ribbit.data.local.models.AppError
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.profile.CreateEditProfileRequest
 import com.ribbit.databinding.BottomSheetDialogGenderBinding
 import com.ribbit.extensions.handleError
@@ -39,6 +40,9 @@ class EditProfileActivity : BaseActivity(), View.OnClickListener {
     private var selectedImage: File? = null
     private lateinit var mediaPicker: MediaPicker
     private lateinit var loadingDialog: LoadingDialog
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

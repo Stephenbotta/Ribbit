@@ -10,7 +10,7 @@ import com.ribbit.data.remote.models.groups.GroupDto
 import com.ribbit.data.remote.models.groups.GroupPostDto
 import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
 import com.ribbit.data.remote.models.loginsignup.InterestDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.clickSpannable
 import com.ribbit.extensions.gone
 import com.ribbit.extensions.visible

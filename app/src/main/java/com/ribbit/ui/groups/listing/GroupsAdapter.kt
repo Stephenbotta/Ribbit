@@ -5,7 +5,7 @@ import com.ribbit.R
 import com.ribbit.data.remote.models.groups.GroupDto
 import com.ribbit.data.remote.models.groups.SuggestedGroupsDto
 import com.ribbit.data.remote.models.groups.YourGroupsLabelDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.inflate
 import com.ribbit.ui.groups.listing.viewholders.SuggestedGroupsParentViewHolder
 import com.ribbit.ui.groups.listing.viewholders.YourGroupViewHolder
@@ -14,7 +14,8 @@ import com.ribbit.utils.GlideRequests
 
 class GroupsAdapter(private val glide: GlideRequests,
                     private val callback: Callback,
-                    private var ownProfile: ProfileDto) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
+                    private var ownProfile: ProfileDto
+) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
     companion object {
         private const val VIEW_TYPE_SUGGESTED_GROUPS = 0
         private const val VIEW_TYPE_LABEL_YOUR_GROUPS = 1

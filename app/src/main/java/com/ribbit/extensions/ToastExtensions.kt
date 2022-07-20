@@ -13,11 +13,15 @@ fun Toast.updateAndShow() {
 }
 
 fun Toast.updateToast(@DrawableRes backgroundRes: Int, @ColorRes textColorRes: Int) {
-    val paddingHorizontal = view.context.pxFromDp(20)
-    val paddingVertical = view.context.pxFromDp(12)
-    view.setBackgroundResource(backgroundRes)
-    view.setPaddingRelative(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
-    view.elevation = view.context.pxFromDp(2).toFloat()
-    val toastText = view.findViewById<TextView>(android.R.id.message)
-    toastText.setTextColor(ContextCompat.getColor(view.context, textColorRes))
+    val paddingHorizontal = view?.context?.pxFromDp(20)
+    val paddingVertical = view?.context?.pxFromDp(12)
+    view?.setBackgroundResource(backgroundRes)
+    if (paddingHorizontal != null) {
+        if (paddingVertical != null) {
+            view?.setPaddingRelative(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
+        }
+    }
+    view?.elevation  = view?.context?.pxFromDp(2)!!?.toFloat()
+    val toastText = view!!.findViewById<TextView>(android.R.id.message)
+    toastText.setTextColor(ContextCompat.getColor(view!!.context, textColorRes))
 }

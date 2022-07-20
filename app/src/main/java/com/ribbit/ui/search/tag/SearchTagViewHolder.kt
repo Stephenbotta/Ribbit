@@ -3,7 +3,7 @@ package com.ribbit.ui.search.tag
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.ribbit.R
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import kotlinx.android.synthetic.main.item_tag_search.view.*
 
 class SearchTagViewHolder(itemView: View, private val callback: Callback) : RecyclerView.ViewHolder(itemView) {

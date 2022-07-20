@@ -3,6 +3,7 @@ package com.ribbit.ui.splash
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.PersistableBundle
 import com.ribbit.data.remote.PushType
 import com.ribbit.ui.base.BaseActivity
 import com.ribbit.ui.landing.LandingActivity
@@ -10,6 +11,9 @@ import com.ribbit.ui.main.MainActivity
 import com.ribbit.utils.AppConstants
 
 class SplashActivity : BaseActivity() {
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

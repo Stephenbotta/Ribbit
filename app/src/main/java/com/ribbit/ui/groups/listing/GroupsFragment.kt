@@ -221,7 +221,8 @@ class GroupsFragment : BaseFragment(), GroupsAdapter.Callback {
             AppConstants.REQ_CODE_GROUP_TOPICS -> {
                 if (resultCode == Activity.RESULT_OK && data != null && data.hasExtra(AppConstants.EXTRA_INTEREST)) {
                     val topic = data.getParcelableExtra<InterestDto>(AppConstants.EXTRA_INTEREST)
-                    val intent = TopicGroupsActivity.getStartIntent(requireActivity(), topic)
+                    val intent =
+                        topic?.let { TopicGroupsActivity.getStartIntent(requireActivity(), it) }
                     startActivityForResult(intent, AppConstants.REQ_CODE_TOPIC_GROUPS)
                 }
             }

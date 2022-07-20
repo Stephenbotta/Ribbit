@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
@@ -24,7 +25,7 @@ import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.groups.GroupDto
 import com.ribbit.data.remote.models.groups.GroupPostDto
 import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.people.UserCrossedDto
 import com.ribbit.extensions.handleError
 import com.ribbit.extensions.hideKeyboard
@@ -69,7 +70,9 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null && intent.hasExtra(AppConstants.EXTRA_GROUP_POST)) {
                 val updatedPost = intent.getParcelableExtra<GroupPostDto>(AppConstants.EXTRA_GROUP_POST)
-                postsAdapter.updatePost(updatedPost)
+                if (updatedPost != null) {
+                    postsAdapter.updatePost(updatedPost)
+                }
             }
         }
     }
@@ -78,7 +81,7 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_posts)
 
-        groupPostsViewModel.start(group)
+        group?.let { groupPostsViewModel.start(it) }
         loadingDialog = LoadingDialog(this)
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = false
@@ -86,7 +89,7 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         }
         registerPostUpdatedReceiver()
         setupPostsRecycler()
-        displayGroupDetails(group)
+        group?.let { displayGroupDetails(it) }
         observeChanges()
         listener()
     }
@@ -95,6 +98,7 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         btnBack.setOnClickListener { onBackPressed() }
         btnMore.setOnClickListener { optionMenu(it) }
     }
+
 
     private fun registerPostUpdatedReceiver() {
         val filter = IntentFilter()
@@ -177,7 +181,7 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
                 Status.SUCCESS -> {
                     loadingDialog.setLoading(false)
 //                    swipeRefreshLayout.isRefreshing = false
-                    group.isMember = false
+                    group?.isMember = false
                     val data = Intent()
                     data.putExtra(AppConstants.EXTRA_GROUP, group)
                     setResult(Activity.RESULT_OK, data)
@@ -254,7 +258,7 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         val popup = PopupMenu(this, v)
         popup.inflate(R.menu.menu_group_more_options)
         val m = popup.menu as MenuBuilder
-        m.getItem(0).title = if (group.adminId == UserManager.getUserId()) {
+        m.getItem(0).title = if (group?.adminId == UserManager.getUserId()) {
             getString(R.string.group_more_options_label_channel_delete)
         } else {
             getString(R.string.group_more_options_label_exit)
@@ -283,35 +287,42 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
             }
 
             R.id.menuGroupChat -> {
-                val intent = ChatActivity.getStartIntentForGroupChat(this, group, AppConstants.REQ_CODE_GROUP_CHAT)
+                val intent =
+                    group?.let {
+                        ChatActivity.getStartIntentForGroupChat(this,
+                            it, AppConstants.REQ_CODE_GROUP_CHAT)
+                    }
                 startActivityForResult(intent, AppConstants.REQ_CODE_GROUP_CHAT)
                 return true
             }
 
             R.id.menuCreateNewPost -> {
-                val intent = NewPostActivity.getStartIntent(this, group, AppConstants.REQ_CODE_CREATE_NEW_POST)
+                val intent = group?.let {
+                    NewPostActivity.getStartIntent(this,
+                        it, AppConstants.REQ_CODE_CREATE_NEW_POST)
+                }
                 startActivityForResult(intent, AppConstants.REQ_CODE_CREATE_NEW_POST)
                 return true
             }
 
             R.id.menuGroupDetail -> {
-                val intent = GroupDetailsActivity.getStartIntent(this, group.id
+                val intent = GroupDetailsActivity.getStartIntent(this, group?.id
                         ?: "", AppConstants.REQ_CODE_GROUP_DETAILS_MORE_OPTIONS)
                 startActivityForResult(intent, AppConstants.REQ_CODE_GROUP_DETAILS_MORE_OPTIONS)
                 return true
             }
 
-            else -> return super.onOptionsItemSelected(item)
+            else -> return item?.let { super.onOptionsItemSelected(it) } == true
         }
     }
 
     private fun showDialog() {
-        val message = if (group.adminId == UserManager.getUserId()) {
+        val message = if (group?.adminId == UserManager.getUserId()) {
             getString(R.string.group_details_label_delete_group_question)
         } else {
             getString(R.string.group_details_label_exit_group_question)
         }
-        val action = if (group.adminId == UserManager.getUserId()) {
+        val action = if (group?.adminId == UserManager.getUserId()) {
             getString(R.string.group_more_options_label_channel_delete)
         } else {
             getString(R.string.group_more_options_label_exit)
@@ -398,6 +409,10 @@ class GroupPostsActivity : BaseActivity(), PostCallback, PopupMenu.OnMenuItemCli
         super.onDestroy()
         LocalBroadcastManager.getInstance(this)
                 .unregisterReceiver(postUpdatedReceiver)
+    }
+
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
     }
 
     // Screen touch keyboard close

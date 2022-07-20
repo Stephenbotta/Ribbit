@@ -8,7 +8,7 @@ import com.ribbit.data.remote.getAppError
 import com.ribbit.data.remote.models.ApiResponse
 import com.ribbit.data.remote.models.PagingResult
 import com.ribbit.data.remote.models.Resource
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.ui.base.BaseViewModel
 import com.ribbit.utils.SingleLiveEvent
 import retrofit2.Call

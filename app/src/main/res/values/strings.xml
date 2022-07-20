@@ -44,8 +44,8 @@
     <string name="message_select_smaller_video">Please select a smaller video. Maximum size should not exceed 200 MB</string>
     <string name="message_select_smaller_image">Please select a smaller image. Maximum size should not exceed 25 MB.</string>
 
-    <string name="media_picker_dialog_capture_image">Capture image from camera</string>
-    <string name="media_picker_dialog_capture_video">Capture video from camera</string>
+    <string name="media_picker_dialog_capture_image">Take image from camera</string>
+    <string name="media_picker_dialog_capture_video">Take video from camera</string>
     <string name="media_picker_dialog_gallery_image">Select image from gallery</string>
     <string name="media_picker_dialog_gallery_video">Select video from gallery</string>
     <string name="media_picker_dialog_select_your_choice">Select your choice</string>
@@ -81,18 +81,18 @@
     <string name="error_empty_email">Please enter email</string>
     <string name="error_empty_full_name">Please enter full name</string>
     <string name="error_empty_user_name">Please enter username</string>
-    <string name="error_user_name_contains_spaces">Username should not contain whitespace</string>
-    <string name="error_invalid_user_name_length">Username should contain at least 6 characters</string>
-    <string name="error_invalid_username_characters">Username can contain underscores, periods, dashes and at least one Alphanumeric character</string>
+    <string name="error_user_name_contains_spaces">Username should not contain spaces</string>
+    <string name="error_invalid_user_name_length">Username should be at least 6 characters long</string>
+    <string name="error_invalid_username_characters">Username should contain underscores, periods, dashes and at least one Alphanumeric character</string>
     <string name="error_empty_phone_number">Please enter phone number</string>
     <string name="error_empty_otp">Please enter OTP</string>
-    <string name="error_password_does_not_match">Password does not match</string>
+    <string name="error_password_does_not_match">Passwords do not match</string>
     <string name="error_add_profile_image">Please add profile image</string>
     <string name="error_invalid_otp">Please enter valid OTP</string>
     <string name="error_invalid_email">Please enter valid email</string>
     <string name="error_invalid_website">Please enter valid website url</string>
-    <string name="error_invalid_password_length">Password length must be 6 to 20 characters</string>
-    <string name="error_invalid_new_password_length">New password length must be 6 to 20 characters</string>
+    <string name="error_invalid_password_length">Password length must be between 6 to 20 characters</string>
+    <string name="error_invalid_new_password_length">New password length must be between 6 to 20 characters</string>
     <string name="error_invalid_phone_number">Please enter valid phone number</string>
 
     <string name="login_sign_up_label_by_signing_in_you_are_agree">By Signing in you agree to Ribbit’s Terms &amp; conditions and Privacy policy.</string>
@@ -509,13 +509,13 @@
     <string name="daily_challenges_in_a_day">Your daily challenge is to send 100 messages in a day!</string>
     <string name="my_challenges">My Challenges</string>
     <string name="take_survey">Take Survey</string>
-    <string name="want_to_buy_gift_card">Want to Buy Gift Card</string>
-    <string name="want_to_donate">Want to Donate!</string>
+    <string name="want_to_buy_gift_card">Buy a Gift Card</string>
+    <string name="want_to_donate">Donate Now</string>
     <string name="ends_in_10min">Ends in 10 min</string>
     <string name="gender">Gender</string>
     <string name="race">Race</string>
     <string name="Date_of_birth">Date of birth</string>
-    <string name="display_qr_code">Display QR code</string>
+    <string name="display_qr_code">Display Add Code</string>
     <string name="privacy_policy">Privacy policy</string>
     <string name="select_location">Select location</string>
     <string name="select_one">Select One</string>

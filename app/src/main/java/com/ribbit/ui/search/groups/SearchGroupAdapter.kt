@@ -39,6 +39,9 @@ class SearchGroupAdapter(private val glide: GlideRequests,
         }
     }
 
+
+
+
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
             is GroupDto -> VIEW_TYPE_MY_VENUE

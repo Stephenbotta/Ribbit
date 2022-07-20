@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
@@ -13,7 +14,7 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.ribbit.R
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.people.UserCrossedDto
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseActivity
@@ -43,6 +44,10 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
     private val userId by lazy { intent.getStringExtra(EXTRA_USER_ID) ?: "" }
     private val userCrossed by lazy {
         intent.getParcelableExtra(EXTRA_CROSSED_PEOPLE_DETAILS) ?: UserCrossedDto()
+    }
+
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -181,8 +186,6 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
         } else {
             ivPrivate.gone()
         }
-        viewModel.start(profile ?: ProfileDto())
-
         interestsAdapter.displayMutualInterests(profile?.interests ?: emptyList())
     }
 
@@ -308,8 +311,9 @@ class PeopleDetailsActivity : BaseActivity(), View.OnClickListener, PopupMenu.On
                 viewModel.postBlock(profile?.id ?: "", toggleBlock())
                 true
             }
-            else -> super.onOptionsItemSelected(item)
+            else -> item?.let { super.onOptionsItemSelected(it) } == true
         }
     }
 
 }
+

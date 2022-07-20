@@ -2,7 +2,7 @@ package com.ribbit.data.remote.models.chat
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

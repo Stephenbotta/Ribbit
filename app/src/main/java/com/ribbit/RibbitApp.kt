@@ -6,7 +6,7 @@ import androidx.core.provider.FontRequest
 import androidx.emoji.text.EmojiCompat
 import androidx.emoji.text.FontRequestEmojiCompatConfig
 import androidx.multidex.MultiDexApplication
-import com.crashlytics.android.Crashlytics
+//import com.crashlytics.android.Crashlytics
 import com.google.android.libraries.places.api.Places
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.ribbit.data.local.PrefsManager
@@ -76,13 +76,15 @@ class RibbitApp : MultiDexApplication() {
         EmojiCompat.init(config)
     }
 
+
+
     /** A tree which logs important information for crash reporting. */
     private class CrashReportingTree : Timber.Tree() {
         override fun log(priority: Int, tag: String?, message: String, throwable: Throwable?) {
             if (priority == Log.ERROR) {
-                Crashlytics.log(priority, tag, message)
+                //Crashlytics.log(priority, tag, message)
                 if (throwable != null) {
-                    Crashlytics.logException(throwable)
+                  //  Crashlytics.logException(throwable)
                 }
             }
         }

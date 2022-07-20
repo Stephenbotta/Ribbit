@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
@@ -11,7 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.ribbit.R
 import com.ribbit.data.remote.ApiConstants
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.loginsignup.SelectedUser
 import com.ribbit.extensions.handleError
 import com.ribbit.ui.base.BaseActivity
@@ -32,6 +33,9 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener {
     private val viewModel by lazy { ViewModelProviders.of(this)[HideStatusViewModel::class.java] }
     private val flag by lazy { intent.getIntExtra(EXTRA_FLAG, 0) }
     private lateinit var adapter: HideStatusAdapter
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +62,8 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener {
             ApiConstants.FLAG_PRIVATE_INFO -> privateInfo(profile)
             ApiConstants.FLAG_USERNAME -> username(profile)
             ApiConstants.FLAG_MESSAGE -> message(profile)
-            AppConstants.REQ_CODE_NEW_POST -> newPost(intent.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS))
+            AppConstants.REQ_CODE_NEW_POST -> intent.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS)
+                ?.let { newPost(it) }
         }
 
         if (selectedUser.isChecked)
@@ -189,7 +194,8 @@ class HideStatusActivity : BaseActivity(), View.OnClickListener {
                                         ?: emptyList(), user)
                             }
                             AppConstants.REQ_CODE_NEW_POST -> {
-                                selectedUserPost(intent.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS), user)
+                                intent.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS)
+                                    ?.let { selectedUserPost(it, user) }
                             }
                         }
 

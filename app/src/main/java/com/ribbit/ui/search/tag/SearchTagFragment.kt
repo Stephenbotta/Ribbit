@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.ribbit.R
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.handleError
 import com.ribbit.extensions.isNetworkActiveWithMessage
 import com.ribbit.ui.base.BaseFragment

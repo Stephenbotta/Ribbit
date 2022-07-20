@@ -17,6 +17,7 @@ import com.ribbit.data.remote.models.profile.CreateEditProfileRequest
 import com.ribbit.data.remote.models.survey.*
 import com.ribbit.data.remote.models.venues.*
 import com.ribbit.ui.chat.individual.ChatIndividualResponse
+import com.ribbit.ui.loginsignup.ProfileDto
 import retrofit2.Call
 import retrofit2.http.*
 

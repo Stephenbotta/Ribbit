@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ribbit.R
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.people.UserCrossedDto
 import com.ribbit.data.remote.models.venues.YourVenuesDto
 import com.ribbit.extensions.handleError

@@ -9,12 +9,12 @@ androidExtensions {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.ribbit"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -124,7 +124,7 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
 
     // https://firebase.google.com/docs/crashlytics
-    implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
+    //implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
 
     // https://developers.facebook.com/docs/facebook-login/android/?sdk=maven
     implementation "com.facebook.android:facebook-login:$facebookLoginVersion"

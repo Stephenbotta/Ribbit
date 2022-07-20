@@ -17,7 +17,7 @@ object MediaUtils {
     @JvmStatic
     fun getThumbnailFromVideo(videoPath: String, thumbnailDirectory: String, thumbnailKind: Int): File? {
         val thumbnailBitmap = ThumbnailUtils.createVideoThumbnail(videoPath, thumbnailKind)
-        return getImageFileFromBitmap(thumbnailBitmap, thumbnailDirectory)
+        return thumbnailBitmap?.let { getImageFileFromBitmap(it, thumbnailDirectory) }
     }
 
     @JvmStatic

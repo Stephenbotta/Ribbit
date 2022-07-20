@@ -9,7 +9,7 @@ import com.ribbit.ui.conversenearby.post.PostNearByActivity
 import com.ribbit.utils.AppConstants
 import kotlinx.android.synthetic.main.activity_select_near_by.*
 
-class SelectNearByActivity : BaseActivity() {
+abstract class SelectNearByActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

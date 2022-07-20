@@ -20,7 +20,7 @@ import com.ribbit.R
 import com.ribbit.data.local.models.AppError
 import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.loginsignup.InterestDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.venues.CreateEditVenueRequest
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseFragment
@@ -346,18 +346,22 @@ class CreateVenueFragment : BaseFragment(), CreateGroupAdapter.Callback {
                     val participants = data.getParcelableArrayListExtra<ProfileDto>(AppConstants.EXTRA_PARTICIPANTS)
 
                     // Update member ids in the create group request
-                    if (participants.isEmpty()) {
-                        request.participantIds = null
-                    } else {
-                        request.participantIds = participants.asSequence()
+                    if (participants != null) {
+                        if (participants.isEmpty()) {
+                            request.participantIds = null
+                        } else {
+                            request.participantIds = participants.asSequence()
                                 .onEach { it.isSelected = false }   // Set selected to false for all
                                 .mapNotNull { it.id }   // Map to non-null ids
                                 .toList()
+                        }
                     }
                     // Display the selected participants and update the member count
                     memberCount = request.participantIds?.size ?: 0
                     tvLabelMembers.text = context?.getString(R.string.venue_details_label_members_with_count, memberCount)
-                    createGroupAdapter.displayMembers(participants)
+                    if (participants != null) {
+                        createGroupAdapter.displayMembers(participants)
+                    }
                 }
             }
 

@@ -47,7 +47,7 @@ import permissions.dispatcher.*
 import java.io.File
 
 @RuntimePermissions
-class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCallback, MediaFragment.MediaCallback {
+abstract class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCallback, MediaFragment.MediaCallback {
     companion object {
         private const val EXTRA_FLAG = "EXTRA_FLAG"
 
@@ -178,41 +178,67 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
             AppConstants.REQ_CODE_VENUE_CHAT -> {
                 val venue = intent.getParcelableExtra<VenueDto>(EXTRA_VENUE)
                 viewModel = ViewModelProviders.of(this)[ChatViewModel::class.java]
-                viewModel.start(venue)
+                if (venue != null) {
+                    viewModel.start(venue)
+                }
                 type = "VENUE"
-                setupToolbar(venue)
-                conversationId = venue.conversationId ?: ""
+                if (venue != null) {
+                    setupToolbar(venue)
+                }
+                if (venue != null) {
+                    conversationId = venue.conversationId ?: ""
+                }
             }
             AppConstants.REQ_CODE_INDIVIDUAL_CHAT -> {
                 val userCrossed = intent.getParcelableExtra<UserCrossedDto>(EXTRA_INDIVIDUAL_CHAT)
                 viewModelIndividual = ViewModelProviders.of(this)[ChatIndividualViewModel::class.java]
-                viewModelIndividual.start(userCrossed)
+                if (userCrossed != null) {
+                    viewModelIndividual.start(userCrossed)
+                }
                 type = "INDIVIDUAL"
-                setupToolbar(userCrossed)
-                conversationId = userCrossed.conversationId ?: ""
+                if (userCrossed != null) {
+                    setupToolbar(userCrossed)
+                }
+                if (userCrossed != null) {
+                    conversationId = userCrossed.conversationId ?: ""
+                }
             }
             AppConstants.REQ_CODE_LISTING_INDIVIDUAL_CHAT -> {
                 val userCrossed = intent.getParcelableExtra<UserCrossedDto>(EXTRA_INDIVIDUAL_CHAT)
                 viewModelChatIndividual = ViewModelProviders.of(this)[ChatListIndividualViewModel::class.java]
-                viewModelChatIndividual.start(userCrossed)
+                if (userCrossed != null) {
+                    viewModelChatIndividual.start(userCrossed)
+                }
                 type = "INDIVIDUAL"
-                setupToolbarProfile(userCrossed)
-                conversationId = userCrossed.conversationId ?: ""
+                if (userCrossed != null) {
+                    setupToolbarProfile(userCrossed)
+                }
+                if (userCrossed != null) {
+                    conversationId = userCrossed.conversationId ?: ""
+                }
             }
             AppConstants.REQ_CODE_LISTING_GROUP_CHAT -> {
                 val userCrossed = intent.getParcelableExtra<UserCrossedDto>(EXTRA_INDIVIDUAL_CHAT)
                 viewModelChatGroup = ViewModelProviders.of(this)[ChatListGroupViewModel::class.java]
-                viewModelChatGroup.start(userCrossed)
+                if (userCrossed != null) {
+                    viewModelChatGroup.start(userCrossed)
+                }
                 type = "GROUP"
-                setupToolbarProfile(userCrossed)
-                conversationId = userCrossed.conversationId ?: ""
+                if (userCrossed != null) {
+                    setupToolbarProfile(userCrossed)
+                }
+                conversationId = userCrossed?.conversationId ?: ""
             }
             AppConstants.REQ_CODE_GROUP_CHAT -> {
                 val group = intent.getParcelableExtra<GroupDto>(EXTRA_GROUP_CHAT)
                 viewModelGroup = ViewModelProviders.of(this)[ChatGroupViewModel::class.java]
-                viewModelGroup.start(group)
+                if (group != null) {
+                    viewModelGroup.start(group)
+                }
                 type = "GROUP"
-                setupToolbar(group)
+                if (group != null) {
+                    setupToolbar(group)
+                }
                 conversationId = group?.conversationId ?: ""
             }
         }
@@ -327,8 +353,10 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
 
     private fun openUserProfile() {
         val data = intent.getParcelableExtra<UserCrossedDto>(EXTRA_INDIVIDUAL_CHAT)
-        val intent = PeopleDetailsActivity.getStartIntent(this, data,
-                AppConstants.REQ_CODE_BLOCK_USER, data.profile?.id ?: "")
+        val intent = data?.let {
+            PeopleDetailsActivity.getStartIntent(this, it,
+                AppConstants.REQ_CODE_BLOCK_USER, data?.profile?.id ?: "")
+        }
         startActivity(intent)
     }
 
@@ -539,14 +567,14 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
         PermissionUtils.showAppSettingsDialog(this, R.string.permission_never_ask_camera_storage, AppConstants.REQ_CODE_APP_SETTINGS)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    fun onOptionsItemSelected(item: MenuItem?): Boolean? {
         return when (item?.itemId) {
             android.R.id.home -> {
                 onBackPressed()
                 true
             }
 
-            else -> super.onOptionsItemSelected(item)
+            else -> item?.let { super.onOptionsItemSelected(it) }
         }
     }
 
@@ -574,13 +602,17 @@ class ChatActivity : BaseActivity(), ChatAdapter.Callback, ChatAdapter.ActionCal
                     if (data != null && data.hasExtra(AppConstants.EXTRA_VENUE) &&
                             data.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE) != null) {
                         val venue = data.getParcelableExtra<VenueDto>(AppConstants.EXTRA_VENUE)
-                        if (venue.isMember == false) {
-                            // Will be false if user has exit the venue
-                            setResult(Activity.RESULT_OK, data)
-                            finish()
-                        } else {
-                            // Otherwise update the venue
-                            viewModel.updateVenue(venue)
+                        if (venue != null) {
+                            if (venue.isMember == false) {
+                                // Will be false if user has exit the venue
+                                setResult(Activity.RESULT_OK, data)
+                                finish()
+                            } else {
+                                // Otherwise update the venue
+                                if (venue != null) {
+                                    viewModel.updateVenue(venue)
+                                }
+                            }
                         }
                     }
                 }

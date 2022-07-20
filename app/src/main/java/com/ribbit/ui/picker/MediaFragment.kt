@@ -224,7 +224,9 @@ class MediaFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 AppConstants.REQ_CODE_PICK_MEDIA -> {
                     if (data != null && data.hasExtra(AppConstants.EXTRA_MULTI_SELECT_IMAGES_LIST) && data.getParcelableArrayListExtra<MediaSelected>(AppConstants.EXTRA_MULTI_SELECT_IMAGES_LIST) != null) {
                         val selectedMedias = data.getParcelableArrayListExtra<MediaSelected>(AppConstants.EXTRA_MULTI_SELECT_IMAGES_LIST)
-                        callback?.selectFromGalleryCallback(selectedMedias)
+                        if (selectedMedias != null) {
+                            callback?.selectFromGalleryCallback(selectedMedias)
+                        }
                         dismiss()
                     }
                 }

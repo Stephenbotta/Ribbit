@@ -2,7 +2,7 @@ package com.ribbit.ui.groups
 
 import com.ribbit.data.remote.models.groups.GroupPostDto
 import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 
 interface PostCallback {
     fun onPostClicked(post: GroupPostDto, focusReplyEditText: Boolean)

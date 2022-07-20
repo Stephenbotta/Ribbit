@@ -27,10 +27,6 @@ class MainBottomTabs : TabLayout {
         searchUsersTab.customView = searchUsersView
         addTab(searchUsersTab)*/
 
-        val exploreTab = newTab()
-        exploreTab.setIcon(R.drawable.selector_tab_twitter)
-        addTab(exploreTab)
-
         val notificationTab = newTab()
         notificationTab.customView = getTabCustomView()
         addTab(notificationTab)
@@ -39,6 +35,8 @@ class MainBottomTabs : TabLayout {
         profileTab.setIcon(R.drawable.selector_tab_profile)
         addTab(profileTab)
     }
+
+
 
     private fun getTabCustomView(): View? {
         val customView = LayoutInflater.from(context).inflate(R.layout.item_custom_bottom_tab_icon, null, false)

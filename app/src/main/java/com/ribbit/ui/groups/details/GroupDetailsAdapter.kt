@@ -35,6 +35,8 @@ class GroupDetailsAdapter(val glide: GlideRequests,
 
             else -> throw IllegalArgumentException("Invalid view type")
         }
+
+
     }
 
     override fun getItemCount(): Int = items.size
@@ -71,6 +73,10 @@ class GroupDetailsAdapter(val glide: GlideRequests,
             else -> VIEW_TYPE_EXIT_GROUP
         }
     }
+
+
+
+    // Update this driver right here //
 
     fun displayItems(items: List<Any>) {
         this.items.clear()

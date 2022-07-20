@@ -13,11 +13,12 @@ import androidx.lifecycle.ViewModelProviders
 import com.ribbit.R
 import com.ribbit.data.local.PrefsManager
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.custom.LoadingDialog
 import com.ribbit.ui.loginsignup.createpassword.CreatePasswordFragment
+import com.ribbit.ui.loginsignup.loginpassword.LoginPasswordFragment
 import com.ribbit.utils.AppConstants
 import com.ribbit.utils.ValidationUtils
 import kotlinx.android.synthetic.main.fragment_verification.*
@@ -44,7 +45,7 @@ class VerificationFragment : BaseFragment() {
     }
     private lateinit var viewModel: VerificationViewModel
     private lateinit var loadingDialog: LoadingDialog
-
+    private lateinit var profile: ProfileDto;
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_verification
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,7 +53,7 @@ class VerificationFragment : BaseFragment() {
 
         viewModel = ViewModelProviders.of(this)[VerificationViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())
-        val profile = arguments?.getParcelable(ARGUMENT_PROFILE) as ProfileDto
+        profile = arguments?.getParcelable(VerificationFragment.ARGUMENT_PROFILE)!!
         viewModel.start(profile, startedForResult)
 
         fabProceed.isEnabled = false

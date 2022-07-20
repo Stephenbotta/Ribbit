@@ -3,7 +3,7 @@ package com.ribbit.ui.post.details
 import android.view.View
 import android.view.ViewGroup
 import com.ribbit.R
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.inflate
 import com.ribbit.extensions.isValidPosition
 import com.ribbit.utils.GlideRequests

@@ -1,9 +1,11 @@
 package com.ribbit.ui.conversenearby.post
 
 import android.app.Activity
+
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -43,9 +45,12 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var loadingDialog: LoadingDialog
     private var flag = 0
-    private val request: CreatePostRequest by lazy { intent.getParcelableExtra<CreatePostRequest>(EXTRA_REQUEST_DATA) }
+    private val request: CreatePostRequest? by lazy { intent.getParcelableExtra<CreatePostRequest>(EXTRA_REQUEST_DATA) }
     private val selectedImagePath: String by lazy { intent.getStringExtra(EXTRA_FILE) ?: "" }
     private val viewModel by lazy { ViewModelProviders.of(this)[SubmitPostViewModel::class.java] }
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +118,7 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.btnNext -> {
-                if (request.meetingTime != null)
+                if (request?.meetingTime != null)
                     if (!checkDateTime()) {
                         shortToast("Expiration time should be greater than meeting time")
                         return
@@ -124,9 +129,9 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
 //                finish()
 
                 if (selectedImagePath.isNotBlank()) {
-                    viewModel.createPost(request, File(selectedImagePath))
+                    request?.let { viewModel.createPost(it, File(selectedImagePath)) }
                 } else {
-                    viewModel.createPost(request, null)
+                    request?.let { viewModel.createPost(it, null) }
                 }
             }
 
@@ -147,7 +152,7 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
                 DateTimePicker(this,
                         minDateMillis = System.currentTimeMillis()) { selectedDateTime ->
                     tvStartDateAndTime.text = DateTimeUtils.formatVenueDateTime(selectedDateTime)
-                    request.meetingTime = selectedDateTime.toInstant().toEpochMilli()
+                    request?.meetingTime = selectedDateTime.toInstant().toEpochMilli()
                 }.show()
             }
 
@@ -155,7 +160,7 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
                 DateTimePicker(this,
                         minDateMillis = System.currentTimeMillis()) { selectedDateTime ->
                     tvEndDateAndTime.text = DateTimeUtils.formatVenueDateTime(selectedDateTime)
-                    request.expirationTime = selectedDateTime.toInstant().toEpochMilli()
+                    request?.expirationTime = selectedDateTime.toInstant().toEpochMilli()
                 }.show()
             }
 
@@ -163,8 +168,8 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun checkDateTime(): Boolean {
-        val startDate = request.meetingTime ?: 0
-        val endDate = request.expirationTime ?: 0
+        val startDate = request?.meetingTime ?: 0
+        val endDate = request?.expirationTime ?: 0
         return startDate < endDate
     }
 
@@ -175,11 +180,13 @@ class SubmitPostActivity : BaseActivity(), View.OnClickListener {
             AppConstants.REQ_CODE_PLACE_PICKER -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val place = Autocomplete.getPlaceFromIntent(data)
-                    request.locationLat = place.latLng?.latitude
-                    request.locationLong = place.latLng?.longitude
-                    request.locationName = place.name.toString()
-                    request.locationAddress = place.address.toString()
-                    tvSelectLocation.text = AppUtils.getFormattedAddress(request.locationName, request.locationAddress)
+                    request?.locationLat = place.latLng?.latitude
+                    request?.locationLong = place.latLng?.longitude
+                    request?.locationName = place.name.toString()
+                    request?.locationAddress = place.address.toString()
+                    tvSelectLocation.text = AppUtils.getFormattedAddress(request?.locationName,
+                        request?.locationAddress
+                    )
                     btnNext.isEnabled = true
                 }
             }

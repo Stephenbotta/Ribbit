@@ -260,7 +260,9 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val interests = data.getParcelableArrayListExtra<InterestDto>(AppConstants.EXTRA_INTEREST)
                     interest.clear()
-                    interest.addAll(interests)
+                    if (interests != null) {
+                        interest.addAll(interests)
+                    }
                     setData(interest)
                 }
             }
@@ -270,7 +272,8 @@ class PostNearByFragment : BaseFragment(), ProfileInterestsAdapter.Callback {
                     postingIn = true
                     tvPostingIn.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_group, 0, 0, 0)
                     selectedUserIdList.clear()
-                    selectedUserIdList.addAll(data.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS))
+                    data.getStringArrayListExtra(AppConstants.EXTRA_FOLLOWERS)
+                        ?.let { selectedUserIdList.addAll(it) }
                     if (selectedUserIdList.isNotEmpty()) {
                         tvPostingIn.text = getString(R.string.hide_info_label_people_count, selectedUserIdList.size)
                     } else {

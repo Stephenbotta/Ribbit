@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
@@ -57,6 +58,9 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
     private lateinit var adapter: GroupDetailsAdapter
     private var flag = 0
     private val gson by lazy { Gson() }
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +72,9 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
         loadingDialog = LoadingDialog(this)
 
         val groupId = intent.getStringExtra(EXTRA_GROUP_ID)
-        callApi(groupId)
+        if (groupId != null) {
+            callApi(groupId)
+        }
         observeChanges()
         setupGroupDetailsRecycler()
         observeInviteUsersCallback()
@@ -316,7 +322,7 @@ class GroupDetailsActivity : BaseActivity(), GroupDetailsAdapter.Callback {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item?.itemId) {
             android.R.id.home -> {
                 onBackPressed()

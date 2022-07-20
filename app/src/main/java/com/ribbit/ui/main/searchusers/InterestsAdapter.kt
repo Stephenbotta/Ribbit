@@ -69,5 +69,8 @@ class InterestsAdapter(private val context: Context) : androidx.recyclerview.wid
         this.interests.clear()
         this.interests.addAll(interests)
         notifyDataSetChanged()
+
+
+
     }
 }

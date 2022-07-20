@@ -17,7 +17,7 @@ import com.ribbit.data.remote.models.groups.GroupDto
 import com.ribbit.data.remote.models.groups.GroupPostDto
 import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
 import com.ribbit.data.remote.models.loginsignup.InterestDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.people.UserCrossedDto
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseFragment
@@ -47,7 +47,9 @@ class HomeFragment : BaseFragment(), HomeAdapter.Callback {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent != null && intent.hasExtra(AppConstants.EXTRA_GROUP_POST)) {
                 val updatedPost = intent.getParcelableExtra<GroupPostDto>(AppConstants.EXTRA_GROUP_POST)
-                adapter.updatePost(updatedPost)
+                if (updatedPost != null) {
+                    adapter.updatePost(updatedPost)
+                }
             }
         }
     }

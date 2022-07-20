@@ -4,68 +4,68 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
 import com.ribbit.data.remote.models.loginsignup.InterestDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.post.PostReplyDto
 import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.ZonedDateTime
 
 @Parcelize
 data class GroupPostDto(
-        @field:SerializedName("postText")
+    @field:SerializedName("postText")
         val postText: String? = null,
 
-        @field:SerializedName("imageUrl")
+    @field:SerializedName("imageUrl")
         val imageUrl: ImageUrlDto? = null,
 
-        @field:SerializedName("postBy")
+    @field:SerializedName("postBy")
         val user: ProfileDto? = null,
 
-        @field:SerializedName("likeCount")
+    @field:SerializedName("likeCount")
         var likesCount: Int? = null,
 
-        @field:SerializedName("_id")
+    @field:SerializedName("_id")
         val id: String? = null,
 
-        @field:SerializedName("createdOn")
+    @field:SerializedName("createdOn")
         val createdOnDateTime: ZonedDateTime? = null,
 
-        @field:SerializedName("liked")
+    @field:SerializedName("liked")
         var isLiked: Boolean? = null,
 
-        @field:SerializedName("type")
+    @field:SerializedName("type")
         val type: String? = null,
 
-        @field:SerializedName("groupId")
+    @field:SerializedName("groupId")
         val group: GroupDto? = null,
 
-        @field:SerializedName("postCategoryId")
+    @field:SerializedName("postCategoryId")
         val category: InterestDto? = null,
 
-        @field:SerializedName("comment")
+    @field:SerializedName("comment")
         val replies: List<PostReplyDto>? = null,
 
-        @field:SerializedName("locationName")
+    @field:SerializedName("locationName")
         val locationName: String? = null,
 
-        @field:SerializedName("locationAddress")
+    @field:SerializedName("locationAddress")
         val locationAddress: String? = null,
 
-        @field:SerializedName("postType")
+    @field:SerializedName("postType")
         val postType: String? = null,
 
-        @field:SerializedName("postingIn")
+    @field:SerializedName("postingIn")
         val postingIn: String? = null,
 
-        @field:SerializedName("commentCount")
+    @field:SerializedName("commentCount")
         var repliesCount: Int? = null,
 
-        @field:SerializedName("selectedPeople")
+    @field:SerializedName("selectedPeople")
         var selectedPeople: ArrayList<String> = ArrayList(),
 
-        @field:SerializedName("media")
+    @field:SerializedName("media")
         var media: ArrayList<ImageUrlDto> = ArrayList(),
 
-        @field:SerializedName("selectInterests")
+    @field:SerializedName("selectInterests")
         val interests: ArrayList<InterestDto>? = null
 
 

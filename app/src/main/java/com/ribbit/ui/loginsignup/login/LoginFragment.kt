@@ -18,7 +18,7 @@ import com.ribbit.data.remote.ApiConstants
 import com.ribbit.data.remote.FacebookLogin
 import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.loginsignup.LoginRequest
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.social.FacebookProfile
 import com.ribbit.data.remote.models.social.SocialProfile
 import com.ribbit.extensions.handleError
@@ -70,6 +70,14 @@ class LoginFragment : BaseFragment(), TextWatcher, FacebookLogin.FacebookLoginLi
         setListeners()
         observeChanges()
     }
+
+
+
+
+    // ******** ADD HERE A WAY TO SIGNIN WITH FINGERPRINT - FACEID - Verifcation methods
+
+
+
 
     private fun setupGoogleSignInClient() {
         val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

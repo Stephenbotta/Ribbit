@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -39,12 +40,15 @@ class JoinVenueActivity : BaseActivity(), JoinVenueDetailsAdapter.Callback {
     private lateinit var venue: VenueDto
     private lateinit var venueDetailsAdapter: JoinVenueDetailsAdapter
     private lateinit var loadingDialog: LoadingDialog
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join_venue)
 
-        venue = intent.getParcelableExtra(EXTRA_VENUE)
+        venue = intent.getParcelableExtra(EXTRA_VENUE)!!
         loadingDialog = LoadingDialog(this)
 
         setListeners()

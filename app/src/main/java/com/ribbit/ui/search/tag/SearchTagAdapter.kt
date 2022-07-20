@@ -3,7 +3,7 @@ package com.ribbit.ui.search.tag
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ribbit.R
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.inflate
 
 class SearchTagAdapter(private val callback: Callback) : RecyclerView.Adapter<SearchTagViewHolder>() {

@@ -3,47 +3,47 @@ package com.ribbit.data.remote.models.notifications
 import com.google.gson.annotations.SerializedName
 import com.ribbit.data.remote.models.groups.GroupDto
 import com.ribbit.data.remote.models.groups.GroupPostDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.post.PostReplyDto
 import com.ribbit.data.remote.models.venues.VenueDto
 import org.threeten.bp.ZonedDateTime
 
 data class NotificationDto(
-        @field:SerializedName("venueId")
+    @field:SerializedName("venueId")
         val venue: VenueDto? = null,
 
-        @field:SerializedName("groupId")
+    @field:SerializedName("groupId")
         val group: GroupDto? = null,
 
-        @field:SerializedName("isRead")
+    @field:SerializedName("isRead")
         val isRead: Boolean? = null,
 
-        @field:SerializedName("_id")
+    @field:SerializedName("_id")
         val id: String? = null,
 
-        @field:SerializedName("byId")
+    @field:SerializedName("byId")
         val sender: ProfileDto? = null,
 
-        @field:SerializedName("type")
+    @field:SerializedName("type")
         val type: String? = null,
 
-        @field:SerializedName("postId")
+    @field:SerializedName("postId")
         val postId: GroupPostDto? = null,
 
-        @field:SerializedName("commentId")
+    @field:SerializedName("commentId")
         val commentId: PostReplyDto? = null,
 
-        @field:SerializedName("locationName")
+    @field:SerializedName("locationName")
         val locationName: String? = null,
 
-        @field:SerializedName("locationAddress")
+    @field:SerializedName("locationAddress")
         val locationAddress: String? = null,
 
-        @field:SerializedName("location")
+    @field:SerializedName("location")
         val location: ArrayList<Double>? = null,
 
-        @field:SerializedName("toId")
+    @field:SerializedName("toId")
         val toId: String? = null,
 
-        @field:SerializedName("createdOn")
+    @field:SerializedName("createdOn")
         val createdOnDateTime: ZonedDateTime? = null)

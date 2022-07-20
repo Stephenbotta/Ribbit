@@ -3,6 +3,7 @@ package com.ribbit.ui.profile
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import com.ribbit.R
 import com.ribbit.ui.base.BaseActivity
 import com.ribbit.ui.main.notifications.NotificationsFragment
@@ -21,6 +22,9 @@ class ProfileActivity : BaseActivity() {
     private lateinit var fragmentSwitcher: FragmentSwitcher
 
     private val showProfileScreen by lazy { intent.getBooleanExtra(EXTRA_SHOW_PROFILE_SCREEN, true) }
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

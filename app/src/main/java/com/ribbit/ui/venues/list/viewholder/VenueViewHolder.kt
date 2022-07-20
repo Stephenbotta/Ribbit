@@ -4,7 +4,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.ribbit.R
 import com.ribbit.data.remote.ApiConstants
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.venues.VenueDto
 import com.ribbit.extensions.gone
 import com.ribbit.extensions.visible

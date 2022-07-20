@@ -18,7 +18,7 @@ import com.ribbit.data.remote.models.groups.AddParticipantsDto
 import com.ribbit.data.remote.models.groups.CreateEditGroupRequest
 import com.ribbit.data.remote.models.groups.CreateGroupHeaderDto
 import com.ribbit.data.remote.models.loginsignup.InterestDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.creategroup.addparticipants.AddParticipantsActivity
@@ -220,18 +220,24 @@ class CreateGroupFragment : BaseFragment(), CreateGroupAdapter.Callback {
             val participants = data.getParcelableArrayListExtra<ProfileDto>(AppConstants.EXTRA_PARTICIPANTS)
 
             // Update member ids in the create group request
-            if (participants.isEmpty()) {
-                request.participantIds = null
-            } else {
-                request.participantIds = participants.asSequence()
+            if (participants != null) {
+                if (participants.isEmpty()) {
+                    request.participantIds = null
+                } else {
+                    request.participantIds = participants.asSequence()
                         .onEach { it.isSelected = false }   // Set selected to false for all
                         .mapNotNull { it.id }   // Map to non-null ids
                         .toList()
+                }
             }
 
             // Display the selected participants and update the member count
-            createGroupHeader.memberCount = participants.size
-            createGroupAdapter.displayMembers(participants)
+            if (participants != null) {
+                createGroupHeader.memberCount = participants.size
+            }
+            if (participants != null) {
+                createGroupAdapter.displayMembers(participants)
+            }
         } else {
             mediaPicker.onActivityResult(requestCode, resultCode, data)
         }

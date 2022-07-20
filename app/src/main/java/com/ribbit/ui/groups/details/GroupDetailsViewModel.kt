@@ -21,6 +21,9 @@ class GroupDetailsViewModel : ViewModel() {
     val archiveVenue by lazy { SingleLiveEvent<Resource<Any>>() }
     val inviteUsers by lazy { SingleLiveEvent<Resource<Any>>() }
     val editGroupName by lazy { SingleLiveEvent<Resource<Any>>() }
+
+
+
     fun getGroupDetails(groupId: String) {
         groupDetails.value = Resource.loading()
 

@@ -2,7 +2,7 @@ package com.ribbit.ui.profile.settings.blockusers
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.utils.GlideRequests
 import kotlinx.android.synthetic.main.item_top_search.view.*
 

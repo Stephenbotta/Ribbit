@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import com.ribbit.R
 import com.ribbit.data.remote.models.groups.AddParticipantsDto
 import com.ribbit.data.remote.models.groups.CreateGroupHeaderDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.inflate
 import com.ribbit.ui.creategroup.addparticipants.ParticipantViewHolder
 import com.ribbit.ui.creategroup.create.viewholders.AddParticipantsViewHolder

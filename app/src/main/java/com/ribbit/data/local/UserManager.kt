@@ -1,7 +1,7 @@
 package com.ribbit.data.local
 
 import android.location.Location
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import java.util.*
 import java.util.concurrent.TimeUnit
 

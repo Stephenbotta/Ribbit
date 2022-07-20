@@ -6,7 +6,7 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.ribbit.R
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.shortToast
 import com.ribbit.extensions.updateAlphaLevel
 import com.ribbit.ui.base.BaseFragment

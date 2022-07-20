@@ -216,6 +216,7 @@ class MediaHelper(context: Context, private val selectionParams: SelectionParams
 
                         if (path == null || path.isEmpty()) {
                             continue
+
                         }
 
                         val pickerVideo = PickerMedia.PickerVideo(bucketId, videoId, dateTaken, path, duration, null)

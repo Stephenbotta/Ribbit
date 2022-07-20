@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -11,7 +12,7 @@ import com.ribbit.R
 import com.ribbit.data.local.UserManager
 import com.ribbit.data.local.models.AppError
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.handleError
 import com.ribbit.extensions.longToast
 import com.ribbit.ui.base.BaseActivity
@@ -34,6 +35,9 @@ class VerificationActivity : BaseActivity(), View.OnClickListener {
     private lateinit var loadingDialog: LoadingDialog
     private var apiFlag = 0
     private var isFragmentAdded = false
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

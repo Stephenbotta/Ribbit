@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import timber.log.Timber
 import java.io.File
 
+
 object FileUtils {
     const val MIME_TYPE_ALL = "*/*"
     const val MIME_TYPE_IMAGE = "image/*"

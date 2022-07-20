@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
@@ -59,6 +60,9 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
     private lateinit var venueDetailsAdapter: VenueDetailsAdapter
     private lateinit var members: ArrayList<MemberDto>
     private val gson by lazy { Gson() }
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +70,8 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
 
         viewModel = ViewModelProviders.of(this)[VenueDetailsViewModel::class.java]
         loadingDialog = LoadingDialog(this)
-        venues = intent.getParcelableExtra(EXTRA_VENUE)
-        members = intent.getParcelableArrayListExtra(EXTRA_VENUE_MEMBERS)
+        venues = intent.getParcelableExtra(EXTRA_VENUE)!!
+        members = intent.getParcelableArrayListExtra(EXTRA_VENUE_MEMBERS)!!
         observeChanges()
         setupRecyclerView()
         setupVenueDetailsRecycler()
@@ -322,7 +326,7 @@ class VenueDetailsActivity : BaseActivity(), VenueDetailsAdapter.Callback {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item?.itemId) {
             android.R.id.home -> {
                 onBackPressed()

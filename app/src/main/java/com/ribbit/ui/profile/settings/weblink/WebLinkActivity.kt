@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import com.ribbit.R
@@ -32,6 +33,9 @@ class WebLinkActivity : BaseActivity() {
     private val TERMS_AND_CONDITIONS_URL = TERMS_AND_CONDITIONS_URL_CLIENT
 
     private lateinit var loadingDialog: LoadingDialog
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +49,7 @@ class WebLinkActivity : BaseActivity() {
         loadingDialog = LoadingDialog(this)
 
         wvWebLink.settings.javaScriptEnabled = true
-        wvWebLink.settings.setAppCacheEnabled(true)
+       // wvWebLink.settings.setAppCacheEnabled(true)
         wvWebLink.settings.domStorageEnabled = true
         wvWebLink.settings.builtInZoomControls = true
         wvWebLink.settings.displayZoomControls = false

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ribbit.R
@@ -34,6 +35,9 @@ class AddParticipantsActivity : BaseActivity() {
     private val viewModel by lazy { ViewModelProviders.of(this)[AddParticipantsViewModel::class.java] }
     private val participantIds by lazy { intent.getStringArrayListExtra(EXTRA_PARTICIPANT_IDS) }
     private lateinit var adapter: AddParticipantsAdapter
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +76,7 @@ class AddParticipantsActivity : BaseActivity() {
                     val followers = resource.data ?: emptyList()
                     followers.forEach {
                         // Select the previously selected participant ids
-                        if (participantIds.contains(it.id)) {
+                        if (participantIds?.contains(it.id) == true) {
                             it.isSelected = true
                         }
                     }

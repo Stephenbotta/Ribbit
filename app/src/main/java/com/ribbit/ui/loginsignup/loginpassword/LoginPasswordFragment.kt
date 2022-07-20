@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -12,7 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.ribbit.R
 import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.loginsignup.LoginRequest
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseFragment
 import com.ribbit.ui.custom.LoadingDialog
@@ -45,12 +46,13 @@ class LoginPasswordFragment : BaseFragment() {
 
     override fun getFragmentLayoutResId(): Int = R.layout.fragment_login_password
 
+    @RequiresApi(33)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this)[LoginPasswordViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())
-        profile = arguments?.getParcelable(ARGUMENT_PROFILE) as ProfileDto
+        profile = arguments?.getParcelable(ARGUMENT_PROFILE)!!
         credentials = arguments?.getString(ARGUMENT_CREDENTIALS) ?: ""
 
         fabProceed.isEnabled = false    // Disabled by default

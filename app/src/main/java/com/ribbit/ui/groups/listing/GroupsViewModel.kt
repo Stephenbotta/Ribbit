@@ -13,7 +13,7 @@ import com.ribbit.data.remote.models.groups.GetGroupsResponse
 import com.ribbit.data.remote.models.groups.GroupDto
 import com.ribbit.data.remote.models.groups.SuggestedGroupsDto
 import com.ribbit.data.remote.models.groups.YourGroupsLabelDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.utils.SingleLiveEvent
 import retrofit2.Call
 import retrofit2.Callback

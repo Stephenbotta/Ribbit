@@ -20,7 +20,7 @@ import com.ribbit.data.local.PrefsManager
 import com.ribbit.data.remote.ApiConstants
 import com.ribbit.data.remote.FacebookLogin
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.loginsignup.SignUpRequest
 import com.ribbit.data.remote.models.social.FacebookProfile
 import com.ribbit.data.remote.models.social.SocialProfile

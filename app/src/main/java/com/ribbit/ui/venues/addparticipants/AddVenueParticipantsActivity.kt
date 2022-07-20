@@ -3,11 +3,12 @@ package com.ribbit.ui.venues.addparticipants
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ribbit.R
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseActivity
 import com.ribbit.ui.creategroup.addparticipants.AddParticipantsAdapter
@@ -38,13 +39,16 @@ class AddVenueParticipantsActivity : BaseActivity() {
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var addParticipantsAdapter: AddParticipantsAdapter
     private var flag = 0
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_participants)
 
         flag = intent.getIntExtra(EXTRA_FLAG, 0)
-        venueId = intent.getStringExtra(EXTRA_VENUE_ID)
+        venueId = intent.getStringExtra(EXTRA_VENUE_ID).toString()
         loadingDialog = LoadingDialog(this)
         swipeRefreshLayout.isEnabled = false
 

@@ -44,6 +44,13 @@ class LoginSignUpActivity : BaseActivity(), BackButtonEnabledListener {
     }
 
     private var isBackButtonEnabled = true
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        if (outState != null) {
+            if (outPersisent != null) {
+                super.onSaveInstanceState(outState,outPersisent)
+            }
+        };
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,20 +117,7 @@ class LoginSignUpActivity : BaseActivity(), BackButtonEnabledListener {
         }
     }
 
-//    override fun onSaveInstanceState(outState: Bundle?) {
-//        super.onSaveInstanceState(outState)
-//
-//        // Save state of back button
-//        outState?.putBoolean(KEY_BACK_BUTTON_ENABLED, isBackButtonEnabled)
-//    }
 
-
-    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
-        super.onSaveInstanceState(outState, outPersistentState)
-
-        // Save state of back button
-        outState?.putBoolean(KEY_BACK_BUTTON_ENABLED, isBackButtonEnabled)
-    }
 
     override fun onBackPressed() {
         if (isBackButtonEnabled) {

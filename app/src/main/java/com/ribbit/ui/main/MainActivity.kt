@@ -1,9 +1,9 @@
 package com.ribbit.ui.main
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.tasks.OnCompleteListener
@@ -14,7 +14,7 @@ import com.ribbit.R
 import com.ribbit.data.local.UserManager
 import com.ribbit.data.local.models.MessageEvent
 import com.ribbit.data.remote.PushType
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.people.UserCrossedDto
 import com.ribbit.extensions.gone
 import com.ribbit.extensions.isNetworkActive
@@ -22,7 +22,6 @@ import com.ribbit.extensions.visible
 import com.ribbit.ui.base.BaseActivity
 import com.ribbit.ui.chat.ChatActivity
 import com.ribbit.ui.main.chats.individual.IndividualChatFragment
-import com.ribbit.ui.main.explore.ExploreFragment
 import com.ribbit.ui.main.home.HomeFragment
 import com.ribbit.ui.main.survey.SurveyUserStaticsFragment
 import com.ribbit.ui.profile.ProfileFragment
@@ -38,9 +37,8 @@ class MainActivity : BaseActivity() {
         private const val TAB_INDEX_HOME = 0
         private const val TAB_INDEX_CHATS = 1
         //        private const val TAB_INDEX_SEARCH_USERS = 2
-        private const val TAB_INDEX_EXPLORE = 2
-        private const val TAB_INDEX_NOTIFICATIONS = 3
-        private const val TAB_INDEX_PROFILE = 4
+        private const val TAB_INDEX_NOTIFICATIONS = 2
+        private const val TAB_INDEX_PROFILE = 3
 
         private const val EXTRA_SELECTED_TAB_INDEX = "EXTRA_SELECTED_TAB_INDEX"
         private const val EXTRA_SELECTED_FRAGMENT_TAG = "EXTRA_SELECTED_FRAGMENT_TAG"
@@ -50,6 +48,9 @@ class MainActivity : BaseActivity() {
     private lateinit var fragmentSwitcher: FragmentSwitcher
 
     private val gson = Gson()
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -175,11 +176,11 @@ class MainActivity : BaseActivity() {
                          }
                      }*/
 
-                    TAB_INDEX_EXPLORE -> {
-                        if (!fragmentSwitcher.fragmentExist(ExploreFragment.TAG)) {
-                            fragmentSwitcher.addFragment(Fragment(), ExploreFragment.TAG)
-                        }
-                    }
+//                    TAB_INDEX_EXPLORE -> {
+//                        if (!fragmentSwitcher.fragmentExist(ExploreFragment.TAG)) {
+//                            fragmentSwitcher.addFragment(Fragment(), ExploreFragment.TAG)
+//                        }
+//                    }
 
                     TAB_INDEX_NOTIFICATIONS -> {
                         if (!fragmentSwitcher.fragmentExist(SurveyUserStaticsFragment.TAG)) {

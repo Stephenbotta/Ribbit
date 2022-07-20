@@ -4,13 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ribbit.R
 import com.ribbit.data.remote.ApiConstants
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.ui.base.BaseActivity
 import com.ribbit.ui.profile.settings.hideinfo.hidestatus.HideStatusActivity
 import com.ribbit.utils.AppConstants
@@ -26,6 +27,9 @@ class HidePersonalInfoActivity : BaseActivity(), View.OnClickListener {
     }
 
     private val viewModel by lazy { ViewModelProviders.of(this)[HidePersonalInfoViewModel::class.java] }
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

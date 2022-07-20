@@ -14,7 +14,7 @@ import com.ribbit.data.remote.PushType
 import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.groups.GroupDto
 import com.ribbit.data.remote.models.groups.GroupPostDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.notifications.NotificationDto
 import com.ribbit.data.remote.models.people.UserCrossedDto
 import com.ribbit.data.remote.models.venues.VenueDto

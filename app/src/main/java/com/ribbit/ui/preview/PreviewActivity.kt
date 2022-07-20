@@ -3,6 +3,7 @@ package com.ribbit.ui.preview
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import com.ribbit.R
 import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
 import com.ribbit.ui.base.BaseActivity
@@ -28,6 +29,9 @@ class PreviewActivity : BaseActivity(), PreviewAdapter.Callback {
         intent.getParcelableArrayListExtra(EXTRA_IMAGES_LIST) ?: ArrayList<ImageUrlDto>()
     }
     private val currentPosition by lazy { intent.getIntExtra(EXTRA_CURRENT_POSITION, 0) }
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

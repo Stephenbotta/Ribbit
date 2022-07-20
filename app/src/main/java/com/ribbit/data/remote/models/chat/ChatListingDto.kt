@@ -1,7 +1,7 @@
 package com.ribbit.data.remote.models.chat
 
 import com.google.gson.annotations.SerializedName
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 
 /**
  * Created by Manish Bhargav

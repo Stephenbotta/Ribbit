@@ -1,12 +1,13 @@
 package com.ribbit.ui.profile.settings.blockusers
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ribbit.R
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.people.UserCrossedDto
 import com.ribbit.extensions.gone
 import com.ribbit.extensions.handleError
@@ -22,6 +23,9 @@ class BlockUsersListActivity : BaseActivity(), View.OnClickListener, BlockUsersL
 
     private val viewModel by lazy { ViewModelProviders.of(this)[BlockUsersListViewModel::class.java] }
     private lateinit var adapter: BlockUsersListAdapter
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

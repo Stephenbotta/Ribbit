@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.ribbit.R
 import com.ribbit.data.remote.ApiConstants
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.loginsignup.SignUpRequest
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseFragment
@@ -61,7 +61,7 @@ class WelcomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        profile = arguments?.getParcelable(ARGUMENT_PROFILE) as ProfileDto
+        profile = arguments?.getParcelable(ARGUMENT_PROFILE)!!
 
         viewModel = ViewModelProviders.of(this)[WelcomeViewModel::class.java]
         loadingDialog = LoadingDialog(requireActivity())

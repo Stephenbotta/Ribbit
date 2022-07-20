@@ -3,6 +3,7 @@ package com.ribbit.ui.profile.settings
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.provider.Settings
 import android.view.View
 import android.widget.TextView
@@ -16,7 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import com.ribbit.R
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.databinding.BottomSheetDialogInvitePeopleBinding
 import com.ribbit.extensions.*
 import com.ribbit.ui.base.BaseActivity
@@ -34,6 +35,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     private val viewModel by lazy { ViewModelProviders.of(this)[SettingsViewModel::class.java] }
     private lateinit var loadingDialog: LoadingDialog
     private val gson by lazy { Gson() }
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

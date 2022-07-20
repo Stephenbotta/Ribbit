@@ -19,7 +19,7 @@ import com.ribbit.ui.people.details.PeopleDetailsActivity
 import com.ribbit.utils.AppConstants
 import com.ribbit.utils.GlideApp
 
-class PeopleFragment : BaseFragment(), PeopleCallback {
+class  PeopleFragment : BaseFragment(), PeopleCallback {
     private lateinit var viewModel: PeopleViewModel
     private lateinit var binding: FragmentPeopleBinding
     private lateinit var adapter: PeopleAdapter

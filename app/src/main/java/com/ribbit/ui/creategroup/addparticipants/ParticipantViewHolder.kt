@@ -1,7 +1,7 @@
 package com.ribbit.ui.creategroup.addparticipants
 
 import android.view.View
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.gone
 import com.ribbit.extensions.visible
 import com.ribbit.utils.GlideRequests

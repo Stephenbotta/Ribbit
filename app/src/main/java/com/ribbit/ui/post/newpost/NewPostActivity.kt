@@ -3,6 +3,7 @@ package com.ribbit.ui.post.newpost
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import com.ribbit.R
 import com.ribbit.data.remote.models.groups.GroupDto
 import com.ribbit.data.remote.models.groups.GroupPostDto
@@ -33,6 +34,10 @@ class NewPostActivity : BaseActivity() {
 
     }
 
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_post)
@@ -55,7 +60,9 @@ class NewPostActivity : BaseActivity() {
 
             AppConstants.REQ_CODE_EDIT_POST -> {
                 val groupId = intent.getParcelableExtra<GroupPostDto>(EXTRA_GROUP_POST)
-                navigateToEditPostFragment(groupId)
+                if (groupId != null) {
+                    navigateToEditPostFragment(groupId)
+                }
             }
 
             else -> {

@@ -11,7 +11,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.ribbit.R
 import com.ribbit.data.remote.ApiConstants
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.gone
 import com.ribbit.extensions.handleError
 import com.ribbit.extensions.isNetworkActiveWithMessage
@@ -195,6 +195,8 @@ class ProfileFragment : BaseFragment(), ProfileInterestsAdapter.Callback, View.O
         tvFollowingCount.setOnClickListener(this)
         tvLabelFollowing.setOnClickListener(this)*/
     }
+
+
 
     private fun getUserProfile() {
         if (isNetworkActiveWithMessage()) {

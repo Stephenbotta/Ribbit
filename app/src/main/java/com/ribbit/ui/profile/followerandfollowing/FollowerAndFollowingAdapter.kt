@@ -3,7 +3,7 @@ package com.ribbit.ui.profile.followerandfollowing
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ribbit.R
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.extensions.inflate
 import com.ribbit.utils.GlideRequests
 

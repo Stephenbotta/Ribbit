@@ -13,7 +13,7 @@ import com.ribbit.data.remote.models.Resource
 import com.ribbit.data.remote.models.Status
 import com.ribbit.data.remote.models.groups.GroupPostDto
 import com.ribbit.data.remote.models.loginsignup.ImageUrlDto
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.post.*
 import com.ribbit.utils.AppUtils
 import com.ribbit.utils.SingleLiveEvent

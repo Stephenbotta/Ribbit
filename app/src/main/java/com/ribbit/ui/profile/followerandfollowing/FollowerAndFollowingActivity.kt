@@ -3,6 +3,7 @@ package com.ribbit.ui.profile.followerandfollowing
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
@@ -11,7 +12,7 @@ import com.ribbit.R
 import com.ribbit.data.local.UserManager
 import com.ribbit.data.remote.ApiConstants
 import com.ribbit.data.remote.models.Status
-import com.ribbit.data.remote.models.loginsignup.ProfileDto
+import com.ribbit.ui.loginsignup.ProfileDto
 import com.ribbit.data.remote.models.people.UserCrossedDto
 import com.ribbit.extensions.gone
 import com.ribbit.extensions.handleError
@@ -36,6 +37,9 @@ class FollowerAndFollowingActivity : BaseActivity(), View.OnClickListener, Follo
     private val viewModel by lazy { ViewModelProviders.of(this)[FollowerAndFollowingViewModel::class.java] }
     private lateinit var adapter: FollowerAndFollowingAdapter
     private var flag = 0
+    override fun onSavedInstance(outState: Bundle?, outPersisent: PersistableBundle?) {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,7 +116,8 @@ class FollowerAndFollowingActivity : BaseActivity(), View.OnClickListener, Follo
                     viewModel.getUsers(flag)
                 }
                 AppConstants.REQ_CODE_POST_LIKE -> {
-                    viewModel.getLikeUserList(intent.getStringExtra(AppConstants.EXTRA_POST_ID))
+                    intent.getStringExtra(AppConstants.EXTRA_POST_ID)
+                        ?.let { viewModel.getLikeUserList(it) }
                 }
             }
         } else {

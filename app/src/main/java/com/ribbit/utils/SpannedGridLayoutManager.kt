@@ -72,6 +72,7 @@ class SpannedGridLayoutManager : RecyclerView.LayoutManager {
         fun getSpanInfo(position: Int): SpanInfo
     }
 
+
     fun setSpanLookup(spanLookup: GridSpanLookup) {
         this.spanLookup = spanLookup
     }
