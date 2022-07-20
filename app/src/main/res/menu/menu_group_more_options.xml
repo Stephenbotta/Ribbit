@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuGroupExit"
+        android:icon="@drawable/ic_exit"
+        android:title="@string/group_more_options_label_exit" />
+
+    <item
+        android:id="@+id/menuGroupShare"
+        android:icon="@drawable/ic_share"
+        android:title="@string/group_more_options_label_share" />
+
+    <item
+        android:id="@+id/menuGroupChat"
+        android:icon="@drawable/ic_chat"
+        android:title="@string/group_more_options_label_channel_chat" />
+
+    <item
+        android:id="@+id/menuCreateNewPost"
+        android:icon="@drawable/ic_plus"
+        android:title="@string/group_more_options_label_create_post" />
+    <item
+        android:id="@+id/menuGroupDetail"
+        android:icon="@drawable/ic_information"
+        android:title="@string/group_more_options_label_channel_detail" />
+
+</menu>

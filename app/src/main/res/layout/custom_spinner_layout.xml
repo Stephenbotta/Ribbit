@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/_16sdp"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:alpha=".7"
+        android:id="@+id/tvName"
+        android:text="@string/dialog_gender_label_female"
+        android:textColor="@color/white"
+  />
+
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_marginTop="8sp"
+        android:id="@+id/spinner"
+        android:background="@drawable/bg_spinner"
+        android:prompt="@string/survey" />
+</LinearLayout>

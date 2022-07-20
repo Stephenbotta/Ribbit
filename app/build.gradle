@@ -1,0 +1,177 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
+
+androidExtensions {
+    experimental = true
+}
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        applicationId "com.ribbit"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('debug_keystore.jks')
+            storePassword 'android'
+            keyAlias 'android'
+            keyPassword 'android'
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Android Support Library
+    implementation "com.google.android.material:material:$supportVersion"
+    implementation "androidx.legacy:legacy-support-v4:$supportVersion"
+    implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    implementation "androidx.recyclerview:recyclerview:$supportVersion"
+    implementation "androidx.cardview:cardview:$supportVersion"
+    implementation "androidx.browser:browser:$supportVersion"
+    implementation "androidx.exifinterface:exifinterface:$supportVersion"
+    implementation "androidx.media:media:$mediaVersion"
+    implementation "androidx.vectordrawable:vectordrawable-animated:$supportVersion"
+    implementation "androidx.emoji:emoji-appcompat:$supportVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintVersion"
+    implementation "androidx.multidex:multidex:$multiDexVersion"
+
+    // Lifecycle extensions (ViewModel and Live data)
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+
+    // https://github.com/google/flexbox-layout
+    implementation "com.google.android:flexbox:$flexboxVersion"
+
+    // Runtime permission
+    implementation("com.github.hotchemi:permissionsdispatcher:$permissionDispatcherVersion") {
+        // if you don't use android.app.Fragment you can exclude support for them
+        exclude module: "support-v13"
+    }
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    kapt "com.github.hotchemi:permissionsdispatcher-processor:$permissionDispatcherVersion"
+
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+
+    // Backport of java.time.* (https://github.com/JakeWharton/ThreeTenABP)
+    implementation "com.jakewharton.threetenabp:threetenabp:$threeTenVersion"
+
+    // Http client
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$loggingInterceptorVersion"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$coroutinesAdapterVersion"
+
+    // Image
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
+
+    // https://github.com/vinc3m1/RoundedImageView
+    implementation "com.makeramen:roundedimageview:$roundedImageViewVersion"
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
+
+    // https://github.com/hbb20/CountryCodePickerProject
+    implementation "com.hbb20:ccp:$countryCodePickerVersion"
+
+    // Play services
+    implementation "com.google.android.gms:play-services-auth:$googleAuthVersion"
+//    implementation "com.google.android.gms:play-services-places:$googlePlacesVersion"
+    implementation "com.google.android.gms:play-services-location:$googleLocationVersion"
+    implementation "com.google.maps.android:android-maps-utils:$googleMapsUtilsVersion"
+
+    implementation "com.google.android.libraries.places:places:$placePickerVersion"
+
+    // Firebase
+    implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
+
+    // FCM
+    implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
+
+    // https://firebase.google.com/docs/crashlytics
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion"
+
+    // https://developers.facebook.com/docs/facebook-login/android/?sdk=maven
+    implementation "com.facebook.android:facebook-login:$facebookLoginVersion"
+
+    // AWS SDK
+    implementation("com.amazonaws:aws-android-sdk-cognitoauth:$awsSdkVersion@aar") {
+        transitive = true
+    }
+    implementation("com.amazonaws:aws-android-sdk-cognitoidentityprovider:$awsSdkVersion") {
+        transitive = true
+    }
+    implementation("com.amazonaws:aws-android-sdk-s3:$awsSdkVersion") {
+        transitive = true
+    }
+
+    // https://github.com/socketio/socket.io-client-java
+    implementation("io.socket:socket.io-client:$socketIoVersion") {
+        // excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
+
+    // https://github.com/leinardi/FloatingActionButtonSpeedDial
+    implementation "com.leinardi.android:speed-dial:$fabSpeedDialVersion"
+
+    // https://github.com/google/ExoPlayer
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoPlayerVersion"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exoPlayerVersion"
+
+    // https://github.com/sannies/mp4parser
+    implementation "com.googlecode.mp4parser:isoparser:$mp4ParserVersion"
+
+    implementation "com.github.broakenmedia:MultiContactPicker:$multiContactPicker"
+
+    // https://github.com/greenrobot/EventBus
+    implementation "org.greenrobot:eventbus:$eventBus"
+
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+
+    // https://github.com/romandanylyk/PageIndicatorView
+    implementation "com.romandanylyk:pageindicatorview:$pageIndicatorViewVersion"
+
+    implementation 'com.arasthel:spannedgridlayoutmanager:3.0.2'
+
+
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
+
+
+}
+apply plugin: 'com.google.gms.google-services'

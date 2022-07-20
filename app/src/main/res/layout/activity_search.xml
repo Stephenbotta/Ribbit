@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ribbit.ui.search.SearchViewModel" />
+
+        <variable
+            name="view"
+            type="com.ribbit.ui.search.SearchActivity" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/navigationBackground">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{view::onClick}"
+                android:padding="12dp"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/etCredentials"
+                app:layout_constraintBottom_toBottomOf="@id/etCredentials"
+                tools:ignore="ContentDescription" />
+
+            <EditText
+                android:id="@+id/etCredentials"
+                style="@style/HomeSearchEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/searchBarBackground"
+                android:hint="@string/home_label_search"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLength="@integer/email_max_length"
+                android:singleLine="true"
+                android:textColorHint="@color/textGray7F"
+                android:textColor="@color/textGray"
+                android:text="@={viewModel.search}"
+                app:layout_constraintEnd_toStartOf="@id/tvCancel"
+                app:layout_constraintStart_toEndOf="@id/ivBack"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:targetApi="o" />
+
+            <TextView
+                android:id="@+id/tvCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:fontFamily="@font/roboto_text_bold"
+                android:gravity="center"
+                android:onClick="@{view::onClick}"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/cancel"
+                android:textColor="@color/selector_contact_select_text"
+                android:textSize="@dimen/back_navigation_header_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/etCredentials"
+                app:layout_constraintBottom_toBottomOf="@id/etCredentials"
+                tools:text="@string/cancel" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayoutSearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@color/navigationBackground"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/colorPrimary"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/colorPrimary"
+                app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+                app:tabTextColor="@color/grayA4"
+                app:layout_constraintTop_toBottomOf="@id/etCredentials"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPagerSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</layout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFDF18</color>
+    <color name="colorPrimaryDark">#353531</color>
+    <color name="colorAccent">#FFDF18</color>
+
+    <color name="greyImageBackground">#1FFFFFFF</color>
+    <color name="peopleLine">#1F4A566C</color>
+    <color name="fabDisabledBackground">#B0BEC5</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="transparent_white">#00FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="whiteCA">#CACACA</color>
+    <color name="white50">#80FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <color name="black44">#44000000</color>
+    <color name="black0F">#0F000000</color>
+    <color name="black80">#80000000</color>
+    <color name="black88">#88000000</color>
+
+    <color name="red">#FF0000</color>
+    <color name="disableTextView">#55FFDF18</color>
+
+    <color name="textGray">#FFFFFF</color>
+    <color name="textGrayDE">#DEFFFFFF</color>
+    <color name="textGray8C">#8CFFFFFF</color>
+    <color name="textGray7F">#7FFFFFFF</color>
+    <color name="textGray66">#66FFFFFF</color>
+    <color name="textGray14">#14FFFFFF</color>
+    <color name="textGray0A">#0AFFFFFF</color>
+    <color name="textGrayMedium">#DEFFFFFF</color>
+    <color name="textGrayLight">#E0E2E6</color>
+    <color name="socialButtonStrokeColor">#1F4C4C4C</color>
+
+    <color name="editTextBackground">#FAFAFA</color>
+    <color name="editTextStroke">#E7E7E7</color>
+    <color name="editTextContent">#454541</color>
+    <color name="editTextHint">#A1A1A1</color>
+
+    <color name="venueFiltersParentBackground">#F9F4FD</color>
+
+    <color name="notificationsRejectBackground">#ECECEC</color>
+    <color name="notificationsRejectText">#767676</color>
+
+    <color name="profileFollowersText">#242D41</color>
+    <color name="blue">#0069FF</color>
+    <color name="greenA3">#A3CA39</color>
+    <color name="greenD6">#D6E037</color>
+    <color name="yellow">#FFF135</color>
+    <color name="yellowE7">#E7E736</color>
+    <color name="yellow14">#14E7E736</color>
+    <color name="blue3B">#3B5998</color>
+    <color name="gray4E">#4E5462</color>
+    <color name="grayA4">#A4AAB5</color>
+    <color name="whiteF7">#F7F7F7</color>
+    <color name="gray45">#4B5563</color>
+
+
+    <color name="chatBackground">#FFDD15</color>
+    <color name="screenBackground">#454541</color>
+    <color name="searchBarBackground">#FF2A2926</color>
+    <color name="navigationBackground">#353531</color>
+</resources>
